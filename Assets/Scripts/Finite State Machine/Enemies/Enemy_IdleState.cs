@@ -34,6 +34,7 @@ public class Enemy_IdleState : EntityState
 
                 case (EnemyData.EnemyType)1:
                     Debug.Log("ballDroid");
+
                     break;
 
                 case (EnemyData.EnemyType)2:

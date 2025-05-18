@@ -13,14 +13,15 @@ public class Enemy : MonoBehaviour
     {
         enemyStateMachine = new StateMachine();
         enemyIdleState = new Enemy_IdleState(enemyStateMachine, "Enemy Idle", enemyData, gameObject);
-        enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject);
-        enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject);    
+        enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject, playerGO);
+        enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject, playerGO);    
         enemyPatrolState = new Enemy_PatrolState(enemyStateMachine, "Enemy Patrol", enemyData, gameObject);
     }
 
     private void Start()
     {
-        enemyStateMachine.Initalize(enemyIdleState);// And Start with it.
+        enemyStateMachine.Initalize(enemyAttackState);// And Start with it.
+        
     }
 
     private void Update()

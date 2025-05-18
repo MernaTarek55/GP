@@ -3,11 +3,12 @@ using UnityEngine;
 public class Enemy_AttackState : EntityState
 {
     EnemyData _enemyData;
-    public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
+    GameObject playerGO;
+    public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         _enemyData = enemyData;
-
+        this.playerGO = playerGO;
 
 
     }
@@ -26,6 +27,8 @@ public class Enemy_AttackState : EntityState
 
                 case (EnemyData.EnemyType)1:
                     Debug.Log("ballDroid");
+                    playerGO.SetActive(false);
+
                     break;
 
                 case (EnemyData.EnemyType)2:
