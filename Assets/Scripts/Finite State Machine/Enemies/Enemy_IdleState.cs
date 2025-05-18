@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class Enemy_IdleState : EntityState
 {
@@ -28,15 +29,18 @@ public class Enemy_IdleState : EntityState
                     Debug.Log("Turret");
                     if (!_isRotating)
                     {
-                        RotateWithTween();
+                        RotateWithTween(new Vector3(-90, 0, 160), new Vector3(-90, 0, 0), 4f, 4f, RotateMode.Fast);
                     }
                     break;
 
-                case (EnemyData.EnemyType)1:
+                case (EnemyData.EnemyType)1: // Ball Droid
                     Debug.Log("ballDroid");
 
-                    break;
+                    // Continuous 360 degree rotation around Y axis
 
+                    RotateBall(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
+                    //RotateWithTween(new Vector3(0, 0, 0), new Vector3(360, 0, 0), 2f, 2f, RotateMode.WorldAxisAdd);
+                    break;
                 case (EnemyData.EnemyType)2:
                     Debug.Log("Humanoid");
                     break;
@@ -48,7 +52,8 @@ public class Enemy_IdleState : EntityState
         }
     }
 
-    private void RotateWithTween()
+
+    private void RotateWithTween(Vector3 startRotation, Vector3 endRotation, float startDuration, float endDuration, RotateMode rotateMode)
     {
         _isRotating = true;
 
@@ -56,15 +61,14 @@ public class Enemy_IdleState : EntityState
 
         Transform turret = enemyGO.transform;
 
-        // Rotate to Y = 180
-        turret.DORotate(new Vector3(-90, 0, 160), 4f)
+        turret.DORotate(startRotation, startDuration, rotateMode)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
                 // Wait 1 second, then rotate back
                 DOVirtual.DelayedCall(0f, () =>
                 {
-                    turret.DORotate(new Vector3(-90, 0, 0), 4f)
+                    turret.DORotate(endRotation, endDuration)
                           .SetEase(Ease.Linear)
                           .OnComplete(() =>
                           {
@@ -74,7 +78,15 @@ public class Enemy_IdleState : EntityState
             });
     }
 
-   
+    private void RotateBall(Vector3 startRotation, float startDuration, RotateMode rotateMode)
+    {
+
+        enemyGO.transform.DORotate(startRotation, startDuration, rotateMode)
+            .SetEase(Ease.Linear)
+            .SetLoops(-1, LoopType.Restart);
+    }
+
+
 
 
 

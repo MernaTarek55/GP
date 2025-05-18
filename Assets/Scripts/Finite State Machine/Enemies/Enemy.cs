@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        enemyStateMachine.Initalize(enemyAttackState);// And Start with it.
+        enemyStateMachine.Initalize(enemyIdleState);// And Start with it.
         
     }
 
