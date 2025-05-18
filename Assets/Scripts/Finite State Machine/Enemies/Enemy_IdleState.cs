@@ -29,7 +29,7 @@ public class Enemy_IdleState : EntityState
                     Debug.Log("Turret");
                     if (!_isRotating)
                     {
-                        RotateWithTween(new Vector3(-90, 0, 160), new Vector3(-90, 0, 0), 4f, 4f, RotateMode.Fast);
+                        RotateWithTween(new Vector3(0, 160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
                     }
                     break;
 
