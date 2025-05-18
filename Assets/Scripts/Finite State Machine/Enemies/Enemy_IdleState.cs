@@ -57,14 +57,14 @@ public class Enemy_IdleState : EntityState
         Transform turret = enemyGO.transform;
 
         // Rotate to Y = 180
-        turret.DORotate(new Vector3(-90, 0, 160), 4f)
+        turret.DORotate(new Vector3(0, 160, 0), 4f)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
                 // Wait 1 second, then rotate back
                 DOVirtual.DelayedCall(0f, () =>
                 {
-                    turret.DORotate(new Vector3(-90, 0, 0), 4f)
+                    turret.DORotate(new Vector3(0, 0, 0), 4f)
                           .SetEase(Ease.Linear)
                           .OnComplete(() =>
                           {
