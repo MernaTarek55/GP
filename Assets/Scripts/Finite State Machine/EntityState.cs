@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class EntityState
 {
     protected ExampleScript example;
+    protected EnemyData enemyData;
     protected StateMachine stateMachine;
     protected string stateName;
 
@@ -18,6 +19,13 @@ public abstract class EntityState
         this.stateMachine = stateMachine;
         this.stateName = stateName;
         this.example = exp;
+    }
+
+    public EntityState(StateMachine stateMachine, string stateName, EnemyData enemyData)
+    {
+        this.stateMachine = stateMachine;
+        this.stateName = stateName;
+        this.enemyData = enemyData;
     }
 
     public virtual void Enter()

@@ -5,17 +5,17 @@ using UnityEngine;
 public class EnemyData : ScriptableObject
 {
     // Types of Enemies 
+    [Serializable]
     public enum EnemyType
     {
-         Turret = 0
+        Turret = 0
        , ballDroid = 1 // ballDroid is a sphere attacking the player by exploding when he reaches his position
        , Humanoid = 2
     }
-    [SerializeField]
-    private EnemyType enemyClass;
-    [SerializeField] private float movementSpeed;
-    [SerializeField] private int DetectionRange;
-    [SerializeField] private int damage;
-    [SerializeField] private GameObject EnemyPrefab;
+    public EnemyType enemyType;
+    [SerializeField] float movementSpeed;
+    [SerializeField] int DetectionRange;
+    [SerializeField] int damage;
+    [SerializeField] GameObject EnemyPrefab;
 
 }
