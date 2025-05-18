@@ -65,7 +65,11 @@ namespace StarterAssets
 		{
 			sprint = newSprintState;
 		}
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> Enemy-System
 		private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
