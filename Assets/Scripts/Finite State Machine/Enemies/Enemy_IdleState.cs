@@ -52,8 +52,6 @@ public class Enemy_IdleState : EntityState
     {
         _isRotating = true;
 
-
-
         Transform turret = enemyGO.transform;
 
         // Rotate to Y = 180

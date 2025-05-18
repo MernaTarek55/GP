@@ -64,19 +64,27 @@ public class Enemy_AttackState : EntityState
         if (Time.time - _lastShootTime < _enemyData.shootCooldown)
             return;
 
+        // Check if turret is facing the player
+        Vector3 directionToPlayer = (playerGO.transform.position - enemyGO.transform.position).normalized;
+        directionToPlayer.y = 0;
+        float angle = Vector3.Angle(enemyGO.transform.forward, directionToPlayer);
+
+        if (angle > 10f) // If angle is more than 10 degrees, don't shoot yet
+            return;
+
         if (_enemyData.bulletPrefab != null && firePoint != null)
         {
             GameObject bullet = GameObject.Instantiate(_enemyData.bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(enemyGO.transform.forward * 500f); 
+                rb.AddForce(enemyGO.transform.forward * 500f);
             }
         }
 
         _lastShootTime = Time.time;
     }
-    
+
     public void getfirePos(GameObject firPosition)
     {
         firePoint = firPosition;
