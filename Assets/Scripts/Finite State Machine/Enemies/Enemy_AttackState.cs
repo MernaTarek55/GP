@@ -4,7 +4,11 @@ public class Enemy_AttackState : EntityState
 {
     EnemyData _enemyData;
     GameObject playerGO;
+        GameObject firePoint;
+    float _lastShootTime;
     public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
+
+    
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         _enemyData = enemyData;
@@ -23,6 +27,10 @@ public class Enemy_AttackState : EntityState
             {
                 case 0:
                     Debug.Log("Turret");
+                    
+                        RotateTowardPlayer();
+                        Shoot();
+                    
                     break;
 
                 case (EnemyData.EnemyType)1:
@@ -40,5 +48,40 @@ public class Enemy_AttackState : EntityState
         {
             Debug.LogWarning("Ana Null");
         }
+    }
+    private void RotateTowardPlayer()
+    {
+        Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
+        direction.y = 0; 
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            enemyGO.transform.rotation = Quaternion.Slerp(enemyGO.transform.rotation, targetRotation, Time.deltaTime * 5f);
+        }
+    }
+    private void Shoot()
+    {
+        if (Time.time - _lastShootTime < _enemyData.shootCooldown)
+            return;
+
+        if (_enemyData.bulletPrefab != null && firePoint != null)
+        {
+            GameObject bullet = GameObject.Instantiate(_enemyData.bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddForce(enemyGO.transform.forward * 500f); 
+            }
+        }
+
+        _lastShootTime = Time.time;
+    }
+    public void getPlayer(GameObject player)
+    {
+        playerGO = player;
+    }
+    public void getfirePos(GameObject firPosition)
+    {
+        firePoint = firPosition;
     }
 }
