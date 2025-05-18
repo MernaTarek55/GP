@@ -74,12 +74,16 @@ public class Enemy_AttackState : EntityState
 
         if (_enemyData.bulletPrefab != null && firePoint != null)
         {
-            GameObject bullet = GameObject.Instantiate(_enemyData.bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.AddForce(enemyGO.transform.forward * 500f);
-            }
+            //GameObject bullet = GameObject.Instantiate(_enemyData.bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
+            //Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            //if (rb != null)
+            //{
+            //    rb.AddForce(enemyGO.transform.forward * 500f);
+            //}
+            GameObject bullet = BulletPool.Instance.GetBullet();
+            bullet.transform.position = firePoint.transform.position;
+            bullet.transform.rotation = firePoint.transform.rotation;
+            bullet.SetActive(true);
         }
 
         _lastShootTime = Time.time;
