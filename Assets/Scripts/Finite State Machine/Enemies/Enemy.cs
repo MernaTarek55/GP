@@ -12,21 +12,19 @@ public class Enemy : MonoBehaviour
     public Enemy_PatrolState enemyPatrolState {get; private set; }
     private void Awake()
     {
-        Debug.Log("AWAKE " + firePos);
         enemyStateMachine = new StateMachine();
         enemyIdleState = new Enemy_IdleState(enemyStateMachine, "Enemy Idle", enemyData, gameObject);
         enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject, playerGO);
         enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject, playerGO);    
         enemyPatrolState = new Enemy_PatrolState(enemyStateMachine, "Enemy Patrol", enemyData, gameObject);
-        Debug.Log("AWAKE AFTER STATE CONSTRUCTOR" + firePos);
+        
 
     }
 
     private void Start()
     {
         
-        enemyStateMachine.Initalize(enemyIdleState);// And Start with it.
-        enemyAttackState.getPlayer(playerGO);
+        enemyStateMachine.Initalize(enemyIdleState);
         enemyAttackState.getfirePos(firePos);
         Debug.Log("START " + firePos);
 

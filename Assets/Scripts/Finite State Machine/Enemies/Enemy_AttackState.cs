@@ -76,10 +76,7 @@ public class Enemy_AttackState : EntityState
 
         _lastShootTime = Time.time;
     }
-    public void getPlayer(GameObject player)
-    {
-        playerGO = player;
-    }
+    
     public void getfirePos(GameObject firPosition)
     {
         firePoint = firPosition;
