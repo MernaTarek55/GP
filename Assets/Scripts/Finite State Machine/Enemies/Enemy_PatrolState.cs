@@ -3,7 +3,8 @@ using UnityEngine;
 public class Enemy_PatrolState : EntityState
 {
     EnemyData _enemyData;
-    public Enemy_PatrolState(StateMachine stateMachine, string stateName, EnemyData enemyData) : base(stateMachine, stateName, enemyData)
+    public Enemy_PatrolState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
+        : base(stateMachine, stateName, enemyData, enemyGO)
     {
         _enemyData = enemyData;
     }

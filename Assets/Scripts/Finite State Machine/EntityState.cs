@@ -4,6 +4,9 @@ public abstract class EntityState
 {
     protected ExampleScript example;
     protected EnemyData enemyData;
+    protected GameObject enemyGO;
+    
+
     protected StateMachine stateMachine;
     protected string stateName;
 
@@ -28,6 +31,19 @@ public abstract class EntityState
         this.enemyData = enemyData;
     }
 
+    public EntityState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
+    {
+        this.stateMachine = stateMachine;
+        this.stateName = stateName;
+        this.enemyData = enemyData;
+        this.enemyGO = enemyGO;
+    }
+
+
+
+
+
+
     public virtual void Enter()
     {
         //every time we need to enter to a new state, enter will be called.
@@ -45,5 +61,7 @@ public abstract class EntityState
         //every time we need to leave to a new state, exit will be called.
         Debug.Log("I exit " + stateName);
     }
+
+  
 
 }

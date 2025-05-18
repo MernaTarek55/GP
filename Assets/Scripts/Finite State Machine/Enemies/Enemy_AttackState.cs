@@ -3,9 +3,13 @@ using UnityEngine;
 public class Enemy_AttackState : EntityState
 {
     EnemyData _enemyData;
-    public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData) : base(stateMachine, stateName, enemyData)
+    public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
+        : base(stateMachine, stateName, enemyData, enemyGO)
     {
         _enemyData = enemyData;
+
+
+
     }
 
     public override void Update()

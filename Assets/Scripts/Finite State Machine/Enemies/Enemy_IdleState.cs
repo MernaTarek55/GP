@@ -5,12 +5,14 @@ public class Enemy_IdleState : EntityState
 {
     EnemyData _enemyData;
     bool _isRotating = false;
-    GameObject enemyGO;
 
-    public Enemy_IdleState(StateMachine stateMachine, string stateName, EnemyData enemyData)
-        : base(stateMachine, stateName, enemyData)
+    public Enemy_IdleState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
+        : base(stateMachine, stateName, enemyData, enemyGO)
     {
         _enemyData = enemyData;
+
+
+
     }
 
     public override void Update()
@@ -71,12 +73,9 @@ public class Enemy_IdleState : EntityState
             });
     }
 
-    public void getEnemyGO(GameObject enemy)
-    {
-        if (enemy == null)
-            return;
-        enemyGO = enemy;
-    }
+   
+
+
 
 
 }
