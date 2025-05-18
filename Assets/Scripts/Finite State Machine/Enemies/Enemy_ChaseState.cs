@@ -27,7 +27,7 @@ public class Enemy_ChaseState : EntityState
 
                 case (EnemyData.EnemyType)1:
                     Debug.Log("ballDroid");
-                    playerGO.SetActive(false);
+                    ChasePlayer();
                     break;
 
                 case (EnemyData.EnemyType)2:
@@ -39,5 +39,16 @@ public class Enemy_ChaseState : EntityState
         {
             Debug.LogWarning("Ana Null");
         }
+    }
+    void ChasePlayer()
+    {
+        if (playerGO == null || enemyGO == null) return;
+
+        Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
+
+       
+        enemyGO.transform.position += direction * _enemyData.movementSpeed  * Time.deltaTime;
+
+
     }
 }

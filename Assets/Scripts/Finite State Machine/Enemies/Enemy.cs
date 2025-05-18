@@ -38,7 +38,18 @@ public class Enemy : MonoBehaviour
         float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
         if (distance <= enemyData.DetectionRange)
         {
-            enemyStateMachine.ChangeState(enemyAttackState);
+            if(enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+            {
+                enemyStateMachine.ChangeState(enemyChaseState);
+                if (distance <= 1f)
+                {
+                    enemyStateMachine.ChangeState(enemyAttackState);
+                }
+            }
+            else 
+            { 
+                enemyStateMachine.ChangeState(enemyAttackState);
+            }
         }
         else
         {
