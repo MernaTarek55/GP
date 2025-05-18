@@ -15,8 +15,8 @@ public class Enemy : MonoBehaviour
         Debug.Log("AWAKE " + firePos);
         enemyStateMachine = new StateMachine();
         enemyIdleState = new Enemy_IdleState(enemyStateMachine, "Enemy Idle", enemyData, gameObject);
-        enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject);
-        enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject);    
+        enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject, playerGO);
+        enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject, playerGO);    
         enemyPatrolState = new Enemy_PatrolState(enemyStateMachine, "Enemy Patrol", enemyData, gameObject);
         Debug.Log("AWAKE AFTER STATE CONSTRUCTOR" + firePos);
 
@@ -24,10 +24,12 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        
         enemyStateMachine.Initalize(enemyIdleState);// And Start with it.
         enemyAttackState.getPlayer(playerGO);
         enemyAttackState.getfirePos(firePos);
         Debug.Log("START " + firePos);
+
     }
 
     private void Update()
