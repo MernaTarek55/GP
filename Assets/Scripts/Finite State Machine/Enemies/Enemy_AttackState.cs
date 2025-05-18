@@ -1,3 +1,6 @@
+using System.Collections;
+using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Enemy_AttackState : EntityState
@@ -5,6 +8,8 @@ public class Enemy_AttackState : EntityState
     EnemyData _enemyData;
     GameObject playerGO;
         GameObject firePoint;
+    ParticleSystem ballPS;
+    MeshRenderer ballMR;
     float _lastShootTime;
     public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
 
@@ -13,6 +18,10 @@ public class Enemy_AttackState : EntityState
     {
         _enemyData = enemyData;
         this.playerGO = playerGO;
+        if (!enemyGO.TryGetComponent(out ballPS))
+                Debug.LogWarning("No particle System");
+        if (!enemyGO.TryGetComponent(out ballMR))
+            Debug.LogWarning("No Mesh Renderer");
 
 
     }
@@ -35,7 +44,12 @@ public class Enemy_AttackState : EntityState
 
                 case (EnemyData.EnemyType)1:
                     Debug.Log("ballDroid");
-                    playerGO.SetActive(false);
+                   
+
+                        ballPS.Play();
+                        ballMR.enabled = false;
+
+
 
                     break;
 
@@ -93,4 +107,9 @@ public class Enemy_AttackState : EntityState
     {
         firePoint = firPosition;
     }
+
+   
+
+
+
 }

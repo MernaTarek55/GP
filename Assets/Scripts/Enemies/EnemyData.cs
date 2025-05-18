@@ -13,10 +13,10 @@ public class EnemyData : ScriptableObject
        , Humanoid = 2
     }
     public EnemyType enemyType;
-    [SerializeField] float movementSpeed;
+    public float movementSpeed;
     public int DetectionRange;
-    [SerializeField] int damage;
-    [SerializeField] GameObject EnemyPrefab;
+    public int damage;
+    public GameObject EnemyPrefab;
     public GameObject bulletPrefab;
     public float shootCooldown = 1f;
 }
