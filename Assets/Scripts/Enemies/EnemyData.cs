@@ -16,6 +16,6 @@ public class EnemyData : ScriptableObject
     [SerializeField] float movementSpeed;
     [SerializeField] int DetectionRange;
     [SerializeField] int damage;
-    [SerializeField] GameObject EnemyPrefab;
+    public GameObject EnemyPrefab;
 
 }
