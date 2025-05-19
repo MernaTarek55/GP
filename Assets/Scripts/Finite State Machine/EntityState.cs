@@ -5,17 +5,8 @@ public abstract class EntityState
     protected ExampleScript example;
     protected EnemyData enemyData;
     protected GameObject enemyGO;
-    
-
     protected StateMachine stateMachine;
     protected string stateName;
-
-    /*
-     * Rigid Body
-     * Animator
-     * Player/Enemy Stats, also if we are using PlayerPrefs still searching it up
-     * ETC.....
-     */
 
     public EntityState(StateMachine stateMachine, string stateName, ExampleScript exp)
     {
@@ -39,29 +30,44 @@ public abstract class EntityState
         this.enemyGO = enemyGO;
     }
 
-
-
-
-
-
     public virtual void Enter()
     {
-        //every time we need to enter to a new state, enter will be called.
         Debug.Log("I enter " + stateName);
     }
 
     public virtual void Update()
     {
-        //Logic of the current State.
         Debug.Log("I am in " + stateName);
+
+        if (enemyData != null)
+        {
+            switch (enemyData.enemyType)
+            {
+                case 0: // Turret
+                    UpdateTurret();
+                    break;
+
+                case (EnemyData.EnemyType)1: // BallDroid
+                    UpdateBallDroid();
+                    break;
+
+                case (EnemyData.EnemyType)2: // Humanoid
+                    UpdateHumanoid();
+                    break;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("EnemyData is Null");
+        }
     }
 
     public virtual void Exit()
     {
-        //every time we need to leave to a new state, exit will be called.
         Debug.Log("I exit " + stateName);
     }
 
-  
-
+    protected virtual void UpdateTurret() { }
+    protected virtual void UpdateBallDroid() { }
+    protected virtual void UpdateHumanoid() { }
 }

@@ -2,53 +2,37 @@ using UnityEngine;
 
 public class Enemy_ChaseState : EntityState
 {
-    EnemyData _enemyData;
-    GameObject playerGO;
+    private GameObject playerGO;
+
     public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
-        _enemyData = enemyData;
         this.playerGO = playerGO;
-
-
     }
 
-    public override void Update()
+    protected override void UpdateTurret()
     {
-        base.Update();
-        Debug.Log("I am in enemy");
-        if (_enemyData != null)
-        {
-            switch (_enemyData.enemyType)
-            {
-                case 0:
-                    Debug.Log("Turret");
-                    break;
-
-                case (EnemyData.EnemyType)1:
-                    Debug.Log("ballDroid");
-                    ChasePlayer();
-                    break;
-
-                case (EnemyData.EnemyType)2:
-                    Debug.Log("Humanoid");
-                    break;
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Ana Null");
-        }
+        Debug.Log("Turret Chase - No movement (stationary enemy)");
+        // Turrets typically don't chase, so this can be empty
     }
-    void ChasePlayer()
+
+    protected override void UpdateBallDroid()
+    {
+        Debug.Log("BallDroid Chase");
+        ChasePlayer();
+    }
+
+    protected override void UpdateHumanoid()
+    {
+        Debug.Log("Humanoid Chase");
+        // Implement humanoid chase logic here (e.g., navmesh movement)
+    }
+
+    private void ChasePlayer()
     {
         if (playerGO == null || enemyGO == null) return;
 
         Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
-
-       
-        enemyGO.transform.position += direction * _enemyData.movementSpeed  * Time.deltaTime;
-
-
+        enemyGO.transform.position += direction * enemyData.movementSpeed * Time.deltaTime;
     }
 }
