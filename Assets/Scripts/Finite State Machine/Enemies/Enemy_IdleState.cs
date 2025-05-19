@@ -1,19 +1,17 @@
 using UnityEngine;
 using DG.Tweening;
-using System;
 
 public class Enemy_IdleState : EntityState
 {
     EnemyData _enemyData;
     bool _isRotating = false;
+    Tween[] currentTween; // Initialize with 2 elements
 
     public Enemy_IdleState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         _enemyData = enemyData;
-
-
-
+        currentTween = new Tween[2];
     }
 
     public override void Update()
@@ -35,13 +33,10 @@ public class Enemy_IdleState : EntityState
 
                 case (EnemyData.EnemyType)1: // Ball Droid
                     Debug.Log("ballDroid");
-
-                    // Continuous 360 degree rotation around Y axis
-
                     RotateBall(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
-                    //RotateWithTween(new Vector3(0, 0, 0), new Vector3(360, 0, 0), 2f, 2f, RotateMode.WorldAxisAdd);
                     break;
-                case (EnemyData.EnemyType)2:
+
+                case (EnemyData.EnemyType)2: // Humanoid
                     Debug.Log("Humanoid");
                     break;
             }
@@ -52,41 +47,65 @@ public class Enemy_IdleState : EntityState
         }
     }
 
-
     private void RotateWithTween(Vector3 startRotation, Vector3 endRotation, float startDuration, float endDuration, RotateMode rotateMode)
     {
         _isRotating = true;
-
         Transform turret = enemyGO.transform;
 
-        turret.DORotate(startRotation, startDuration, rotateMode)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-            {
-                // Wait 1 second, then rotate back
-                DOVirtual.DelayedCall(0f, () =>
+        currentTween[0] = turret.DORotate(startRotation, startDuration, rotateMode)
+    .SetEase(Ease.Linear)
+    .OnComplete(() =>
+    {
+        DOVirtual.DelayedCall(0f, () =>
+        {
+            currentTween[1] = turret.DORotate(endRotation, endDuration, rotateMode)
+                .SetEase(Ease.Linear)
+                .OnComplete(() =>
                 {
-                    turret.DORotate(endRotation, endDuration)
-                          .SetEase(Ease.Linear)
-                          .OnComplete(() =>
-                          {
-                              _isRotating = false;
-                          });
-                });
-            });
+                    _isRotating = false;
+                })
+                .OnPause(() => { Debug.Log("pause"); });
+        });
+    }).OnPause(()=> { Debug.Log("pause"); });
+    //.OnKill(() =>
+    //{
+    //    Debug.Log("Tween 0 killed");
+    //});
+
+
     }
 
-    private void RotateBall(Vector3 startRotation, float startDuration, RotateMode rotateMode)
+    private void RotateBall(Vector3 rotation, float duration, RotateMode rotateMode)
     {
-
-        enemyGO.transform.DORotate(startRotation, startDuration, rotateMode)
+        enemyGO.transform.DORotate(rotation, duration, rotateMode)
             .SetEase(Ease.Linear)
             .SetLoops(-1, LoopType.Restart);
     }
 
+    public override void Exit()
+    {
+        base.Exit();
+        _isRotating = false;
 
+        StopRotation();
+    }
 
+    private void StopRotation()
+    {
+        if (currentTween == null || currentTween.Length == 0)
+            return;
 
+        for (int i = 0; i < currentTween.Length; i++)
+        {
+            if (currentTween[i] != null && currentTween[i].IsActive())
+            {
+                currentTween[i].Pause(); // This triggers .OnKill()
+                currentTween[i] = null;
+            }
+        }
 
+        _isRotating = false; // Move this AFTER killing
+    }
 
 }
+
