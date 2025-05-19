@@ -1,4 +1,4 @@
-using UnityEditor.PackageManager.UI;
+
 using UnityEngine;
 
 public class Player_IdleState : EntityState
@@ -10,6 +10,7 @@ public class Player_IdleState : EntityState
     public override void Update()
     {
         base.Update();
-
+        if (player.moveInput.x == 0)
+            stateMachine.ChangeState(player.playerIdle);
     }
 }
