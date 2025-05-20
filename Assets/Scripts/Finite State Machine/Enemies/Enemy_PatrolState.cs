@@ -2,37 +2,26 @@ using UnityEngine;
 
 public class Enemy_PatrolState : EntityState
 {
-    EnemyData _enemyData;
     public Enemy_PatrolState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
-        _enemyData = enemyData;
     }
 
-    public override void Update()
+    protected override void UpdateTurret()
     {
-        base.Update();
-        Debug.Log("I am in enemy");
-        if (_enemyData != null)
-        {
-            switch (_enemyData.enemyType)
-            {
-                case 0:
-                    Debug.Log("Turret");
-                    break;
+        Debug.Log("Turret Patrol - No movement (stationary enemy)");
+        // Turrets typically don't patrol
+    }
 
-                case (EnemyData.EnemyType)1:
-                    Debug.Log("ballDroid");
-                    break;
+    protected override void UpdateBallDroid()
+    {
+        Debug.Log("BallDroid Patrol");
+        // Implement ball droid patrol logic (e.g., waypoint movement)
+    }
 
-                case (EnemyData.EnemyType)2:
-                    Debug.Log("Humanoid");
-                    break;
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Ana Null");
-        }
+    protected override void UpdateHumanoid()
+    {
+        Debug.Log("Humanoid Patrol");
+        // Implement humanoid patrol logic (e.g., navmesh waypoints)
     }
 }
