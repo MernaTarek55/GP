@@ -4,8 +4,8 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerInventory
 {
-    public HashSet<WeaponType> ownedWeapons = new();
-    public Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new();
+    HashSet<WeaponType> ownedWeapons = new();
+    Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new();
 
     public int credits;
     public void InitializeWeaponUpgrades(List<WeaponData> weaponDataList)
@@ -53,7 +53,6 @@ public class PlayerInventory
         if (!HasWeapon(type))
         {
             ownedWeapons.Add(type);
-            weaponUpgrades[type] = new WeaponUpgradeState();
         }
     }
     public bool HasWeapon(WeaponType type) => ownedWeapons.Contains(type);
