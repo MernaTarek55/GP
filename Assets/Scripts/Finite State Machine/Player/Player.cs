@@ -3,29 +3,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    PlayerInputSet starterAssetsInputs;
+    StarterAssetsInputs _input;
+    ThirdPersonController _controller;
     public StateMachine stateMachine { get; private set; }
     public Player_IdleState playerIdle { get; private set; }
     public Player_MoveState playerMove { get; private set; }
-    public Vector2 moveInput { get; private set; }
+    public Player_JumpState playerJump { get; private set; }
+    public Vector2 MoveInput => _input.move;
+    public bool IsGrounded => _controller.Grounded;
+    public bool JumpTriggered => _input.jump;
 
     private void Awake()
     {
-        starterAssetsInputs = new PlayerInputSet();
         stateMachine = new StateMachine();
         playerIdle = new Player_IdleState(stateMachine, "Idle", this);
         playerMove = new Player_MoveState(stateMachine, "Move", this);
-    }
-    private void OnEnable()
-    {
-        starterAssetsInputs.Enable();
-        starterAssetsInputs.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        starterAssetsInputs.Player.Move.canceled += ctx => moveInput = Vector2.zero;
-    }
+        playerJump = new Player_JumpState(stateMachine, "Jump", this);
 
-    private void OnDisable()
-    {
-        starterAssetsInputs.Disable();
+        _input = GetComponent<StarterAssetsInputs>();
+        _controller = GetComponent<ThirdPersonController>();
     }
 
     private void Start()
@@ -35,6 +31,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        stateMachine.currentState.Update();
+        stateMachine.UpdateActiveState();
     }
 }

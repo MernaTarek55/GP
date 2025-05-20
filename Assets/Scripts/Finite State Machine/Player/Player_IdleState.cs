@@ -10,7 +10,14 @@ public class Player_IdleState : EntityState
     public override void Update()
     {
         base.Update();
-        if (player.moveInput.x == 0)
-            stateMachine.ChangeState(player.playerIdle);
+
+        if (player.MoveInput.magnitude > 0.1f)
+        {
+            stateMachine.ChangeState(player.playerMove);
+        }
+        else if (player.JumpTriggered && player.IsGrounded)
+        {
+            stateMachine.ChangeState(player.playerJump);
+        }
     }
 }
