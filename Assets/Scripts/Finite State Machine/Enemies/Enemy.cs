@@ -89,9 +89,9 @@ public class Enemy : MonoBehaviour
         if (droppedItem.TryGetComponent<Rigidbody>(out var rb))
         {
             rb.AddForce(new Vector3(
-                Random.Range(-2f, 2f),
-                Random.Range(3f, 5f),
-                Random.Range(-2f, 2f)
+                Random.Range(0f, 0.5f),
+                Random.Range(2f, 2.5f),
+                Random.Range(0f, 0.5f)
             ), ForceMode.Impulse);
         }
     }

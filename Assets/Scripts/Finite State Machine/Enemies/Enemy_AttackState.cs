@@ -38,7 +38,7 @@ public class Enemy_AttackState : EntityState
             enemyPSClone.Play();
         
             enemyMR.enabled = false;
-            GameObject.Destroy(enemyGO, enemyPSClone.main.duration);
+            GameObject.Destroy(enemyGO/*, enemyPSClone.main.duration*/);
 
             hasExploded = true;
             if(playerGO.TryGetComponent(out HealthComponent playerHealth)){ playerHealth.TakeDamage(10f); Debug.Log("Player took damage");}
