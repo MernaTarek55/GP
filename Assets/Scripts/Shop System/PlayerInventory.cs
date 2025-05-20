@@ -1,16 +1,46 @@
-using UnityEngine;
+using System.Collections.Generic;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventory
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public HashSet<WeaponType> ownedWeapons = new();
+    public Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new();
+
+    public void InitializeWeaponUpgrades(List<WeaponData> weaponDataList)
     {
-        
+        foreach (WeaponData weaponData in weaponDataList)
+        {
+            var upgradeState = new WeaponUpgradeState();
+
+            foreach (var stat in weaponData.upgradableStats)
+            {
+                upgradeState.SetLevel(stat.statType, 0);
+            }
+
+            weaponUpgrades[weaponData.weaponType] = upgradeState;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public WeaponUpgradeState GetUpgradeState(WeaponType type)
     {
-        
+        if (weaponUpgrades.ContainsKey(type))
+            return weaponUpgrades[type];
+
+        return null;
     }
+    public void SetUpgradeState(WeaponType type, WeaponUpgradeState state)
+    {
+        if (weaponUpgrades.ContainsKey(type))
+            weaponUpgrades[type] = state;
+        else
+            weaponUpgrades.Add(type, state);
+    }
+    public void AddWeapon(WeaponType type)
+    {
+        if (!HasWeapon(type))
+        {
+            ownedWeapons.Add(type);
+            weaponUpgrades[type] = new WeaponUpgradeState();
+        }
+    }
+    public bool HasWeapon(WeaponType type) => ownedWeapons.Contains(type);
 }

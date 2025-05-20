@@ -23,10 +23,10 @@ public class WeaponData : ScriptableObject
     //public float weaponDamage;
 
     //Upgrdables
-    public List<UpgradableStat> statUpgrades;
-    public UpgradableStat GetStatUpgrade(UpgradableStatType type)
+    public List<UpgradableStat> upgradableStats;
+    public UpgradableStat GetUpgradableStat(UpgradableStatType type)
     {
-        return statUpgrades.Find(stat => stat.statType == type);
+        return upgradableStats.Find(stat => stat.statType == type);
     }
 
 }

@@ -47,8 +47,7 @@ public class Pistol : Weapon
         if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
             return;
 
-        fireCooldown = weaponData.fireRate;
-
+        fireCooldown = weaponData.GetUpgradableStat(UpgradableStatType.FireRate).GetValue(0);
         currentAmmo--;
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
@@ -59,7 +58,7 @@ public class Pistol : Weapon
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
         {
-            bulletScript.SetDamage(weaponData.weaponDamage);
+            bulletScript.SetDamage(weaponData.GetUpgradableStat(UpgradableStatType.Damage).GetValue(0));
         }
 
         // Play muzzle flash
