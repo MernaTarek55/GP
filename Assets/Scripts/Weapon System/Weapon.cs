@@ -12,14 +12,15 @@ public enum WeaponType
 
 public abstract class Weapon : MonoBehaviour
 {
-    [SerializeField] protected WeaponType weaponType;
-    [SerializeField] protected float reloadTime;
-    [SerializeField] protected int currentAmmo;
-    [SerializeField] protected int maxAmmo;
-    [SerializeField] protected float damage;
-    [SerializeField] protected float fireRate;
-    [SerializeField] protected float bulletForce;
-    [SerializeField] protected float weaponDamage;
+    [SerializeField] protected WeaponData weaponData;
+
+    protected int currentAmmo;
+    public WeaponType WeaponType => weaponData.weaponType;
+
+    protected virtual void Awake()
+    {
+        currentAmmo = weaponData.maxAmmo;
+    }
 
     public abstract void Shoot();
     public abstract void Reload();

@@ -28,6 +28,8 @@ public class EnemyBullet : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
             other.gameObject.GetComponent<HealthComponent>().TakeDamage(10);
+        if (other.gameObject.CompareTag("Enemy"))
+            other.gameObject.GetComponent<HealthComponent>().TakeDamage(10);
         Disable();
     }
 }
