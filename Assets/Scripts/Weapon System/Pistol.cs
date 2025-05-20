@@ -18,14 +18,6 @@ public class Pistol : Weapon
 
     private void Awake()
     {
-        weaponType = WeaponType.Gun;
-        reloadTime = 2f;
-        maxAmmo = 7;
-        currentAmmo = maxAmmo;
-        //damage = 30;
-        damage = weaponDamage;
-        fireRate = 0.5f;
-        bulletForce = 20;
     }
 
     private void Update()
@@ -40,7 +32,7 @@ public class Pistol : Weapon
             reloadTimer -= Time.deltaTime;
             if (reloadTimer <= 0f)
             {
-                currentAmmo = maxAmmo;
+                currentAmmo = weaponData.maxAmmo;
                 isReloading = false;
 
                 // Play reload sound
@@ -55,19 +47,18 @@ public class Pistol : Weapon
         if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
             return;
 
-        fireCooldown = fireRate;
-
+        fireCooldown = weaponData.GetUpgradableStat(UpgradableStatType.FireRate).GetValue(0);
         currentAmmo--;
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.AddForce(bullet.transform.forward * bulletForce, ForceMode.Impulse);
+        rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
 
         // Set bullet damage if it has a damage script
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
         {
-            bulletScript.SetDamage(weaponDamage);
+            bulletScript.SetDamage(weaponData.GetUpgradableStat(UpgradableStatType.Damage).GetValue(0));
         }
 
         // Play muzzle flash
@@ -81,10 +72,10 @@ public class Pistol : Weapon
 
     public override void Reload()
     {
-        if (!isReloading && currentAmmo < maxAmmo)
+        if (!isReloading && currentAmmo < weaponData.maxAmmo)
         {
             isReloading = true;
-            reloadTimer = reloadTime;
+            reloadTimer = weaponData.reloadTime;
 
             if (audioSource && reloadSound)
                 audioSource.PlayOneShot(reloadSound);

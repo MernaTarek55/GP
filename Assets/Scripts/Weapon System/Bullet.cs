@@ -14,11 +14,11 @@ public class Bullet : Projectile
         // Damage enemy
         if (other.CompareTag("Enemy"))
         {
-            HealthComponent enemyHealth = other.GetComponent<HealthComponent>();
-            if (enemyHealth != null)
-            {
-                enemyHealth.TakeDamage(damage);
-            }
+            //HealthComponent enemyHealth = other.GetComponent<HealthComponent>();
+            //if (enemyHealth != null)
+            //{
+            //    enemyHealth.TakeDamage(damage);
+            //}
         }
 
         // Add hit effects, particles, sound etc. here
