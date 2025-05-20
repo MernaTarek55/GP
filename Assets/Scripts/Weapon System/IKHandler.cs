@@ -29,7 +29,6 @@ public class IKHandler : MonoBehaviour
 
 
         float targetWeight = isShooting ? shootIKWeight : normalIKWeight;
-        Debug.Log($"isShooting: {isShooting}, targetWeight: {targetWeight}, currentIKWeight: {currentIKWeight}");
 
         // Lerp towards target weight
         currentIKWeight = Mathf.Lerp(currentIKWeight, targetWeight, Time.deltaTime * ikBlendSpeed);
