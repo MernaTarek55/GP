@@ -739,11 +739,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7029a5edf0588da4c8d7477a15f6520d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigBuilder: {fileID: 1427905210}
   rig: {fileID: 1841113208}
   shootIKWeight: 1
   normalIKWeight: 0
   ikBlendSpeed: 5
+  isShooting: 0
 --- !u!1 &1467934852
 GameObject:
   m_ObjectHideFlags: 0
@@ -790,7 +790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 0
+  m_Weight: 1
   m_Data:
     m_Root: {fileID: 1701258383}
     m_Mid: {fileID: 2121334507}
