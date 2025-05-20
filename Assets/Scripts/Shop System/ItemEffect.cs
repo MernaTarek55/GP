@@ -1,13 +1,11 @@
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
-public enum Stats
+public enum PlayerSkillsStats
 {
     MaxHealth,
     DeadEyeCoolDown,
     DeadEyeDuration,
-    WeponDamage,
-    WeponFireRate,
 }
 
 public interface ItemEffect

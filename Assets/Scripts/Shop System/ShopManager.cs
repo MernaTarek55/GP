@@ -1,27 +1,34 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
-    public List<ShopItem> inventory;
-    public int playerCredits;
+    public List<ShopItem> availableItems;
 
-    public bool BuyItem(ShopItem item)
+    //TODO
+    [SerializeField]PlayerInventory playerInventory;
+
+    void Awake()
     {
-        if (playerCredits >= item.cost)
-        {
-            Debug.Log($"Bought {item.itemName} for {item.cost} credits.");
-            return true;
-        }
-        else
-        {
-            Debug.Log("Not enough credits!");
-            return false;
-        }
+        availableItems = Resources.LoadAll<ShopItem>("ShopItems").ToList();
+    }
+    private void Start()
+    {
+        DisplayShopUI();
     }
 
-    public void DisplayItems()
+    void DisplayShopUI()
     {
-        // Integrate with UI to display items
+        //TODO
+    }
+    public void Buy(ShopItem item)
+    {
+        int cost = item.GetCost(playerInventory);
+        if (playerInventory.credits >= cost)
+        {
+            item.OnPurchase(playerInventory);
+            playerInventory.credits -= cost;
+        }
     }
 }

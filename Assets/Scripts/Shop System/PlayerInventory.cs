@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using UnityEngine;
 
+[System.Serializable]
 public class PlayerInventory
 {
     public HashSet<WeaponType> ownedWeapons = new();
     public Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new();
 
+    public int credits;
     public void InitializeWeaponUpgrades(List<WeaponData> weaponDataList)
     {
         foreach (WeaponData weaponData in weaponDataList)
@@ -17,6 +20,17 @@ public class PlayerInventory
             }
 
             weaponUpgrades[weaponData.weaponType] = upgradeState;
+        }
+    }
+
+    //for testing
+    public void PrintWeaponUpgrades()
+    {
+        foreach (var weapon in weaponUpgrades)
+        {
+
+            Debug.Log($"Weapon: {weapon.Key}, Upgrade State: {weapon.Value}");
+            weapon.Value.PrintLevels();
         }
     }
 
