@@ -29,6 +29,10 @@ public class Player : MonoBehaviour
     public float verticalVelocity;
     public bool isGrounded;
 
+    [SerializeField] LayerMask GroundLayers;
+    public float GroundedRadius = 0.28f;
+    public float GroundedOffset = -0.14f;
+
     private void Awake()
     {
         Controller = GetComponent<CharacterController>();
@@ -56,6 +60,8 @@ public class Player : MonoBehaviour
         if (!isGrounded)
         {
             verticalVelocity += gravity * Time.deltaTime;
+            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,transform.position.z);
+            isGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
         }
 
         Controller.Move(new Vector3(0, verticalVelocity, 0) * Time.deltaTime);

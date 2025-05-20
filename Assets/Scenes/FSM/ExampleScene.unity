@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 273202193}
   - component: {fileID: 273202192}
   - component: {fileID: 273202191}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3155,6 +3155,9 @@ MonoBehaviour:
   currentSpeed: 0
   verticalVelocity: 0
   isGrounded: 0
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &5971936960590877462
 GameObject:
   m_ObjectHideFlags: 0
