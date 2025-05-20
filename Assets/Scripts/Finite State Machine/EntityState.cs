@@ -7,6 +7,7 @@ public abstract class EntityState
     protected GameObject enemyGO;
     
 
+    protected Player player;
     protected StateMachine stateMachine;
     protected string stateName;
 
@@ -16,6 +17,12 @@ public abstract class EntityState
      * Player/Enemy Stats, also if we are using PlayerPrefs still searching it up
      * ETC.....
      */
+    public EntityState(StateMachine stateMachine, string stateName, Player player)
+    {
+        this.stateMachine = stateMachine;
+        this.stateName = stateName;
+        this.player = player;
+    }
 
     public EntityState(StateMachine stateMachine, string stateName, ExampleScript exp)
     {
@@ -24,12 +31,12 @@ public abstract class EntityState
         this.example = exp;
     }
 
-    public EntityState(StateMachine stateMachine, string stateName, EnemyData enemyData)
-    {
-        this.stateMachine = stateMachine;
-        this.stateName = stateName;
-        this.enemyData = enemyData;
-    }
+    // public EntityState(StateMachine stateMachine, string stateName, EnemyData enemyData)
+    // {
+    //     this.stateMachine = stateMachine;
+    //     this.stateName = stateName;
+    //     this.enemyData = enemyData;
+    // }
 
     public EntityState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
     {
