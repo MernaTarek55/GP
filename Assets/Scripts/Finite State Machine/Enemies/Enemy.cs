@@ -4,7 +4,19 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] EnemyData enemyData;
     [SerializeField] GameObject playerGO;
+
+    [Header("Enemy Components")]
     [SerializeField] GameObject firePos;
+    [SerializeField] ParticleSystem enemyPS; // particle system for enemy ball explosion
+
+
+    #region Enemy Drops
+    [Header("Drops")]
+    [SerializeField]  GameObject drop; // enemy drops for player to pick up the currency
+    [SerializeField][Range(0, 1)] private float dropChance = 0.7f;
+    [SerializeField]  int minDrops = 1;
+    [SerializeField]  int maxDrops = 3;
+    #endregion
     public StateMachine enemyStateMachine {  get; private set; }
     public Enemy_IdleState enemyIdleState {get; private set; }
     public Enemy_AttackState enemyAttackState {get; private set; }
@@ -26,6 +38,8 @@ public class Enemy : MonoBehaviour
         
         enemyStateMachine.Initalize(enemyIdleState);
         enemyAttackState.getfirePos(firePos);
+        enemyAttackState.getParticleSystem(enemyPS);
+
         Debug.Log("START " + firePos);
 
     }
@@ -36,13 +50,11 @@ public class Enemy : MonoBehaviour
         float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
         if (distance <= enemyData.DetectionRange)
         {
-            if(enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+            if(enemyData.enemyType == EnemyData.EnemyType.ballDroid )
             {
                 enemyStateMachine.ChangeState(enemyChaseState);
-                if (distance <= 1f)
-                {
-                    enemyStateMachine.ChangeState(enemyAttackState);
-                }
+
+                if(distance <= 1f) { enemyStateMachine.ChangeState(enemyAttackState); }
             }
             else 
             { 
@@ -53,5 +65,50 @@ public class Enemy : MonoBehaviour
         {
             enemyStateMachine.ChangeState(enemyIdleState);
         }
+    }
+    public void OnDestroy()
+    {
+        SpawnDrops();
+    }
+    #region Enemy Drops
+    private void SpawnSingleDrop(GameObject itemPrefab)
+    {
+        if (DropItemPool.Instance == null)
+        {
+            Debug.LogWarning("DropItemPool instance not found!");
+            Instantiate(itemPrefab, transform.position + Vector3.up, Quaternion.identity);
+            return;
         }
+        Vector3 spawnPos = transform.position + Vector3.up;
+        GameObject droppedItem = DropItemPool.Instance.SpawnFromPool(
+            itemPrefab.name,
+            spawnPos,
+            Quaternion.identity
+        );
+
+        if (droppedItem.TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.AddForce(new Vector3(
+                Random.Range(-2f, 2f),
+                Random.Range(3f, 5f),
+                Random.Range(-2f, 2f)
+            ), ForceMode.Impulse);
+        }
+    }
+
+    public void SpawnDrops()
+    {
+        if (drop == null) return;
+        if (Random.value > dropChance) return;
+
+        int amount = Random.Range(minDrops, maxDrops + 1);
+        for (int i = 0; i < amount; i++)
+        {
+            SpawnSingleDrop(drop);
+        }
+    }
+    #endregion
+
+
+
 }

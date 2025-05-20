@@ -1,21 +1,25 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy_AttackState : EntityState
 {
     private GameObject playerGO;
     private GameObject firePoint;
-    private ParticleSystem ballPS;
-    private MeshRenderer ballMR;
+    private ParticleSystem enemyPS;  // particle system for enemy ball explosion
+    private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
+    private bool hasExploded = false; // to instantiate one explosion when the enemy explodes
     private float _lastShootTime;
 
     public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
-        if (!enemyGO.TryGetComponent(out ballPS))
-            Debug.LogWarning("No particle System");
-        if (!enemyGO.TryGetComponent(out ballMR))
-            Debug.LogWarning("No Mesh Renderer");
+        if (enemyGO.TryGetComponent(out MeshRenderer mr)) enemyMR = mr;
+        else Debug.LogWarning("Mesh Renderer not found");
+
+
+
     }
 
     protected override void UpdateTurret()
@@ -28,8 +32,19 @@ public class Enemy_AttackState : EntityState
     protected override void UpdateBallDroid()
     {
         Debug.Log("BallDroid Attack");
-        ballPS.Play();
-        ballMR.enabled = false;
+        if (!hasExploded)
+        {
+            ParticleSystem enemyPSClone = GameObject.Instantiate(enemyPS, enemyGO.transform.position, enemyGO.transform.rotation);
+            enemyPSClone.Play();
+        
+            enemyMR.enabled = false;
+            GameObject.Destroy(enemyGO, enemyPSClone.main.duration);
+
+            hasExploded = true;
+            if(playerGO.TryGetComponent(out HealthComponent playerHealth)){ playerHealth.TakeDamage(10f); Debug.Log("Player took damage");}
+            else Debug.LogWarning("Health Component not found");
+        }
+
     }
 
     protected override void UpdateHumanoid()
@@ -74,5 +89,10 @@ public class Enemy_AttackState : EntityState
     public void getfirePos(GameObject firPosition)
     {
         firePoint = firPosition;
+    }
+
+    public void getParticleSystem(ParticleSystem _enemyPS)
+    {
+        enemyPS = _enemyPS;
     }
 }
