@@ -11,11 +11,12 @@ public class Player_IdleState : EntityState
     {
         base.Update();
 
-        if (player.MoveInput.magnitude > 0.1f)
+        if (player.Input.move.magnitude > 0.1f)
         {
             stateMachine.ChangeState(player.playerMove);
         }
-        else if (player.JumpTriggered && player.IsGrounded)
+        // Check for jump input
+        else if (player.Input.jump && player.isGrounded)
         {
             stateMachine.ChangeState(player.playerJump);
         }

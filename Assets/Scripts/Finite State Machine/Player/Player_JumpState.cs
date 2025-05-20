@@ -9,23 +9,20 @@ public class Player_JumpState : EntityState
     {
         base.Enter();
 
-        // When its time to use animation for jump
+        player.verticalVelocity = Mathf.Sqrt(player.jumpHeight * -2f * player.gravity);
+        player.Animator.SetTrigger("Jump");
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (player.IsGrounded)
+        if (player.isGrounded && player.verticalVelocity < 0)
         {
-            if (player.MoveInput.magnitude > 0.1f)
-            {
+            if (player.Input.move.magnitude > 0.1f)
                 stateMachine.ChangeState(player.playerMove);
-            }
             else
-            {
                 stateMachine.ChangeState(player.playerIdle);
-            }
         }
     }
 }
