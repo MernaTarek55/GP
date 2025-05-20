@@ -2,8 +2,8 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    WeaponData weaponData;
-    private int currentAmmo;
+    [SerializeField] protected WeaponData weaponData;
+    protected int currentAmmo;
     private void Start()
     {
         currentAmmo = weaponData.maxAmmo;
