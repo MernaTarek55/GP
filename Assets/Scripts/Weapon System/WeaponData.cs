@@ -33,5 +33,4 @@ public class WeaponData : ScriptableObject
 
     public float damage;
     public float fireRate;
-    public float bulletForce;
 }
