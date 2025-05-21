@@ -19,7 +19,10 @@ public class MemoryManager : MonoBehaviour
             return false;
         }
 
-        if (memoryObjects == memoriesArray[Currentindex])
+        var expectedMemory = memoriesArray[Currentindex];
+
+        if (memoryObjects.transform == expectedMemory.transform ||
+            memoryObjects.transform.IsChildOf(expectedMemory.transform))
         {
             Debug.Log("Correct memory picked. Index is now: {currentMemoryIndex}");
             Currentindex++;
