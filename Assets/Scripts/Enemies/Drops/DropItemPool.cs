@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DropItemPool : MonoBehaviour
@@ -11,6 +12,8 @@ public class DropItemPool : MonoBehaviour
 
     private Queue<GameObject> objectPool;
 
+    [Header("UI")]
+    public TMP_Text scoreText;
     private void Awake()
     {
         Instance = this;
@@ -27,6 +30,8 @@ public class DropItemPool : MonoBehaviour
             obj.transform.SetParent(transform);
             obj.SetActive(false);
             objectPool.Enqueue(obj);
+            MoneyCount pickup = obj.gameObject.GetComponent <MoneyCount> ();
+            pickup.scoreText = scoreText;
         }
     }
 
