@@ -25,4 +25,13 @@ public class Player_JumpState : EntityState
                 stateMachine.ChangeState(player.playerIdle);
         }
     }
+    public override void Exit()
+    {
+        base.Exit();
+
+       // player.verticalVelocity = Mathf.Sqrt(player.jumpHeight * -2f * player.gravity);
+        player.Animator.SetBool("Jump" , false);
+        //player.Animator.SetTrigger("Grounded");
+        player.Animator.SetBool("Grounded" , true);
+    }
 }
