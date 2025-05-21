@@ -24,7 +24,7 @@ public class ShopManager : MonoBehaviour
     }
     public void Buy(ShopItem item)
     {
-        int cost = item.GetCost(playerInventory);
+        int cost = item.GetCost();
         if (playerInventory.credits >= cost)
         {
             item.OnPurchase(playerInventory);

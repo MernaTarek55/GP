@@ -3,12 +3,10 @@ using UnityEngine.UI;
 
 public abstract class ShopItem : ScriptableObject
 {
-    public string itemName;
-    public Sprite icon;
     [SerializeField]
     protected int baseCost;
     public abstract void OnPurchase(PlayerInventory inventory);
-    public virtual int GetCost(PlayerInventory inventory)
+    public virtual int GetCost(int level = 0)
     {
         return baseCost; // Override if cost changes per level
     }
@@ -25,7 +23,6 @@ public class WeaponItem : ShopItem
         if (!inventory.HasWeapon(weaponType))
         {
             inventory.AddWeapon(weaponType);
-            inventory.credits -= baseCost;
         }
     }
 }
@@ -35,22 +32,22 @@ public class WeaponUpgradeItem : ShopItem
     public WeaponType weaponType;
     public UpgradableStatType statToUpgrade;
 
+    public AnimationCurve costPerLevel;
+
     public override void OnPurchase(PlayerInventory inventory)
     {
         var upgradeState = inventory.GetUpgradeState(weaponType);
         upgradeState.UpgradeLevel(statToUpgrade);
-        inventory.credits -= GetCost(inventory);
     }
-    public override int GetCost(PlayerInventory inventory)
+    public override int GetCost(int level)
     {
-        var level = inventory.GetUpgradeState(weaponType).GetLevel(statToUpgrade);
-        var weaponData = WeaponDatabase.GetWeaponData(weaponType);
+        WeaponData weaponData = WeaponDatabase.GetWeaponData(weaponType);
+        UpgradableStat statData = weaponData.upgradableStats.Find(s => s.statType == statToUpgrade);
 
-        var statData = weaponData.upgradableStats.Find(s => s.statType == statToUpgrade);
         if (statData == null || level >= statData.maxLevel)
             return -1; // Maxed or invalid
 
-        return statData.GetCost(level);
+        return Mathf.RoundToInt(costPerLevel.Evaluate(level));
     }
 }
 [CreateAssetMenu(menuName = "Shop/Player Skill Item")]
