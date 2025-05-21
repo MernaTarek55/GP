@@ -6,9 +6,16 @@ public abstract class ShopItem : ScriptableObject
     [SerializeField]
     protected int baseCost;
     public abstract void OnPurchase(PlayerInventory inventory);
-    public virtual int GetCost(int level = 0)
+    public virtual int GetCost()
     {
-        return baseCost; // Override if cost changes per level
+        return baseCost;
+    }
+
+    // Override if cost changes per level
+    public virtual int GetLevelCost(PlayerInventory inventory)
+    {
+        Debug.LogWarning("GetLevelCost not implemented in " + this.name);
+        return -1; 
     }
 
 }
@@ -36,11 +43,12 @@ public class WeaponUpgradeItem : ShopItem
 
     public override void OnPurchase(PlayerInventory inventory)
     {
-        var upgradeState = inventory.GetUpgradeState(weaponType);
+        WeaponUpgradeState upgradeState = inventory.GetUpgradeState(weaponType);
         upgradeState.UpgradeLevel(statToUpgrade);
     }
-    public override int GetCost(int level)
+    public override int GetLevelCost(PlayerInventory inventory)
     {
+        int level = inventory.GetUpgradeState(weaponType).GetLevel(statToUpgrade);
         WeaponData weaponData = WeaponDatabase.GetWeaponData(weaponType);
         UpgradableStat statData = weaponData.upgradableStats.Find(s => s.statType == statToUpgrade);
 

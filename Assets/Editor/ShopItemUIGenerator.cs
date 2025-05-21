@@ -11,6 +11,7 @@ public class ShopUIGenerator : EditorWindow
     {
         ShopItem[] shopItems = Resources.LoadAll<ShopItem>("ShopItems");
         GameObject itemUIPrefab = Resources.Load<GameObject>("ShopItemUITemplet");
+        Debug.Log($"Found {shopItems.Length} shop items");
         if (itemUIPrefab == null)
         {
             Debug.LogError("ShopItemUI prefab not found");
@@ -22,6 +23,7 @@ public class ShopUIGenerator : EditorWindow
 
         foreach (ShopItem item in shopItems)
         {
+            Debug.Log($"Generating UI for {item.name}");
             GameObject uiGO = (GameObject)PrefabUtility.InstantiatePrefab(itemUIPrefab);
             ShopItemUI shopItemUI = uiGO.GetComponent<ShopItemUI>();
             if (shopItemUI == null)

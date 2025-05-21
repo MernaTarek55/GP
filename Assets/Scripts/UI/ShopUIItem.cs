@@ -11,14 +11,28 @@ public class ShopItemUI : MonoBehaviour
     [SerializeField] private Button buyButton;
     private ShopItem currentItem;
 
+    private void Awake()
+    {
+        buyButton.onClick.AddListener(OnBuyButtonClicked);
+
+    }
     public void Bind(ShopItem item)
     {
         currentItem = item;
-        costText.text = $"Cost: {item.GetCost()}";
+        Debug.Log($"Binding {currentItem.name} to UI");
+        costText.text = $"Cost: {currentItem.GetCost()}";
     }
 
     public void OnBuyButtonClicked()
     {
-        // Call ShopManager or Inventory to purchase
+        if(ShopManager.Singelton.Buy(currentItem))
+            UpdateUICost();
+        //TODO: sound effect?
+    }
+
+    private void UpdateUICost()
+    {
+        if (currentItem is WeaponUpgradeItem upgradeItem)
+            costText.text = $"Cost: {upgradeItem.GetLevelCost(ShopManager.Singelton.playerInventory)}";
     }
 }
