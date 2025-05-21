@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Pistol : Weapon
+public class AutoGun : Weapon
 {
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
@@ -51,11 +51,16 @@ public class Pistol : Weapon
             }
         }
 
-        // Check for touch input on mobile
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        // Check for touch input on mobile (hold)
+        if (Input.touchCount > 0)
         {
-            Vector2 touchPos = Input.GetTouch(0).position;
-            ShootAtTouch(touchPos);
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+            {
+                Vector2 touchPos = touch.position;
+                ShootAtTouch(touchPos);
+            }
         }
     }
 
@@ -68,7 +73,7 @@ public class Pistol : Weapon
 
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         RaycastHit hit;
-        
+
         if (Physics.Raycast(ray, out hit))
         {
             targetPoint = hit.point;
@@ -129,7 +134,7 @@ public class Pistol : Weapon
         currentAmmo--;
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        
+
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
         rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
