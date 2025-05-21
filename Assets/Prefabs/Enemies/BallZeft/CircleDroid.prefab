@@ -122,11 +122,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: 30a146aa076d7524eac9374aa1709290, type: 2}
-  playerGO: {fileID: 0}
+  playerGO: {fileID: 458008308761062720, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
   firePos: {fileID: 2535750547211479320}
   enemyPS: {fileID: 4542083262399075062, guid: ca6d2e3530e00d849821037a6950c4f2, type: 3}
   drop: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
   dropChance: 1
   minDrops: 4
   maxDrops: 5
-  dropForce: []
+  dropForce:
+  - {x: 0.01, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}

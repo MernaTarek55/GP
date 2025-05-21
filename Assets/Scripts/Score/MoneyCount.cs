@@ -13,12 +13,17 @@ public class MoneyCount : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if(scoreText != null)
         scoreText.text = "Money: " + moneyCount.ToString();
+
     }
 
     public void AddMoney(int manageScore)
     {
-        moneyCount += manageScore;
-        scoreText.text = "Money: " + moneyCount.ToString();
+        if (scoreText != null)
+        {
+            moneyCount += manageScore;
+            scoreText.text = "Money: " + moneyCount.ToString();
+        }
     }
 }
