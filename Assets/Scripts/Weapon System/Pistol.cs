@@ -38,6 +38,11 @@ public class Pistol : Weapon
         if (fireCooldown > 0)
             fireCooldown -= Time.deltaTime;
 
+        if (!isReloading && currentAmmo == 0)
+        {
+            Reload();
+        }
+
         if (isReloading)
         {
             reloadTimer -= Time.deltaTime;
