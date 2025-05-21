@@ -1,6 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using System.Collections.Generic;
 public class AutoGun : Weapon
 {
     [SerializeField] private GameObject bulletPrefab;
@@ -21,7 +23,11 @@ public class AutoGun : Weapon
     private Vector3 targetPoint;
     private Vector3 shootDirection;
 
+    [SerializeField] private Transform playerBody;
 
+    [Header("UI")]
+    [SerializeField] private GraphicRaycaster uiRaycaster;
+    [SerializeField] private EventSystem eventSystem;
     private void Awake()
     {
         if (weaponData == null)
@@ -60,7 +66,11 @@ public class AutoGun : Weapon
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-
+            if (IsTouchOverUI(touch.position))
+            {
+                Debug.Log("Touch is on UI — not shooting");
+                return;
+            }
             if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
             {
                 Vector2 touchPos = touch.position;
@@ -87,8 +97,21 @@ public class AutoGun : Weapon
         {
             targetPoint = ray.origin + ray.direction * 100f;
         }
-
+        Vector3 lookDirection = (targetPoint - playerBody.position);
+        lookDirection.y = 0f; // Keep only horizontal rotation
+        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+        playerBody.rotation = targetRotation;
         Shoot();
+    }
+    private bool IsTouchOverUI(Vector2 screenPosition)
+    {
+        PointerEventData eventData = new PointerEventData(eventSystem);
+        eventData.position = screenPosition;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        uiRaycaster.Raycast(eventData, results);
+
+        return results.Count > 0;
     }
 
     public override void Shoot()

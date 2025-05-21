@@ -326,6 +326,9 @@ MonoBehaviour:
   reloadSound: {fileID: 0}
   audioSource: {fileID: 0}
   ikHandler: {fileID: 1427905211}
+  playerBody: {fileID: 1427905202}
+  uiRaycaster: {fileID: 1784458034}
+  eventSystem: {fileID: 892528916}
 --- !u!1 &259354270
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,6 +698,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8293560532055531940, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
   m_PrefabInstance: {fileID: 1134992827}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &892528916 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6518110501496526491, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
+  m_PrefabInstance: {fileID: 1134992827}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &910158217
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,6 +826,14 @@ PrefabInstance:
     - target: {fileID: 458008308761062720, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
       propertyPath: m_Name
       value: NestedPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 1064475142197543654, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: 1427905220}
+    - target: {fileID: 3866162856774643673, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
+      propertyPath: m_IgnoreReversedGraphics
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5634910987467013834, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
       propertyPath: m_Enabled
@@ -1235,6 +1257,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1427905220 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7263403295109874086, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
+  m_PrefabInstance: {fileID: 1134992827}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427905201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1436837004
@@ -1735,6 +1768,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5075325066593133808, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
   m_PrefabInstance: {fileID: 1134992827}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1784458034 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3866162856774643673, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
+  m_PrefabInstance: {fileID: 1134992827}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1806396502 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6423416579130125487, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
@@ -2677,6 +2721,7 @@ MonoBehaviour:
   reloadSound: {fileID: 0}
   audioSource: {fileID: 0}
   ikHandler: {fileID: 1427905211}
+  playerBody: {fileID: 1427905202}
 --- !u!4 &5309250868811169604
 Transform:
   m_ObjectHideFlags: 0

@@ -21,7 +21,7 @@ public class Pistol : Weapon
     private Vector3 targetPoint;
     private Vector3 shootDirection;
 
-
+    [SerializeField] private Transform playerBody;
     private void Awake()
     {
         if (weaponData == null)
@@ -82,7 +82,10 @@ public class Pistol : Weapon
         {
             targetPoint = ray.origin + ray.direction * 100f;
         }
-
+        Vector3 lookDirection = (targetPoint - playerBody.position);
+        lookDirection.y = 0f; // Keep only horizontal rotation
+        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+        playerBody.rotation = targetRotation;
         Shoot();
     }
 
