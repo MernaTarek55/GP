@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Pistol : Weapon
@@ -13,11 +12,16 @@ public class Pistol : Weapon
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private AudioSource audioSource;
 
+    [SerializeField] private IKHandler ikHandler;
+
     private float reloadTimer;
     private float fireCooldown;
     private bool isReloading;
 
-    [SerializeField] private IKHandler ikHandler;
+    private Vector3 targetPoint;
+    private Vector3 shootDirection;
+
+
     private void Awake()
     {
         if (weaponData == null)
@@ -54,15 +58,17 @@ public class Pistol : Weapon
             ShootAtTouch(touchPos);
         }
     }
+
     private void ShootAtTouch(Vector2 screenPosition)
     {
         if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
+        {
             return;
+        }
 
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         RaycastHit hit;
-
-        Vector3 targetPoint;
+        
         if (Physics.Raycast(ray, out hit))
         {
             targetPoint = hit.point;
@@ -72,12 +78,9 @@ public class Pistol : Weapon
             targetPoint = ray.origin + ray.direction * 100f;
         }
 
-        Vector3 shootDirection = (targetPoint - firePoint.position).normalized;
-
-        firePoint.rotation = Quaternion.LookRotation(shootDirection);
-
         Shoot();
     }
+
     public override void Shoot()
     {
         if (ikHandler != null)
@@ -105,6 +108,7 @@ public class Pistol : Weapon
         //if (audioSource && shootSound)
         //    audioSource.PlayOneShot(shootSound);
     }
+
     private IEnumerator WaitAndShootWhenIKReady()
     {
         // Wait until IK weight is close to 1
@@ -112,6 +116,10 @@ public class Pistol : Weapon
         {
             yield return null; // wait for next frame
         }
+
+        // moved these here to get the final calculations after doing the ik
+        shootDirection = (targetPoint - firePoint.position).normalized;
+        firePoint.rotation = Quaternion.LookRotation(shootDirection);
 
         // Only shoot if allowed
         if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
@@ -121,8 +129,11 @@ public class Pistol : Weapon
         currentAmmo--;
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
+
         rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
+
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
