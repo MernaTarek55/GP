@@ -24,6 +24,7 @@ public class DropItemPool : MonoBehaviour
         for (int i = 0; i < poolSize; i++)
         {
             GameObject obj = Instantiate(dropPrefab);
+            obj.transform.SetParent(transform);
             obj.SetActive(false);
             objectPool.Enqueue(obj);
         }
@@ -38,7 +39,6 @@ public class DropItemPool : MonoBehaviour
         }
 
         GameObject drop = objectPool.Dequeue();
-
         drop.SetActive(true);
         drop.transform.position = position;
         drop.transform.rotation = rotation;

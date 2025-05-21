@@ -85,7 +85,6 @@ public class Enemy : MonoBehaviour
             transform.position + Vector3.up,
             Quaternion.identity
         );
-        drop.transform.SetParent(DropItemPool.Instance.transform);
 
         if (drop.TryGetComponent<Rigidbody>(out var rb))
         {
