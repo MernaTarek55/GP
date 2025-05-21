@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
     [SerializeField][Range(0, 1)] private float dropChance = 0.7f;
     [SerializeField]  int minDrops = 1;
     [SerializeField]  int maxDrops = 3;
+    [SerializeField] Vector3[] dropForce;
+
     #endregion
     public StateMachine enemyStateMachine {  get; private set; }
     public Enemy_IdleState enemyIdleState {get; private set; }
@@ -39,7 +41,6 @@ public class Enemy : MonoBehaviour
         enemyStateMachine.Initalize(enemyIdleState);
         enemyAttackState.getfirePos(firePos);
         enemyAttackState.getParticleSystem(enemyPS);
-
         Debug.Log("START " + firePos);
 
     }
@@ -84,13 +85,14 @@ public class Enemy : MonoBehaviour
             transform.position + Vector3.up,
             Quaternion.identity
         );
+        drop.transform.SetParent(DropItemPool.Instance.transform);
 
         if (drop.TryGetComponent<Rigidbody>(out var rb))
         {
             rb.AddForce(new Vector3(
-                Random.Range(0f, 0.5f),
-                Random.Range(2f, 2.5f),
-                Random.Range(0f, 0.5f)
+                Random.Range(dropForce[0].x, dropForce[1].x),
+                Random.Range(dropForce[0].y, dropForce[1].y),
+                Random.Range(dropForce[0].z, dropForce[1].z)
             ), ForceMode.Impulse);
         }
     }
