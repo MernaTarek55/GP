@@ -9,7 +9,7 @@ public class ShopItemUI : MonoBehaviour
     public TextMeshProUGUI costText;
 
     [SerializeField] private Button buyButton;
-    private ShopItem currentItem;
+    [SerializeField] private ShopItem currentItem;
 
     private void Awake()
     {

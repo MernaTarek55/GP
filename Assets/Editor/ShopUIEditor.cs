@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 public class ShopUIEditorGenerator : EditorWindow
 {
+    static List<Button> allTabButtons = new();
+    static List<GameObject> allTabPanels = new();
+
     [MenuItem("Tools/Generate Shop UI")]
     public static void GenerateShopUI()
     {
@@ -49,7 +52,7 @@ public class ShopUIEditorGenerator : EditorWindow
         contentRect.anchorMin = new Vector2(0, 0);
         contentRect.anchorMax = new Vector2(1, 1);
         contentRect.offsetMin = new Vector2(0, 0);
-        contentRect.offsetMax = new Vector2(0, -40);
+        contentRect.offsetMax = new Vector2(0, -80);
 
         // Load all ShopItemUI prefabs
         ShopItemUI[] allShopItemUIs = Resources.LoadAll<ShopItemUI>("ShopItemUIPrefabs");
@@ -59,7 +62,7 @@ public class ShopUIEditorGenerator : EditorWindow
             return;
         }
 
-        // Categorize by tab (simple example: by name prefix)
+        // Categorize by tab
         Dictionary<string, List<ShopItemUI>> categorized = new Dictionary<string, List<ShopItemUI>>();
 
         foreach (var itemUI in allShopItemUIs)
@@ -72,7 +75,7 @@ public class ShopUIEditorGenerator : EditorWindow
             categorized[tabKey].Add(itemUI);
         }
 
-        // For each category create tab button & content panel, add item UIs
+        // For each category: create tab button & content panel & add item UIs
         foreach (var kvp in categorized)
         {
             string tabName = kvp.Key;
@@ -96,11 +99,14 @@ public class ShopUIEditorGenerator : EditorWindow
             tabRect.offsetMin = Vector2.zero;
             tabRect.offsetMax = Vector2.zero;
 
+            allTabButtons.Add(tabButton.GetComponent<Button>());
+            allTabPanels.Add(tabPanel);
+
             // Add layout group to tab panel for items
             var layout = tabPanel.AddComponent<VerticalLayoutGroup>();
             layout.childForceExpandWidth = true;
             layout.childForceExpandHeight = false;
-            layout.spacing = 5;
+            layout.spacing = 55;
 
             // Instantiate each ShopItemUI prefab under tabPanel
             foreach (var itemUI in items)
@@ -116,9 +122,32 @@ public class ShopUIEditorGenerator : EditorWindow
             }
 
             // TODO: Add tab button click logic to toggle tab panels
+            Button button = tabButton.GetComponent<Button>();
+            button.onClick.AddListener(() =>
+            {
+                Debug.Log($"Switching to tab: {tabName}");
+                foreach (Transform child in tabContentContainer.transform)
+                {
+                    child.gameObject.SetActive(false);
+                }
+                tabPanel.SetActive(true);
+            });
+            
+        }
+        var tabsManager = rootPanel.AddComponent<TabsManager>();
+        tabsManager.tabContentContainer = tabContentContainer.GetComponent<RectTransform>();
+
+        for (int i = 0; i < allTabButtons.Count; i++)
+        {
+            var data = new TabsManager.TabData
+            {
+                tabButton = allTabButtons[i],
+                tabPanel = allTabPanels[i]
+            };
+            tabsManager.tabs.Add(data);
         }
 
-        Debug.Log("Shop UI generated in scene.");
+        Debug.Log("Shop UI generated in scene");
     }
 
     static string GetTabKeyFromName(string name)

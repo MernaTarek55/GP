@@ -21,7 +21,7 @@ public class ShopManager : MonoBehaviour
         availableItems = Resources.LoadAll<ShopItem>("ShopItems").ToList();
 
         //TODO: remove this
-        var player = GameObject.FindWithTag("Playerr");
+        var player = GameObject.FindWithTag("Player");
         playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
     }
     private void Start()
