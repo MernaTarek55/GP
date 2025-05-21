@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShopManager : MonoBehaviour
@@ -39,10 +40,16 @@ public class ShopManager : MonoBehaviour
             cost = upgradeItem.GetLevelCost(playerInventory);
         else
             cost = item.GetCost();
-        if (playerInventory.credits >= cost)
+        if (cost <= 0)
+        {
+            Debug.LogWarning($"Item {item.name} has a cost of {cost}, cannot be purchased.");
+            return false;
+        }
+        if (playerInventory.Credits >= cost)
         {
             item.OnPurchase(playerInventory);
-            playerInventory.credits -= cost;
+            playerInventory.Credits -= cost;
+            
             return true;
         }
         return false;

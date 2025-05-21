@@ -54,8 +54,11 @@ public class WeaponUpgradeItem : ShopItem
 
         if (statData == null || level >= statData.maxLevel)
             return -1; // Maxed or invalid
+        float normalizedLevel = (float)(level - 1) / (statData.maxLevel - 1);
+        float levelCost = costPerLevel.Evaluate(normalizedLevel);
+        int finalCost = Mathf.RoundToInt(baseCost *(1+ levelCost));
 
-        return Mathf.RoundToInt(costPerLevel.Evaluate(level));
+        return finalCost;
     }
 }
 [CreateAssetMenu(menuName = "Shop/Player Skill Item")]
