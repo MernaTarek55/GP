@@ -80,13 +80,12 @@ public class Enemy : MonoBehaviour
             return;
         }
         Vector3 spawnPos = transform.position + Vector3.up;
-        GameObject droppedItem = DropItemPool.Instance.SpawnFromPool(
-            itemPrefab.name,
-            spawnPos,
+        GameObject drop = DropItemPool.Instance.GetDropFromPool(
+            transform.position + Vector3.up,
             Quaternion.identity
         );
 
-        if (droppedItem.TryGetComponent<Rigidbody>(out var rb))
+        if (drop.TryGetComponent<Rigidbody>(out var rb))
         {
             rb.AddForce(new Vector3(
                 Random.Range(0f, 0.5f),

@@ -5,51 +5,50 @@ public class DropItemPool : MonoBehaviour
 {
     public static DropItemPool Instance;
 
-    [System.Serializable]
-    public class Pool
-    {
-        public string tag;
-        public GameObject prefab;
-        public int size;
-    }
+    [Header("Pool Settings")]
+    [SerializeField] private GameObject dropPrefab;  // Your single drop prefab
+    [SerializeField] private int poolSize = 20;     // Number of objects to pre-instantiate
 
-    public List<Pool> pools;
-    private Dictionary<string, Queue<GameObject>> poolDictionary;
+    private Queue<GameObject> objectPool;
 
     private void Awake()
     {
         Instance = this;
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        InitializePool();
+    }
 
-        foreach (Pool pool in pools)
+    private void InitializePool()
+    {
+        objectPool = new Queue<GameObject>();
+
+        for (int i = 0; i < poolSize; i++)
         {
-            Queue<GameObject> objectPool = new Queue<GameObject>();
-            for (int i = 0; i < pool.size; i++)
-            {
-                GameObject obj = Instantiate(pool.prefab);
-                obj.SetActive(false);
-                objectPool.Enqueue(obj);
-            }
-            poolDictionary.Add(pool.tag, objectPool);
+            GameObject obj = Instantiate(dropPrefab);
+            obj.SetActive(false);
+            objectPool.Enqueue(obj);
         }
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject GetDropFromPool(Vector3 position, Quaternion rotation)
     {
-        if (!poolDictionary.ContainsKey(tag))
+        if (objectPool.Count == 0)
         {
-            Debug.LogWarning("Pool with tag " + tag + " doesn't exist.");
-            return null;
+            Debug.LogWarning("Pool exhausted! Creating new drop instance.");
+            return Instantiate(dropPrefab, position, rotation);
         }
 
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+        GameObject drop = objectPool.Dequeue();
 
-        objectToSpawn.SetActive(true);
-        objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = rotation;
+        drop.SetActive(true);
+        drop.transform.position = position;
+        drop.transform.rotation = rotation;
 
-        poolDictionary[tag].Enqueue(objectToSpawn);
+        return drop;
+    }
 
-        return objectToSpawn;
+    public void ReturnToPool(GameObject drop)
+    {
+        drop.SetActive(false);
+        objectPool.Enqueue(drop);
     }
 }
