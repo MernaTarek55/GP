@@ -1,49 +1,50 @@
 using StarterAssets;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(StarterAssetsInputs))]
-[RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
-    StarterAssetsInputs _input;
-    ThirdPersonController _controller;
+    public InputActionAsset InputActions;
+    public Camera mainCamera;
     public StateMachine stateMachine { get; private set; }
     public Player_IdleState playerIdle { get; private set; }
     public Player_MoveState playerMove { get; private set; }
     public Player_JumpState playerJump { get; private set; }
+    public Animator animator { get; private set; }
+    public Rigidbody rb { get; private set; }
 
-    public CharacterController Controller { get; private set; }
-    public StarterAssetsInputs Input { get; private set; }
-    public Animator Animator { get; private set; }
+    public float WalkSpeed = 5f;
+    public float RotateSpeed = 10f;
 
-    [Header("Movement")]
-    public float moveSpeed = 2.0f;
-    public float sprintSpeed = 5.335f;
-    public float rotationSmoothTime = 0.12f;
-    public float jumpHeight = 1.2f;
-    public float gravity = -15.0f;
-
-    [Header("Timed Dulation Variables")]
-    public float currentSpeed;
-    public float verticalVelocity;
-    public bool isGrounded;
-
-    [SerializeField] LayerMask GroundLayers;
-    public float GroundedRadius = 0.28f;
-    public float GroundedOffset = -0.14f;
+    private InputAction moveAction;
+    private InputAction jumpAction;
+    private Vector2 moveInput;
+    public Vector2 MoveInput => moveInput;
+    public bool JumpPressed => jumpAction.WasPressedThisFrame();
 
     private void Awake()
     {
-        Controller = GetComponent<CharacterController>();
-        Input = GetComponent<StarterAssetsInputs>();
-        Animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
+
+        moveAction = InputActions.FindActionMap("Player").FindAction("Move");
+        jumpAction = InputActions.FindActionMap("Player").FindAction("Jump");
 
         stateMachine = new StateMachine();
         playerIdle = new Player_IdleState(stateMachine, "Idle", this);
         playerMove = new Player_MoveState(stateMachine, "Move", this);
         playerJump = new Player_JumpState(stateMachine, "Jump", this);
 
+    }
+
+    private void OnEnable()
+    {
+        InputActions.FindActionMap("Player").Enable();
+    }
+
+    private void OnDisable()
+    {
+        InputActions.FindActionMap("Player").Disable();
     }
 
     private void Start()
@@ -53,17 +54,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        isGrounded = Controller.isGrounded;
-
+        moveInput = moveAction.ReadValue<Vector2>();
         stateMachine.UpdateActiveState();
-
-        if (!isGrounded)
-        {
-            verticalVelocity += gravity * Time.deltaTime;
-            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,transform.position.z);
-            isGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
-        }
-
-        Controller.Move(new Vector3(0, verticalVelocity, 0) * Time.deltaTime);
     }
 }

@@ -11,39 +11,32 @@ public class Player_MoveState : EntityState
     {
         base.Update();
 
-        // Get input
-        Vector2 input = player.Input.move;
-
-        // Calculate movement direction
-        Vector3 moveDir = new Vector3(input.x, 0, input.y).normalized;
-
-        // Rotate towards movement direction
-        if (moveDir != Vector3.zero)
+        if (player.MoveInput.sqrMagnitude < 0.01f)
         {
-            float targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg;
-            float rotation = Mathf.SmoothDampAngle(
-                player.transform.eulerAngles.y,
-                targetRotation,
-                ref rotationVelocity,
-                player.rotationSmoothTime
-            );
-            player.transform.rotation = Quaternion.Euler(0, rotation, 0);
+            stateMachine.ChangeState(new Player_IdleState(stateMachine, "Idle", player));
+            return;
         }
 
-        // Apply movement
-        float targetSpeed = player.Input.sprint ? player.sprintSpeed : player.moveSpeed;
-        player.currentSpeed = Mathf.Lerp(player.currentSpeed, targetSpeed, Time.deltaTime * 10f);
-
-        player.Controller.Move(moveDir * player.currentSpeed * Time.deltaTime);
-
-        // Handle state transitions
-        if (input.magnitude < 0.1f)
+        if (player.JumpPressed)
         {
-            stateMachine.ChangeState(player.playerIdle);
+            stateMachine.ChangeState(new Player_JumpState(stateMachine, "Jump", player));
+            return;
         }
-        else if (player.Input.jump && player.isGrounded)
+
+        Vector3 camForward = player.mainCamera.transform.forward;
+        Vector3 camRight = player.mainCamera.transform.right;
+        camForward.y = 0; camRight.y = 0;
+        camForward.Normalize(); camRight.Normalize();
+
+        Vector3 moveDirection = camForward * player.MoveInput.y + camRight * player.MoveInput.x;
+
+        player.animator.SetFloat("Speed", player.MoveInput.magnitude);
+        player.rb.MovePosition(player.rb.position + moveDirection * player.WalkSpeed * Time.deltaTime);
+
+        if (moveDirection.sqrMagnitude > 0.01f)
         {
-            stateMachine.ChangeState(player.playerJump);
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            player.rb.MoveRotation(Quaternion.Slerp(player.rb.rotation, targetRotation, player.RotateSpeed * Time.deltaTime));
         }
     }
 }

@@ -7,18 +7,28 @@ public class Player_IdleState : EntityState
     {
     }
 
+    public override void Enter()
+    {
+        base.Enter();
+        player.animator.SetFloat("Speed", 0f);
+    }
+
     public override void Update()
     {
         base.Update();
 
-        if (player.Input.move.magnitude > 0.1f)
-        {
-            stateMachine.ChangeState(player.playerMove);
-        }
-        // Check for jump input
-        else if (player.Input.jump && player.isGrounded)
-        {
-            stateMachine.ChangeState(player.playerJump);
-        }
+        //if (player.Input.move.magnitude > 0.1f)
+        //{
+        //    stateMachine.ChangeState(player.playerMove);
+        //}
+        //// Check for jump input
+        //else if (player.Input.jump && player.isGrounded)
+        //{
+        //    stateMachine.ChangeState(player.playerJump);
+        //}
+        if (player.MoveInput.sqrMagnitude > 0.01f)
+            stateMachine.ChangeState(new Player_MoveState(stateMachine, "Walk", player));
+        else if (player.JumpPressed)
+            stateMachine.ChangeState(new Player_JumpState(stateMachine, "Jump", player));
     }
 }

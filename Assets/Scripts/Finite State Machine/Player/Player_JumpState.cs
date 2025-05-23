@@ -9,20 +9,18 @@ public class Player_JumpState : EntityState
     {
         base.Enter();
 
-        player.verticalVelocity = Mathf.Sqrt(player.jumpHeight * -2f * player.gravity);
-        player.Animator.SetTrigger("Jump");
+        player.animator.SetTrigger("Jump");
+        player.rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (player.isGrounded && player.verticalVelocity < 0)
-        {
-            if (player.Input.move.magnitude > 0.1f)
-                stateMachine.ChangeState(player.playerMove);
-            else
-                stateMachine.ChangeState(player.playerIdle);
-        }
+        // Placeholder: Switch to Idle or Walk based on grounded check
+        if (player.MoveInput.sqrMagnitude > 0.01f)
+            stateMachine.ChangeState(new Player_MoveState(stateMachine, "Walk", player));
+        else
+            stateMachine.ChangeState(new Player_IdleState(stateMachine, "Idle", player));
     }
 }
