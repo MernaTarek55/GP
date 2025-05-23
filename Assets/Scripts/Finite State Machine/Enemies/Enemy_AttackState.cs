@@ -53,6 +53,26 @@ public class Enemy_AttackState : EntityState
         // Humanoid-specific attack logic
     }
 
+    protected override void UpdateLavaRobot()
+    {
+        Debug.Log("LavaRobot Attack");
+        ShootLava();
+    }
+
+    private void ShootLava()
+    {
+        if (Time.time - _lastShootTime < enemyData.shootCooldown)
+            return;
+
+        if (enemyData.bulletPrefab != null && firePoint != null)
+        {
+            GameObject bullet = BulletPool.Instance.GetBullet();
+            bullet.transform.position = firePoint.transform.position;
+            bullet.transform.rotation = firePoint.transform.rotation;
+            bullet.SetActive(true);
+        }
+     }
+
     private void RotateTowardPlayer()
     {
         Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;

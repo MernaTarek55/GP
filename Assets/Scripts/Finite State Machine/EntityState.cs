@@ -87,4 +87,5 @@ public abstract class EntityState
     protected virtual void UpdateTurret() { }
     protected virtual void UpdateBallDroid() { }
     protected virtual void UpdateHumanoid() { }
+    protected virtual void UpdateLavaRobot() { }
 }
