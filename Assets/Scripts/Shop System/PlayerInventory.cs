@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,15 +8,34 @@ public class PlayerInventory
     HashSet<WeaponType> ownedWeapons = new();
     Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new();
 
-    public int credits;
+    private int _credits;
+    public event Action<int> OnCreditsChanged;
+
+    public int Credits
+    {
+        get => _credits;
+        set
+        {
+            if (_credits != value)
+            {
+                _credits = value;
+                OnCreditsChanged?.Invoke(_credits);
+            }
+        }
+    }
+
+    
     public void InitializeWeaponUpgrades(List<WeaponData> weaponDataList)
     {
+        Debug.Log("Initializing weapon upgrades...");
         foreach (WeaponData weaponData in weaponDataList)
         {
+            Debug.Log($"Initializing weapon: {weaponData.weaponType}");
             var upgradeState = new WeaponUpgradeState();
 
             foreach (var stat in weaponData.upgradableStats)
             {
+                Debug.Log($"Setting level for stat: {stat.statType}");
                 upgradeState.SetLevel(stat.statType, 0);
             }
 
@@ -36,6 +56,7 @@ public class PlayerInventory
 
     public WeaponUpgradeState GetUpgradeState(WeaponType type)
     {
+        Debug.Log($"Getting upgrade state for weapon: {type}");
         if (weaponUpgrades.ContainsKey(type))
             return weaponUpgrades[type];
 
