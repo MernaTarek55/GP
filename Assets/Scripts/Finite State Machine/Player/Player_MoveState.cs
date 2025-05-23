@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Player_MoveState : EntityState
 {
-    float rotationVelocity;
     public Player_MoveState(StateMachine stateMachine, string stateName, Player player) : base(stateMachine, stateName, player)
     {
     }
@@ -20,6 +19,12 @@ public class Player_MoveState : EntityState
         if (player.JumpPressed)
         {
             stateMachine.ChangeState(new Player_JumpState(stateMachine, "Jump", player));
+            return;
+        }
+
+        if (player.DeadEyePressed)
+        {
+            stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
             return;
         }
 

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Player_JumpState : EntityState
 {
+    private bool hasJumped = false;
+
     public Player_JumpState(StateMachine stateMachine, string stateName, Player player) : base(stateMachine, stateName, player)
     {
     }
@@ -9,18 +11,28 @@ public class Player_JumpState : EntityState
     {
         base.Enter();
 
-        player.animator.SetTrigger("Jump");
-        player.rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+        if (player.IsGrounded && !player.hasJumped)
+        {
+            player.animator.SetTrigger("Jump");
+            player.rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+            player.hasJumped = true;
+        }
     }
 
     public override void Update()
     {
         base.Update();
 
-        // Placeholder: Switch to Idle or Walk based on grounded check
-        if (player.MoveInput.sqrMagnitude > 0.01f)
-            stateMachine.ChangeState(new Player_MoveState(stateMachine, "Walk", player));
-        else
-            stateMachine.ChangeState(new Player_IdleState(stateMachine, "Idle", player));
+        if (player.IsGrounded && player.hasJumped)
+        {
+            player.hasJumped = false;
+
+            if (player.MoveInput.sqrMagnitude > 0.01f)
+                stateMachine.ChangeState(new Player_MoveState(stateMachine, "Walk", player));
+            else if (player.DeadEyePressed)
+                stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
+            else
+                stateMachine.ChangeState(new Player_IdleState(stateMachine, "Idle", player));
+        }
     }
 }

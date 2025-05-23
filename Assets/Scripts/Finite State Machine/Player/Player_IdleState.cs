@@ -17,18 +17,11 @@ public class Player_IdleState : EntityState
     {
         base.Update();
 
-        //if (player.Input.move.magnitude > 0.1f)
-        //{
-        //    stateMachine.ChangeState(player.playerMove);
-        //}
-        //// Check for jump input
-        //else if (player.Input.jump && player.isGrounded)
-        //{
-        //    stateMachine.ChangeState(player.playerJump);
-        //}
         if (player.MoveInput.sqrMagnitude > 0.01f)
             stateMachine.ChangeState(new Player_MoveState(stateMachine, "Walk", player));
         else if (player.JumpPressed)
             stateMachine.ChangeState(new Player_JumpState(stateMachine, "Jump", player));
+        else if (player.DeadEyePressed)
+            stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
     }
 }
