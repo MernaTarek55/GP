@@ -28,11 +28,6 @@ public class ShopManager : MonoBehaviour
     private void Start()
     {
     }
-
-    void DisplayShopUI()
-    {
-        //TODO
-    }
     public bool Buy(ShopItem item)
     {
         int cost;

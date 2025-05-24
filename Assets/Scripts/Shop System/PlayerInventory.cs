@@ -7,6 +7,7 @@ public class PlayerInventory
 {
     HashSet<WeaponType> ownedWeapons = new();
     Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new();
+    Dictionary<PlayerSkillsStats,float> playerStats = new();
 
     private int _credits;
     public event Action<int> OnCreditsChanged;
@@ -68,6 +69,29 @@ public class PlayerInventory
             weaponUpgrades[type] = state;
         else
             weaponUpgrades.Add(type, state);
+    }
+
+    public float getPlayerStat(PlayerSkillsStats stat)
+    {
+        if (playerStats.TryGetValue(stat, out float value))
+        {
+            Debug.Log($"Player stat {stat} value: {value}");
+            return value;
+        }
+        Debug.LogWarning($"Player stat {stat} not found, returning 0.");
+        return 0f;
+    }
+    public void SetPlayerStat(PlayerSkillsStats stat, float value)
+    {
+        if (playerStats.ContainsKey(stat))
+        {
+            playerStats[stat] = value;
+        }
+        else
+        {
+            playerStats.Add(stat, value);
+        }
+        Debug.Log($"Set player stat {stat} to {value}");
     }
     public void AddWeapon(WeaponType type)
     {
