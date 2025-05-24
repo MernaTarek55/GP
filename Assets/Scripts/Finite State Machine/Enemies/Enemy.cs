@@ -72,9 +72,10 @@ public class Enemy : MonoBehaviour
       //  }
         
     }
-    public void OnDestroy()
+    public void Die()
     {
         SpawnDrops();
+        Destroy(gameObject);
     }
     #region Enemy Drops
     private void SpawnSingleDrop(GameObject itemPrefab)

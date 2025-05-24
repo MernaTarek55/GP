@@ -8,6 +8,7 @@ public class Enemy_AttackState : EntityState
     private GameObject firePoint;
     private ParticleSystem enemyPS;  // particle system for enemy ball explosion
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
+    private Enemy enemy;
     private bool hasExploded = false; // to instantiate one explosion when the enemy explodes
     private float _lastShootTime;
 
@@ -17,6 +18,8 @@ public class Enemy_AttackState : EntityState
         this.playerGO = playerGO;
         if (enemyGO.TryGetComponent(out MeshRenderer mr)) enemyMR = mr;
         else Debug.LogWarning("Mesh Renderer not found");
+        if (enemyGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
+        else Debug.LogWarning("Enemy script not found");
 
 
 
@@ -51,7 +54,8 @@ public class Enemy_AttackState : EntityState
             enemyPSClone.Play();
         
             enemyMR.enabled = false;
-            GameObject.Destroy(enemyGO/*, enemyPSClone.main.duration*/);
+            enemy.Die();
+            //GameObject.Destroy(enemyGO/*, enemyPSClone.main.duration*/);
 
             hasExploded = true;
             if(playerGO.TryGetComponent(out HealthComponent playerHealth)){ playerHealth.TakeDamage(10f); Debug.Log("Player took damage");}
