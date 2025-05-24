@@ -39,7 +39,7 @@ public class Player_DeadEyeStateTest1 : EntityState
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 GameObject target = hit.collider.gameObject;
-                if (!markedTargets.Contains(target) && target.CompareTag("Target"))
+                if (!markedTargets.Contains(target) && target.CompareTag("Enemy"))
                 {
                     markedTargets.Add(target);
                     Debug.Log("Target marked: " + target.name);

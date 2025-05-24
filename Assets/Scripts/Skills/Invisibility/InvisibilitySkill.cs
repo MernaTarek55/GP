@@ -7,10 +7,13 @@ public class InvisibilitySkill : MonoBehaviour
 {
     public SkinnedMeshRenderer[] renderers;
     private Material[] materials;
+    private float duration;
+    private float cooldownTime;
     public float invisibilityDuration = 10f;
     public float cooldownDuration = 10f;
+    private float lastUsedTime;
     public float fadeSpeed = 2f;
-
+    private PlayerInventory playerInventory;
     public bool isInvisible = false;
     private bool isOnCooldown = false;
     public Button InvisibleButton;
@@ -23,15 +26,27 @@ public class InvisibilitySkill : MonoBehaviour
         }
         materials = matsList.ToArray();
     }
-    public void OnBecameInvisible()
+    private void Start()
     {
-        if(!isInvisible && !isOnCooldown)
+        var player = GameObject.FindWithTag("Player");
+        playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
+        cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
+        lastUsedTime = Time.time - cooldownTime;
+    }
+    public void UseInvisibility()
+    {
+        UpdateStats();
+        if (!isInvisible && !isOnCooldown)
         {
             InvisibleButton.interactable = false;
             StartCoroutine(BecomeInvisible());
         }
     }
-
+    private void UpdateStats()
+    {
+        duration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityDuration);
+        cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
+    }
     IEnumerator BecomeInvisible()
     {
         isInvisible = true;
