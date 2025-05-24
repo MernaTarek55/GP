@@ -30,6 +30,7 @@ public class AutoGun : Weapon
     [SerializeField] private EventSystem eventSystem;
     private void Awake()
     {
+        base.Awake();
         if (weaponData == null)
         {
             Debug.LogError("WeaponData not assigned in Inspector.");

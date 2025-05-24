@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class WeaponSwitch : MonoBehaviour
 {
-    [SerializeField] private GameObject[] weapons;
     private int currentWeaponIndex = 0;
-
+    PlayerInventory inventory;
     void Start()
     {
         ActivateWeapon(currentWeaponIndex);

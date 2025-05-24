@@ -7,6 +7,7 @@ public class InvisibilitySkill : MonoBehaviour
 {
     public SkinnedMeshRenderer[] renderers;
     private Material[] materials;
+    //need refactor
     private float duration;
     private float cooldownTime;
     public float invisibilityDuration = 10f;

@@ -7,6 +7,8 @@ public class PlayerInventory
 {
     HashSet<WeaponType> ownedWeapons = new();
     Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new();
+    Dictionary<WeaponType, float> bulletsCount = new();
+    //need refactor
     Dictionary<PlayerSkillsStats,float> playerStats = new();
 
     private int _credits;
@@ -93,6 +95,21 @@ public class PlayerInventory
         }
         Debug.Log($"Set player stat {stat} to {value}");
     }
+    public float GetAmmo(WeaponType weapon)
+    {
+        if( bulletsCount.ContainsKey(weapon))
+            return bulletsCount[weapon];
+        return 0f;
+    }
+    public void SetAmmo(WeaponType weapon, float value)
+    {
+        if (bulletsCount.ContainsKey(weapon))
+        {
+            bulletsCount[weapon] = value;
+        }
+    }
+
+
     public void AddWeapon(WeaponType type)
     {
         if (!HasWeapon(type))

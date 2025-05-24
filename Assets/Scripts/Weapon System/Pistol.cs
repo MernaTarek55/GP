@@ -10,6 +10,7 @@ public class Pistol : Weapon
 
     [Header("Effects")]
     [SerializeField] private ParticleSystem muzzleFlash;
+    //better in parent??
     [SerializeField] private AudioClip shootSound;
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private AudioSource audioSource;
@@ -30,6 +31,7 @@ public class Pistol : Weapon
     [SerializeField] private EventSystem eventSystem;
     private void Awake()
     {
+        base.Awake();
         if (weaponData == null)
         {
             Debug.LogError("WeaponData not assigned in Inspector.");
