@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Pistol : Weapon
 {
@@ -22,6 +24,10 @@ public class Pistol : Weapon
     private Vector3 shootDirection;
 
     [SerializeField] private Transform playerBody;
+
+    [Header("UI")]
+    [SerializeField] private GraphicRaycaster uiRaycaster;
+    [SerializeField] private EventSystem eventSystem;
     private void Awake()
     {
         if (weaponData == null)

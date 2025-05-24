@@ -512,6 +512,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WrongMemoryMessage: {fileID: 538105485}
   messageDuration: 3
+--- !u!1 &643028693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 643028694}
+  - component: {fileID: 643028695}
+  m_Layer: 0
+  m_Name: Weapon Switch
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &643028694
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643028693}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 724042198}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &643028695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643028693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a202c3a9de41db40b7adc9b8f713f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons:
+  - {fileID: 2179029606666277219}
+  - {fileID: 8938986635367901147}
 --- !u!1 &701729525
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,6 +625,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 643028694}
   - {fileID: 1668387547}
   - {fileID: 340308962}
   - {fileID: 1463825254}
@@ -1917,8 +1965,10 @@ MonoBehaviour:
   shootSound: {fileID: 0}
   reloadSound: {fileID: 0}
   audioSource: {fileID: 0}
-  ikHandler: {fileID: 0}
-  playerBody: {fileID: 0}
+  ikHandler: {fileID: 1024126835845342425}
+  playerBody: {fileID: 8486386432693121833}
+  uiRaycaster: {fileID: 0}
+  eventSystem: {fileID: 0}
 --- !u!1 &43487866012339261
 GameObject:
   m_ObjectHideFlags: 0
@@ -3376,12 +3426,12 @@ GameObject:
   - component: {fileID: 2712180792165177227}
   - component: {fileID: 7795641359928987538}
   m_Layer: 5
-  m_Name: UI_Virtual_Button_Sprint
+  m_Name: UI_Virtual_Button_Switch_Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &2312163184010934351
 GameObject:
   m_ObjectHideFlags: 0
@@ -5599,7 +5649,6 @@ GameObject:
   - component: {fileID: 3304822615593957765}
   - component: {fileID: 6823505244148511522}
   - component: {fileID: 4504487249466126408}
-  - component: {fileID: 6823505244148511523}
   m_Layer: 5
   m_Name: Image_Icon
   m_TagString: Untagged
@@ -6350,19 +6399,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5699947985179941277}
   m_CullTransparentMesh: 1
---- !u!114 &6823505244148511523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5699947985179941277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d54531977ecb194c95e2d3aa7a5d72a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ControlPath: <Keyboard>/e
 --- !u!4 &6843223117773617350
 Transform:
   m_ObjectHideFlags: 0
@@ -6688,6 +6724,7 @@ GameObject:
   - component: {fileID: 6950655743817372822}
   - component: {fileID: 6629295386348447355}
   - component: {fileID: 576771497087676969}
+  - component: {fileID: 7374696168618811153}
   m_Layer: 5
   m_Name: UI_Virtual_Button_Invisibility
   m_TagString: Untagged
@@ -6695,6 +6732,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7374696168618811153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7374696168618811152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d54531977ecb194c95e2d3aa7a5d72a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ControlPath: <Keyboard>/e
 --- !u!114 &7440919921720413144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6981,7 +7031,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2712180792165177227}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 643028695}
+        m_TargetAssemblyTypeName: WeaponSwitch, Assembly-CSharp
+        m_MethodName: SwitchWeapons
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!137 &7817577777200524908
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -7423,6 +7485,9 @@ MonoBehaviour:
   InvisibilityDuration: 10
   InvisibilityCooldown: 30
   lastInvisibility: -Infinity
+  Renderers:
+  - {fileID: 7817577777200524908}
+  Materials: []
 --- !u!136 &8486386432693121835
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -10,13 +10,11 @@ public class WeaponSwitch : MonoBehaviour
         ActivateWeapon(currentWeaponIndex);
     }
 
-    void Update()
+    public void SwitchWeapons()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Length;
-            ActivateWeapon(currentWeaponIndex);
-        }
+        currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Length;
+        ActivateWeapon(currentWeaponIndex);
+        
     }
 
     void ActivateWeapon(int index)
