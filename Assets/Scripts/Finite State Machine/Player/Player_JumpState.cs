@@ -40,8 +40,8 @@ public class Player_JumpState : EntityState
         base.Exit();
 
        // player.verticalVelocity = Mathf.Sqrt(player.jumpHeight * -2f * player.gravity);
-        player.Animator.SetBool("Jump" , false);
-        //player.Animator.SetTrigger("Grounded");
-        player.Animator.SetBool("Grounded" , true);
+        //player.animator.SetBool("Jump" , false);
+        ////player.Animator.SetTrigger("Grounded");
+        //player.animator.SetBool("Grounded" , true);
     }
 }
