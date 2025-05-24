@@ -48,24 +48,29 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         enemyStateMachine.currentState.Update();
-        float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
-        if (distance <= enemyData.DetectionRange)
+        InvisibilitySkill playerInvisibilSkill = playerGO.GetComponent<InvisibilitySkill>();
+        if(playerInvisibilSkill != null && !playerInvisibilSkill.isInvisible)
         {
-            if(enemyData.enemyType == EnemyData.EnemyType.ballDroid )
+            float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
+            if (distance <= enemyData.DetectionRange)
             {
-                enemyStateMachine.ChangeState(enemyChaseState);
+                if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+                {
+                    enemyStateMachine.ChangeState(enemyChaseState);
 
-                if(distance <= 1f) { enemyStateMachine.ChangeState(enemyAttackState); }
+                    if (distance <= 1f) { enemyStateMachine.ChangeState(enemyAttackState); }
+                }
+                else
+                {
+                    enemyStateMachine.ChangeState(enemyAttackState);
+                }
             }
-            else 
-            { 
-                enemyStateMachine.ChangeState(enemyAttackState);
+            else
+            {
+                enemyStateMachine.ChangeState(enemyIdleState);
             }
         }
-        else
-        {
-            enemyStateMachine.ChangeState(enemyIdleState);
-        }
+        
     }
     public void OnDestroy()
     {
