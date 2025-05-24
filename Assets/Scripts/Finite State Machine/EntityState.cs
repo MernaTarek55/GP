@@ -71,6 +71,9 @@ public abstract class EntityState
                 case (EnemyData.EnemyType)2: // Humanoid
                     UpdateHumanoid();
                     break;
+                case (EnemyData.EnemyType)3: // Humanoid
+                    UpdateLavaRobot();
+                    break;
             }
         }
         else
@@ -87,4 +90,5 @@ public abstract class EntityState
     protected virtual void UpdateTurret() { }
     protected virtual void UpdateBallDroid() { }
     protected virtual void UpdateHumanoid() { }
+    protected virtual void UpdateLavaRobot() { }
 }

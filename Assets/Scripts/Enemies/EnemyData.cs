@@ -9,8 +9,9 @@ public class EnemyData : ScriptableObject
     public enum EnemyType
     {
         Turret = 0
-       , ballDroid = 1 // ballDroid is a sphere attacking the player by exploding when he reaches his position
-       , Humanoid = 2
+       ,ballDroid = 1 // ballDroid is a sphere attacking the player by exploding when he reaches his position
+       ,Humanoid = 2
+       ,LavaRobot = 3
     }
     public EnemyType enemyType;
     public float movementSpeed;

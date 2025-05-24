@@ -66,6 +66,42 @@ public class Enemy_AttackState : EntityState
         // Humanoid-specific attack logic
     }
 
+    protected override void UpdateLavaRobot()
+    {
+        Debug.Log("LavaRobot Attack");
+        
+        ShootLava();
+    }
+
+    private void ShootLava()
+    {
+        // Check cooldown
+        if (Time.time - _lastShootTime < enemyData.shootCooldown)
+            return;
+
+        // Check if we have valid references
+        if (enemyData.bulletPrefab == null || firePoint == null)
+            return;
+
+        // Try to get a projectile from the pool
+        if (LavaProjectilePool.Instance.TryGetProjectile(out GameObject projectile))
+        {
+            // Set up the projectile
+            projectile.transform.position = firePoint.transform.position;
+            projectile.transform.rotation = firePoint.transform.rotation;
+
+            // Assign the LavaRobot reference (critical!)
+            LavaProjectile lavaProjectile = projectile.GetComponent<LavaProjectile>();
+            if (lavaProjectile != null)
+            {
+                lavaProjectile.LavaRobot = enemyGO; // or whatever reference you need
+            }
+
+            projectile.SetActive(true);
+            _lastShootTime = Time.time; // Update last shoot time
+        }
+    }
+
     private void RotateTowardPlayer()
     {
         Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
