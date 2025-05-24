@@ -19,6 +19,12 @@ public class Enemy_ChaseState : EntityState
     protected override void UpdateBallDroid()
     {
         Debug.Log("BallDroid Chase");
+        InvisibilitySkill invisibilitySkill = playerGO.GetComponent<InvisibilitySkill>();
+        if (invisibilitySkill != null && invisibilitySkill.isInvisible)
+        {
+            Debug.Log("Player is invisible, ball droid does nothing.");
+            return;
+        }
         ChasePlayer();
     }
 
