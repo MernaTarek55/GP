@@ -48,9 +48,9 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         enemyStateMachine.currentState.Update();
-        InvisibilitySkill playerInvisibilSkill = playerGO.GetComponent<InvisibilitySkill>();
-        if(playerInvisibilSkill != null && !playerInvisibilSkill.isInvisible)
-        {
+        //InvisibilitySkill playerInvisibilSkill = playerGO.GetComponent<InvisibilitySkill>();
+        //if(playerInvisibilSkill != null && !playerInvisibilSkill.isInvisible)
+      //  {
             float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
             if (distance <= enemyData.DetectionRange)
             {
@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
             {
                 enemyStateMachine.ChangeState(enemyIdleState);
             }
-        }
+      //  }
         
     }
     public void OnDestroy()

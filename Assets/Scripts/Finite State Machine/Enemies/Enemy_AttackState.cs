@@ -75,6 +75,7 @@ public class Enemy_AttackState : EntityState
 
     private void ShootLava()
     {
+
         // Check cooldown
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
             return;
