@@ -71,6 +71,9 @@ public abstract class EntityState
                 case (EnemyData.EnemyType)2: // Humanoid
                     UpdateHumanoid();
                     break;
+                case (EnemyData.EnemyType)3: // Humanoid
+                    UpdateLavaRobot();
+                    break;
             }
         }
         else

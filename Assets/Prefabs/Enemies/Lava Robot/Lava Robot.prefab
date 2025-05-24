@@ -156,13 +156,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: 9e051fa974a047a49bc9eea4b64d6f24, type: 2}
-  playerGO: {fileID: 458008308761062720, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
+  playerGO: {fileID: 2625473491026870316, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
   firePos: {fileID: 5145247578527658450}
   enemyPS: {fileID: 0}
   drop: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
   dropChance: 0.7
-  minDrops: 1
-  maxDrops: 3
+  minDrops: 2
+  maxDrops: 5
   dropForce:
   - {x: 0.01, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
@@ -213,8 +213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafbd33b934f75d469c3cecbf1fb3856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  A: {fileID: 5819782264139901582}
-  B: {fileID: 0}
+  A: {fileID: 5685012763328612990}
+  B: {fileID: 7331401363613168223, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
   Control: {fileID: 8431188704817870475}
 --- !u!1 &5145247578527658450
 GameObject:

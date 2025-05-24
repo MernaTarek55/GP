@@ -259,7 +259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7331401363613168223, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.67
+      value: -4.72
       objectReference: {fileID: 0}
     - target: {fileID: 7331401363613168223, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
       propertyPath: m_LocalPosition.y
@@ -439,6 +439,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1045832285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1045832287}
+  - component: {fileID: 1045832286}
+  m_Layer: 0
+  m_Name: Drop Pool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1045832286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045832285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30646149595e71d4cbb7ea74dd8a714a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropPrefab: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
+  poolSize: 5
+  scoreText: {fileID: 0}
+--- !u!4 &1045832287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045832285}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.6277094, y: 3.7602143, z: 1.2274376}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1285553151
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +495,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1285553153}
-  - component: {fileID: 1285553152}
+  - component: {fileID: 1285553154}
   m_Layer: 0
   m_Name: LavaDropManager
   m_TagString: Untagged
@@ -456,20 +503,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1285553152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1285553151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 392bb9b1f2616cc4585ea97c0ec12ec1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 4876149916586524456, guid: 8d4e9e2f44902a248b127887f8f206b9, type: 3}
-  poolSize: 10
 --- !u!4 &1285553153
 Transform:
   m_ObjectHideFlags: 0
@@ -485,11 +518,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1569029498 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2625473491026870316, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
-  m_PrefabInstance: {fileID: 543591530}
+--- !u!114 &1285553154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285553151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd3cc0b2cf4c34544b0bac5c7838202c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lavaProjectilePrefab: {fileID: 4876149916586524456, guid: 8d4e9e2f44902a248b127887f8f206b9, type: 3}
+  poolSize: 5
 --- !u!1 &1737329173
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,22 +649,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -1124280754691726229, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: drop
-      value: 
-      objectReference: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
-    - target: {fileID: -1124280754691726229, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: maxDrops
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: -1124280754691726229, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: minDrops
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: -1124280754691726229, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: playerGO
-      value: 
-      objectReference: {fileID: 1569029498}
     - target: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_Name
       value: Lava Robot
@@ -684,5 +710,6 @@ SceneRoots:
   - {fileID: 203844589}
   - {fileID: 1737329177}
   - {fileID: 543591530}
+  - {fileID: 1045832287}
   - {fileID: 2430618810039205908}
   - {fileID: 1285553153}
