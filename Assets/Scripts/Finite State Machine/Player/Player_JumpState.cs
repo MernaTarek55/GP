@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Player_JumpState : EntityState
 {
+    private bool hasJumped = false;
+
     public Player_JumpState(StateMachine stateMachine, string stateName, Player player) : base(stateMachine, stateName, player)
     {
     }
@@ -9,20 +11,28 @@ public class Player_JumpState : EntityState
     {
         base.Enter();
 
-        player.verticalVelocity = Mathf.Sqrt(player.jumpHeight * -2f * player.gravity);
-        player.Animator.SetTrigger("Jump");
+        if (player.IsGrounded && !player.hasJumped)
+        {
+            player.animator.SetTrigger("Jump");
+            player.rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+            player.hasJumped = true;
+        }
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (player.isGrounded && player.verticalVelocity < 0)
+        if (player.IsGrounded && player.hasJumped)
         {
-            if (player.Input.move.magnitude > 0.1f)
-                stateMachine.ChangeState(player.playerMove);
+            player.hasJumped = false;
+
+            if (player.MoveInput.sqrMagnitude > 0.01f)
+                stateMachine.ChangeState(new Player_MoveState(stateMachine, "Walk", player));
+            else if (player.DeadEyePressed)
+                stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
             else
-                stateMachine.ChangeState(player.playerIdle);
+                stateMachine.ChangeState(new Player_IdleState(stateMachine, "Idle", player));
         }
     }
     public override void Exit()
