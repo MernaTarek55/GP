@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 2626070539535130471}
   - component: {fileID: 198869216560568479}
   - component: {fileID: 1759513032912586890}
+  - component: {fileID: 7223167247531117238}
+  - component: {fileID: 6146923712851544454}
   m_Layer: 0
   m_Name: LavaDrop
   m_TagString: Untagged
@@ -102,3 +104,36 @@ MonoBehaviour:
   speed: 0.3
   groundLevelPosition: -0.2
   LavaRobot: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
+--- !u!135 &7223167247531117238
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4876149916586524456}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.57
+  m_Center: {x: 0, y: -0.29, z: -0.000000059604645}
+--- !u!114 &6146923712851544454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4876149916586524456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a911181a7659c5c4e8ee30befa303b25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
