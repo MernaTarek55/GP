@@ -403,6 +403,16 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1363202588}
   m_SourcePrefab: {fileID: 100100000, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
+--- !u!1 &352008759 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9089620989637118312, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
+  m_PrefabInstance: {fileID: 352008758}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &352008760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 517793915502043546, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
+  m_PrefabInstance: {fileID: 352008758}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &427122199
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +446,53 @@ Transform:
   - {fileID: 1974607240}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &458883381
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 458883382}
+  - component: {fileID: 458883383}
+  m_Layer: 0
+  m_Name: Weapon Switch
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &458883382
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458883381}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 724042198}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &458883383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458883381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a202c3a9de41db40b7adc9b8f713f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons:
+  - {fileID: 352008760}
+  - {fileID: 352008759}
 --- !u!4 &478919413 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5581989706188248348, guid: d739f5c85028be24993c038c4651b080, type: 3}
@@ -654,6 +711,7 @@ Transform:
   - {fileID: 1668387547}
   - {fileID: 340308962}
   - {fileID: 1463825254}
+  - {fileID: 458883382}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &761338372 stripped
