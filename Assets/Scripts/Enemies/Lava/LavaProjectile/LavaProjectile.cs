@@ -35,8 +35,7 @@ public class LavaProjectile : MonoBehaviour
         // Cache positions at activation
         initialA = curve.A.position;
         initialControl = curve.Control.position;
-        initialB = new Vector3(curve.B.position.x, groundLevelPosition, curve.B.position.z);
-
+        initialB = curve.B.position /*new Vector3(curve.B.position.x, groundLevelPosition, curve.B.position.z)*/;
         // Initialize movement
         _sampleTime = 0f;
         transform.position = initialA;
