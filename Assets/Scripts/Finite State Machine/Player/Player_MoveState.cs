@@ -28,11 +28,6 @@ public class Player_MoveState : EntityState
             return;
         }
 
-        if (player.InvisibilityPressed && player.CanUseInvisibility)
-        {
-            stateMachine.ChangeState(new PlayerInvisibilitySkill(stateMachine, "Invisibility", player));
-            return;
-        }
 
         Vector3 camForward = player.mainCamera.transform.forward;
         Vector3 camRight = player.mainCamera.transform.right;

@@ -48,9 +48,11 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         enemyStateMachine.currentState.Update();
-        //InvisibilitySkill playerInvisibilSkill = playerGO.GetComponent<InvisibilitySkill>();
-        //if(playerInvisibilSkill != null && !playerInvisibilSkill.isInvisible)
-      //  {
+        if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+        {
+            Debug.Log("Player is invisible");
+            return;
+        }
             float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
             if (distance <= enemyData.DetectionRange)
             {

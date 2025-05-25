@@ -29,25 +29,25 @@ public class InvisibilitySkill : MonoBehaviour
     }
     private void Start()
     {
-        var player = GameObject.FindWithTag("Player");
-        playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
-        cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
+        //var player = GameObject.FindWithTag("Player");
+        //playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
+        //cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
         lastUsedTime = Time.time - cooldownTime;
     }
     public void UseInvisibility()
     {
-        UpdateStats();
+        //UpdateStats();
         if (!isInvisible && !isOnCooldown)
         {
             InvisibleButton.interactable = false;
             StartCoroutine(BecomeInvisible());
         }
     }
-    private void UpdateStats()
-    {
-        duration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityDuration);
-        cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
-    }
+    //private void UpdateStats()
+    //{
+    //    duration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityDuration);
+    //    cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
+    //}
     IEnumerator BecomeInvisible()
     {
         isInvisible = true;

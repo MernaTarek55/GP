@@ -33,11 +33,6 @@ public class Player_JumpState : EntityState
                 stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
             else
                 stateMachine.ChangeState(new Player_IdleState(stateMachine, "Idle", player));
-            if (player.InvisibilityPressed && player.CanUseInvisibility)
-            {
-                stateMachine.ChangeState(new PlayerInvisibilitySkill(stateMachine, "Invisibility", player));
-                return;
-            }
         }
     }
     public override void Exit()
