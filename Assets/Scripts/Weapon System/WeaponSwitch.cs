@@ -6,6 +6,7 @@ public class WeaponSwitch : MonoBehaviour
     PlayerInventory inventory;
     void Start()
     {
+
         ActivateWeapon(currentWeaponIndex);
     }
 
