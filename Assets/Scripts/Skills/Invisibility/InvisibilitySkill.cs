@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class InvisibilitySkill : MonoBehaviour
 {
     public SkinnedMeshRenderer[] renderers;
+    public MeshRenderer[] Weaponrenderers;
     private Material[] materials;
     //need refactor
     private float duration;
@@ -22,6 +23,10 @@ public class InvisibilitySkill : MonoBehaviour
     {
         var matsList = new List<Material>();
         foreach (var r in renderers)
+        {
+            matsList.AddRange(r.materials);
+        }
+        foreach (var r in Weaponrenderers)
         {
             matsList.AddRange(r.materials);
         }
