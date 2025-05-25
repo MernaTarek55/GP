@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Pistol : Weapon
 {
@@ -65,10 +66,19 @@ public class Pistol : Weapon
         }
 
         // Check for touch input on mobile
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (Input.touchCount > 0 )
         {
-            Vector2 touchPos = Input.GetTouch(0).position;
-            ShootAtTouch(touchPos);
+            Touch touch = Input.GetTouch(0);
+            if (IsTouchOverUI(touch.position))
+            {
+                Debug.Log("Touch is on UI — not shooting");
+                return;
+            }
+            if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+            {
+                Vector2 touchPos = touch.position;
+                ShootAtTouch(touchPos);
+            }
         }
     }
 
@@ -96,7 +106,16 @@ public class Pistol : Weapon
         playerBody.rotation = targetRotation;
         Shoot();
     }
+    private bool IsTouchOverUI(Vector2 screenPosition)
+    {
+        PointerEventData eventData = new PointerEventData(eventSystem);
+        eventData.position = screenPosition;
 
+        List<RaycastResult> results = new List<RaycastResult>();
+        uiRaycaster.Raycast(eventData, results);
+
+        return results.Count > 0;
+    }
     public override void Shoot()
     {
         if (ikHandler != null)
