@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] EnemyData enemyData;
     [SerializeField] GameObject playerGO;
-
+    NavMeshAgent agent;
     [Header("Enemy Components")]
     [SerializeField] GameObject firePos;
     [SerializeField] ParticleSystem enemyPS; // particle system for enemy ball explosion
@@ -26,6 +27,7 @@ public class Enemy : MonoBehaviour
     public Enemy_PatrolState enemyPatrolState {get; private set; }
     private void Awake()
     {
+        agent = GetComponent<NavMeshAgent>();
         enemyStateMachine = new StateMachine();
         enemyIdleState = new Enemy_IdleState(enemyStateMachine, "Enemy Idle", enemyData, gameObject);
         enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject, playerGO);
@@ -39,6 +41,7 @@ public class Enemy : MonoBehaviour
     {
         
         enemyStateMachine.Initalize(enemyIdleState);
+        if(enemyData.enemyType == EnemyData.EnemyType.LavaRobot) { enemyStateMachine.ChangeState(enemyPatrolState); }
         enemyAttackState.getfirePos(firePos);
         enemyAttackState.getParticleSystem(enemyPS);
         Debug.Log("START " + firePos);
@@ -62,8 +65,16 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
+                    agent.isStopped = true;
                     enemyStateMachine.ChangeState(enemyAttackState);
                 }
+            }
+            else if(enemyData.enemyType == EnemyData.EnemyType.LavaRobot)
+            {
+
+                agent.isStopped = false;
+
+                enemyStateMachine.ChangeState(enemyPatrolState);
             }
             else
             {
@@ -74,6 +85,7 @@ public class Enemy : MonoBehaviour
     }
     public void Die()
     {
+        
         SpawnDrops();
         Destroy(gameObject);
     }

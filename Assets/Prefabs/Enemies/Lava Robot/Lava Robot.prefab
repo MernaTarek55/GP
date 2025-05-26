@@ -44,6 +44,8 @@ GameObject:
   - component: {fileID: 5393485364121303187}
   - component: {fileID: 7489762896441028355}
   - component: {fileID: -1124280754691726229}
+  - component: {fileID: 8981443978251235036}
+  - component: {fileID: 2662196925404066316}
   m_Layer: 0
   m_Name: Lava Robot
   m_TagString: Untagged
@@ -156,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: 9e051fa974a047a49bc9eea4b64d6f24, type: 2}
-  playerGO: {fileID: 2625473491026870316, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
+  playerGO: {fileID: 0}
   firePos: {fileID: 5145247578527658450}
   enemyPS: {fileID: 0}
   drop: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
@@ -166,6 +168,45 @@ MonoBehaviour:
   dropForce:
   - {x: 0.01, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
+--- !u!114 &8981443978251235036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850917478301423260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5591232df0b63489ea781a81272362, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToInstantiate: {fileID: 8272798266748488672, guid: aec7c9913852a48479e04e87badb3ffd, type: 3}
+  hingeAnchor: {x: 0, y: 0.5, z: 0}
+  hingeAxis: {x: 0, y: 1, z: 0}
+  useConnectedAnchor: 1
+  connectedAnchor: {x: 0, y: 0, z: 0}
+--- !u!195 &2662196925404066316
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850917478301423260}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &2147523308040884472
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   A: {fileID: 5685012763328612990}
-  B: {fileID: 7331401363613168223, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
+  B: {fileID: 0}
   Control: {fileID: 8431188704817870475}
 --- !u!1 &5145247578527658450
 GameObject:
