@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Pistol : Weapon
 {
@@ -10,6 +11,7 @@ public class Pistol : Weapon
 
     [Header("Effects")]
     [SerializeField] private ParticleSystem muzzleFlash;
+    //better in parent??
     [SerializeField] private AudioClip shootSound;
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private AudioSource audioSource;
@@ -28,8 +30,13 @@ public class Pistol : Weapon
     [Header("UI")]
     [SerializeField] private GraphicRaycaster uiRaycaster;
     [SerializeField] private EventSystem eventSystem;
+
+    //Dictionary
+    private Dictionary<int, bool> touchStartedOverUI = new Dictionary<int, bool>();
+
     private void Awake()
     {
+        base.Awake();
         if (weaponData == null)
         {
             Debug.LogError("WeaponData not assigned in Inspector.");
@@ -63,10 +70,30 @@ public class Pistol : Weapon
         }
 
         // Check for touch input on mobile
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        for (int i = 0; i < Input.touchCount; i++)
         {
-            Vector2 touchPos = Input.GetTouch(0).position;
-            ShootAtTouch(touchPos);
+            Touch touch = Input.GetTouch(i);
+            int fingerId = touch.fingerId;
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                // On first touch, record whether it started over UI
+                bool isOverUI = IsTouchOverUI(touch.position);
+                touchStartedOverUI[fingerId] = isOverUI;
+            }
+            else if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+            {
+                // Only allow shooting if this finger started off-UI
+                if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI)
+                {
+                    ShootAtTouch(touch.position);
+                }
+            }
+            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            {
+                // Clean up dictionary when touch ends
+                touchStartedOverUI.Remove(fingerId);
+            }
         }
     }
 
@@ -94,7 +121,16 @@ public class Pistol : Weapon
         playerBody.rotation = targetRotation;
         Shoot();
     }
+    private bool IsTouchOverUI(Vector2 screenPosition)
+    {
+        PointerEventData eventData = new PointerEventData(eventSystem);
+        eventData.position = screenPosition;
 
+        List<RaycastResult> results = new List<RaycastResult>();
+        uiRaycaster.Raycast(eventData, results);
+
+        return results.Count > 0;
+    }
     public override void Shoot()
     {
         if (ikHandler != null)

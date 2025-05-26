@@ -5,6 +5,8 @@ public class PlayerInventoryHolder : MonoBehaviour
 {
     public PlayerInventory Inventory { get; private set; } = new PlayerInventory();
 
+    //PlayerInventoryHolder 
+
     private void Start()
     {
         WeaponData[] allWeaponData = Resources.LoadAll<WeaponData>("WeaponData");

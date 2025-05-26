@@ -7,6 +7,7 @@ public static class WeaponDatabase
 
     private static void LoadAll()
     {
+        //this need to be redone
         if(weaponDataMap != null)
             return;
         var all = Resources.LoadAll<WeaponData>("WeaponData");
@@ -18,6 +19,9 @@ public static class WeaponDatabase
         if (weaponDataMap == null)
         {
             LoadAll();
+        }
+        foreach (var key in weaponDataMap.Keys) { 
+            Debug.Log("Dectanory Key "+key );
         }
         return weaponDataMap[type];
     }

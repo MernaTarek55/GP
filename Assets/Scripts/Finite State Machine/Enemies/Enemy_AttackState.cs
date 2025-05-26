@@ -31,13 +31,13 @@ public class Enemy_AttackState : EntityState
     protected override void UpdateTurret()
     {
         Debug.Log("Turret Attack");
-        InvisibilitySkill invisibilitySkill = playerGO.GetComponent<InvisibilitySkill>();
-        if (invisibilitySkill != null && invisibilitySkill.isInvisible)
+        if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
         {
-            Debug.Log("Player is invisible, turret does nothing.");
+            Debug.Log("Player is invisible");
             stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO));
             return;
         }
+        
         RotateTowardPlayer();
         Shoot();
     }
@@ -45,8 +45,8 @@ public class Enemy_AttackState : EntityState
     protected override void UpdateBallDroid()
     {
         Debug.Log("BallDroid Attack");
-        InvisibilitySkill invisibilitySkill = playerGO.GetComponent<InvisibilitySkill>();
-        if (invisibilitySkill != null && invisibilitySkill.isInvisible)
+        Debug.Log(playerGO.GetComponent<InvisibilitySkill>().isInvisible);
+        if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
         {
             Debug.Log("Player is invisible, ball droid does nothing.");
             return;
@@ -87,7 +87,11 @@ public class Enemy_AttackState : EntityState
 
     private void ShootLava()
     {
-
+        if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+        {
+            Debug.Log("Player is invisible, ball droid does nothing.");
+            return;
+        }
         // Check cooldown
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
             return;

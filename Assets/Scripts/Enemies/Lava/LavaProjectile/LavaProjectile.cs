@@ -93,7 +93,7 @@ public class LavaProjectile : MonoBehaviour
        
         if (_sampleTime >= 1f)
         {
-            //ReturnToPool();
+            ReturnToPool();
         }
     }
 

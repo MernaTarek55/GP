@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     public Player_MoveState playerMove { get; private set; }
     public Player_JumpState playerJump { get; private set; }
     public Player_DeadEyeStateTest1 playerDeadEye { get; private set; }
-    public PlayerInvisibilitySkill PlayerInvisibility { get; private set; }
     public Animator animator { get; private set; }
     public Rigidbody rb { get; private set; }
 
@@ -32,28 +31,17 @@ public class Player : MonoBehaviour
     InputAction moveAction;
     InputAction jumpAction;
     InputAction deadEyeAction;
-    InputAction InvisibilityAction;
     Vector2 moveInput;
     public Vector2 MoveInput => moveInput;
     public bool JumpPressed { get; private set; }
     public bool DeadEyePressed {  get; private set; }
-    public bool InvisibilityPressed {  get; private set; }
 
 
     public float deadEyeDuration = 10f;
     public float deadEyeCooldown = 30f;
     public float lastDeadEyeTime = -Mathf.Infinity;
-    
-    public float InvisibilityDuration = 10f;
-    public float InvisibilityCooldown = 30f;
-    public float lastInvisibility = -Mathf.Infinity;
-    public SkinnedMeshRenderer[] Renderers;
-    public Material[] Materials;
     public bool CanUseDeadEye => Time.time >= lastDeadEyeTime + deadEyeCooldown;
-    public bool CanUseInvisibility => Time.time >= lastInvisibility + InvisibilityCooldown;
 
-
-    
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -62,14 +50,12 @@ public class Player : MonoBehaviour
         moveAction = InputActions.FindActionMap("Player").FindAction("Move");
         jumpAction = InputActions.FindActionMap("Player").FindAction("Jump");
         deadEyeAction = InputActions.FindActionMap("Player").FindAction("DeadEye");
-        InvisibilityAction = InputActions.FindActionMap("Player").FindAction("Invisibility");
 
         stateMachine = new StateMachine();
         playerIdle = new Player_IdleState(stateMachine, "Idle", this);
         playerMove = new Player_MoveState(stateMachine, "Move", this);
         playerJump = new Player_JumpState(stateMachine, "Jump", this);
         playerDeadEye = new Player_DeadEyeStateTest1(stateMachine, "DeadEye", this);
-        PlayerInvisibility = new PlayerInvisibilitySkill(stateMachine, "Invisibility", this);
     }
 
     private void OnEnable()
@@ -85,20 +71,12 @@ public class Player : MonoBehaviour
     private void Start()
     {
         stateMachine.Initalize(playerIdle);
-        Renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
-        List<Material> materialList = new List<Material>();
-        foreach (var r in Renderers)
-        {
-            materialList.AddRange(r.materials);
-        }
-        Materials = materialList.ToArray();
     }
 
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
         DeadEyePressed = deadEyeAction.WasPressedThisFrame() && CanUseDeadEye;
-        InvisibilityPressed = InvisibilityAction.WasPressedThisFrame() && CanUseInvisibility;
         JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
         stateMachine.UpdateActiveState();
     }

@@ -2,14 +2,14 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    [SerializeField] protected WeaponData weaponData;
 
     protected int currentAmmo;
-
-    public WeaponType WeaponType => weaponData.weaponType;
+    [SerializeField] protected WeaponType WeaponType;
+    protected WeaponData weaponData;
 
     protected virtual void Awake()
     {
+        weaponData = WeaponDatabase.GetWeaponData(WeaponType);
         currentAmmo = weaponData.maxAmmo;
     }
 

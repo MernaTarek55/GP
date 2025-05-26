@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class InvisibilitySkill : MonoBehaviour
 {
     public SkinnedMeshRenderer[] renderers;
+    public MeshRenderer[] Weaponrenderers;
     private Material[] materials;
+    //need refactor
     private float duration;
     private float cooldownTime;
     public float invisibilityDuration = 10f;
@@ -24,29 +26,33 @@ public class InvisibilitySkill : MonoBehaviour
         {
             matsList.AddRange(r.materials);
         }
+        foreach (var r in Weaponrenderers)
+        {
+            matsList.AddRange(r.materials);
+        }
         materials = matsList.ToArray();
     }
     private void Start()
     {
-        var player = GameObject.FindWithTag("Player");
-        playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
-        cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
+        //var player = GameObject.FindWithTag("Player");
+        //playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
+        //cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
         lastUsedTime = Time.time - cooldownTime;
     }
     public void UseInvisibility()
     {
-        UpdateStats();
+        //UpdateStats();
         if (!isInvisible && !isOnCooldown)
         {
             InvisibleButton.interactable = false;
             StartCoroutine(BecomeInvisible());
         }
     }
-    private void UpdateStats()
-    {
-        duration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityDuration);
-        cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
-    }
+    //private void UpdateStats()
+    //{
+    //    duration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityDuration);
+    //    cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
+    //}
     IEnumerator BecomeInvisible()
     {
         isInvisible = true;
