@@ -2,19 +2,38 @@ using UnityEngine;
 
 public class LavaProjectile : MonoBehaviour
 {
+
+    [System.Serializable]
+    public struct Range4
+    {
+        public float minX, maxX, minZ, maxZ;
+
+        public Range4(float minX, float maxX, float minY, float maxY)
+        {
+            this.minX = minX;
+            this.maxX = maxX;
+            this.minZ = minY;
+            this.maxZ = maxY;
+        }
+    }
     [Header("Settings")]
     [SerializeField] private float speed = 1f;
     [SerializeField] private float groundLevelPosition = -0.2f;
 
-    [Header("References")]
+    [Header("Positions")]
     public GameObject LavaRobot;
     private Vector3 initialA;
     private Vector3 initialControl;
     private Vector3 initialB;
+    [SerializeField] private Range4 randomRange; // (minX, maxX, minZ, maxZ)
+    private Vector2 randomizer;
 
+
+   
     private float _sampleTime;
     private QuadraticCurve curve;
 
+   
     private void OnEnable()
     {
         if (LavaRobot == null)
@@ -36,7 +55,12 @@ public class LavaProjectile : MonoBehaviour
         initialA = curve.A.position;
         initialControl = curve.Control.position;
         //change if u want to change target
-        initialB = curve.B.position /*new Vector3(curve.B.position.x, groundLevelPosition, curve.B.position.z)*/;
+        randomizer.x=  Random.Range(randomRange.minX, randomRange.maxX);
+        randomizer.y = Random.Range(randomRange.minZ, randomRange.maxZ);
+      
+
+
+        initialB = curve.B.position /*new Vector3(randomizer.x, curve.B.position.y, randomizer.y)*/;
         // Initialize movement
         _sampleTime = 0f;
         transform.position = initialA;
@@ -69,7 +93,7 @@ public class LavaProjectile : MonoBehaviour
        
         if (_sampleTime >= 1f)
         {
-            ReturnToPool();
+            //ReturnToPool();
         }
     }
 
@@ -81,6 +105,16 @@ public class LavaProjectile : MonoBehaviour
         return Vector3.Lerp(ac, cb, t);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<HealthComponent>().TakeDamage(10);
+        }
+
+        
+        ReturnToPool();
+    }
     private void ReturnToPool()
     {
         gameObject.SetActive(false);

@@ -16,13 +16,16 @@ public class Enemy_AttackState : EntityState
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
+        TryGetComponents(enemyGO);
+
+    }
+
+    private void TryGetComponents(GameObject enemyGO)
+    {
         if (enemyGO.TryGetComponent(out MeshRenderer mr)) enemyMR = mr;
         else Debug.LogWarning("Mesh Renderer not found");
         if (enemyGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
         else Debug.LogWarning("Enemy script not found");
-
-
-
     }
 
     protected override void UpdateTurret()
@@ -50,18 +53,23 @@ public class Enemy_AttackState : EntityState
         }
         if (!hasExploded)
         {
-            ParticleSystem enemyPSClone = GameObject.Instantiate(enemyPS, enemyGO.transform.position, enemyGO.transform.rotation);
-            enemyPSClone.Play();
-        
-            enemyMR.enabled = false;
-            enemy.Die();
-            //GameObject.Destroy(enemyGO/*, enemyPSClone.main.duration*/);
-
-            hasExploded = true;
-            if(playerGO.TryGetComponent(out HealthComponent playerHealth)){ playerHealth.TakeDamage(10f); Debug.Log("Player took damage");}
-            else Debug.LogWarning("Health Component not found");
+            ExplodingBall();
         }
 
+    }
+
+    private void ExplodingBall()
+    {
+        ParticleSystem enemyPSClone = GameObject.Instantiate(enemyPS, enemyGO.transform.position, enemyGO.transform.rotation);
+        enemyPSClone.Play();
+
+        enemyMR.enabled = false;
+        enemy.Die();
+        //GameObject.Destroy(enemyGO/*, enemyPSClone.main.duration*/);
+
+        hasExploded = true;
+        if (playerGO.TryGetComponent(out HealthComponent playerHealth)) { playerHealth.TakeDamage(10f); Debug.Log("Player took damage"); }
+        else Debug.LogWarning("Health Component not found");
     }
 
     protected override void UpdateHumanoid()

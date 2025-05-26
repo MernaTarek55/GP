@@ -1,27 +1,87 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy_PatrolState : EntityState
 {
+    private NavMeshAgent enemyAgent;  // to let the enemy move
+    private float walkRadius = 10f; // How far the enemy can walk
+
     public Enemy_PatrolState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
+        TryGetComponents(enemyGO); 
     }
+
+
 
     protected override void UpdateTurret()
     {
         Debug.Log("Turret Patrol - No movement (stationary enemy)");
         // Turrets typically don't patrol
+        SetRandomDestination();
+
     }
 
     protected override void UpdateBallDroid()
     {
         Debug.Log("BallDroid Patrol");
-        // Implement ball droid patrol logic (e.g., waypoint movement)
-    }
 
+   
+      
+        SetRandomDestination();
+   
+
+    
+    }
+    
     protected override void UpdateHumanoid()
     {
         Debug.Log("Humanoid Patrol");
+        SetRandomDestination();
+
         // Implement humanoid patrol logic (e.g., navmesh waypoints)
+    }
+
+    protected override void UpdateLavaRobot()
+    {
+        Debug.Log("LavaRobot Patrol");
+        
+            SetRandomDestination();
+        
+        // Implement lava robot patrol logic
+    }
+
+
+    private void TryGetComponents(GameObject enemyGO)
+    {
+        if (enemyGO.TryGetComponent(out NavMeshAgent eNav)) enemyAgent = eNav;
+        else Debug.LogWarning("Nav mesh not found");
+     
+    }
+
+    void SetRandomDestination()
+    {
+        if (enemyAgent.remainingDistance < 1f && !enemyAgent.pathPending)
+        {
+            Vector3 randomDirection = Random.insideUnitSphere * walkRadius;
+            randomDirection += enemyGO.transform.position;
+
+            NavMeshHit hit;
+            // Try 30 times to find a valid position (avoids infinite loops)
+            for (int i = 0; i < 30; i++)
+            {
+                if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, NavMesh.AllAreas))
+                {
+                    enemyAgent.SetDestination(hit.position);
+                    return;
+                }
+                // If failed, try another random direction
+                randomDirection = Random.insideUnitSphere * walkRadius;
+                randomDirection += enemyGO.transform.position;
+            }
+
+            // If all attempts fail, just use current position
+            enemyAgent.SetDestination(enemyGO.transform.position);
+        }
     }
 }
