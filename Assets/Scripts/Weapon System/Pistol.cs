@@ -30,6 +30,8 @@ public class Pistol : Weapon
     [Header("UI")]
     [SerializeField] private GraphicRaycaster uiRaycaster;
     [SerializeField] private EventSystem eventSystem;
+
+    //Dictionary
     private Dictionary<int, bool> touchStartedOverUI = new Dictionary<int, bool>();
 
     private void Awake()
