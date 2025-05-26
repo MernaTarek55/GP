@@ -31,6 +31,10 @@ public class Player_JumpState : EntityState
                 stateMachine.ChangeState(new Player_MoveState(stateMachine, "Walk", player));
             else if (player.DeadEyePressed)
                 stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
+            else if (player.healthComponent.IsDead())
+            {
+                stateMachine.ChangeState(player.playerDeath);
+            }
             else
                 stateMachine.ChangeState(new Player_IdleState(stateMachine, "Idle", player));
         }

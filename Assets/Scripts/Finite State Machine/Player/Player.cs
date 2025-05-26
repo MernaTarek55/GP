@@ -15,8 +15,11 @@ public class Player : MonoBehaviour
     public Player_MoveState playerMove { get; private set; }
     public Player_JumpState playerJump { get; private set; }
     public Player_DeadEyeStateTest1 playerDeadEye { get; private set; }
+    public Death_State playerDeath { get; private set; }
     public Animator animator { get; private set; }
     public Rigidbody rb { get; private set; }
+    public HealthComponent healthComponent { get; private set; }
+
 
     public float WalkSpeed = 5f;
     public float RotateSpeed = 10f;
@@ -46,6 +49,7 @@ public class Player : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        healthComponent = gameObject.GetComponent<HealthComponent>();
 
         moveAction = InputActions.FindActionMap("Player").FindAction("Move");
         jumpAction = InputActions.FindActionMap("Player").FindAction("Jump");
@@ -56,6 +60,7 @@ public class Player : MonoBehaviour
         playerMove = new Player_MoveState(stateMachine, "Move", this);
         playerJump = new Player_JumpState(stateMachine, "Jump", this);
         playerDeadEye = new Player_DeadEyeStateTest1(stateMachine, "DeadEye", this);
+        playerDeath = new Death_State(stateMachine, "Death", this);
     }
 
     private void OnEnable()

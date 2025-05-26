@@ -25,6 +25,8 @@ public class Enemy : MonoBehaviour
     public Enemy_AttackState enemyAttackState {get; private set; }
     public Enemy_ChaseState enemyChaseState {get; private set; }
     public Enemy_PatrolState enemyPatrolState {get; private set; }
+    public Death_State enemyDeath { get; private set; }
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -33,7 +35,8 @@ public class Enemy : MonoBehaviour
         enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject, playerGO);
         enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject, playerGO);    
         enemyPatrolState = new Enemy_PatrolState(enemyStateMachine, "Enemy Patrol", enemyData, gameObject);
-        
+        enemyDeath = new Death_State(enemyStateMachine, "Enemy Death", enemyData, gameObject);
+
 
     }
 
@@ -89,7 +92,7 @@ public class Enemy : MonoBehaviour
     {
         
         SpawnDrops();
-        Destroy(gameObject);
+        enemyStateMachine.ChangeState(enemyDeath);
     }
     #region Enemy Drops
     private void SpawnSingleDrop(GameObject itemPrefab)

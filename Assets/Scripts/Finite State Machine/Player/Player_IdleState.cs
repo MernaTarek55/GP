@@ -17,6 +17,10 @@ public class Player_IdleState : EntityState
     {
         base.Update();
 
+        if (player.healthComponent.IsDead())
+            stateMachine.ChangeState(player.playerDeath);
+
+
         if (player.MoveInput.sqrMagnitude > 0.01f)
             stateMachine.ChangeState(new Player_MoveState(stateMachine, "Walk", player));
         else if (player.JumpPressed)
