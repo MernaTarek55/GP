@@ -27,5 +27,5 @@ public class Player_IdleState : EntityState
             stateMachine.ChangeState(new Player_JumpState(stateMachine, "Jump", player));
         else if (player.DeadEyePressed)
             stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
-    }
+    } 
 }
