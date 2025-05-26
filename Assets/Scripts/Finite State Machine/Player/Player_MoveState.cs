@@ -22,6 +22,11 @@ public class Player_MoveState : EntityState
             return;
         }
 
+        if (player.healthComponent.IsDead())
+        {
+            stateMachine.ChangeState(player.playerDeath);
+        }
+
         if (player.DeadEyePressed)
         {
             stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
