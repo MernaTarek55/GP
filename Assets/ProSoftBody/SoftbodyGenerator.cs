@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEditor;
 using GK;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 public class SoftbodyGenerator : MonoBehaviour
 {
@@ -13,28 +11,29 @@ public class SoftbodyGenerator : MonoBehaviour
     private List<Vector3> writableNormals { get; set; }
     private List<Vector3> writableNormalsConvaxed;//{ get; set; }
 
-    private List<SphereCollider> sphereColliders = new List<SphereCollider>();
+    private readonly List<SphereCollider> sphereColliders = new();
     private int[] writableTris { get; set; }
     private List<int> writableTrisConvaxed;// { get; set; }
     private Mesh writableMesh;
 
     private List<GameObject> phyisicedVertexes;
-    private new Dictionary<int, int> vertexDictunery;
+    private Dictionary<int, int> vertexDictunery;
     /** public variable to controll softbody **/
     public bool runOptimizedVersion = false;
     public float _collissionSurfaceOffset = 0.1f;
     public float collissionSurfaceOffset
     {
-        get
-        {
-            return _collissionSurfaceOffset;
-        }
+        get => _collissionSurfaceOffset;
         set
         {
             _collissionSurfaceOffset = value;
             if (phyisicedVertexes != null)
-                foreach (var sCollider in sphereColliders)
+            {
+                foreach (SphereCollider sCollider in sphereColliders)
+                {
                     sCollider.radius = _collissionSurfaceOffset;
+                }
+            }
         }
     }
 
@@ -42,16 +41,17 @@ public class SoftbodyGenerator : MonoBehaviour
     public float _softness = 1f;
     public float softness
     {
-        get
-        {
-            return _softness;
-        }
+        get => _softness;
         set
         {
             _softness = value;
-            if(phyisicedVertexes!=null)
-            foreach (var gObject in phyisicedVertexes)
-                gObject.GetComponent<SpringJoint>().spring = _softness;
+            if (phyisicedVertexes != null)
+            {
+                foreach (GameObject gObject in phyisicedVertexes)
+                {
+                    gObject.GetComponent<SpringJoint>().spring = _softness;
+                }
+            }
 
             springlimit.spring = _softness;
         }
@@ -59,16 +59,17 @@ public class SoftbodyGenerator : MonoBehaviour
     public float _damp = .2f;
     public float damp
     {
-        get
-        {
-            return _damp;
-        }
+        get => _damp;
         set
         {
             _damp = value;
             if (phyisicedVertexes != null)
-            foreach (var gObject in phyisicedVertexes)
-                gObject.GetComponent<SpringJoint>().damper = _damp;
+            {
+                foreach (GameObject gObject in phyisicedVertexes)
+                {
+                    gObject.GetComponent<SpringJoint>().damper = _damp;
+                }
+            }
 
             springlimit.damper = _damp;
         }
@@ -76,42 +77,56 @@ public class SoftbodyGenerator : MonoBehaviour
     public float _mass = 1f;
     public float mass
     {
-        get
-        {
-            return _mass;
-        }
+        get => _mass;
         set
         {
             _mass = value;
             if (phyisicedVertexes != null)
-                foreach (var gObject in phyisicedVertexes)
+            {
+                foreach (GameObject gObject in phyisicedVertexes)
+                {
                     gObject.GetComponent<Rigidbody>().mass = _mass;
+                }
+            }
         }
     }
 
     private bool _debugMode = false;
     public bool debugMode
     {
-        get
-        {
-            return _debugMode;
-        }
+        get => _debugMode;
         set
         {
             _debugMode = value;
             if (_debugMode == false)
             {
                 if (phyisicedVertexes != null)
-                foreach (var gObject in phyisicedVertexes)
-                    gObject.hideFlags = HideFlags.HideAndDontSave;
+                {
+                    foreach (GameObject gObject in phyisicedVertexes)
+                    {
+                        gObject.hideFlags = HideFlags.HideAndDontSave;
+                    }
+                }
+
                 if (centerOfMasObj != null)
+                {
                     centerOfMasObj.hideFlags = HideFlags.HideAndDontSave;
-            } else {
+                }
+            }
+            else
+            {
                 if (phyisicedVertexes != null)
-                foreach (var gObject in phyisicedVertexes)
-                    gObject.hideFlags = HideFlags.None;
-                if(centerOfMasObj!=null)
+                {
+                    foreach (GameObject gObject in phyisicedVertexes)
+                    {
+                        gObject.hideFlags = HideFlags.None;
+                    }
+                }
+
+                if (centerOfMasObj != null)
+                {
                     centerOfMasObj.hideFlags = HideFlags.None;
+                }
             }
 
         }
@@ -119,39 +134,47 @@ public class SoftbodyGenerator : MonoBehaviour
 
 
     private float _physicsRoughness = 4;
-    public float physicsRoughness {
-        get {
-            return _physicsRoughness;
-        }
-        set {
+    public float physicsRoughness
+    {
+        get => _physicsRoughness;
+        set
+        {
             _physicsRoughness = value;
             if (phyisicedVertexes != null)
-            foreach (var gObject in phyisicedVertexes)
-                gObject.GetComponent<Rigidbody>().linearDamping = physicsRoughness;
+            {
+                foreach (GameObject gObject in phyisicedVertexes)
+                {
+                    gObject.GetComponent<Rigidbody>().linearDamping = physicsRoughness;
+                }
+            }
         }
     }
     private bool _gravity = true;
     public bool gravity
     {
-        get
-        {
-            return _gravity;
-        }
+        get => _gravity;
         set
         {
             _gravity = value;
             if (phyisicedVertexes != null)
-                foreach (var gObject in phyisicedVertexes)
+            {
+                foreach (GameObject gObject in phyisicedVertexes)
+                {
                     gObject.GetComponent<Rigidbody>().useGravity = _gravity;
+                }
+            }
+
             if (centerOfMasObj != null)
+            {
                 centerOfMasObj.GetComponent<Rigidbody>().useGravity = _gravity;
+            }
         }
     }
     public GameObject centerOfMasObj = null;
     private void Awake()
     {
-        
-       
+
+
         writableVertices = new List<Vector3>();
         writableVerticesConvaxed = new List<Vector3>();
         writableNormals = new List<Vector3>();
@@ -165,14 +188,14 @@ public class SoftbodyGenerator : MonoBehaviour
         originalMeshFilter.mesh.GetNormals(writableNormals);
         writableTris = originalMeshFilter.mesh.triangles;
 
-        
 
-        var localToWorld = transform.localToWorldMatrix;
+
+        Matrix4x4 localToWorld = transform.localToWorldMatrix;
         for (int i = 0; i < writableVertices.Count; ++i)
         {
             writableVertices[i] = localToWorld.MultiplyPoint3x4(writableVertices[i]);
         }
-        
+
         if (runOptimizedVersion)
         {
             new ConvexHullCalculator().GenerateHull(
@@ -186,26 +209,29 @@ public class SoftbodyGenerator : MonoBehaviour
         }
 
         writableMesh = new Mesh();
-        writableMesh.MarkDynamic();        
+        writableMesh.MarkDynamic();
         writableMesh.SetVertices(writableVertices);
         writableMesh.SetNormals(writableNormals);
         writableMesh.triangles = writableTris;
         originalMeshFilter.mesh = writableMesh;
         // remove duplicated vertex
-        var _optimizedVertex = new List<Vector3>();
+        List<Vector3> _optimizedVertex = new();
 
         // first column = original vertex index , last column = optimized vertex index 
         vertexDictunery = new Dictionary<int, int>();
         for (int i = 0; i < writableVertices.Count; i++)
-        {   
+        {
             bool isVertexDuplicated = false;
             for (int j = 0; j < _optimizedVertex.Count; j++)
+            {
                 if (_optimizedVertex[j] == writableVertices[i])
                 {
                     isVertexDuplicated = true;
                     vertexDictunery.Add(i, j);
                     break;
                 }
+            }
+
             if (!isVertexDuplicated)
             {
                 _optimizedVertex.Add(writableVertices[i]);
@@ -213,38 +239,40 @@ public class SoftbodyGenerator : MonoBehaviour
             }
         }
 
-        
+
         // create balls at each of vertex also center of mass
-        foreach (var vertecs in _optimizedVertex)
+        foreach (Vector3 vertecs in _optimizedVertex)
         {
-            var _tempObj = new GameObject("Point "+ _optimizedVertex.IndexOf(vertecs));
+            GameObject _tempObj = new("Point " + _optimizedVertex.IndexOf(vertecs));
 
             if (!debugMode)
+            {
                 _tempObj.hideFlags = HideFlags.HideAndDontSave;
+            }
 
-            _tempObj.transform.parent = this.transform;
-            _tempObj.transform.position = vertecs; 
+            _tempObj.transform.parent = transform;
+            _tempObj.transform.position = vertecs;
 
 
             // add collider to each of vertex ( sphere collider )
-            var sphereColider = _tempObj.AddComponent<SphereCollider>() as SphereCollider;
+            SphereCollider sphereColider = _tempObj.AddComponent<SphereCollider>();
             sphereColider.radius = collissionSurfaceOffset;
             // add current collider to Collider list ;
             sphereColliders.Add(sphereColider);
 
 
             // add rigidBody to each of vertex
-            var _tempRigidBody = _tempObj.AddComponent<Rigidbody>();
+            Rigidbody _tempRigidBody = _tempObj.AddComponent<Rigidbody>();
             _tempRigidBody.mass = mass / _optimizedVertex.Count;
             _tempRigidBody.linearDamping = physicsRoughness;
-            
 
-            
-            
-            
-            _tempObj.AddComponent<DebugColorGameObject>().Color = Random.ColorHSV(); 
-            
-            
+
+
+
+
+            _tempObj.AddComponent<DebugColorGameObject>().Color = Random.ColorHSV();
+
+
             phyisicedVertexes.Add(_tempObj);
         }
 
@@ -253,53 +281,58 @@ public class SoftbodyGenerator : MonoBehaviour
         // calculate center of mass
         Vector3 tempCenter = Vector3.zero;
 
-        foreach (var vertecs in _optimizedVertex)
-            tempCenter = new Vector3(tempCenter.x + vertecs.x, tempCenter.y + vertecs.y,tempCenter.z + vertecs.z );
+        foreach (Vector3 vertecs in _optimizedVertex)
+        {
+            tempCenter = new Vector3(tempCenter.x + vertecs.x, tempCenter.y + vertecs.y, tempCenter.z + vertecs.z);
+        }
 
-        Vector3 centerOfMass = new Vector3(
+        Vector3 centerOfMass = new(
               tempCenter.x / _optimizedVertex.Count
             , tempCenter.y / _optimizedVertex.Count
             , tempCenter.z / _optimizedVertex.Count
         );
         // add center of mass vertex to OptimizedVertex list
         {
-            var _tempObj = new GameObject("centerOfMass");
+            GameObject _tempObj = new("centerOfMass");
 
             if (!debugMode)
+            {
                 _tempObj.hideFlags = HideFlags.HideAndDontSave;
-            _tempObj.transform.parent = this.transform;
+            }
+
+            _tempObj.transform.parent = transform;
             _tempObj.transform.position = centerOfMass;
 
             // add collider to center of mass as a sphere collider
-            var sphereColider = _tempObj.AddComponent<SphereCollider>() as SphereCollider;
+            SphereCollider sphereColider = _tempObj.AddComponent<SphereCollider>();
             sphereColider.radius = collissionSurfaceOffset;
             // add current collider to Collider list ;
             sphereColliders.Add(sphereColider);
 
             // add rigidBody to center of mass as a sphere collider
-            var _tempRigidBody = _tempObj.AddComponent<Rigidbody>();
-            
-            centerOfMasObj = _tempObj;            
+            _ = _tempObj.AddComponent<Rigidbody>();
+
+            centerOfMasObj = _tempObj;
         }
 
         // IGNORE COLLISTION BETWEEN ALL OF THE VERTEXES AND CENTER OFF MASS
-        foreach (var collider1 in sphereColliders)
+        foreach (SphereCollider collider1 in sphereColliders)
         {
-            foreach (var collider2 in sphereColliders)
+            foreach (SphereCollider collider2 in sphereColliders)
             {
                 Physics.IgnoreCollision(collider1, collider2, true);
             }
         }
 
         // Extract Lines from quad of mesh
-        List<Vector2Int> tempListOfSprings = new List<Vector2Int>();
+        List<Vector2Int> tempListOfSprings = new();
         bool isFirstTrisOfQuad = true;
-        for (int i=0;i<writableTris.Length;i+=3)
+        for (int i = 0; i < writableTris.Length; i += 3)
         {
             int index0 = vertexDictunery[writableTris[i]];
-            int index1 = vertexDictunery[writableTris[i+1]];
-            int index2 = vertexDictunery[writableTris[i+2]];
-            
+            int index1 = vertexDictunery[writableTris[i + 1]];
+            int index2 = vertexDictunery[writableTris[i + 2]];
+
             tempListOfSprings.Add(new Vector2Int(index1, index2));
             // this System convert Tris To Quad
             if (isFirstTrisOfQuad)
@@ -320,7 +353,7 @@ public class SoftbodyGenerator : MonoBehaviour
         {
             bool isDuplicated = false;
             Vector2Int normal = tempListOfSprings[i];
-            Vector2Int reversed = new Vector2Int(tempListOfSprings[i].y, tempListOfSprings[i].x);
+            Vector2Int reversed = new(tempListOfSprings[i].y, tempListOfSprings[i].x);
             for (int j = 0; j < noDupesListOfSprings.Count; j++)
             {
                 if (normal == tempListOfSprings[j])
@@ -332,40 +365,46 @@ public class SoftbodyGenerator : MonoBehaviour
                 {
                     isDuplicated = true;
                     break;
-                }                
-                
+                }
+
             }
             if (isDuplicated == false)
+            {
                 noDupesListOfSprings.Add(tempListOfSprings[i]);
+            }
         }
 
         // making Springs bodies
-        foreach (var jointIndex in noDupesListOfSprings)
-        {            
-            var thisGameObject = phyisicedVertexes[jointIndex.x];
-            var thisBodyJoint = thisGameObject.AddComponent<CharacterJoint>();
-            var destinationBody = phyisicedVertexes[jointIndex.y].GetComponent<Rigidbody>();
+        foreach (Vector2Int jointIndex in noDupesListOfSprings)
+        {
+            GameObject thisGameObject = phyisicedVertexes[jointIndex.x];
+            CharacterJoint thisBodyJoint = thisGameObject.AddComponent<CharacterJoint>();
+            Rigidbody destinationBody = phyisicedVertexes[jointIndex.y].GetComponent<Rigidbody>();
             float distanceBetween = Vector3.Distance(thisGameObject.transform.position, destinationBody.transform.position);
-            
+
 
             // configure current spring joint
             thisBodyJoint.connectedBody = destinationBody;
-            SoftJointLimit jointlimitHihj = new SoftJointLimit();
-            jointlimitHihj.bounciness = 1.1f;
-            jointlimitHihj.contactDistance = distanceBetween;
-            jointlimitHihj.limit = 10;
+            SoftJointLimit jointlimitHihj = new()
+            {
+                bounciness = 1.1f,
+                contactDistance = distanceBetween,
+                limit = 10
+            };
 
-            SoftJointLimit jointlimitLow = new SoftJointLimit();
-            jointlimitLow.bounciness = 1.1f;
-            jointlimitLow.contactDistance = distanceBetween;
-            jointlimitLow.limit = -10;
-            
+            SoftJointLimit jointlimitLow = new()
+            {
+                bounciness = 1.1f,
+                contactDistance = distanceBetween,
+                limit = -10
+            };
+
 
             thisBodyJoint.highTwistLimit = jointlimitHihj;
             thisBodyJoint.lowTwistLimit = jointlimitLow;
             thisBodyJoint.swing1Limit = jointlimitLow;
             thisBodyJoint.swing2Limit = jointlimitHihj;
-            
+
 
             //thisBodyJoint.
 
@@ -376,21 +415,20 @@ public class SoftbodyGenerator : MonoBehaviour
             thisBodyJoint.twistLimitSpring = springlimit;
 
             if (!runOptimizedVersion)
+            {
                 thisBodyJoint.enableCollision = true;
-           
-            
+            }
         }
-        
+
         // Decelare Center of mass variable
-        foreach (var jointIndex in phyisicedVertexes)
+        foreach (GameObject jointIndex in phyisicedVertexes)
         {
-            var destinationBodyJoint = jointIndex.AddComponent<SpringJoint>();
-            
-            float distanceToCenterOfmass = Vector3.Distance(
+            SpringJoint destinationBodyJoint = jointIndex.AddComponent<SpringJoint>();
+            _ = Vector3.Distance(
                   centerOfMasObj.transform.localPosition
                 , destinationBodyJoint.transform.localPosition
             );
-            
+
             destinationBodyJoint.connectedBody = centerOfMasObj.GetComponent<Rigidbody>();
             destinationBodyJoint.spring = softness;
             destinationBodyJoint.damper = damp;
@@ -399,18 +437,19 @@ public class SoftbodyGenerator : MonoBehaviour
             //destinationBodyJoint.connectedMassScale = 0.001f;
 
             if (!runOptimizedVersion)
+            {
                 destinationBodyJoint.enableCollision = true;
-                
+            }
         }
-        
+
 
     }
-    List<Vector2Int> noDupesListOfSprings = new List<Vector2Int>();
+    private readonly List<Vector2Int> noDupesListOfSprings = new();
     public void Update()
     {
-       if (debugMode)
+        if (debugMode)
         {
-            foreach (var jointIndex in noDupesListOfSprings)
+            foreach (Vector2Int jointIndex in noDupesListOfSprings)
             {
                 Debug.DrawLine(
                     phyisicedVertexes[jointIndex.x].transform.position
@@ -419,7 +458,7 @@ public class SoftbodyGenerator : MonoBehaviour
                 );
 
             }
-            foreach (var jointIndex in noDupesListOfSprings)
+            foreach (Vector2Int jointIndex in noDupesListOfSprings)
             {
                 Debug.DrawLine(
                       phyisicedVertexes[jointIndex.x].transform.position
@@ -429,7 +468,7 @@ public class SoftbodyGenerator : MonoBehaviour
 
             }
         }
-        var tempVertexes = new Vector3[originalMeshFilter.mesh.vertices.Length];
+        Vector3[] tempVertexes = new Vector3[originalMeshFilter.mesh.vertices.Length];
         for (int i = 0; i < tempVertexes.Length; i++)
         {
             tempVertexes[i] = phyisicedVertexes[vertexDictunery[i]].transform.localPosition;
@@ -453,13 +492,12 @@ public class LookAtPointEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        SoftbodyGenerator softbody = target as SoftbodyGenerator;       
-        
+        SoftbodyGenerator softbody = target as SoftbodyGenerator;
+
         softbody.debugMode = EditorGUILayout.Toggle("#Debug mod", softbody.debugMode);
         EditorGUILayout.Space();
+        _ = new string[] { "  version 1", "  version 2" };
 
-        string[] options = new string[] { "  version 1", "  version 2" };
-        
 
         softbody.gravity = EditorGUILayout.Toggle("Gravity", softbody.gravity);
         softbody.mass = EditorGUILayout.FloatField("Mass(KG)", softbody.mass);
@@ -467,6 +505,6 @@ public class LookAtPointEditor : Editor
         softbody.softness = EditorGUILayout.FloatField("Softbody hardness", softbody.softness);
         softbody.damp = EditorGUILayout.FloatField("Softbody damper", softbody.damp);
         softbody.collissionSurfaceOffset = EditorGUILayout.FloatField("Softbody Offset", softbody.collissionSurfaceOffset);
-        
+
     }
 }

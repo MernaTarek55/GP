@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6143566452034584357}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,9 +44,8 @@ GameObject:
   - component: {fileID: 5393485364121303187}
   - component: {fileID: 7489762896441028355}
   - component: {fileID: -1124280754691726229}
-  - component: {fileID: 8981443978251235036}
   - component: {fileID: 2662196925404066316}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Lava RobotTypeB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,23 +167,6 @@ MonoBehaviour:
   dropForce:
   - {x: 0.01, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
---- !u!114 &8981443978251235036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 850917478301423260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d5591232df0b63489ea781a81272362, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToInstantiate: {fileID: 8272798266748488672, guid: aec7c9913852a48479e04e87badb3ffd, type: 3}
-  hingeAnchor: {x: 0, y: 0.5, z: 0}
-  hingeAxis: {x: 0, y: 1, z: 0}
-  useConnectedAnchor: 1
-  connectedAnchor: {x: 0, y: 0, z: 0}
 --- !u!195 &2662196925404066316
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -217,7 +199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2446156867255197848}
   - component: {fileID: 1212700470898299797}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CurveController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,7 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   A: {fileID: 5685012763328612990}
-  B: {fileID: 0}
+  B: {fileID: 7781798132856513584, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
   Control: {fileID: 8431188704817870475}
 --- !u!1 &5145247578527658450
 GameObject:
@@ -266,7 +248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5685012763328612990}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ShootPos
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
@@ -297,7 +279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7979900952434059590}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8431188704817870475}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Control
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +343,7 @@ GameObject:
   - component: {fileID: 8815101708359306418}
   - component: {fileID: 1244383006235193426}
   - component: {fileID: 2157090715338399232}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

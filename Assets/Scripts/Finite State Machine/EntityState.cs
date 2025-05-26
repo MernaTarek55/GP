@@ -5,7 +5,7 @@ public abstract class EntityState
     protected ExampleScript example;
     protected EnemyData enemyData;
     protected GameObject enemyGO;
-    
+
 
     protected Player player;
     protected StateMachine stateMachine;
@@ -29,7 +29,7 @@ public abstract class EntityState
     {
         this.stateMachine = stateMachine;
         this.stateName = stateName;
-        this.example = exp;
+        example = exp;
     }
 
     // public EntityState(StateMachine stateMachine, string stateName, EnemyData enemyData)
@@ -71,7 +71,8 @@ public abstract class EntityState
                 case (EnemyData.EnemyType)2: // Humanoid
                     UpdateHumanoid();
                     break;
-                case (EnemyData.EnemyType)3: // Humanoid
+                case (EnemyData.EnemyType)3:
+                case (EnemyData.EnemyType)4: // LavaRobot
                     UpdateLavaRobot();
                     break;
             }

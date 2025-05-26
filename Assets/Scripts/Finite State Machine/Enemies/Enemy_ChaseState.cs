@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Enemy_ChaseState : EntityState
 {
-    private GameObject playerGO;
+    private readonly GameObject playerGO;
 
     public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
@@ -25,7 +25,7 @@ public class Enemy_ChaseState : EntityState
             stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO));
             return;
         }
-        
+
         ChasePlayer();
     }
 
@@ -37,7 +37,10 @@ public class Enemy_ChaseState : EntityState
 
     private void ChasePlayer()
     {
-        if (playerGO == null || enemyGO == null) return;
+        if (playerGO == null || enemyGO == null)
+        {
+            return;
+        }
 
         Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
         enemyGO.transform.position += direction * enemyData.movementSpeed * Time.deltaTime;

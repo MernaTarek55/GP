@@ -21,5 +21,5 @@ public abstract class PickupBase : MonoBehaviour, IPickupInterface
             //Destroy(gameObject);
         }
     }
-    
+
 }

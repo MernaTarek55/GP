@@ -30,7 +30,7 @@ public class DropItemPool : MonoBehaviour
             obj.transform.SetParent(transform);
             obj.SetActive(false);
             objectPool.Enqueue(obj);
-            MoneyCount pickup = obj.gameObject.GetComponent <MoneyCount> ();
+            MoneyCount pickup = obj.gameObject.GetComponent<MoneyCount>();
             pickup.scoreText = scoreText;
         }
     }

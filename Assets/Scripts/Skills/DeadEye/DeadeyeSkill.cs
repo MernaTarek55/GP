@@ -13,9 +13,9 @@ public class DeadeyeSkill : MonoBehaviour
     public event Action OnDeadeyeEffectEnded;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        var player = GameObject.FindWithTag("Player");
+        GameObject player = GameObject.FindWithTag("Player");
         playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
 
         //init stats
@@ -24,14 +24,14 @@ public class DeadeyeSkill : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+
     }
     public void UseDeadeye()
     {
         UpdateStats();
-        
+
 
         if (Time.time - lastUsedTime >= cooldownTime)
         {
@@ -39,7 +39,7 @@ public class DeadeyeSkill : MonoBehaviour
             //TODO: Implement the logic for using the Deadeye skill
             Debug.Log("Deadeye skill used!");
             Time.timeScale = slowMotionFactor;
-            StartCoroutine(DeadeyeEffectCoroutine());
+            _ = StartCoroutine(DeadeyeEffectCoroutine());
         }
         else
         {

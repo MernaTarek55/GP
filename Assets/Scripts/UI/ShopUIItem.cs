@@ -25,14 +25,18 @@ public class ShopItemUI : MonoBehaviour
 
     public void OnBuyButtonClicked()
     {
-        if(ShopManager.Singelton.Buy(currentItem))
+        if (ShopManager.Singelton.Buy(currentItem))
+        {
             UpdateUICost();
+        }
         //TODO: sound effect?
     }
 
     private void UpdateUICost()
     {
         if (currentItem is WeaponUpgradeItem upgradeItem)
+        {
             costText.text = $"Cost: {upgradeItem.GetLevelCost(ShopManager.Singelton.playerInventory)}";
+        }
     }
 }

@@ -1,10 +1,10 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public class Enemy_IdleState : EntityState
 {
     private bool _isRotating = false;
-    private Tween[] _currentTween;
+    private readonly Tween[] _currentTween;
 
     public Enemy_IdleState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
@@ -50,7 +50,7 @@ public class Enemy_IdleState : EntityState
 
     private void RotateBall(Vector3 rotation, float duration, RotateMode rotateMode)
     {
-        enemyGO.transform.DORotate(rotation, duration, rotateMode)
+        _ = enemyGO.transform.DORotate(rotation, duration, rotateMode)
             .SetEase(Ease.Linear)
             .SetLoops(-1, LoopType.Restart);
     }
@@ -64,9 +64,12 @@ public class Enemy_IdleState : EntityState
 
     private void StopRotation()
     {
-        if (_currentTween == null) return;
+        if (_currentTween == null)
+        {
+            return;
+        }
 
-        foreach (var tween in _currentTween)
+        foreach (Tween tween in _currentTween)
         {
             if (tween != null && tween.IsActive())
             {

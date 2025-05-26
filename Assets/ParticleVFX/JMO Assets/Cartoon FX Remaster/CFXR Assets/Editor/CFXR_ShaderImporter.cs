@@ -19,12 +19,12 @@ namespace CartoonFX
 {
     namespace CustomShaderImporter
     {
-        static class Utils
+        internal static class Utils
         {
             public static bool IsUsingURP()
             {
 #if UNITY_2019_3_OR_NEWER
-                var renderPipeline = GraphicsSettings.currentRenderPipeline;
+                RenderPipelineAsset renderPipeline = GraphicsSettings.currentRenderPipeline;
 #else
                 var renderPipeline = GraphicsSettings.renderPipelineAsset;
 #endif
@@ -54,7 +54,7 @@ namespace CartoonFX
             public ulong variantCount;
             public ulong variantCountUsed;
 
-            enum ComparisonOperator
+            private enum ComparisonOperator
             {
                 Equal,
                 Greater,
@@ -64,7 +64,7 @@ namespace CartoonFX
             }
 
 #if UNITY_2022_2_OR_NEWER
-            const int URP_VERSION = 14;
+            private const int URP_VERSION = 14;
 #elif UNITY_2021_2_OR_NEWER
             const int URP_VERSION = 12;
 #elif UNITY_2021_1_OR_NEWER
@@ -75,39 +75,42 @@ namespace CartoonFX
             const int URP_VERSION = 7;
 #endif
 
-            static ComparisonOperator ParseComparisonOperator(string symbols)
+            private static ComparisonOperator ParseComparisonOperator(string symbols)
             {
-                switch (symbols)
+                return symbols switch
                 {
-                    case "==": return ComparisonOperator.Equal;
-                    case "<=": return ComparisonOperator.LessOrEqual;
-                    case "<": return ComparisonOperator.Less;
-                    case ">": return ComparisonOperator.Greater;
-                    case ">=": return ComparisonOperator.GreaterOrEqual;
-                    default: throw new Exception("Invalid comparison operator: " + symbols);
-                }
+                    "==" => ComparisonOperator.Equal,
+                    "<=" => ComparisonOperator.LessOrEqual,
+                    "<" => ComparisonOperator.Less,
+                    ">" => ComparisonOperator.Greater,
+                    ">=" => ComparisonOperator.GreaterOrEqual,
+                    _ => throw new Exception("Invalid comparison operator: " + symbols),
+                };
             }
 
-            static bool CompareWithOperator(int value1, int value2, ComparisonOperator comparisonOperator)
+            private static bool CompareWithOperator(int value1, int value2, ComparisonOperator comparisonOperator)
             {
-                switch (comparisonOperator)
+                return comparisonOperator switch
                 {
-                    case ComparisonOperator.Equal: return value1 == value2;
-                    case ComparisonOperator.Greater: return value1 > value2;
-                    case ComparisonOperator.GreaterOrEqual: return value1 >= value2;
-                    case ComparisonOperator.Less: return value1 < value2;
-                    case ComparisonOperator.LessOrEqual: return value1 <= value2;
-                    default: throw new Exception("Invalid comparison operator value: " + comparisonOperator);
-                }
+                    ComparisonOperator.Equal => value1 == value2,
+                    ComparisonOperator.Greater => value1 > value2,
+                    ComparisonOperator.GreaterOrEqual => value1 >= value2,
+                    ComparisonOperator.Less => value1 < value2,
+                    ComparisonOperator.LessOrEqual => value1 <= value2,
+                    _ => throw new Exception("Invalid comparison operator value: " + comparisonOperator),
+                };
             }
 
-            bool StartsOrEndWithSpecialTag(string line)
+            private bool StartsOrEndWithSpecialTag(string line)
             {
-                bool startsWithTag = (line.Length > 4 && line[0] == '/' && line[1] == '*' && line[2] == '*' && line[3] == '*');
-                if (startsWithTag) return true;
+                bool startsWithTag = line.Length > 4 && line[0] == '/' && line[1] == '*' && line[2] == '*' && line[3] == '*';
+                if (startsWithTag)
+                {
+                    return true;
+                }
 
-                int l = line.Length-1;
-                bool endsWithTag = (line.Length > 4 && line[l] == '/' && line[l-1] == '*' && line[l-2] == '*' && line[l-3] == '*');
+                int l = line.Length - 1;
+                bool endsWithTag = line.Length > 4 && line[l] == '/' && line[l - 1] == '*' && line[l - 2] == '*' && line[l - 3] == '*';
                 return endsWithTag;
             }
 
@@ -118,28 +121,28 @@ namespace CartoonFX
                 {
                     default:
                     case RenderPipeline.Auto:
-                    {
-                        isUsingURP = Utils.IsUsingURP();
-                        detectedRenderPipeline = isUsingURP ? "Universal Render Pipeline" : "Built-In Render Pipeline";
-                        break;
-                    }
+                        {
+                            isUsingURP = Utils.IsUsingURP();
+                            detectedRenderPipeline = isUsingURP ? "Universal Render Pipeline" : "Built-In Render Pipeline";
+                            break;
+                        }
                     case RenderPipeline.ForceBuiltInRenderPipeline:
-                    {
-                        detectedRenderPipeline = "Built-In Render Pipeline";
-                        isUsingURP = false;
-                        break;
-                    }
+                        {
+                            detectedRenderPipeline = "Built-In Render Pipeline";
+                            isUsingURP = false;
+                            break;
+                        }
                     case RenderPipeline.ForceUniversalRenderPipeline:
-                    {
-                        detectedRenderPipeline = "Universal Render Pipeline";
-                        isUsingURP = true;
-                        break;
-                    }
+                        {
+                            detectedRenderPipeline = "Universal Render Pipeline";
+                            isUsingURP = true;
+                            break;
+                        }
                 }
 
-                StringWriter shaderSource = new StringWriter();
+                StringWriter shaderSource = new();
                 string[] sourceLines = File.ReadAllLines(context.assetPath);
-                Stack<bool> excludeCurrentLines = new Stack<bool>();
+                Stack<bool> excludeCurrentLines = new();
                 strippedLinesCount = 0;
 
                 for (int i = 0; i < sourceLines.Length; i++)
@@ -159,12 +162,12 @@ namespace CartoonFX
                         }
                         else if (line.StartsWith("/*** URP_VERSION "))
                         {
-                            string subline = line.Substring("/*** URP_VERSION ".Length);
+                            string subline = line["/*** URP_VERSION ".Length..];
                             int spaceIndex = subline.IndexOf(' ');
-                            string version = subline.Substring(spaceIndex, subline.LastIndexOf(' ') - spaceIndex);
-                            string op = subline.Substring(0, spaceIndex);
+                            string version = subline[spaceIndex..subline.LastIndexOf(' ')];
+                            string op = subline[..spaceIndex];
 
-                            var compOp = ParseComparisonOperator(op);
+                            ComparisonOperator compOp = ParseComparisonOperator(op);
                             int compVersion = int.Parse(version);
 
                             bool isCorrectURP = CompareWithOperator(URP_VERSION, compVersion, compOp);
@@ -172,7 +175,7 @@ namespace CartoonFX
                         }
                         else if (excludeThisLine && line.StartsWith("/*** END"))
                         {
-                            excludeCurrentLines.Pop();
+                            _ = excludeCurrentLines.Pop();
                         }
                         else if (!excludeThisLine && line.StartsWith("/*** #define URP_VERSION ***/"))
                         {
@@ -195,21 +198,21 @@ namespace CartoonFX
                 shaderSourceCode = shaderSource.ToString();
                 int idx = shaderSourceCode.IndexOf("Shader \"", StringComparison.InvariantCulture) + 8;
                 int idx2 = shaderSourceCode.IndexOf('"', idx);
-                shaderName = shaderSourceCode.Substring(idx, idx2 - idx);
+                shaderName = shaderSourceCode[idx..idx2];
                 shaderErrors = null;
 
                 Shader shader = ShaderUtil.CreateShaderAsset(context, shaderSourceCode, true);
 
                 if (ShaderUtil.ShaderHasError(shader))
                 {
-                    string[] shaderSourceLines = shaderSourceCode.Split(new [] {'\n'}, StringSplitOptions.None);
-                    var errors = ShaderUtil.GetShaderMessages(shader);
+                    string[] shaderSourceLines = shaderSourceCode.Split(new[] { '\n' }, StringSplitOptions.None);
+                    ShaderMessage[] errors = ShaderUtil.GetShaderMessages(shader);
                     shaderErrors = Array.ConvertAll(errors, err => $"{err.message} (line {err.line})");
                     foreach (ShaderMessage error in errors)
                     {
                         string message = error.line <= 0 ?
                             string.Format("Shader Error in '{0}' (in file '{2}')\nError: {1}\n", shaderName, error.message, error.file) :
-                            string.Format("Shader Error in '{0}' (line {2} in file '{3}')\nError: {1}\nLine: {4}\n", shaderName, error.message, error.line, error.file, shaderSourceLines[error.line-1]);
+                            string.Format("Shader Error in '{0}' (line {2} in file '{3}')\nError: {1}\nLine: {4}\n", shaderName, error.message, error.line, error.file, shaderSourceLines[error.line - 1]);
                         if (error.severity == ShaderCompilerMessageSeverity.Warning)
                         {
                             Debug.LogWarning(message);
@@ -237,9 +240,9 @@ namespace CartoonFX
                 {
                     try
                     {
-                        object result = getVariantCountReflection.Invoke(null, new object[] {shader, false});
+                        object result = getVariantCountReflection.Invoke(null, new object[] { shader, false });
                         variantCount = (ulong)result;
-                        result = getVariantCountReflection.Invoke(null, new object[] {shader, true});
+                        result = getVariantCountReflection.Invoke(null, new object[] { shader, true });
                         variantCountUsed = (ulong)result;
                     }
                     catch
@@ -255,10 +258,10 @@ namespace CartoonFX
             [CustomEditor(typeof(CFXR_ShaderImporter)), CanEditMultipleObjects]
             public class TCP2ShaderImporter_Editor : Editor
             {
-                CFXR_ShaderImporter Importer => (CFXR_ShaderImporter) this.target;
+                private CFXR_ShaderImporter Importer => (CFXR_ShaderImporter)target;
 
                 // From: UnityEditor.ShaderInspectorPlatformsPopup
-                static string FormatCount(ulong count)
+                private static string FormatCount(ulong count)
                 {
                     bool flag = count > 1000000000uL;
                     string result;
@@ -276,31 +279,23 @@ namespace CartoonFX
                         else
                         {
                             bool flag3 = count > 1000uL;
-                            if (flag3)
-                            {
-                                result = (count / 1000.0).ToString("f2", CultureInfo.InvariantCulture.NumberFormat) + "k";
-                            }
-                            else
-                            {
-                                result = count.ToString();
-                            }
+                            result = flag3 ? (count / 1000.0).ToString("f2", CultureInfo.InvariantCulture.NumberFormat) + "k" : count.ToString();
                         }
                     }
                     return result;
                 }
 
-                static GUIStyle _HelpBoxRichTextStyle;
-                static GUIStyle HelpBoxRichTextStyle
+                private static GUIStyle _HelpBoxRichTextStyle;
+                private static GUIStyle HelpBoxRichTextStyle
                 {
                     get
                     {
-                        if (_HelpBoxRichTextStyle == null)
+                        _HelpBoxRichTextStyle ??= new GUIStyle("HelpBox")
                         {
-                            _HelpBoxRichTextStyle = new GUIStyle("HelpBox");
-                            _HelpBoxRichTextStyle.richText = true;
-                            _HelpBoxRichTextStyle.margin = new RectOffset(4, 4, 0, 0);
-                            _HelpBoxRichTextStyle.padding = new RectOffset(4, 4, 4, 4);
-                        }
+                            richText = true,
+                            margin = new RectOffset(4, 4, 0, 0),
+                            padding = new RectOffset(4, 4, 4, 4)
+                        };
                         return _HelpBoxRichTextStyle;
                     }
                 }
@@ -339,7 +334,7 @@ namespace CartoonFX
                     if (Importer.shaderErrors != null && Importer.shaderErrors.Length > 0)
                     {
                         GUILayout.Space(4);
-                        var color = GUI.color;
+                        Color color = GUI.color;
                         GUI.color = new Color32(0xFF, 0x80, 0x80, 0xFF);
                         GUILayout.Label($"<b>Errors:</b>\n{string.Join("\n", Importer.shaderErrors)}", HelpBoxRichTextStyle);
                         GUI.color = color;
@@ -409,7 +404,7 @@ namespace CartoonFX
                     }
                 }
 
-                void ReimportShader()
+                private void ReimportShader()
                 {
                     foreach (UnityEngine.Object t in targets)
                     {

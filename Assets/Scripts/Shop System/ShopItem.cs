@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class ShopItem : ScriptableObject
 {
@@ -14,8 +13,8 @@ public abstract class ShopItem : ScriptableObject
     // Override if cost changes per level
     public virtual int GetLevelCost(PlayerInventory inventory)
     {
-        Debug.LogWarning("GetLevelCost not implemented in " + this.name);
-        return -1; 
+        Debug.LogWarning("GetLevelCost not implemented in " + name);
+        return -1;
     }
 
 }
@@ -53,10 +52,13 @@ public class WeaponUpgradeItem : ShopItem
         UpgradableStat statData = weaponData.upgradableStats.Find(s => s.statType == statToUpgrade);
 
         if (statData == null || level >= statData.maxLevel)
+        {
             return -1; // Maxed or invalid
+        }
+
         float normalizedLevel = (float)(level - 1) / (statData.maxLevel - 1);
         float levelCost = costPerLevel.Evaluate(normalizedLevel);
-        int finalCost = Mathf.RoundToInt(baseCost *(1+ levelCost));
+        int finalCost = Mathf.RoundToInt(baseCost * (1 + levelCost));
 
         return finalCost;
     }

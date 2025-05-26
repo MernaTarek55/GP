@@ -1,8 +1,8 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class Pistol : Weapon
 {
@@ -32,7 +32,7 @@ public class Pistol : Weapon
     [SerializeField] private EventSystem eventSystem;
 
     //Dictionary
-    private Dictionary<int, bool> touchStartedOverUI = new Dictionary<int, bool>();
+    private readonly Dictionary<int, bool> touchStartedOverUI = new();
 
     private void Awake()
     {
@@ -49,7 +49,9 @@ public class Pistol : Weapon
     private void Update()
     {
         if (fireCooldown > 0)
+        {
             fireCooldown -= Time.deltaTime;
+        }
 
         if (!isReloading && currentAmmo == 0)
         {
@@ -65,7 +67,9 @@ public class Pistol : Weapon
                 isReloading = false;
 
                 if (audioSource && reloadSound)
+                {
                     audioSource.PlayOneShot(reloadSound);
+                }
             }
         }
 
@@ -81,7 +85,7 @@ public class Pistol : Weapon
                 bool isOverUI = IsTouchOverUI(touch.position);
                 touchStartedOverUI[fingerId] = isOverUI;
             }
-            else if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+            else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
             {
                 // Only allow shooting if this finger started off-UI
                 if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI)
@@ -89,10 +93,10 @@ public class Pistol : Weapon
                     ShootAtTouch(touch.position);
                 }
             }
-            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
             {
                 // Clean up dictionary when touch ends
-                touchStartedOverUI.Remove(fingerId);
+                _ = touchStartedOverUI.Remove(fingerId);
             }
         }
     }
@@ -105,17 +109,9 @@ public class Pistol : Weapon
         }
 
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
-        RaycastHit hit;
-        
-        if (Physics.Raycast(ray, out hit))
-        {
-            targetPoint = hit.point;
-        }
-        else
-        {
-            targetPoint = ray.origin + ray.direction * 100f;
-        }
-        Vector3 lookDirection = (targetPoint - playerBody.position);
+
+        targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
+        Vector3 lookDirection = targetPoint - playerBody.position;
         lookDirection.y = 0f; // Keep only horizontal rotation
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
         playerBody.rotation = targetRotation;
@@ -123,10 +119,12 @@ public class Pistol : Weapon
     }
     private bool IsTouchOverUI(Vector2 screenPosition)
     {
-        PointerEventData eventData = new PointerEventData(eventSystem);
-        eventData.position = screenPosition;
+        PointerEventData eventData = new(eventSystem)
+        {
+            position = screenPosition
+        };
 
-        List<RaycastResult> results = new List<RaycastResult>();
+        List<RaycastResult> results = new();
         uiRaycaster.Raycast(eventData, results);
 
         return results.Count > 0;
@@ -136,7 +134,7 @@ public class Pistol : Weapon
         if (ikHandler != null)
         {
             ikHandler.TriggerShootIK();
-            StartCoroutine(WaitAndShootWhenIKReady());
+            _ = StartCoroutine(WaitAndShootWhenIKReady());
         }
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
         //    return;
@@ -173,13 +171,15 @@ public class Pistol : Weapon
 
         // Only shoot if allowed
         if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
+        {
             yield break;
+        }
 
         fireCooldown = weaponData.fireRate;
         currentAmmo--;
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        
+
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
         rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
@@ -187,13 +187,19 @@ public class Pistol : Weapon
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
+        {
             bulletScript.SetDamage(weaponData.damage);
+        }
 
         if (muzzleFlash != null)
+        {
             muzzleFlash.Play();
+        }
 
         if (audioSource && shootSound)
+        {
             audioSource.PlayOneShot(shootSound);
+        }
     }
 
     public override void Reload()
@@ -204,7 +210,9 @@ public class Pistol : Weapon
             reloadTimer = weaponData.reloadTime;
 
             if (audioSource && reloadSound)
+            {
                 audioSource.PlayOneShot(reloadSound);
+            }
         }
     }
 }

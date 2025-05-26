@@ -3,29 +3,29 @@ using UnityEngine;
 public class LavaTrace : MonoBehaviour
 {
 
-    public GameObject objectToInstantiate; 
-    public Vector3 hingeAnchor = new Vector3(0, 0.5f, 0);
+    public GameObject objectToInstantiate;
+    public Vector3 hingeAnchor = new(0, 0.5f, 0);
     public Vector3 hingeAxis = Vector3.up;
     public bool useConnectedAnchor = true;
     public Vector3 connectedAnchor = Vector3.zero;
-    GameObject previousObj = null;
+    private GameObject previousObj = null;
 
 
 
 
 
-    void Start()
+    private void Start()
     {
         InstantiateObjects();
     }
 
-    void InstantiateObjects()
+    private void InstantiateObjects()
     {
         for (int i = 0; i < 5; i++)
         {
 
-            
-            GameObject newObj = Instantiate(objectToInstantiate, transform.position+ new Vector3(5, 0, 5), Quaternion.identity);
+
+            GameObject newObj = Instantiate(objectToInstantiate, transform.position + new Vector3(5, 0, 5), Quaternion.identity);
 
 
             HingeJoint hingeJoint = newObj.AddComponent<HingeJoint>();
@@ -55,7 +55,7 @@ public class LavaTrace : MonoBehaviour
             newObj.name = "lavaFluid" + i;
         }
 
-       
+
     }
 
 }
