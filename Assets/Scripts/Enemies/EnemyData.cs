@@ -12,6 +12,7 @@ public class EnemyData : ScriptableObject
        ,ballDroid = 1 // ballDroid is a sphere attacking the player by exploding when he reaches his position
        ,Humanoid = 2
        ,LavaRobot = 3
+        , LavaRobotTypeB = 4
     }
     public EnemyType enemyType;
     public float movementSpeed;
