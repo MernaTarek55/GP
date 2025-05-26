@@ -185,7 +185,10 @@ public class AutoGun : Weapon
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
-            bulletScript.SetDamage(weaponData.damage);
+        {
+            //to change to the data in inventory 
+            bulletScript.SetDamage(10/*weaponData.damage*/);
+        }
 
         if (muzzleFlash != null)
             muzzleFlash.Play();

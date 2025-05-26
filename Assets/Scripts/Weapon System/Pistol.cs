@@ -187,7 +187,11 @@ public class Pistol : Weapon
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
-            bulletScript.SetDamage(weaponData.damage);
+        {
+            //to change to the data in inventory 
+            bulletScript.SetDamage(5/*weaponData.damage*/);
+        }
+           // bulletScript.SetDamage(weaponData.damage);
 
         if (muzzleFlash != null)
             muzzleFlash.Play();

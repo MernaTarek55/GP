@@ -67,6 +67,7 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
+                if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot)
                     agent.isStopped = true;
                     enemyStateMachine.ChangeState(enemyAttackState);
                 }

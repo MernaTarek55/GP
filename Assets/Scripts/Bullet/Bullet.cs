@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class EnemyBullet : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
     public float speed = 20f;
     public float lifeTime = 2f;
-
+    float damage = 10;
     private void OnEnable()
     {
         Invoke(nameof(Disable), lifeTime);
@@ -24,12 +24,17 @@ public class EnemyBullet : MonoBehaviour
     {
         CancelInvoke();
     }
+    public void SetDamage(float Damage)
+    {
+        damage = Damage;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
-            other.gameObject.GetComponent<HealthComponent>().TakeDamage(10);
+            other.gameObject.GetComponent<HealthComponent>().TakeDamage(damage);
+        
         if (other.gameObject.CompareTag("Enemy"))
-            other.gameObject.GetComponent<HealthComponent>().TakeDamage(10);
+            other.gameObject.GetComponent<HealthComponent>().TakeDamage(damage);
         Disable();
     }
 }

@@ -52,7 +52,7 @@ public class LavaTrace : MonoBehaviour
                 bounciness = 0
             };
 
-            newObj.name = "lavaFluid" + i;
+            newObj.name = "0.lavaFluid" + i;
         }
 
        
