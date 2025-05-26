@@ -30,6 +30,10 @@ public class Pistol : Weapon
     [Header("UI")]
     [SerializeField] private GraphicRaycaster uiRaycaster;
     [SerializeField] private EventSystem eventSystem;
+
+    //Dictionary
+    private Dictionary<int, bool> touchStartedOverUI = new Dictionary<int, bool>();
+
     private void Awake()
     {
         base.Awake();
@@ -66,18 +70,29 @@ public class Pistol : Weapon
         }
 
         // Check for touch input on mobile
-        if (Input.touchCount > 0 )
+        for (int i = 0; i < Input.touchCount; i++)
         {
-            Touch touch = Input.GetTouch(0);
-            if (IsTouchOverUI(touch.position))
+            Touch touch = Input.GetTouch(i);
+            int fingerId = touch.fingerId;
+
+            if (touch.phase == TouchPhase.Began)
             {
-                Debug.Log("Touch is on UI — not shooting");
-                return;
+                // On first touch, record whether it started over UI
+                bool isOverUI = IsTouchOverUI(touch.position);
+                touchStartedOverUI[fingerId] = isOverUI;
             }
-            if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+            else if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
             {
-                Vector2 touchPos = touch.position;
-                ShootAtTouch(touchPos);
+                // Only allow shooting if this finger started off-UI
+                if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI)
+                {
+                    ShootAtTouch(touch.position);
+                }
+            }
+            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            {
+                // Clean up dictionary when touch ends
+                touchStartedOverUI.Remove(fingerId);
             }
         }
     }
