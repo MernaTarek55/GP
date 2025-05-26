@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using StarterAssets;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;

@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEditor;
 using GK;
+using UnityEngine;
 
 public class SoftbodyGenerator : MonoBehaviour
 {
@@ -448,25 +445,25 @@ public class DebugColorGameObject : MonoBehaviour
     public Color Color { get; set; }
 }
 
-[CustomEditor(typeof(SoftbodyGenerator))]
-public class LookAtPointEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        SoftbodyGenerator softbody = target as SoftbodyGenerator;       
+//[CustomEditor(typeof(SoftbodyGenerator))]
+//public class LookAtPointEditor : Editor
+//{
+//    public override void OnInspectorGUI()
+//    {
+//        SoftbodyGenerator softbody = target as SoftbodyGenerator;       
         
-        softbody.debugMode = EditorGUILayout.Toggle("#Debug mod", softbody.debugMode);
-        EditorGUILayout.Space();
+//        softbody.debugMode = EditorGUILayout.Toggle("#Debug mod", softbody.debugMode);
+//        EditorGUILayout.Space();
 
-        string[] options = new string[] { "  version 1", "  version 2" };
+//        string[] options = new string[] { "  version 1", "  version 2" };
         
 
-        softbody.gravity = EditorGUILayout.Toggle("Gravity", softbody.gravity);
-        softbody.mass = EditorGUILayout.FloatField("Mass(KG)", softbody.mass);
-        softbody.physicsRoughness = EditorGUILayout.FloatField("Drag (roughness)", softbody.physicsRoughness);
-        softbody.softness = EditorGUILayout.FloatField("Softbody hardness", softbody.softness);
-        softbody.damp = EditorGUILayout.FloatField("Softbody damper", softbody.damp);
-        softbody.collissionSurfaceOffset = EditorGUILayout.FloatField("Softbody Offset", softbody.collissionSurfaceOffset);
+//        softbody.gravity = EditorGUILayout.Toggle("Gravity", softbody.gravity);
+//        softbody.mass = EditorGUILayout.FloatField("Mass(KG)", softbody.mass);
+//        softbody.physicsRoughness = EditorGUILayout.FloatField("Drag (roughness)", softbody.physicsRoughness);
+//        softbody.softness = EditorGUILayout.FloatField("Softbody hardness", softbody.softness);
+//        softbody.damp = EditorGUILayout.FloatField("Softbody damper", softbody.damp);
+//        softbody.collissionSurfaceOffset = EditorGUILayout.FloatField("Softbody Offset", softbody.collissionSurfaceOffset);
         
-    }
-}
+//    }
+//}

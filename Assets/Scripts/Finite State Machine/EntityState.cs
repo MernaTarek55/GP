@@ -5,7 +5,7 @@ public abstract class EntityState
     protected ExampleScript example;
     protected EnemyData enemyData;
     protected GameObject enemyGO;
-    
+
 
     protected Player player;
     protected StateMachine stateMachine;
