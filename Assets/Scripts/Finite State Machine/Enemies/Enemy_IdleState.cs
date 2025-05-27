@@ -12,26 +12,45 @@ public class Enemy_IdleState : EntityState
         _currentTween = new Tween[2];
     }
 
-    protected override void UpdateTurret()
+    public override void Update()
     {
-        Debug.Log("Turret Idle");
-        if (!_isRotating)
-        {
-            RotateWithTween(new Vector3(0, 160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
-        }
+        base.Update();
+        if (enemyData.enemyType == EnemyData.EnemyType.Turret)
+            if (!_isRotating)
+            {
+                RotateWithTween(new Vector3(0, 160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
+            }
+        else if(enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+                RotateBall(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
     }
 
-    protected override void UpdateBallDroid()
+    public override void Exit()
     {
-        Debug.Log("BallDroid Idle");
-        RotateBall(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
+        base.Exit();
+        _isRotating = false;
+        StopRotation();
     }
 
-    protected override void UpdateHumanoid()
-    {
-        Debug.Log("Humanoid Idle");
-        // Implement humanoid idle animations here
-    }
+    //protected override void UpdateTurret()
+    //{
+    //    Debug.Log("Turret Idle");
+    //    if (!_isRotating)
+    //    {
+    //        RotateWithTween(new Vector3(0, 160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
+    //    }
+    //}
+
+    //protected override void UpdateBallDroid()
+    //{
+    //    Debug.Log("BallDroid Idle");
+    //    RotateBall(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
+    //}
+
+    //protected override void UpdateHumanoid()
+    //{
+    //    Debug.Log("Humanoid Idle");
+    //    // Implement humanoid idle animations here
+    //}
 
     private void RotateWithTween(Vector3 startRotation, Vector3 endRotation, float startDuration, float endDuration, RotateMode rotateMode)
     {
@@ -53,13 +72,6 @@ public class Enemy_IdleState : EntityState
         enemyGO.transform.DORotate(rotation, duration, rotateMode)
             .SetEase(Ease.Linear)
             .SetLoops(-1, LoopType.Restart);
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-        _isRotating = false;
-        StopRotation();
     }
 
     private void StopRotation()

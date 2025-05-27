@@ -133,6 +133,15 @@ public class Enemy : MonoBehaviour
     }
     #endregion
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (enemyStateMachine?.currentState != null)
+            enemyStateMachine.currentState.OnCollisionEnter(collision);
+    }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if (enemyStateMachine?.currentState != null)
+            enemyStateMachine.currentState.OnTriggerEnter(other);
+    }
 }

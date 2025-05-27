@@ -12,51 +12,63 @@ public class Enemy_PatrolState : EntityState
         TryGetComponents(enemyGO); 
     }
 
-
-
-    protected override void UpdateTurret()
+    public override void Enter()
     {
-        Debug.Log("Turret Patrol - No movement (stationary enemy)");
-        // Turrets typically don't patrol
-        SetRandomDestination();
+        base.Enter();
+
 
     }
 
-    protected override void UpdateBallDroid()
+    public override void Update()
     {
-        Debug.Log("BallDroid Patrol");
-
-   
-      
-        SetRandomDestination();
-   
-
-    
-    }
-    
-    protected override void UpdateHumanoid()
-    {
-        Debug.Log("Humanoid Patrol");
-        SetRandomDestination();
-
-        // Implement humanoid patrol logic (e.g., navmesh waypoints)
-    }
-
-    protected override void UpdateLavaRobot()
-    {
-        Debug.Log("LavaRobot Patrol");
-        
+        base.Update();
+        if(enemyData.enemyType != EnemyData.EnemyType.Turret)
             SetRandomDestination();
-        
-        // Implement lava robot patrol logic
     }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    //protected override void UpdateTurret()
+    //{
+    //    Debug.Log("Turret Patrol - No movement (stationary enemy)");
+    //    // Turrets typically don't patrol
+    //    SetRandomDestination();
+
+    //}
+
+    //protected override void UpdateBallDroid()
+    //{
+    //    Debug.Log("BallDroid Patrol");
+    //    SetRandomDestination();
+    //}
+    
+    //protected override void UpdateHumanoid()
+    //{
+    //    Debug.Log("Humanoid Patrol");
+    //    SetRandomDestination();
+
+    //    // Implement humanoid patrol logic (e.g., navmesh waypoints)
+    //}
+
+    //protected override void UpdateLavaRobot()
+    //{
+    //    Debug.Log("LavaRobot Patrol");
+        
+    //        SetRandomDestination();
+        
+    //    // Implement lava robot patrol logic
+    //}
 
 
     private void TryGetComponents(GameObject enemyGO)
     {
-        if (enemyGO.TryGetComponent(out NavMeshAgent eNav)) enemyAgent = eNav;
-        else Debug.LogWarning("Nav mesh not found");
-     
+        if (enemyGO.TryGetComponent(out NavMeshAgent eNav)) 
+            enemyAgent = eNav;
+        else 
+            Debug.LogWarning("Nav mesh not found");
     }
 
     void SetRandomDestination()

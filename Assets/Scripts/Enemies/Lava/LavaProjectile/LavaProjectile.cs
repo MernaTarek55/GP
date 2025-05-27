@@ -29,7 +29,6 @@ public class LavaProjectile : MonoBehaviour
     private Vector2 randomizer;
 
 
-   
     private float _sampleTime;
     private QuadraticCurve curve;
 
