@@ -12,8 +12,8 @@ public class LavaProjectile : MonoBehaviour
         {
             this.minX = minX;
             this.maxX = maxX;
-            minZ = minY;
-            maxZ = maxY;
+            this.minZ = minY;
+            this.maxZ = maxY;
         }
     }
 
