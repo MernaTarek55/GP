@@ -25,9 +25,6 @@ public class LavaProjectile : MonoBehaviour
         , Target
     }
     [SerializeField] private float speed = 1f;
-    //[SerializeField] private float groundLevelPosition = -0.2f;
-
-
     [Header("Positions")]
     public GameObject LavaRobot;
     private Vector3 initialA;
