@@ -101,11 +101,11 @@ public class Enemy_AttackState : EntityState
 
     private void ShootLava()
     {
-        //if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
-        //{
-        //    Debug.Log("Player is invisible, ball droid does nothing.");
-        //    return;
-        //}
+        if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+        {
+            Debug.Log("Player is invisible, ball droid does nothing.");
+            return;
+        }
         // Check cooldown
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
         {
