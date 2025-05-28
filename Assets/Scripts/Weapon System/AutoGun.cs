@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 public class AutoGun : Weapon
 {
+    [SerializeField] private DeadeyeSkill deadEye;
+
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
 
@@ -74,8 +76,11 @@ public class AutoGun : Weapon
             }
             if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
             {
-                Vector2 touchPos = touch.position;
-                ShootAtTouch(touchPos);
+                if (deadEye.canShoot == true)
+                {
+                    Vector2 touchPos = touch.position;
+                    ShootAtTouch(touchPos);
+                }
             }
         }
     }
