@@ -26,6 +26,7 @@ public class Pistol : Weapon
     private Vector3 shootDirection;
 
     [SerializeField] private Transform playerBody;
+    [SerializeField] private Transform playerArmature_Mesh;
 
     [Header("UI")]
     [SerializeField] private GraphicRaycaster uiRaycaster;
@@ -111,10 +112,10 @@ public class Pistol : Weapon
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
         targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
-        Vector3 lookDirection = targetPoint - playerBody.position;
+        Vector3 lookDirection = targetPoint - playerArmature_Mesh.position;
         lookDirection.y = 0f; // Keep only horizontal rotation
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-        playerBody.rotation = targetRotation;
+        playerArmature_Mesh.rotation = targetRotation;
         Shoot();
     }
     private bool IsTouchOverUI(Vector2 screenPosition)
