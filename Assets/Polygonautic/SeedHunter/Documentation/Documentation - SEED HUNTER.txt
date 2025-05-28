@@ -1,0 +1,83 @@
+Documentation
+
+SEED HUNTER v1.3
+(Inside The Vault / Unity Challenge)
+
+1. Setup
+
+STEP (1) Create new empty project using High Definition RP template in Unity 2019.3.0f6 or above
+
+STEP (2) Install / update these packages via Package Manager (Window > Package Manager):
+
+High Definition RP (7.1.8 or above)
+Visual Effect Graph (7.1.8 or above)
+Cinemachine (2.3.5 or above)
+Unity Timeline (1.2.10 or above)
+
+STEP (3) Assign correct HDRenderPipelineAsset:
+
+Edit > Project Settings > Graphics > Scriptable Render Pipeline Settings
+Select "HDRenderPipelineAsset_SeedHunter" from Polygonautic/SeedHunter/Profiles
+
+STEP (4) Open scene "SeedHunter" from Polygonautic/SeedHunter/Scenes and check everything works correctly 
+
+NOTE: 
+Problems are usually caused by Unity version / package incompatibility, or not using HDRP at all!
+This package is not compatible with Built-in renderer, nor LWRP/URP.
+
+
+2. Assets Organization
+
+All graphical assets are located in respective Art folders, further categorized into logical sub-folders for easier navigation.
+Each asset shares same unique name across prefab, model, textures, material and Painter project.
+We are using these prefixes for quicker search:
+
+env_ (environmental assets, split into Hallway and Chamber categories)
+prop_ (detailed prop assets, split into several categories)
+coll_ (lowpoly collision models)
+tile_ (seamless textures and materials that are not dependant on unique models UVs)
+decal_ (textures and materials used for Decal Projectors)
+cookie_ (textures used for Light Cookies)
+pattern_ (utility textures for various effects and masks)
+vfx_ (Visual Effect Graphs and corresponding textures)
+emissive_ (common emissive materials that are not dependant on unique models UVs)
+timeline_ (Timeline assets)
+DetailMap_ (textures with specific channels to be used as Detail Maps only in Lit shader - materials are only for showcase purposes)
+
+
+3. Demo Scenes
+
+Two scenes are included: AssetShowcase and SeedHunter.
+AssetShowcase is filled with all the prefabs that were used in building the SeedHunter scene. You can explore each module / asset on it's own.
+SeedHunter is a complex real-time scene with lighting, effects, post-processes and animated sequence, showcasing what is possible to build from the provided assets.
+
+
+4. Shader Graphs
+
+Included is a simple vertex animation (wind) Grass shader created in Shader Graph, as well as a classic Lit Grass material.
+Shader Graph is part of the HDRP in Unity 2019, no need to install the package separately.
+
+
+5. Visual Effect Graphs
+
+There are 5 simple particle effects created in Visual Effect Graph.
+Shader Graph is part of the HDRP in Unity 2019, no need to install the package separately.
+
+NOTE: Included are 3 textures taken from the Unity Particle Pack, which is available for free on the Asset Store.
+
+
+6. Timeline
+
+Complete cinematic sequence from the promotional video is included, all you need to do is enable the "TIMELINE" folder in the SeedHunter scene.
+In order for sequence to work, you need to have a Cinemachine (2.3.4 or above) and Timeline (1.1.0 or above) packages installed.
+
+NOTE: Sequence is without any sounds, as we don't own rights to include those assets.
+
+
+We spent lot of our free time building this package, which we are giving to the Unity community for free.
+If you like the SEED HUNTER and you are planning to use the assets in your own projects, please give us a credit and don't hesitate to share the result with us!
+We will be more than happy if you share the SEED HUNTER around the net and leave us a review on the Asset Store.
+
+Thank you for downloading and enjoy!
+
+- POLYGONAUTIC team
