@@ -34,6 +34,7 @@ public class Player_JumpState : EntityState
             else if (player.DeadEyePressed)
             {
                 stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
+            }
             else if (player.healthComponent.IsDead())
             {
                 stateMachine.ChangeState(player.playerDeath);

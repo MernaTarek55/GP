@@ -66,16 +66,16 @@ public class Enemy : MonoBehaviour
             {
                 enemyStateMachine.ChangeState(enemyChaseState);
 
-                    if (distance <= 1f) { enemyStateMachine.ChangeState(enemyAttackState); }
-                }
+                if (distance <= 1f) { enemyStateMachine.ChangeState(enemyAttackState); }
+
                 else
                 {
-                if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot)
-                    agent.isStopped = true;
+                    if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot)
+                        agent.isStopped = true;
                     enemyStateMachine.ChangeState(enemyAttackState);
                 }
             }
-            else if(enemyData.enemyType == EnemyData.EnemyType.LavaRobot)
+            else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot)
             {
 
                 agent.isStopped = false;
@@ -84,7 +84,7 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                if (enemyData.enemyType is EnemyData.EnemyType.LavaRobot or EnemyData.EnemyType.LavaRobotTypeB)
+                if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
                 {
                     agent.isStopped = true;
                 }
@@ -92,7 +92,7 @@ public class Enemy : MonoBehaviour
                 enemyStateMachine.ChangeState(enemyAttackState);
             }
         }
-        else if (enemyData.enemyType is EnemyData.EnemyType.LavaRobot or EnemyData.EnemyType.LavaRobotTypeB)
+        else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType ==EnemyData.EnemyType.LavaRobotTypeB)
         {
 
             agent.isStopped = false;
