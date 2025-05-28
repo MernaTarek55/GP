@@ -23,7 +23,10 @@ public class QuadraticCurve : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (A == null || B == null || Control == null) return;
+        if (A == null || B == null || Control == null)
+        {
+            return;
+        }
 
         Gizmos.color = Color.red;
         for (int i = 0; i <= 20; i++)

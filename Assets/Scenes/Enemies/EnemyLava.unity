@@ -325,7 +325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7331401363613168223, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.64
+      value: 5.08
       objectReference: {fileID: 0}
     - target: {fileID: 7331401363613168223, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
       propertyPath: m_LocalPosition.y
@@ -673,7 +673,73 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lavaProjectilePrefab: {fileID: 4876149916586524456, guid: 8d4e9e2f44902a248b127887f8f206b9, type: 3}
-  poolSize: 5
+  poolSize: 10
+  maxActiveProjectiles: 3
+--- !u!1001 &1586083781
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -1124280754691726229, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: playerGO
+      value: 
+      objectReference: {fileID: 555889427}
+    - target: {fileID: 850917478301423260, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_Name
+      value: Lava RobotTypeB
+      objectReference: {fileID: 0}
+    - target: {fileID: 1212700470898299797, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: B
+      value: 
+      objectReference: {fileID: 468278128}
+    - target: {fileID: 5819782264139901582, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.5532494
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819782264139901582, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819782264139901582, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.728237
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819782264139901582, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819782264139901582, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819782264139901582, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819782264139901582, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819782264139901582, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819782264139901582, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819782264139901582, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
 --- !u!1 &1737329173
 GameObject:
   m_ObjectHideFlags: 0
@@ -828,34 +894,14 @@ PrefabInstance:
       propertyPath: playerGO
       value: 
       objectReference: {fileID: 555889427}
-    - target: {fileID: 27660054956134424, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_Name
       value: Lava Robot
-      objectReference: {fileID: 0}
-    - target: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1212700470898299797, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: B
       value: 
       objectReference: {fileID: 468278128}
-    - target: {fileID: 2147523308040884472, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5145247578527658450, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5283381922403385087, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: 5819782264139901582, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.43
@@ -896,14 +942,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6275057653421839019, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 8685501899012052247, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -922,3 +960,4 @@ SceneRoots:
   - {fileID: 1285553153}
   - {fileID: 737383060}
   - {fileID: 329356584}
+  - {fileID: 1586083781}

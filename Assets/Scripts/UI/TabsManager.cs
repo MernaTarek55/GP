@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class TabsManager : MonoBehaviour
 {
@@ -12,17 +12,19 @@ public class TabsManager : MonoBehaviour
     }
 
     public RectTransform tabContentContainer;
-    public List<TabData> tabs = new List<TabData>();
+    public List<TabData> tabs = new();
 
-    void Start()
+    private void Start()
     {
-        foreach (var tab in tabs)
+        foreach (TabData tab in tabs)
         {
-            var currentPanel = tab.tabPanel;
+            GameObject currentPanel = tab.tabPanel;
             tab.tabButton.onClick.AddListener(() =>
             {
                 foreach (Transform child in tabContentContainer)
+                {
                     child.gameObject.SetActive(false);
+                }
 
                 currentPanel.SetActive(true);
             });

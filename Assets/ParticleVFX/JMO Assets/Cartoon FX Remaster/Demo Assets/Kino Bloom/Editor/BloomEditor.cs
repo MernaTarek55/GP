@@ -21,8 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 namespace Kino
 {
@@ -30,18 +30,18 @@ namespace Kino
     [CustomEditor(typeof(Bloom))]
     public class BloomEditor : Editor
     {
-        BloomGraphDrawer _graph;
+        private BloomGraphDrawer _graph;
 
-        SerializedProperty _threshold;
-        SerializedProperty _softKnee;
-        SerializedProperty _radius;
-        SerializedProperty _intensity;
-        SerializedProperty _highQuality;
-        SerializedProperty _antiFlicker;
+        private SerializedProperty _threshold;
+        private SerializedProperty _softKnee;
+        private SerializedProperty _radius;
+        private SerializedProperty _intensity;
+        private SerializedProperty _highQuality;
+        private SerializedProperty _antiFlicker;
 
-        static GUIContent _textThreshold = new GUIContent("Threshold (gamma)");
+        private static readonly GUIContent _textThreshold = new("Threshold (gamma)");
 
-        void OnEnable()
+        private void OnEnable()
         {
             _graph = new BloomGraphDrawer();
             _threshold = serializedObject.FindProperty("_threshold");
@@ -56,21 +56,22 @@ namespace Kino
         {
             serializedObject.Update();
 
-            if (!serializedObject.isEditingMultipleObjects) {
+            if (!serializedObject.isEditingMultipleObjects)
+            {
                 EditorGUILayout.Space();
                 _graph.Prepare((Bloom)target);
                 _graph.DrawGraph();
                 EditorGUILayout.Space();
             }
 
-            EditorGUILayout.PropertyField(_threshold, _textThreshold);
-            EditorGUILayout.PropertyField(_softKnee);
-            EditorGUILayout.PropertyField(_intensity);
-            EditorGUILayout.PropertyField(_radius);
-            EditorGUILayout.PropertyField(_highQuality);
-            EditorGUILayout.PropertyField(_antiFlicker);
+            _ = EditorGUILayout.PropertyField(_threshold, _textThreshold);
+            _ = EditorGUILayout.PropertyField(_softKnee);
+            _ = EditorGUILayout.PropertyField(_intensity);
+            _ = EditorGUILayout.PropertyField(_radius);
+            _ = EditorGUILayout.PropertyField(_highQuality);
+            _ = EditorGUILayout.PropertyField(_antiFlicker);
 
-            serializedObject.ApplyModifiedProperties();
+            _ = serializedObject.ApplyModifiedProperties();
         }
     }
 }

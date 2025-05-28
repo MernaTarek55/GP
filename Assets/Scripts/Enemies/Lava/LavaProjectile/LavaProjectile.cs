@@ -12,13 +12,21 @@ public class LavaProjectile : MonoBehaviour
         {
             this.minX = minX;
             this.maxX = maxX;
-            this.minZ = minY;
-            this.maxZ = maxY;
+            minZ = minY;
+            maxZ = maxY;
         }
     }
-    [Header("Settings")]
+
+
+    // For different enemy types (for now Random shooting or target shooting)
+    public enum ProjectileEnemyType
+    {
+        Random
+        , Target
+    }
     [SerializeField] private float speed = 1f;
-    [SerializeField] private float groundLevelPosition = -0.2f;
+    //[SerializeField] private float groundLevelPosition = -0.2f;
+
 
     [Header("Positions")]
     public GameObject LavaRobot;
@@ -28,13 +36,25 @@ public class LavaProjectile : MonoBehaviour
     [SerializeField] private Range4 randomRange; // (minX, maxX, minZ, maxZ)
     private Vector2 randomizer;
 
+    public ProjectileEnemyType projectileType;
 
-   
+
     private float _sampleTime;
     private QuadraticCurve curve;
 
-   
+
     private void OnEnable()
+    {
+        CheckingForEmptyReferences();
+
+        StoringProjectPositions(); // Storing positions of start and end points of the projectile path
+        /**/
+        // Initialize movement
+        _sampleTime = 0f;
+        transform.position = initialA;
+    }
+
+    private void CheckingForEmptyReferences()
     {
         if (LavaRobot == null)
         {
@@ -44,31 +64,58 @@ public class LavaProjectile : MonoBehaviour
         }
 
         curve = LavaRobot.GetComponentInChildren<QuadraticCurve>();
-        if (curve == null || curve.A == null || curve.Control == null || curve.B == null)
+        if (curve.Control == null)
         {
-            Debug.LogError("Missing QuadraticCurve or control points!");
+            Debug.LogError("Missing QuadraticCurve control point!");
             ReturnToPool();
             return;
         }
+        if (curve == null)
 
+        {
+            Debug.LogError("Missing QuadraticCurve ");
+            ReturnToPool();
+            return;
+        }
+        if (curve.A == null || curve.B == null)
+        {
+            Debug.LogError("Missing Elements from quadratic curve!");
+            ReturnToPool();
+            return;
+        }
+    }
+
+    private void StoringProjectPositions()
+    {
         // Cache positions at activation
         initialA = curve.A.position;
         initialControl = curve.Control.position;
         //change if u want to change target
-        randomizer.x=  Random.Range(randomRange.minX, randomRange.maxX);
+        randomizer.x = Random.Range(randomRange.minX, randomRange.maxX);
         randomizer.y = Random.Range(randomRange.minZ, randomRange.maxZ);
-      
 
 
-        initialB = curve.B.position /*new Vector3(randomizer.x, curve.B.position.y, randomizer.y)*/;
-        // Initialize movement
-        _sampleTime = 0f;
-        transform.position = initialA;
+
+        switch (projectileType)
+        {
+            case ProjectileEnemyType.Random:
+                initialB = new Vector3(randomizer.x, curve.B.position.y, randomizer.y);
+                Debug.Log("Projectile Random");
+                break;
+            case ProjectileEnemyType.Target:
+                initialB = curve.B.position;
+                Debug.Log("Projectile Target");
+                break;
+
+        }
     }
 
     private void Update()
     {
-        if (!gameObject.activeSelf) return;
+        if (!gameObject.activeSelf)
+        {
+            return;
+        }
 
         _sampleTime += Time.deltaTime * speed;
         _sampleTime = Mathf.Clamp01(_sampleTime);
@@ -90,7 +137,7 @@ public class LavaProjectile : MonoBehaviour
         {
             transform.forward = direction.normalized;
         }
-       
+
         if (_sampleTime >= 1f)
         {
             ReturnToPool();
@@ -112,7 +159,7 @@ public class LavaProjectile : MonoBehaviour
             other.gameObject.GetComponent<HealthComponent>().TakeDamage(10);
         }
 
-        
+
         ReturnToPool();
     }
     private void ReturnToPool()

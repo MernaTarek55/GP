@@ -1,8 +1,6 @@
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
-using System.IO;
 
 public class ShopUIGenerator : EditorWindow
 {
@@ -19,7 +17,9 @@ public class ShopUIGenerator : EditorWindow
         }
         string outputPath = "Assets/Resources/ShopItemUIPrefabs";
         if (!AssetDatabase.IsValidFolder(outputPath))
-            AssetDatabase.CreateFolder("Assets/Resources", "ShopItemUIPrefabs");
+        {
+            _ = AssetDatabase.CreateFolder("Assets/Resources", "ShopItemUIPrefabs");
+        }
 
         foreach (ShopItem item in shopItems)
         {
@@ -41,7 +41,7 @@ public class ShopUIGenerator : EditorWindow
             shopItemUI.Bind(item);
 
             string filename = $"ShopItemUI_{item.name}.prefab";
-            PrefabUtility.SaveAsPrefabAsset(uiGO, Path.Combine(outputPath, filename));
+            _ = PrefabUtility.SaveAsPrefabAsset(uiGO, Path.Combine(outputPath, filename));
             GameObject.DestroyImmediate(uiGO);
         }
 
@@ -49,11 +49,11 @@ public class ShopUIGenerator : EditorWindow
         Debug.Log("ShopItemUI prefabs generated in Resources/ShopItemUIPrefabs");
     }
 
-    static Sprite LoadIconForItem(string itemName)
+    private static Sprite LoadIconForItem(string itemName)
     {
         return Resources.Load<Sprite>($"Icons/{itemName}") ?? Resources.Load<Sprite>("Icons/Default");
     }
-    static string GetDisplayNameFromAsset(ShopItem item)
+    private static string GetDisplayNameFromAsset(ShopItem item)
     {
         string path = AssetDatabase.GetAssetPath(item);
         string filename = System.IO.Path.GetFileNameWithoutExtension(path);

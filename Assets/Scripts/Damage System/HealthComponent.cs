@@ -28,7 +28,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
         Debug.Log("Take Damageeeeeeeeeeeeeeee, health: " + currentHealth); 
     }
 
-    public bool IsDead() 
+    public bool IsDead()
     {
         return isDead;
     }

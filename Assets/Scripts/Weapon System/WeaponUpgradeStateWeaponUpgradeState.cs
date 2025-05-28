@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class WeaponUpgradeState
 {
-    private Dictionary<UpgradableStatType, int> statLevels = new();
+    private readonly Dictionary<UpgradableStatType, int> statLevels = new();
 
     public int GetLevel(UpgradableStatType statType)
     {
@@ -12,14 +12,18 @@ public class WeaponUpgradeState
     }
     public int SetLevel(UpgradableStatType statType, int level)
     {
-        if (level < 0) level = 0;
+        if (level < 0)
+        {
+            level = 0;
+        }
+
         statLevels[statType] = level;
         return level;
     }
     //for testing
     public void PrintLevels()
     {
-        foreach (var stat in statLevels)
+        foreach (KeyValuePair<UpgradableStatType, int> stat in statLevels)
         {
             Debug.Log($"Stat: {stat.Key}, Level: {stat.Value}");
         }
@@ -27,7 +31,11 @@ public class WeaponUpgradeState
 
     public void UpgradeLevel(UpgradableStatType statType)
     {
-        if (!statLevels.ContainsKey(statType)) statLevels[statType] = 0;
+        if (!statLevels.ContainsKey(statType))
+        {
+            statLevels[statType] = 0;
+        }
+
         statLevels[statType]++;
     }
 }

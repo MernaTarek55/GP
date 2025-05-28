@@ -5,11 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerInventory
 {
-    HashSet<WeaponType> ownedWeapons = new();
-    Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new();
-    Dictionary<WeaponType, float> bulletsCount = new();
+    private readonly HashSet<WeaponType> ownedWeapons = new();
+    private readonly Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new();
+    private readonly Dictionary<WeaponType, float> bulletsCount = new();
     //need refactor
-    Dictionary<PlayerSkillsStats,float> playerStats = new();
+    private readonly Dictionary<PlayerSkillsStats, float> playerStats = new();
 
     private int _credits;
     public event Action<int> OnCreditsChanged;
@@ -27,19 +27,19 @@ public class PlayerInventory
         }
     }
 
-    
+
     public void InitializeWeaponUpgrades(List<WeaponData> weaponDataList)
     {
         Debug.Log("Initializing weapon upgrades...");
         foreach (WeaponData weaponData in weaponDataList)
         {
             Debug.Log($"Initializing weapon: {weaponData.weaponType}");
-            var upgradeState = new WeaponUpgradeState();
+            WeaponUpgradeState upgradeState = new();
 
-            foreach (var stat in weaponData.upgradableStats)
+            foreach (UpgradableStat stat in weaponData.upgradableStats)
             {
                 Debug.Log($"Setting level for stat: {stat.statType}");
-                upgradeState.SetLevel(stat.statType, 0);
+                _ = upgradeState.SetLevel(stat.statType, 0);
             }
 
             weaponUpgrades[weaponData.weaponType] = upgradeState;
@@ -49,7 +49,7 @@ public class PlayerInventory
     //for testing
     public void PrintWeaponUpgrades()
     {
-        foreach (var weapon in weaponUpgrades)
+        foreach (KeyValuePair<WeaponType, WeaponUpgradeState> weapon in weaponUpgrades)
         {
 
             Debug.Log($"Weapon: {weapon.Key}, Upgrade State: {weapon.Value}");
@@ -60,17 +60,18 @@ public class PlayerInventory
     public WeaponUpgradeState GetUpgradeState(WeaponType type)
     {
         Debug.Log($"Getting upgrade state for weapon: {type}");
-        if (weaponUpgrades.ContainsKey(type))
-            return weaponUpgrades[type];
-
-        return null;
+        return weaponUpgrades.ContainsKey(type) ? weaponUpgrades[type] : null;
     }
     public void SetUpgradeState(WeaponType type, WeaponUpgradeState state)
     {
         if (weaponUpgrades.ContainsKey(type))
+        {
             weaponUpgrades[type] = state;
+        }
         else
+        {
             weaponUpgrades.Add(type, state);
+        }
     }
 
     public float getPlayerStat(PlayerSkillsStats stat)
@@ -97,9 +98,7 @@ public class PlayerInventory
     }
     public float GetAmmo(WeaponType weapon)
     {
-        if( bulletsCount.ContainsKey(weapon))
-            return bulletsCount[weapon];
-        return 0f;
+        return bulletsCount.ContainsKey(weapon) ? bulletsCount[weapon] : 0f;
     }
     public void SetAmmo(WeaponType weapon, float value)
     {
@@ -114,8 +113,11 @@ public class PlayerInventory
     {
         if (!HasWeapon(type))
         {
-            ownedWeapons.Add(type);
+            _ = ownedWeapons.Add(type);
         }
     }
-    public bool HasWeapon(WeaponType type) => ownedWeapons.Contains(type);
+    public bool HasWeapon(WeaponType type)
+    {
+        return ownedWeapons.Contains(type);
+    }
 }

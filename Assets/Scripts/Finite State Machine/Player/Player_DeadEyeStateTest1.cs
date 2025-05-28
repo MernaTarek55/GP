@@ -4,7 +4,7 @@ using UnityEngine;
 public class Player_DeadEyeStateTest1 : EntityState
 {
     private float timer;
-    private List<GameObject> markedTargets = new List<GameObject>();
+    private readonly List<GameObject> markedTargets = new();
     private float originalTimeScale;
     public Player_DeadEyeStateTest1(StateMachine stateMachine, string stateName, Player player) : base(stateMachine, stateName, player)
     {
@@ -66,7 +66,7 @@ public class Player_DeadEyeStateTest1 : EntityState
 
     private void ExecuteMarkedTargets()
     {
-        foreach (var target in markedTargets)
+        foreach (GameObject target in markedTargets)
         {
             Debug.Log("Executing target: " + target.name);
             // target.GetComponent<Target>()?.Explode();
@@ -76,6 +76,8 @@ public class Player_DeadEyeStateTest1 : EntityState
     private void UpdateCooldownUI(float fillAmount)
     {
         if (player.deadEyeCooldownImage != null)
+        {
             player.deadEyeCooldownImage.fillAmount = fillAmount;
+        }
     }
 }

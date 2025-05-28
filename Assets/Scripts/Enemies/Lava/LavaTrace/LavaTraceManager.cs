@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class LavaTraceManager : MonoBehaviour
 {
-    Transform camTransform;
+    private Transform camTransform;
     private void Awake()
     {
         camTransform = Camera.main.transform;
 
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (camTransform != null)
         {

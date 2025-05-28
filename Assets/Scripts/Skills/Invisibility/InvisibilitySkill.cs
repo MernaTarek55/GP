@@ -9,24 +9,24 @@ public class InvisibilitySkill : MonoBehaviour
     public MeshRenderer[] Weaponrenderers;
     private Material[] materials;
     //need refactor
-    private float duration;
-    private float cooldownTime;
+    private readonly float duration;
+    private readonly float cooldownTime;
     public float invisibilityDuration = 10f;
     public float cooldownDuration = 10f;
     private float lastUsedTime;
     public float fadeSpeed = 2f;
-    private PlayerInventory playerInventory;
+    private readonly PlayerInventory playerInventory;
     public bool isInvisible = false;
     private bool isOnCooldown = false;
     public Button InvisibleButton;
-    void Awake()
+    private void Awake()
     {
-        var matsList = new List<Material>();
-        foreach (var r in renderers)
+        List<Material> matsList = new();
+        foreach (SkinnedMeshRenderer r in renderers)
         {
             matsList.AddRange(r.materials);
         }
-        foreach (var r in Weaponrenderers)
+        foreach (MeshRenderer r in Weaponrenderers)
         {
             matsList.AddRange(r.materials);
         }
@@ -45,7 +45,7 @@ public class InvisibilitySkill : MonoBehaviour
         if (!isInvisible && !isOnCooldown)
         {
             InvisibleButton.interactable = false;
-            StartCoroutine(BecomeInvisible());
+            _ = StartCoroutine(BecomeInvisible());
         }
     }
     //private void UpdateStats()
@@ -53,7 +53,7 @@ public class InvisibilitySkill : MonoBehaviour
     //    duration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityDuration);
     //    cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
     //}
-    IEnumerator BecomeInvisible()
+    private IEnumerator BecomeInvisible()
     {
         isInvisible = true;
         yield return Fade(0f, 1f);
@@ -61,9 +61,9 @@ public class InvisibilitySkill : MonoBehaviour
         yield return Fade(1f, 0f);
 
         isInvisible = false;
-        StartCoroutine(Cooldown());
+        _ = StartCoroutine(Cooldown());
     }
-    IEnumerator Fade(float from, float to)
+    private IEnumerator Fade(float from, float to)
     {
         float t = from;
         float direction = Mathf.Sign(to - from);
@@ -73,7 +73,7 @@ public class InvisibilitySkill : MonoBehaviour
             t += direction * Time.deltaTime * fadeSpeed;
             t = Mathf.Clamp01(t);
 
-            foreach (var mat in materials)
+            foreach (Material mat in materials)
             {
                 mat.SetFloat("_Invisibility", t);
             }
@@ -82,7 +82,7 @@ public class InvisibilitySkill : MonoBehaviour
         }
     }
 
-    IEnumerator Cooldown()
+    private IEnumerator Cooldown()
     {
         isOnCooldown = true;
         yield return new WaitForSeconds(cooldownDuration);

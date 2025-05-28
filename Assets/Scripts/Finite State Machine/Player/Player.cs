@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -30,13 +29,13 @@ public class Player : MonoBehaviour
     public bool IsGrounded => Physics.CheckSphere(groundCheckPoint.position, groundCheckRadius, groundLayer);
     public bool hasJumped = false;
 
-    InputAction moveAction;
-    InputAction jumpAction;
-    InputAction deadEyeAction;
-    Vector2 moveInput;
+    private InputAction moveAction;
+    private InputAction jumpAction;
+    private InputAction deadEyeAction;
+    private Vector2 moveInput;
     public Vector2 MoveInput => moveInput;
     public bool JumpPressed { get; private set; }
-    public bool DeadEyePressed {  get; private set; }
+    public bool DeadEyePressed { get; private set; }
 
 
     public float deadEyeDuration = 10f;

@@ -39,10 +39,10 @@ public class Player_MoveState : EntityState
         camForward.y = 0; camRight.y = 0;
         camForward.Normalize(); camRight.Normalize();
 
-        Vector3 moveDirection = camForward * player.MoveInput.y + camRight * player.MoveInput.x;
+        Vector3 moveDirection = (camForward * player.MoveInput.y) + (camRight * player.MoveInput.x);
 
         player.animator.SetFloat("Speed", player.MoveInput.magnitude);
-        player.rb.MovePosition(player.rb.position + moveDirection * player.WalkSpeed * Time.deltaTime);
+        player.rb.MovePosition(player.rb.position + (moveDirection * player.WalkSpeed * Time.deltaTime));
 
         if (moveDirection.sqrMagnitude > 0.01f)
         {

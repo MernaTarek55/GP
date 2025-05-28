@@ -1,9 +1,8 @@
-
 using UnityEngine;
 
 public class Enemy_AttackState : EntityState
 {
-    private GameObject playerGO;
+    private readonly GameObject playerGO;
     private GameObject firePoint;
     private ParticleSystem enemyPS;  // particle system for enemy ball explosion
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
@@ -21,10 +20,23 @@ public class Enemy_AttackState : EntityState
 
     private void TryGetComponents(GameObject enemyGO)
     {
-        if (enemyGO.TryGetComponent(out MeshRenderer mr)) enemyMR = mr;
-        else Debug.LogWarning("Mesh Renderer not found");
-        if (enemyGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
-        else Debug.LogWarning("Enemy script not found");
+        if (enemyGO.TryGetComponent(out MeshRenderer mr))
+        {
+            enemyMR = mr;
+        }
+        else
+        {
+            Debug.LogWarning("Mesh Renderer not found");
+        }
+
+        if (enemyGO.TryGetComponent(out Enemy enemy))
+        {
+            this.enemy = enemy;
+        }
+        else
+        {
+            Debug.LogWarning("Enemy script not found");
+        }
     }
 
     protected override void UpdateTurret()
@@ -36,7 +48,7 @@ public class Enemy_AttackState : EntityState
             stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO));
             return;
         }
-        
+
         RotateTowardPlayer();
         Shoot();
     }
@@ -68,7 +80,10 @@ public class Enemy_AttackState : EntityState
 
         hasExploded = true;
         if (playerGO.TryGetComponent(out HealthComponent playerHealth)) { playerHealth.TakeDamage(10f); Debug.Log("Player took damage"); }
-        else Debug.LogWarning("Health Component not found");
+        else
+        {
+            Debug.LogWarning("Health Component not found");
+        }
     }
 
     protected override void UpdateHumanoid()
@@ -80,29 +95,34 @@ public class Enemy_AttackState : EntityState
     protected override void UpdateLavaRobot()
     {
         Debug.Log("LavaRobot Attack");
-        
+
         ShootLava();
     }
 
     private void ShootLava()
     {
-        if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
-        {
-            Debug.Log("Player is invisible, ball droid does nothing.");
-            return;
-        }
+        //if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+        //{
+        //    Debug.Log("Player is invisible, ball droid does nothing.");
+        //    return;
+        //}
         // Check cooldown
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
+        {
             return;
+        }
 
         // Check if we have valid references
         if (enemyData.bulletPrefab == null || firePoint == null)
+        {
             return;
+        }
 
         // Try to get a projectile from the pool
         if (LavaProjectilePool.Instance.TryGetProjectile(out GameObject projectile))
         {
             // Set up the projectile
+
             projectile.transform.position = firePoint.transform.position;
             projectile.transform.rotation = firePoint.transform.rotation;
 
@@ -111,8 +131,10 @@ public class Enemy_AttackState : EntityState
             if (lavaProjectile != null)
             {
                 lavaProjectile.LavaRobot = enemyGO; // or whatever reference you need
-            }
 
+                initProjectileType(lavaProjectile);
+
+            }
             projectile.SetActive(true);
             _lastShootTime = Time.time; // Update last shoot time
         }
@@ -132,13 +154,18 @@ public class Enemy_AttackState : EntityState
     private void Shoot()
     {
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
+        {
             return;
+        }
 
         Vector3 directionToPlayer = (playerGO.transform.position - enemyGO.transform.position).normalized;
         directionToPlayer.y = 0;
         float angle = Vector3.Angle(enemyGO.transform.forward, directionToPlayer);
 
-        if (angle > 10f) return;
+        if (angle > 10f)
+        {
+            return;
+        }
 
         if (enemyData.bulletPrefab != null && firePoint != null)
         {
@@ -159,5 +186,25 @@ public class Enemy_AttackState : EntityState
     public void getParticleSystem(ParticleSystem _enemyPS)
     {
         enemyPS = _enemyPS;
+    }
+
+    public void initProjectileType(LavaProjectile lavaProjectile)
+    {
+        switch (enemyData.enemyType)
+        {
+
+
+            case EnemyData.EnemyType.LavaRobot:
+                lavaProjectile.projectileType = LavaProjectile.ProjectileEnemyType.Target;  //Target shooting:
+                Debug.Log("Enemy Target");
+                break;
+            case EnemyData.EnemyType.LavaRobotTypeB:
+                lavaProjectile.projectileType = LavaProjectile.ProjectileEnemyType.Random; //Random shooting
+                Debug.Log("Enemy Random");
+
+                break;
+
+        }
+
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShopManager : MonoBehaviour
@@ -8,10 +7,10 @@ public class ShopManager : MonoBehaviour
     public static ShopManager Singelton { get; private set; }
     public PlayerInventory playerInventory { get; private set; }
 
-    List<ShopItem> availableItems;
+    private List<ShopItem> availableItems;
 
 
-    void Awake()
+    private void Awake()
     {
         if (Singelton != null)
         {
@@ -22,7 +21,7 @@ public class ShopManager : MonoBehaviour
         availableItems = Resources.LoadAll<ShopItem>("ShopItems").ToList();
 
         //TODO: remove this
-        var player = GameObject.FindWithTag("Player");
+        GameObject player = GameObject.FindWithTag("Player");
         playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
     }
     private void Start()
@@ -30,11 +29,7 @@ public class ShopManager : MonoBehaviour
     }
     public bool Buy(ShopItem item)
     {
-        int cost;
-        if (item is WeaponUpgradeItem upgradeItem)
-            cost = upgradeItem.GetLevelCost(playerInventory);
-        else
-            cost = item.GetCost();
+        int cost = item is WeaponUpgradeItem upgradeItem ? upgradeItem.GetLevelCost(playerInventory) : item.GetCost();
         if (cost <= 0)
         {
             Debug.LogWarning($"Item {item.name} has a cost of {cost}, cannot be purchased.");
@@ -44,7 +39,7 @@ public class ShopManager : MonoBehaviour
         {
             item.OnPurchase(playerInventory);
             playerInventory.Credits -= cost;
-            
+
             return true;
         }
         return false;

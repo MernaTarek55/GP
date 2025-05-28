@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class MemoryPick : PickupBase
 {
-    [SerializeField] GameObject WrongMemoryMessage;
-    [SerializeField] float messageDuration = 3.0f;
+    [SerializeField] private GameObject WrongMemoryMessage;
+    [SerializeField] private float messageDuration = 3.0f;
     public override void Pickup(GameObject player)
     {
         if (MemoryManager.Instance != null)
         {
-            if (MemoryManager.Instance.PickingUpMemory(this.gameObject))
+            if (MemoryManager.Instance.PickingUpMemory(gameObject))
             {
                 Debug.Log($"Correct memory picked: {name}");
                 Destroy(gameObject);
@@ -28,7 +28,7 @@ public class MemoryPick : PickupBase
         if (WrongMemoryMessage != null)
         {
             WrongMemoryMessage.SetActive(true);
-            StartCoroutine(HideMessageAfterDelay());
+            _ = StartCoroutine(HideMessageAfterDelay());
         }
     }
 

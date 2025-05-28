@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        
+
     }
     private void Start()
     {
@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
     private void OnDestroy()
     {
         if (ShopManager.Singelton.playerInventory != null)
+        {
             ShopManager.Singelton.playerInventory.OnCreditsChanged -= UpdateCreditsUI;
+        }
     }
 }

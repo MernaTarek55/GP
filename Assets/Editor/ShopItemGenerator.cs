@@ -1,8 +1,7 @@
 #if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using System.IO;
-using Unity.VisualScripting;
 
 public static class ShopItemGenerator
 {
@@ -12,12 +11,14 @@ public static class ShopItemGenerator
         string outputPath = "Assets/Resources/ShopItems";
 
         if (!Directory.Exists(outputPath))
-            Directory.CreateDirectory(outputPath);
+        {
+            _ = Directory.CreateDirectory(outputPath);
+        }
 
         //foreach (var asset in Directory.GetFiles(outputPath, "*.asset"))
         //    AssetDatabase.DeleteAsset(asset);
 
-        var allWeapons = Resources.LoadAll<WeaponData>("WeaponData");
+        WeaponData[] allWeapons = Resources.LoadAll<WeaponData>("WeaponData");
 
         foreach (WeaponData weapon in allWeapons)
         {

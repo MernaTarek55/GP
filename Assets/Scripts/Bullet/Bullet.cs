@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
-    void Disable()
+    private void Disable()
     {
         gameObject.SetActive(false);
     }
