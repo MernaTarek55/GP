@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class Enemy_PatrolState : EntityState
 {
     private NavMeshAgent enemyAgent;  // to let the enemy move
-    private readonly float walkRadius = 10f; // How far the enemy can walk
+    private float walkRadius = 10f; // How far the enemy can walk
 
     public Enemy_PatrolState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
@@ -12,71 +12,79 @@ public class Enemy_PatrolState : EntityState
         TryGetComponents(enemyGO);
     }
 
-
-
-    protected override void UpdateTurret()
+    public override void Enter()
     {
-        Debug.Log("Turret Patrol - No movement (stationary enemy)");
-        // Turrets typically don't patrol
-        SetRandomDestination();
-
-    }
-
-    protected override void UpdateBallDroid()
-    {
-        Debug.Log("BallDroid Patrol");
-
-
-
-        SetRandomDestination();
-
+        base.Enter();
 
 
     }
 
-    protected override void UpdateHumanoid()
+    public override void Update()
     {
-        Debug.Log("Humanoid Patrol");
-        SetRandomDestination();
-
-        // Implement humanoid patrol logic (e.g., navmesh waypoints)
+        base.Update();
+        if (enemyData.enemyType != EnemyData.EnemyType.Turret)
+            SetRandomDestination();
     }
 
-    protected override void UpdateLavaRobot()
+    public override void Exit()
     {
-        Debug.Log("LavaRobot Patrol");
-
-        SetRandomDestination();
-
-        // Implement lava robot patrol logic
+        base.Exit();
     }
+
+    //protected override void UpdateTurret()
+    //{
+    //    Debug.Log("Turret Patrol - No movement (stationary enemy)");
+    //    // Turrets typically don't patrol
+    //    SetRandomDestination();
+
+    //}
+
+    //protected override void UpdateBallDroid()
+    //{
+    //    Debug.Log("BallDroid Patrol");
+    //    SetRandomDestination();
+    //}
+
+    //protected override void UpdateHumanoid()
+    //{
+    //    Debug.Log("Humanoid Patrol");
+    //    SetRandomDestination();
+
+    //    // Implement humanoid patrol logic (e.g., navmesh waypoints)
+    //}
+
+    //protected override void UpdateLavaRobot()
+    //{
+    //    Debug.Log("LavaRobot Patrol");
+
+    //        SetRandomDestination();
+
+    //    // Implement lava robot patrol logic
+    //}
 
 
     private void TryGetComponents(GameObject enemyGO)
     {
         if (enemyGO.TryGetComponent(out NavMeshAgent eNav))
-        {
             enemyAgent = eNav;
-        }
         else
-        {
             Debug.LogWarning("Nav mesh not found");
-        }
     }
 
-    private void SetRandomDestination()
+    void SetRandomDestination()
     {
         if (enemyAgent.remainingDistance < 1f && !enemyAgent.pathPending)
         {
             Vector3 randomDirection = Random.insideUnitSphere * walkRadius;
             randomDirection += enemyGO.transform.position;
 
+            NavMeshHit hit;
             // Try 30 times to find a valid position (avoids infinite loops)
             for (int i = 0; i < 30; i++)
             {
-                if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, walkRadius, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, NavMesh.AllAreas))
                 {
-                    _ = enemyAgent.SetDestination(hit.position);
+                    enemyAgent.SetDestination(hit.position);
                     return;
                 }
                 // If failed, try another random direction
@@ -85,7 +93,7 @@ public class Enemy_PatrolState : EntityState
             }
 
             // If all attempts fail, just use current position
-            _ = enemyAgent.SetDestination(enemyGO.transform.position);
+            enemyAgent.SetDestination(enemyGO.transform.position);
         }
     }
 }
