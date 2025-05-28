@@ -1,8 +1,9 @@
+﻿using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy_ChaseState : EntityState
 {
-    private readonly GameObject playerGO;
+    private GameObject playerGO;
 
     public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
@@ -10,39 +11,71 @@ public class Enemy_ChaseState : EntityState
         this.playerGO = playerGO;
     }
 
-    protected override void UpdateTurret()
+    public override void Update()
     {
-        Debug.Log("Turret Chase - No movement (stationary enemy)");
-        // Turrets typically don't chase, so this can be empty
-    }
-
-    protected override void UpdateBallDroid()
-    {
-        Debug.Log("BallDroid Chase");
-        if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+        base.Update();
+        if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
         {
-            Debug.Log("Player is invisible");
-            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO));
-            return;
+            if (playerGO.GetComponentInChildren<InvisibilitySkill>().isInvisible)
+            {
+                Debug.Log("Player is invisible");
+                stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO));
+                return;
+            }
+
+            ChasePlayer();
         }
-
-        ChasePlayer();
     }
 
-    protected override void UpdateHumanoid()
-    {
-        Debug.Log("Humanoid Chase");
-        // Implement humanoid chase logic here (e.g., navmesh movement)
-    }
+    //protected override void UpdateTurret()
+    //{
+    //    Debug.Log("Turret Chase - No movement (stationary enemy)");
+    //    // Turrets typically don't chase, so this can be empty
+    //}
+
+    //protected override void UpdateBallDroid()
+    //{
+    //    Debug.Log("BallDroid Chase");
+    //    if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+    //    {
+    //        Debug.Log("Player is invisible");
+    //        stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO));
+    //        return;
+    //    }
+
+    //    ChasePlayer();
+    //}
+
+    //protected override void UpdateHumanoid()
+    //{
+    //    Debug.Log("Humanoid Chase");
+    //    // Implement humanoid chase logic here (e.g., navmesh movement)
+    //}
 
     private void ChasePlayer()
     {
-        if (playerGO == null || enemyGO == null)
-        {
-            return;
-        }
+        if (playerGO == null || enemyGO == null) return;
 
-        Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
+        float dirX = playerGO.transform.position.x - enemyGO.transform.position.x;
+        float dirZ = playerGO.transform.position.z - enemyGO.transform.position.z;
+        Vector3 direction = new Vector3(dirX, 0, dirZ).normalized;
+        //Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
         enemyGO.transform.position += direction * enemyData.movementSpeed * Time.deltaTime;
+        //Debug.Log(Vector3.Distance(playerGO.transform.position, enemyGO.transform.position));
+        //if (playerGO.gameObject.tag)
+        //{
+        //    stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+        //}
+
+        //if(enemyGo.gameObject.tag) {
+    }
+
+    public override void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Enemy collided with Player � transitioning to Attack state");
+            stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+        }
     }
 }
