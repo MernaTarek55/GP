@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
 {
@@ -117,7 +118,7 @@ public class Enemy : MonoBehaviour
     //TODO: Put the region in Enemy Death State
     private void SpawnSingleDrop(GameObject itemPrefab)
     {
-        if (DropItemPool.Instance == null)
+        if (PoolManager.Instance == null)
         {
             Debug.LogWarning("DropItemPool instance not found!");
             _ = Instantiate(itemPrefab, transform.position + Vector3.up, Quaternion.identity);
@@ -125,8 +126,8 @@ public class Enemy : MonoBehaviour
         }
 
         _ = transform.position + Vector3.up;
-        GameObject drop = DropItemPool.Instance.GetDropFromPool(
-            transform.position + Vector3.up,
+        GameObject drop = PoolManager.Instance.SpawnFromPool(PoolType.DropItem,
+        transform.position + Vector3.up,
             Quaternion.identity
         );
 

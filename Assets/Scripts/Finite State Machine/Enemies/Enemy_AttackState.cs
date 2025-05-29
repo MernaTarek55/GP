@@ -119,10 +119,10 @@ public class Enemy_AttackState : EntityState
         }
 
         // Try to get a projectile from the pool
-        if (LavaProjectilePool.Instance.TryGetProjectile(out GameObject projectile))
+        if (PoolManager.Instance.GetPrefabByTag(PoolType.LavaProjectile))
         {
             // Set up the projectile
-
+            GameObject projectile = PoolManager.Instance.GetPrefabByTag(PoolType.LavaProjectile);
             projectile.transform.position = firePoint.transform.position;
             projectile.transform.rotation = firePoint.transform.rotation;
 
@@ -169,10 +169,11 @@ public class Enemy_AttackState : EntityState
 
         if (enemyData.bulletPrefab != null && firePoint != null)
         {
-            GameObject bullet = BulletPool.Instance.GetBullet();
+            GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
             bullet.transform.position = firePoint.transform.position;
             bullet.transform.rotation = firePoint.transform.rotation;
             bullet.SetActive(true);
+            Debug.Log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         }
 
         _lastShootTime = Time.time;

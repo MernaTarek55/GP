@@ -165,6 +165,6 @@ public class LavaProjectile : MonoBehaviour
     private void ReturnToPool()
     {
         gameObject.SetActive(false);
-        LavaProjectilePool.Instance?.ReturnToPool(gameObject);
+        //LavaProjectilePool.Instance?.ReturnToPool(gameObject);
     }
 }
