@@ -21,8 +21,8 @@ public class LavaProjectile : MonoBehaviour
     // For different enemy types (for now Random shooting or target shooting)
     public enum ProjectileEnemyType
     {
-        Random
-        , Target
+        Target
+        , Random
     }
     [SerializeField] private float speed = 1f;
     [Header("Positions")]
