@@ -218,14 +218,12 @@ public class GrenadeLauncher : Weapon
     [SerializeField] private LineRenderer trajectoryLine;
     [SerializeField] private int trajectoryPoints = 30;
     [SerializeField] private float timeBetweenPoints = 0.05f;
-    [SerializeField] private LayerMask collisionMask;
 
     private Dictionary<int, bool> touchStartedOverUI = new Dictionary<int, bool>();
     private float fireCooldown;
     private float reloadTimer;
     private bool isReloading;
     private Vector3 targetPoint;
-    private Vector3 shootDirection;
 
     private void Awake()
     {
@@ -319,7 +317,7 @@ public class GrenadeLauncher : Weapon
             if (i > 0)
             {
                 Vector3 segment = points[i] - points[i - 1];
-                if (Physics.Raycast(points[i - 1], segment.normalized, out RaycastHit hit, segment.magnitude, collisionMask))
+                if (Physics.Raycast(points[i - 1], segment.normalized, out RaycastHit hit, segment.magnitude))
                 {
                     points[i] = hit.point;
                     System.Array.Resize(ref points, i + 1);
