@@ -29,6 +29,10 @@ public class Enemy_PatrolState : EntityState
     public override void Exit()
     {
         base.Exit();
+        if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot)
+        {
+            enemyAgent.isStopped = true;
+        }
     }
 
     //protected override void UpdateTurret()
@@ -37,30 +41,30 @@ public class Enemy_PatrolState : EntityState
     //    // Turrets typically don't patrol
     //    SetRandomDestination();
 
-    //}
+        //}
 
-    //protected override void UpdateBallDroid()
-    //{
-    //    Debug.Log("BallDroid Patrol");
-    //    SetRandomDestination();
-    //}
+        //protected override void UpdateBallDroid()
+        //{
+        //    Debug.Log("BallDroid Patrol");
+        //    SetRandomDestination();
+        //}
 
-    //protected override void UpdateHumanoid()
-    //{
-    //    Debug.Log("Humanoid Patrol");
-    //    SetRandomDestination();
+        //protected override void UpdateHumanoid()
+        //{
+        //    Debug.Log("Humanoid Patrol");
+        //    SetRandomDestination();
 
-    //    // Implement humanoid patrol logic (e.g., navmesh waypoints)
-    //}
+        //    // Implement humanoid patrol logic (e.g., navmesh waypoints)
+        //}
 
-    //protected override void UpdateLavaRobot()
-    //{
-    //    Debug.Log("LavaRobot Patrol");
+        //protected override void UpdateLavaRobot()
+        //{
+        //    Debug.Log("LavaRobot Patrol");
 
-    //        SetRandomDestination();
+        //        SetRandomDestination();
 
-    //    // Implement lava robot patrol logic
-    //}
+        //    // Implement lava robot patrol logic
+        //}
 
 
     private void TryGetComponents(GameObject enemyGO)

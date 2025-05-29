@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     [Header("Enemy Components")]
     [SerializeField] private GameObject firePos;
     [SerializeField] private ParticleSystem enemyPS; // particle system for enemy ball explosion
+    [SerializeField] public GameObject particle { get; private set; }
 
 
     #region Enemy Drops
@@ -84,18 +85,13 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
-                {
-                    agent.isStopped = true;
-                }
+               
 
                 enemyStateMachine.ChangeState(enemyAttackState);
             }
         }
         else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType ==EnemyData.EnemyType.LavaRobotTypeB)
         {
-
-            agent.isStopped = false;
 
             enemyStateMachine.ChangeState(enemyPatrolState);
         }

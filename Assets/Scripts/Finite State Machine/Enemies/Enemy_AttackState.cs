@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy_AttackState : EntityState
 {
@@ -7,6 +8,7 @@ public class Enemy_AttackState : EntityState
     private GameObject firePoint;
     private ParticleSystem enemyPS;  // particle system for enemy ball explosion
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
+    private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
     private Enemy enemy;
     private bool hasExploded = false; // to instantiate one explosion when the enemy explodes
     private float _lastShootTime;
@@ -61,13 +63,23 @@ public class Enemy_AttackState : EntityState
         }
     }
 
+    public override void Exit()
+    {
+
+        base.Exit();
+        enemyAgent.isStopped = false;
+        
+    }
     private void TryGetComponents(GameObject enemyGO)
     {
         if (enemyGO.TryGetComponent(out MeshRenderer mr)) enemyMR = mr;
         else Debug.LogWarning("Mesh Renderer not found");
         if (enemyGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
         else Debug.LogWarning("Enemy script not found");
-    }
+   
+        if (enemyGO.TryGetComponent(out NavMeshAgent eNav)) enemyAgent = eNav;
+        else Debug.LogWarning("Nav mesh not found");
+}
 
     //protected override void UpdateTurret()
     //{
