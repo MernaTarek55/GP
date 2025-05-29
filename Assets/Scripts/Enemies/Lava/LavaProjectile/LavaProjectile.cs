@@ -12,8 +12,8 @@ public class LavaProjectile : MonoBehaviour
         {
             this.minX = minX;
             this.maxX = maxX;
-            minZ = minY;
-            maxZ = maxY;
+            this.minZ = minY;
+            this.maxZ = maxY;
         }
     }
 
@@ -21,13 +21,10 @@ public class LavaProjectile : MonoBehaviour
     // For different enemy types (for now Random shooting or target shooting)
     public enum ProjectileEnemyType
     {
-        Random
-        , Target
+        Target
+        , Random
     }
     [SerializeField] private float speed = 1f;
-    //[SerializeField] private float groundLevelPosition = -0.2f;
-
-
     [Header("Positions")]
     public GameObject LavaRobot;
     private Vector3 initialA;

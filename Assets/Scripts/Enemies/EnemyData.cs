@@ -13,7 +13,17 @@ public class EnemyData : ScriptableObject
        , Humanoid = 2
        , LavaRobot = 3
         , LavaRobotTypeB = 4
+            , Beyblade = 5
     }
+    // Grouping Enemies 
+    [Serializable]
+    public enum EnemyGroup
+    {
+      Chaser = 0
+      ,Shooter = 1
+    }
+
+    public EnemyGroup enemyGroup;
     public EnemyType enemyType;
     public float movementSpeed;
     public int DetectionRange;

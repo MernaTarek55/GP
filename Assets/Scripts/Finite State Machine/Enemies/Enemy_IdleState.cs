@@ -1,37 +1,69 @@
-using DG.Tweening;
 using UnityEngine;
+using DG.Tweening;
 
 public class Enemy_IdleState : EntityState
 {
     private bool _isRotating = false;
-    private readonly Tween[] _currentTween;
+    private Tween[] _currentTween;
+    private GameObject playerGO;
 
-    public Enemy_IdleState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
+
+    public Enemy_IdleState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
+        this.playerGO = playerGO;
         _currentTween = new Tween[2];
     }
 
-    protected override void UpdateTurret()
+    public override void Update()
     {
-        Debug.Log("Turret Idle");
-        if (!_isRotating)
+        base.Update();
+        switch (enemyData.enemyType)
         {
-            RotateWithTween(new Vector3(0, 160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
+            case EnemyData.EnemyType.Turret:
+                if (!_isRotating)
+                {
+                    RotateWithTween(new Vector3(0, 160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
+                }
+                break; 
+
+            case EnemyData.EnemyType.ballDroid: 
+                RotateOnSelf(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
+                break; 
+            case EnemyData.EnemyType.Beyblade:
+                RotateOnSelf(new Vector3(0, 360, 0), 1f, RotateMode.WorldAxisAdd);
+                break;
         }
     }
 
-    protected override void UpdateBallDroid()
+    public override void Exit()
     {
-        Debug.Log("BallDroid Idle");
-        RotateBall(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
+        base.Exit();
+        _isRotating = false;
+        StopRotation();
+        //if (enemyData.enemyType == EnemyData.EnemyType.ballDroid){}
     }
 
-    protected override void UpdateHumanoid()
-    {
-        Debug.Log("Humanoid Idle");
-        // Implement humanoid idle animations here
-    }
+    //protected override void UpdateTurret()
+    //{
+    //    Debug.Log("Turret Idle");
+    //    if (!_isRotating)
+    //    {
+    //        RotateWithTween(new Vector3(0, 160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
+    //    }
+    //}
+
+    //protected override void UpdateBallDroid()
+    //{
+    //    Debug.Log("BallDroid Idle");
+    //    RotateOnSelf(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
+    //}
+
+    //protected override void UpdateHumanoid()
+    //{
+    //    Debug.Log("Humanoid Idle");
+    //    // Implement humanoid idle animations here
+    //}
 
     private void RotateWithTween(Vector3 startRotation, Vector3 endRotation, float startDuration, float endDuration, RotateMode rotateMode)
     {
@@ -48,32 +80,37 @@ public class Enemy_IdleState : EntityState
             });
     }
 
-    private void RotateBall(Vector3 rotation, float duration, RotateMode rotateMode)
+    private void RotateOnSelf(Vector3 rotation, float duration, RotateMode rotateMode)
     {
-        _ = enemyGO.transform.DORotate(rotation, duration, rotateMode)
+        enemyGO.transform.DORotate(rotation, duration, rotateMode)
             .SetEase(Ease.Linear)
             .SetLoops(-1, LoopType.Restart);
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-        _isRotating = false;
-        StopRotation();
-    }
-
     private void StopRotation()
     {
-        if (_currentTween == null)
-        {
-            return;
-        }
+        if (_currentTween == null) return;
 
-        foreach (Tween tween in _currentTween)
+        foreach (var tween in _currentTween)
         {
             if (tween != null && tween.IsActive())
             {
                 tween.Kill();
+            }
+        }
+    }
+    public override void CheckStateTransitions(float distanceToPlayer)
+    {
+        if (distanceToPlayer <= enemyData.DetectionRange)
+        {
+            if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
+            {
+                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO));
+            }
+            else if (enemyData.enemyType != EnemyData.EnemyType.LavaRobot &&
+                     enemyData.enemyType != EnemyData.EnemyType.LavaRobotTypeB)
+            {
+                stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
             }
         }
     }

@@ -9,7 +9,8 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent agent;
     [Header("Enemy Components")]
     [SerializeField] private GameObject firePos;
-    [SerializeField] private ParticleSystem enemyPS; // particle system for enemy ball explosion
+    //TODO : make it get private set
+    public ParticleSystem particleEffect; // particle system for enemy ball explosion
 
 
     #region Enemy Drops
@@ -32,10 +33,10 @@ public class Enemy : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         enemyStateMachine = new StateMachine();
-        enemyIdleState = new Enemy_IdleState(enemyStateMachine, "Enemy Idle", enemyData, gameObject);
+        enemyIdleState = new Enemy_IdleState(enemyStateMachine, "Enemy Idle", enemyData, gameObject, playerGO);
         enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject, playerGO);
         enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject, playerGO);
-        enemyPatrolState = new Enemy_PatrolState(enemyStateMachine, "Enemy Patrol", enemyData, gameObject);
+        enemyPatrolState = new Enemy_PatrolState(enemyStateMachine, "Enemy Patrol", enemyData, gameObject, playerGO);
         enemyDeath = new Death_State(enemyStateMachine, "Enemy Death", enemyData, gameObject);
 
 
@@ -46,8 +47,7 @@ public class Enemy : MonoBehaviour
 
         enemyStateMachine.Initalize(enemyIdleState);
         if (enemyData.enemyType is EnemyData.EnemyType.LavaRobot or EnemyData.EnemyType.LavaRobotTypeB) { enemyStateMachine.ChangeState(enemyPatrolState); }
-        enemyAttackState.getfirePos(firePos);
-        enemyAttackState.getParticleSystem(enemyPS);
+        //enemyAttackState.getfirePos(firePos);
         Debug.Log("START " + firePos);
 
     }
@@ -61,49 +61,39 @@ public class Enemy : MonoBehaviour
         //return;
         //}
         float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
-        if (distance <= enemyData.DetectionRange)
+        enemyStateMachine.currentState.CheckStateTransitions(distance);
+        /*if (distance <= enemyData.DetectionRange)
         {
             if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
             {
                 enemyStateMachine.ChangeState(enemyChaseState);
 
-                if (distance <= 1f) { enemyStateMachine.ChangeState(enemyAttackState); }
-
-                else
+                if (distance <= 2f)
                 {
-                    if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot)
-                        agent.isStopped = true;
                     enemyStateMachine.ChangeState(enemyAttackState);
                 }
+
             }
             else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot)
             {
 
-                agent.isStopped = false;
 
                 enemyStateMachine.ChangeState(enemyPatrolState);
             }
             else
             {
-                if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
-                {
-                    agent.isStopped = true;
-                }
-
                 enemyStateMachine.ChangeState(enemyAttackState);
             }
         }
-        else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType ==EnemyData.EnemyType.LavaRobotTypeB)
+        else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
         {
-
-            agent.isStopped = false;
 
             enemyStateMachine.ChangeState(enemyPatrolState);
         }
         else
         {
             enemyStateMachine.ChangeState(enemyIdleState);
-        }
+        }*/
         //  }
 
     }
@@ -161,6 +151,9 @@ public class Enemy : MonoBehaviour
     }
     #endregion
 
-
+    public GameObject getfirePos()
+    {
+        return firePos;
+    }
 
 }

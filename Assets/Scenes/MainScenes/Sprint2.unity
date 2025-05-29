@@ -927,37 +927,17 @@ PrefabInstance:
       propertyPath: playerGO
       value: 
       objectReference: {fileID: 4975806584410215589}
-    - target: {fileID: 27660054956134424, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_Name
       value: Lava Robot
-      objectReference: {fileID: 0}
-    - target: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1212700470898299797, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: B
       value: 
       objectReference: {fileID: 8486386432693121833}
-    - target: {fileID: 2147523308040884472, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5145247578527658450, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5283381922403385087, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: 5819782264139901582, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -12.28
       objectReference: {fileID: 0}
     - target: {fileID: 5819782264139901582, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_LocalPosition.y
@@ -965,7 +945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5819782264139901582, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -27.8
+      value: -21.75
       objectReference: {fileID: 0}
     - target: {fileID: 5819782264139901582, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_LocalRotation.w
@@ -995,16 +975,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6275057653421839019, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 8685501899012052247, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8981443978251235036, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1064,6 +1035,10 @@ PrefabInstance:
     - target: {fileID: 8980013216686658834, guid: d739f5c85028be24993c038c4651b080, type: 3}
       propertyPath: m_Name
       value: Turret Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8980013216686658834, guid: d739f5c85028be24993c038c4651b080, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8980013216686658834, guid: d739f5c85028be24993c038c4651b080, type: 3}
       propertyPath: m_TagString
@@ -1635,6 +1610,10 @@ PrefabInstance:
     - target: {fileID: 2535750547211479320, guid: b75f68fba79ee7e47815f6dac3b90fc9, type: 3}
       propertyPath: m_Name
       value: CircleDroid
+      objectReference: {fileID: 0}
+    - target: {fileID: 2535750547211479320, guid: b75f68fba79ee7e47815f6dac3b90fc9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4755388878470207390, guid: b75f68fba79ee7e47815f6dac3b90fc9, type: 3}
       propertyPath: playerGO
@@ -2805,7 +2784,7 @@ Transform:
   m_GameObject: {fileID: 6159160731599204637}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19532676, y: -0.7069034, z: 0.21381189, w: 0.6453058}
-  m_LocalPosition: {x: 3.9012566, y: 4.983154, z: 13.602262}
+  m_LocalPosition: {x: 3.8089561, y: 4.9829445, z: 14.613958}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6726,7 +6705,7 @@ Transform:
   m_GameObject: {fileID: 8095704711729592555}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19532676, y: -0.7069034, z: 0.21381189, w: 0.6453058}
-  m_LocalPosition: {x: 3.9012566, y: 4.983154, z: 13.602262}
+  m_LocalPosition: {x: 3.8089561, y: 4.9829445, z: 14.613958}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

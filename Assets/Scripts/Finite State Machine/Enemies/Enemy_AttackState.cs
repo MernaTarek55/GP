@@ -1,13 +1,21 @@
+using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy_AttackState : EntityState
 {
-    private readonly GameObject playerGO;
+    private GameObject playerGO;
     private GameObject firePoint;
     private ParticleSystem enemyPS;  // particle system for enemy ball explosion
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
+    private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
+    private Rigidbody enemyRigidbody; // to add force for the beyblade
     private Enemy enemy;
+    private HealthComponent playerHealth;
+    private InvisibilitySkill invisibilitySkill;
     private bool hasExploded = false; // to instantiate one explosion when the enemy explodes
+
     private float _lastShootTime;
 
     public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
@@ -15,108 +23,160 @@ public class Enemy_AttackState : EntityState
     {
         this.playerGO = playerGO;
         TryGetComponents(enemyGO);
+        TryGetComponents(playerGO);
+
 
     }
 
-    private void TryGetComponents(GameObject enemyGO)
+    public override void Enter()
     {
-        if (enemyGO.TryGetComponent(out MeshRenderer mr))
+        base.Enter();
+        firePoint = enemy.getfirePos();
+
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        if (enemyData.enemyType == EnemyData.EnemyType.Turret)
         {
-            enemyMR = mr;
+            Debug.Log("Turret Attack");
+            if (invisibilitySkill.isInvisible)
+            {
+                Debug.Log("Player is invisible");
+                stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+                return;
+            }
+
+            RotateTowardPlayer();
+            Shoot();
+        }
+        else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
+        {
+            Debug.Log("BallDroid Attack");
+            Debug.Log(invisibilitySkill.isInvisible);
+            if (invisibilitySkill.isInvisible)
+            {
+                Debug.Log("Player is invisible, ball droid does nothing.");
+                return;
+            }
+            if (!hasExploded && enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+            {
+                ExplodingBall();
+            }
+            else if(enemyData.enemyType == EnemyData.EnemyType.Beyblade)  
+            {
+                BeybladeAttack();
+            }
+        }
+        else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
+        {
+            ShootLava();
+        }
+    }
+
+    public override void Exit()
+    {
+
+        base.Exit();
+     
+        
+    }
+    private void TryGetComponents(GameObject entityGO)
+    {
+        if (entityGO.CompareTag("Player"))
+        {
+            if(entityGO.TryGetComponent(out HealthComponent healthComponent)) playerHealth = healthComponent;
+            else Debug.LogWarning("Health Component not found");
+            if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
+            else Debug.LogWarning("invisibilitySkill not found");
+            
         }
         else
         {
-            Debug.LogWarning("Mesh Renderer not found");
-        }
+            if (entityGO.TryGetComponent(out MeshRenderer mr)) enemyMR = mr;
+            else Debug.LogWarning("Mesh Renderer not found");
+            if (entityGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
+            else Debug.LogWarning("Enemy script not found");
 
-        if (enemyGO.TryGetComponent(out Enemy enemy))
-        {
-            this.enemy = enemy;
+            if (entityGO.TryGetComponent(out NavMeshAgent eNav)) enemyAgent = eNav;
+            else Debug.LogWarning("Nav mesh not found");
+            if (entityGO.TryGetComponent(out Rigidbody rb)) enemyRigidbody = rb;
+            else Debug.LogWarning("Rigidbody not found");
         }
-        else
-        {
-            Debug.LogWarning("Enemy script not found");
-        }
-    }
+}
 
-    protected override void UpdateTurret()
-    {
-        Debug.Log("Turret Attack");
-        if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
-        {
-            Debug.Log("Player is invisible");
-            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO));
-            return;
-        }
+    //protected override void UpdateTurret()
+    //{
+    //    Debug.Log("Turret Attack");
+    //    if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+    //    {
+    //        Debug.Log("Player is invisible");
+    //        stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, entityGO));
+    //        return;
+    //    }
 
-        RotateTowardPlayer();
-        Shoot();
-    }
+    //    RotateTowardPlayer();
+    //    Shoot();
+    //}
 
-    protected override void UpdateBallDroid()
-    {
-        Debug.Log("BallDroid Attack");
-        Debug.Log(playerGO.GetComponent<InvisibilitySkill>().isInvisible);
-        if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
-        {
-            Debug.Log("Player is invisible, ball droid does nothing.");
-            return;
-        }
-        if (!hasExploded)
-        {
-            ExplodingBall();
-        }
+    //protected override void UpdateBallDroid()
+    //{
+    //    Debug.Log("BallDroid Attack");
+    //    Debug.Log(playerGO.GetComponent<InvisibilitySkill>().isInvisible);
+    //    if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+    //    {
+    //        Debug.Log("Player is invisible, ball droid does nothing.");
+    //        return;
+    //    }
+    //    if (!hasExploded)
+    //    {
+    //        ExplodingBall();
+    //    }
 
-    }
+    //}
 
     private void ExplodingBall()
     {
-        ParticleSystem enemyPSClone = GameObject.Instantiate(enemyPS, enemyGO.transform.position, enemyGO.transform.rotation);
-        enemyPSClone.Play();
+        enemy.particleEffect.Play();
 
         enemyMR.enabled = false;
         enemy.Die();
-        //GameObject.Destroy(enemyGO/*, enemyPSClone.main.duration*/);
+
+        //GameObject.Destroy(entityGO/*, enemyPSClone.main.duration*/);
 
         hasExploded = true;
-        if (playerGO.TryGetComponent(out HealthComponent playerHealth)) { playerHealth.TakeDamage(10f); Debug.Log("Player took damage"); }
-        else
-        {
-            Debug.LogWarning("Health Component not found");
-        }
+        playerHealth.TakeDamage(10f);
     }
 
-    protected override void UpdateHumanoid()
-    {
-        Debug.Log("Humanoid Attack");
-        // Humanoid-specific attack logic
-    }
+    //protected override void UpdateHumanoid()
+    //{
+    //    Debug.Log("Humanoid Attack");
+    //    // Humanoid-specific attack logic
+    //}
 
-    protected override void UpdateLavaRobot()
-    {
-        Debug.Log("LavaRobot Attack");
+    //protected override void UpdateLavaRobot()
+    //{
+    //    Debug.Log("LavaRobot Attack");
 
-        ShootLava();
-    }
+    //    ShootLava();
+    //}
 
     private void ShootLava()
     {
-        if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+        if (invisibilitySkill.isInvisible)
         {
             Debug.Log("Player is invisible, ball droid does nothing.");
             return;
         }
         // Check cooldown
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
-        {
-            return;
-        }
+        return; 
+        
+        if(firePoint == null)  /*getfirePos(firePoint);*/ return;
+        
 
-        // Check if we have valid references
-        if (enemyData.bulletPrefab == null || firePoint == null)
-        {
-            return;
-        }
+
 
         // Try to get a projectile from the pool
         if (PoolManager.Instance.GetPrefabByTag(PoolType.LavaProjectile))
@@ -126,17 +186,17 @@ public class Enemy_AttackState : EntityState
             projectile.transform.position = firePoint.transform.position;
             projectile.transform.rotation = firePoint.transform.rotation;
 
-            // Assign the LavaRobot reference (critical!)
-            LavaProjectile lavaProjectile = projectile.GetComponent<LavaProjectile>();
-            if (lavaProjectile != null)
+            if (enemyData.bulletPrefab != null && firePoint != null)
             {
-                lavaProjectile.LavaRobot = enemyGO; // or whatever reference you need
+                // Set up the projectile
+                projectile.transform.position = firePoint.transform.position;
+                projectile.transform.rotation = firePoint.transform.rotation;
 
-                initProjectileType(lavaProjectile);
-
+                // Assign the LavaRobot reference (critical!)
+               
+                projectile.SetActive(true);
+                _lastShootTime = Time.time; // Update last shoot time
             }
-            projectile.SetActive(true);
-            _lastShootTime = Time.time; // Update last shoot time
         }
     }
 
@@ -154,18 +214,13 @@ public class Enemy_AttackState : EntityState
     private void Shoot()
     {
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
-        {
             return;
-        }
 
         Vector3 directionToPlayer = (playerGO.transform.position - enemyGO.transform.position).normalized;
         directionToPlayer.y = 0;
         float angle = Vector3.Angle(enemyGO.transform.forward, directionToPlayer);
 
-        if (angle > 10f)
-        {
-            return;
-        }
+        if (angle > 10f) return;
 
         if (enemyData.bulletPrefab != null && firePoint != null)
         {
@@ -179,20 +234,28 @@ public class Enemy_AttackState : EntityState
         _lastShootTime = Time.time;
     }
 
-    public void getfirePos(GameObject firPosition)
+    private void BeybladeAttack()
     {
-        firePoint = firPosition;
+        RotateOnSelf(new Vector3(0, 540, 0), 1f, RotateMode.WorldAxisAdd);
+        enemyRigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+        playerHealth.TakeDamage(10f);
     }
 
-    public void getParticleSystem(ParticleSystem _enemyPS)
+    
+    private void RotateOnSelf(Vector3 rotation, float duration, RotateMode rotateMode)
     {
-        enemyPS = _enemyPS;
+        enemyGO.transform.DORotate(rotation, duration, rotateMode)
+            .SetEase(Ease.Linear)
+            .SetLoops(-1, LoopType.Restart);
     }
 
     public void initProjectileType(LavaProjectile lavaProjectile)
     {
-        switch (enemyData.enemyType)
-        {
+        
+
+            switch (enemyData.enemyType)
+            {
+            
 
 
             case EnemyData.EnemyType.LavaRobot:
@@ -204,8 +267,35 @@ public class Enemy_AttackState : EntityState
                 Debug.Log("Enemy Random");
 
                 break;
+            }
 
+        
+
+    }
+
+    public override void CheckStateTransitions(float distanceToPlayer)
+    {
+        if (invisibilitySkill.isInvisible)
+        {
+            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+            return;
         }
 
+        if (distanceToPlayer > enemyData.DetectionRange)
+        {
+            if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot ||
+                enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
+            {
+                stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO,playerGO));
+            }
+            else
+            {
+                stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+            }
+        }
+        else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser && distanceToPlayer > 2f)
+        {
+            stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO));
+        }
     }
 }

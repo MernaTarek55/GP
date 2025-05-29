@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class EntityState
@@ -29,7 +30,7 @@ public abstract class EntityState
     {
         this.stateMachine = stateMachine;
         this.stateName = stateName;
-        example = exp;
+        this.example = exp;
     }
 
     // public EntityState(StateMachine stateMachine, string stateName, EnemyData enemyData)
@@ -56,31 +57,30 @@ public abstract class EntityState
     {
         Debug.Log("I am in " + stateName);
 
-        if (enemyData != null)
-        {
-            switch (enemyData.enemyType)
-            {
-                case 0: // Turret
-                    UpdateTurret();
-                    break;
+        //if (enemyData != null)
+        //{
+        //    switch (enemyData.enemyType)
+        //    {
+        //        case 0: // Turret
+        //            UpdateTurret();
+        //            break;
 
-                case (EnemyData.EnemyType)1: // BallDroid
-                    UpdateBallDroid();
-                    break;
+        //        case (EnemyData.EnemyType)1: // BallDroid
+        //            UpdateBallDroid();
+        //            break;
 
-                case (EnemyData.EnemyType)2: // Humanoid
-                    UpdateHumanoid();
-                    break;
-                case (EnemyData.EnemyType)3:
-                case (EnemyData.EnemyType)4: // LavaRobot
-                    UpdateLavaRobot();
-                    break;
-            }
-        }
-        else
-        {
-            Debug.LogWarning("EnemyData is Null");
-        }
+        //        case (EnemyData.EnemyType)2: // Humanoid
+        //            UpdateHumanoid();
+        //            break;
+        //        case (EnemyData.EnemyType)3: // Humanoid
+        //            UpdateLavaRobot();
+        //            break;
+        //    }
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("EnemyData is Null");
+        //}
     }
 
     public virtual void Exit()
@@ -88,8 +88,16 @@ public abstract class EntityState
         Debug.Log("I exit " + stateName);
     }
 
-    protected virtual void UpdateTurret() { }
-    protected virtual void UpdateBallDroid() { }
-    protected virtual void UpdateHumanoid() { }
-    protected virtual void UpdateLavaRobot() { }
+    public virtual void OnCollisionEnter(Collision collision) { }
+    public virtual void OnTriggerEnter(Collider collider) { }
+
+    public virtual void CheckStateTransitions(float distance)
+    {
+
+    }
+
+    //protected virtual void UpdateTurret() { }
+    //protected virtual void UpdateBallDroid() { }
+    //protected virtual void UpdateHumanoid() { }
+    //protected virtual void UpdateLavaRobot() { }
 }
