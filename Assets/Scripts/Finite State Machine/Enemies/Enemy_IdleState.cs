@@ -5,10 +5,13 @@ public class Enemy_IdleState : EntityState
 {
     private bool _isRotating = false;
     private Tween[] _currentTween;
+    private GameObject playerGO;
 
-    public Enemy_IdleState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
+
+    public Enemy_IdleState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
+        this.playerGO = playerGO;
         _currentTween = new Tween[2];
     }
 
@@ -29,6 +32,10 @@ public class Enemy_IdleState : EntityState
         base.Exit();
         _isRotating = false;
         StopRotation();
+        if(enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+        {
+
+        }
     }
 
     //protected override void UpdateTurret()
@@ -83,6 +90,21 @@ public class Enemy_IdleState : EntityState
             if (tween != null && tween.IsActive())
             {
                 tween.Kill();
+            }
+        }
+    }
+    public override void CheckStateTransitions(float distanceToPlayer)
+    {
+        if (distanceToPlayer <= enemyData.DetectionRange)
+        {
+            if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+            {
+                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO));
+            }
+            else if (enemyData.enemyType != EnemyData.EnemyType.LavaRobot &&
+                     enemyData.enemyType != EnemyData.EnemyType.LavaRobotTypeB)
+            {
+                stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
             }
         }
     }

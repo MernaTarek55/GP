@@ -5,17 +5,20 @@ public class Enemy_PatrolState : EntityState
 {
     private NavMeshAgent enemyAgent;  // to let the enemy move
     private float walkRadius = 10f; // How far the enemy can walk
+    private GameObject playerGO;
 
-    public Enemy_PatrolState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
+
+    public Enemy_PatrolState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
+        this.playerGO = playerGO;
         TryGetComponents(enemyGO);
     }
 
     public override void Enter()
     {
         base.Enter();
-
+        if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot) enemyAgent.isStopped = false;
 
     }
 
@@ -98,6 +101,21 @@ public class Enemy_PatrolState : EntityState
 
             // If all attempts fail, just use current position
             enemyAgent.SetDestination(enemyGO.transform.position);
+        }
+    }
+
+    public override void CheckStateTransitions(float distanceToPlayer)
+    {
+        if (distanceToPlayer <= enemyData.DetectionRange)
+        {
+            if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+            {
+                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO));
+            }
+            else
+            {
+                stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+            }
         }
     }
 }

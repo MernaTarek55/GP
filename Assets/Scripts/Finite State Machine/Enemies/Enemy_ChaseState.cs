@@ -4,11 +4,14 @@ using UnityEngine;
 public class Enemy_ChaseState : EntityState
 {
     private GameObject playerGO;
+    private InvisibilitySkill invisibilitySkill;
 
     public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
+        TryGetComponents(this.playerGO);
+
     }
 
     public override void Update()
@@ -16,10 +19,10 @@ public class Enemy_ChaseState : EntityState
         base.Update();
         if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
         {
-            if (playerGO.GetComponentInChildren<InvisibilitySkill>().isInvisible)
+            if (invisibilitySkill.isInvisible)
             {
                 Debug.Log("Player is invisible");
-                stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO));
+                stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
                 return;
             }
 
@@ -52,6 +55,12 @@ public class Enemy_ChaseState : EntityState
     //    // Implement humanoid chase logic here (e.g., navmesh movement)
     //}
 
+    private void TryGetComponents(GameObject entityGO)
+    {
+
+        if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
+        else Debug.LogWarning("invisibilitySkill not found");
+    }
     private void ChasePlayer()
     {
         if (playerGO == null || enemyGO == null) return;
@@ -76,6 +85,32 @@ public class Enemy_ChaseState : EntityState
         {
             Debug.Log("Enemy collided with Player � transitioning to Attack state");
             stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+        }
+    }
+
+    public override void CheckStateTransitions(float distanceToPlayer)
+    {
+        if (invisibilitySkill.isInvisible)
+        {
+            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+            return;
+        }
+
+        if (distanceToPlayer <= 2f)
+        {
+            stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+        }
+        else if (distanceToPlayer > enemyData.DetectionRange)
+        {
+            if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot ||
+                enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
+            {
+                stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+            }
+            else
+            {
+                stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+            }
         }
     }
 }
