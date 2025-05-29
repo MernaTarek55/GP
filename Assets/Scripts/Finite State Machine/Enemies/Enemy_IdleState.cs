@@ -18,13 +18,22 @@ public class Enemy_IdleState : EntityState
     public override void Update()
     {
         base.Update();
-        if (enemyData.enemyType == EnemyData.EnemyType.Turret)
-            if (!_isRotating)
-            {
-                RotateWithTween(new Vector3(0, 160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
-            }
-            else if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
-                RotateBall(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
+        switch (enemyData.enemyType)
+        {
+            case EnemyData.EnemyType.Turret:
+                if (!_isRotating)
+                {
+                    RotateWithTween(new Vector3(0, 160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
+                }
+                break; 
+
+            case EnemyData.EnemyType.ballDroid: 
+                RotateOnSelf(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
+                break; 
+            case EnemyData.EnemyType.Beyblade:
+                RotateOnSelf(new Vector3(0, 360, 0), 1f, RotateMode.WorldAxisAdd);
+                break;
+        }
     }
 
     public override void Exit()
@@ -32,10 +41,7 @@ public class Enemy_IdleState : EntityState
         base.Exit();
         _isRotating = false;
         StopRotation();
-        if(enemyData.enemyType == EnemyData.EnemyType.ballDroid)
-        {
-
-        }
+        //if (enemyData.enemyType == EnemyData.EnemyType.ballDroid){}
     }
 
     //protected override void UpdateTurret()
@@ -50,7 +56,7 @@ public class Enemy_IdleState : EntityState
     //protected override void UpdateBallDroid()
     //{
     //    Debug.Log("BallDroid Idle");
-    //    RotateBall(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
+    //    RotateOnSelf(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
     //}
 
     //protected override void UpdateHumanoid()
@@ -74,7 +80,7 @@ public class Enemy_IdleState : EntityState
             });
     }
 
-    private void RotateBall(Vector3 rotation, float duration, RotateMode rotateMode)
+    private void RotateOnSelf(Vector3 rotation, float duration, RotateMode rotateMode)
     {
         enemyGO.transform.DORotate(rotation, duration, rotateMode)
             .SetEase(Ease.Linear)
@@ -97,7 +103,7 @@ public class Enemy_IdleState : EntityState
     {
         if (distanceToPlayer <= enemyData.DetectionRange)
         {
-            if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+            if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
             {
                 stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO));
             }

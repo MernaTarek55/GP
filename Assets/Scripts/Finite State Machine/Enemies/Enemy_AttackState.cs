@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,6 +10,7 @@ public class Enemy_AttackState : EntityState
     private ParticleSystem enemyPS;  // particle system for enemy ball explosion
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
     private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
+    private Rigidbody enemyRigidbody; // to add force for the beyblade
     private Enemy enemy;
     private HealthComponent playerHealth;
     private InvisibilitySkill invisibilitySkill;
@@ -49,7 +51,7 @@ public class Enemy_AttackState : EntityState
             RotateTowardPlayer();
             Shoot();
         }
-        else if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+        else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
         {
             Debug.Log("BallDroid Attack");
             Debug.Log(invisibilitySkill.isInvisible);
@@ -58,9 +60,13 @@ public class Enemy_AttackState : EntityState
                 Debug.Log("Player is invisible, ball droid does nothing.");
                 return;
             }
-            if (!hasExploded)
+            if (!hasExploded && enemyData.enemyType == EnemyData.EnemyType.ballDroid)
             {
                 ExplodingBall();
+            }
+            else if(enemyData.enemyType == EnemyData.EnemyType.Beyblade)  
+            {
+                BeybladeAttack();
             }
         }
         else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
@@ -84,6 +90,7 @@ public class Enemy_AttackState : EntityState
             else Debug.LogWarning("Health Component not found");
             if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
             else Debug.LogWarning("invisibilitySkill not found");
+            
         }
         else
         {
@@ -94,6 +101,8 @@ public class Enemy_AttackState : EntityState
 
             if (entityGO.TryGetComponent(out NavMeshAgent eNav)) enemyAgent = eNav;
             else Debug.LogWarning("Nav mesh not found");
+            if (entityGO.TryGetComponent(out Rigidbody rb)) enemyRigidbody = rb;
+            else Debug.LogWarning("Rigidbody not found");
         }
 }
 
@@ -223,9 +232,20 @@ public class Enemy_AttackState : EntityState
         _lastShootTime = Time.time;
     }
 
-   
+    private void BeybladeAttack()
+    {
+        RotateOnSelf(new Vector3(0, 540, 0), 1f, RotateMode.WorldAxisAdd);
+        enemyRigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+        playerHealth.TakeDamage(10f);
+    }
 
-   
+    
+    private void RotateOnSelf(Vector3 rotation, float duration, RotateMode rotateMode)
+    {
+        enemyGO.transform.DORotate(rotation, duration, rotateMode)
+            .SetEase(Ease.Linear)
+            .SetLoops(-1, LoopType.Restart);
+    }
 
     public void initProjectileType(LavaProjectile lavaProjectile)
     {
@@ -271,7 +291,7 @@ public class Enemy_AttackState : EntityState
                 stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
             }
         }
-        else if (enemyData.enemyType == EnemyData.EnemyType.ballDroid && distanceToPlayer > 2f)
+        else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser && distanceToPlayer > 2f)
         {
             stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO));
         }

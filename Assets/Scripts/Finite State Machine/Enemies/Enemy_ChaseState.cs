@@ -17,16 +17,16 @@ public class Enemy_ChaseState : EntityState
     public override void Update()
     {
         base.Update();
-        if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+        if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
         {
-            if (invisibilitySkill.isInvisible)
-            {
-                Debug.Log("Player is invisible");
-                stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-                return;
-            }
+            //if (invisibilitySkill.isInvisible)
+            //{
+                //Debug.Log("Player is invisible");
+                //stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+                //return;
+            //}
+                ChasePlayer();
 
-            ChasePlayer();
         }
     }
 
@@ -90,11 +90,11 @@ public class Enemy_ChaseState : EntityState
 
     public override void CheckStateTransitions(float distanceToPlayer)
     {
-        if (invisibilitySkill.isInvisible)
-        {
-            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-            return;
-        }
+        //if (invisibilitySkill.isInvisible)
+        //{
+        //    stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+        //    return;
+        //}
 
         if (distanceToPlayer <= 2f)
         {

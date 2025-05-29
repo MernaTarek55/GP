@@ -108,7 +108,7 @@ public class Enemy_PatrolState : EntityState
     {
         if (distanceToPlayer <= enemyData.DetectionRange)
         {
-            if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
+            if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
             {
                 stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO));
             }
