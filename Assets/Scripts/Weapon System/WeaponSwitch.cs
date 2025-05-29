@@ -9,7 +9,10 @@ public class WeaponSwitch : MonoBehaviour
     {
 
         ActivateWeapon(currentWeaponIndex);
+
     }
+
+   
 
     public void SwitchWeapons()
     {

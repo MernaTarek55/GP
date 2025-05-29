@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class AutoGun : Weapon
 {
+    [SerializeField] private DeadeyeSkill deadEye;
+
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
 
@@ -94,6 +96,11 @@ public class AutoGun : Weapon
             {
                 // Clean up dictionary when touch ends
                 _ = touchStartedOverUI.Remove(fingerId);
+                if (deadEye.canShoot == true)
+                {
+                    Vector2 touchPos = touch.position;
+                    ShootAtTouch(touchPos);
+                }
             }
         }
 

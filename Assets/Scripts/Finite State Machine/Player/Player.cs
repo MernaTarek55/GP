@@ -51,14 +51,15 @@ public class Player : MonoBehaviour
 
         moveAction = InputActions.FindActionMap("Player").FindAction("Move");
         jumpAction = InputActions.FindActionMap("Player").FindAction("Jump");
-        deadEyeAction = InputActions.FindActionMap("Player").FindAction("DeadEye");
+        //deadEyeAction = InputActions.FindActionMap("Player").FindAction("DeadEye");
 
         stateMachine = new StateMachine();
         playerIdle = new Player_IdleState(stateMachine, "Idle", this);
         playerMove = new Player_MoveState(stateMachine, "Move", this);
         playerJump = new Player_JumpState(stateMachine, "Jump", this);
-        playerDeadEye = new Player_DeadEyeStateTest1(stateMachine, "DeadEye", this);
+       // playerDeadEye = new Player_DeadEyeStateTest1(stateMachine, "DeadEye", this);
         playerDeath = new Death_State(stateMachine, "Death", this);
+        //playerDeadEye = new Player_DeadEyeStateTest1(stateMachine, "DeadEye", this);
     }
 
     private void OnEnable()
@@ -79,7 +80,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
-        DeadEyePressed = deadEyeAction.WasPressedThisFrame() && CanUseDeadEye;
+        //DeadEyePressed = deadEyeAction.WasPressedThisFrame() && CanUseDeadEye;
         JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
         stateMachine.UpdateActiveState();
     }

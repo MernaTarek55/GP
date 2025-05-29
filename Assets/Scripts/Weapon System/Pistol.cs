@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class Pistol : Weapon
 {
+    [SerializeField] private DeadeyeSkill deadEye;
+
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
 
@@ -75,7 +77,7 @@ public class Pistol : Weapon
         }
 
         // Check for touch input on mobile
-        for (int i = 0; i < Input.touchCount; i++)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && deadEye.canShoot == true)
         {
             Touch touch = Input.GetTouch(i);
             int fingerId = touch.fingerId;
