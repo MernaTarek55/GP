@@ -179,7 +179,10 @@ public class Pistol : Weapon
         fireCooldown = weaponData.fireRate;
         currentAmmo--;
 
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
+        bullet.transform.position = firePoint.transform.position;
+        bullet.transform.rotation = firePoint.transform.rotation;
+        bullet.SetActive(true);
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
