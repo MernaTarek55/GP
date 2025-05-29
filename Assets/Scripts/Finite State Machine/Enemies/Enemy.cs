@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour
         enemyStateMachine = new StateMachine();
         enemyIdleState = new Enemy_IdleState(enemyStateMachine, "Enemy Idle", enemyData, gameObject, playerGO);
         enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject, playerGO);
-        enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject, playerGO,this);
+        enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject, playerGO, this);
         enemyPatrolState = new Enemy_PatrolState(enemyStateMachine, "Enemy Patrol", enemyData, gameObject, playerGO);
         enemyDeath = new Death_State(enemyStateMachine, "Enemy Death", enemyData, this);
 

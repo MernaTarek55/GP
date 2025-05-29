@@ -13,16 +13,15 @@ public class Enemy_ChaseState : EntityState
     private Enemy enemy;
 
 
-    public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO, Enemy enemy)
-        : base(stateMachine, stateName, enemyData, enemyGO)
+    public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData,
+                         GameObject enemyGO, GameObject playerGO, Enemy enemy)
+       : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
         this.enemyGO = enemyGO;
-        this.enemy = enemy;
+        this.enemy = enemy;  // Store the Enemy reference
         TryGetComponents(this.playerGO);
         TryGetComponents(this.enemyGO);
-
-
     }
 
     public override void Update()
