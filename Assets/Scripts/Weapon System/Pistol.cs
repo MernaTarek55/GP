@@ -79,7 +79,7 @@ public class Pistol : Weapon
         // Check for touch input on mobile
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && deadEye.canShoot == true)
         {
-            Touch touch = Input.GetTouch(i);
+            Touch touch = Input.GetTouch(0);
             int fingerId = touch.fingerId;
 
             if (touch.phase == TouchPhase.Began)
