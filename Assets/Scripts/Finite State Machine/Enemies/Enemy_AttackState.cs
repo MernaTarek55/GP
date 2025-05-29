@@ -11,6 +11,7 @@ public class Enemy_AttackState : EntityState
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
     private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
     private Rigidbody enemyRigidbody; // to add force for the beyblade
+    private SphereCollider sphereCollider;
     private Enemy enemy;
     private HealthComponent playerHealth;
     private InvisibilitySkill invisibilitySkill;
@@ -103,6 +104,8 @@ public class Enemy_AttackState : EntityState
             else Debug.LogWarning("Nav mesh not found");
             if (entityGO.TryGetComponent(out Rigidbody rb)) enemyRigidbody = rb;
             else Debug.LogWarning("Rigidbody not found");
+            if (entityGO.TryGetComponent(out SphereCollider sphereCollider)) this.sphereCollider = sphereCollider;
+            else Debug.LogWarning("Mesh Renderer not found");
         }
 }
 
@@ -141,6 +144,7 @@ public class Enemy_AttackState : EntityState
         enemy.particleEffect.Play();
 
         enemyMR.enabled = false;
+        sphereCollider.enabled = false;
         enemy.Die();
 
         //GameObject.Destroy(entityGO/*, enemyPSClone.main.duration*/);

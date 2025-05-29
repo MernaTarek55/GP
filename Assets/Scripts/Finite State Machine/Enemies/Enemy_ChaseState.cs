@@ -88,6 +88,10 @@ public class Enemy_ChaseState : EntityState
         }
     }
 
+
+
+
+
     public override void CheckStateTransitions(float distanceToPlayer)
     {
         //if (invisibilitySkill.isInvisible)
@@ -96,14 +100,10 @@ public class Enemy_ChaseState : EntityState
         //    return;
         //}
 
-        if (distanceToPlayer <= 2f)
+        
+        if (distanceToPlayer > enemyData.DetectionRange)
         {
-            stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
-        }
-        else if (distanceToPlayer > enemyData.DetectionRange)
-        {
-            if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot ||
-                enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
+            if (enemyData.enemyType is EnemyData.EnemyType.LavaRobot or EnemyData.EnemyType.LavaRobotTypeB)
             {
                 stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
             }
