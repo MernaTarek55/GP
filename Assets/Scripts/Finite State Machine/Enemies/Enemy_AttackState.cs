@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -183,14 +184,13 @@ public class Enemy_AttackState : EntityState
         {
             // Set up the projectile
             GameObject projectile = PoolManager.Instance.GetPrefabByTag(PoolType.LavaProjectile);
-            projectile.transform.position = firePoint.transform.position;
-            projectile.transform.rotation = firePoint.transform.rotation;
-
+            initProjectileType(projectile.GetComponent<LavaProjectile>());
+            projectile.GetComponent<LavaProjectile>().LavaRobot = enemyGO;
             if (enemyData.bulletPrefab != null && firePoint != null)
             {
                 // Set up the projectile
-                projectile.transform.position = firePoint.transform.position;
-                projectile.transform.rotation = firePoint.transform.rotation;
+                //projectile.transform.position = firePoint.transform.position;
+                //projectile.transform.rotation = firePoint.transform.rotation;
 
                 // Assign the LavaRobot reference (critical!)
                
@@ -237,7 +237,7 @@ public class Enemy_AttackState : EntityState
     private void BeybladeAttack()
     {
         RotateOnSelf(new Vector3(0, 540, 0), 1f, RotateMode.WorldAxisAdd);
-        enemyRigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+        //enemyRigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
         playerHealth.TakeDamage(10f);
     }
 

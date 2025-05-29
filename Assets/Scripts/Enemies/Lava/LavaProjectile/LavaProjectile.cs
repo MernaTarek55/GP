@@ -48,7 +48,7 @@ public class LavaProjectile : MonoBehaviour
         /**/
         // Initialize movement
         _sampleTime = 0f;
-        transform.position = initialA;
+       // transform.position = initialA;
     }
 
     private void CheckingForEmptyReferences()
@@ -86,6 +86,8 @@ public class LavaProjectile : MonoBehaviour
     {
         // Cache positions at activation
         initialA = curve.A.position;
+        Debug.Log("Projectile A: " + initialA);
+        Debug.Log("curve a: " + curve.A.position);
         initialControl = curve.Control.position;
         //change if u want to change target
         randomizer.x = Random.Range(randomRange.minX, randomRange.maxX);
@@ -162,6 +164,6 @@ public class LavaProjectile : MonoBehaviour
     private void ReturnToPool()
     {
         gameObject.SetActive(false);
-        //LavaProjectilePool.Instance?.ReturnToPool(gameObject);
+        PoolManager.Instance?.ReturnToPool(PoolType.LavaProjectile,gameObject);
     }
 }

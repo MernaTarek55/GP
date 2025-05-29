@@ -295,13 +295,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2625473491026870316, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 299552219}
   m_SourcePrefab: {fileID: 100100000, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
 --- !u!1 &299552213 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2625473491026870316, guid: 5ac8bcdea47357c4d91b777ef57ed560, type: 3}
   m_PrefabInstance: {fileID: 299552212}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &299552219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299552213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75cbcb1ad34069a409b3f9796f8e0c2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers: []
+  Weaponrenderers: []
+  invisibilityDuration: 10
+  cooldownDuration: 10
+  fadeSpeed: 2
+  isInvisible: 0
+  InvisibleButton: {fileID: 0}
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,30 +611,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 279794576011442022, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
-      propertyPath: m_Height
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 774035841073579967, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
-      propertyPath: drop
-      value: 
-      objectReference: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
-    - target: {fileID: 774035841073579967, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
-      propertyPath: firePos
-      value: 
-      objectReference: {fileID: 4028088873030073531}
     - target: {fileID: 774035841073579967, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
       propertyPath: playerGO
       value: 
       objectReference: {fileID: 299552213}
-    - target: {fileID: 774035841073579967, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
-      propertyPath: dropForce.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 774035841073579967, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
-      propertyPath: dropForce.Array.data[0].x
-      value: 0.01
-      objectReference: {fileID: 0}
     - target: {fileID: 2734843001713718077, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
       propertyPath: m_Name
       value: beyblade
@@ -662,11 +664,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
---- !u!1 &4028088873030073531 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2734843001713718077, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
-  m_PrefabInstance: {fileID: 123164763348006718}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
