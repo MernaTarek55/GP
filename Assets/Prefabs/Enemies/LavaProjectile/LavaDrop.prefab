@@ -101,14 +101,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb998d0fcedd29428b5c14e31ef88be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  groundLevelPosition: -0.2
+  speed: 0.5
   LavaRobot: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
   randomRange:
     minX: -10
     maxX: 6
     minZ: -10
     maxZ: 5
+  projectileType: 0
 --- !u!136 &4707101315660662346
 CapsuleCollider:
   m_ObjectHideFlags: 0
