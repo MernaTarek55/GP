@@ -1,16 +1,27 @@
-﻿using Unity.VisualScripting;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
+
 
 public class Enemy_ChaseState : EntityState
 {
     private GameObject playerGO;
     private InvisibilitySkill invisibilitySkill;
+    private NavMeshAgent enemyAgent;  // to let the enemy move
+    private Rigidbody enemyRigidbody; // to add force for the beyblade
+    private  GameObject enemyGO;
+    private Enemy enemy;
 
-    public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
+
+    public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO, Enemy enemy)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
+        this.enemyGO = enemyGO;
+        this.enemy = enemy;
         TryGetComponents(this.playerGO);
+        TryGetComponents(this.enemyGO);
+
 
     }
 
@@ -57,19 +68,35 @@ public class Enemy_ChaseState : EntityState
 
     private void TryGetComponents(GameObject entityGO)
     {
+        if (entityGO.CompareTag("Player"))
+        {
 
-        if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
-        else Debug.LogWarning("invisibilitySkill not found");
+
+            if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
+            else Debug.LogWarning("invisibilitySkill not found");
+        }
+        else
+        {
+            if (entityGO.TryGetComponent(out NavMeshAgent eNav))
+                enemyAgent = eNav;
+            else
+                Debug.LogWarning("Nav mesh not found");
+            if (entityGO.TryGetComponent(out Rigidbody enemyRB))
+                enemyRigidbody = enemyRB;
+            else
+                Debug.LogWarning("enemyRigidbody not found");
+        }
     }
     private void ChasePlayer()
     {
         if (playerGO == null || enemyGO == null) return;
-
-        float dirX = playerGO.transform.position.x - enemyGO.transform.position.x;
+        if(enemyAgent == null) return;
+        enemyAgent.SetDestination(playerGO.transform.position);
+        /*float dirX = playerGO.transform.position.x - enemyGO.transform.position.x;
         float dirZ = playerGO.transform.position.z - enemyGO.transform.position.z;
         Vector3 direction = new Vector3(dirX, 0, dirZ).normalized;
         //Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
-        enemyGO.transform.position += direction * enemyData.movementSpeed * Time.deltaTime;
+        enemyGO.transform.position += direction * enemyData.movementSpeed * Time.deltaTime;*/
         //Debug.Log(Vector3.Distance(playerGO.transform.position, enemyGO.transform.position));
         //if (playerGO.gameObject.tag)
         //{
@@ -84,13 +111,23 @@ public class Enemy_ChaseState : EntityState
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Enemy collided with Player � transitioning to Attack state");
+
+            if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
+            {
+                enemyRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
+                //this.enemy.
+                //    StartEnemyCoroutine(BeybladeWaitAttack());
+
+            }
+
             stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
         }
     }
 
 
 
-
+    private IEnumerator BeybladeWaitAttack()
+    { yield return new WaitForSeconds(4f); }
 
     public override void CheckStateTransitions(float distanceToPlayer)
     {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
@@ -34,7 +35,7 @@ public class Enemy : MonoBehaviour
         enemyStateMachine = new StateMachine();
         enemyIdleState = new Enemy_IdleState(enemyStateMachine, "Enemy Idle", enemyData, gameObject, playerGO);
         enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject, playerGO);
-        enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject, playerGO);
+        enemyChaseState = new Enemy_ChaseState(enemyStateMachine, "Enemy Chase", enemyData, gameObject, playerGO,this);
         enemyPatrolState = new Enemy_PatrolState(enemyStateMachine, "Enemy Patrol", enemyData, gameObject, playerGO);
         enemyDeath = new Death_State(enemyStateMachine, "Enemy Death", enemyData, this);
 
@@ -111,6 +112,11 @@ public class Enemy : MonoBehaviour
         {
             state.OnCollisionEnter(collision);
         }
+    }
+
+    public void StartEnemyCoroutine(IEnumerator coroutine)
+    {
+        StartCoroutine(coroutine);
     }
 
     public GameObject getfirePos()

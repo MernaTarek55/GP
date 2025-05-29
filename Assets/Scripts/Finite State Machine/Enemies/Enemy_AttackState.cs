@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,7 +10,6 @@ public class Enemy_AttackState : EntityState
     private ParticleSystem enemyPS;  // particle system for enemy ball explosion
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
     private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
-    private Rigidbody enemyRigidbody; // to add force for the beyblade
     private SphereCollider sphereCollider;
     private Enemy enemy;
     private HealthComponent playerHealth;
@@ -102,8 +101,7 @@ public class Enemy_AttackState : EntityState
 
             if (entityGO.TryGetComponent(out NavMeshAgent eNav)) enemyAgent = eNav;
             else Debug.LogWarning("Nav mesh not found");
-            if (entityGO.TryGetComponent(out Rigidbody rb)) enemyRigidbody = rb;
-            else Debug.LogWarning("Rigidbody not found");
+  
             if (entityGO.TryGetComponent(out SphereCollider sphereCollider)) this.sphereCollider = sphereCollider;
             else Debug.LogWarning("Mesh Renderer not found");
         }
@@ -145,7 +143,7 @@ public class Enemy_AttackState : EntityState
 
         enemyMR.enabled = false;
         sphereCollider.enabled = false;
-        enemy.Die();
+        //enemy.Die();
 
         //GameObject.Destroy(entityGO/*, enemyPSClone.main.duration*/);
 
@@ -239,11 +237,11 @@ public class Enemy_AttackState : EntityState
     private void BeybladeAttack()
     {
         RotateOnSelf(new Vector3(0, 540, 0), 1f, RotateMode.WorldAxisAdd);
-        enemyRigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
-        playerHealth.TakeDamage(10f);
+        playerHealth.TakeDamage(10f); 
     }
 
-    
+  
+
     private void RotateOnSelf(Vector3 rotation, float duration, RotateMode rotateMode)
     {
         enemyGO.transform.DORotate(rotation, duration, rotateMode)
@@ -297,7 +295,7 @@ public class Enemy_AttackState : EntityState
         }
         else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser && distanceToPlayer > 2f)
         {
-            stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO));
+            stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
         }
     }
 }

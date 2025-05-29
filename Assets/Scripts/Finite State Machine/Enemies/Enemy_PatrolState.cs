@@ -110,7 +110,7 @@ public class Enemy_PatrolState : EntityState
         {
             if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
             {
-                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO));
+                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO,enemy));
             }
             else
             {
