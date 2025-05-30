@@ -1059,7 +1059,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &370894665 stripped
 GameObject:
@@ -1358,8 +1358,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 2.5382473, z: 2.0492606}
+  m_Center: {x: 0, y: 0.76912344, z: -0.03591609}
 --- !u!1 &536505352
 GameObject:
   m_ObjectHideFlags: 0
@@ -11992,6 +11992,7 @@ MonoBehaviour:
   deadEyeDuration: 10
   deadEyeCooldown: 30
   lastDeadEyeTime: -Infinity
+  invisibilityBtn: {fileID: 0}
 --- !u!136 &8486386432693121835
 CapsuleCollider:
   m_ObjectHideFlags: 0
