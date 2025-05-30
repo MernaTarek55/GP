@@ -34,17 +34,21 @@ public class Player_MoveState : EntityState
         }
 
 
-        Vector3 camForward = player.mainCamera.transform.forward;
+        //Vector3 camForward = player.mainCamera.transform.forward;
         Vector3 camRight = player.mainCamera.transform.right;
-        camForward.y = 0; camRight.y = 0;
-        camForward.Normalize(); camRight.Normalize();
+        //camForward.y = 0; 
+        camRight.y = 0;
+        //camForward.Normalize(); 
+        camRight.Normalize();
 
-        Vector3 moveDirection = (camForward * player.MoveInput.y) + (camRight * player.MoveInput.x);
+        //Vector3 moveDirection = (camForward * player.MoveInput.y) + (camRight * player.MoveInput.x);
+        Vector3 moveDirection = camRight * player.MoveInput.x;
 
-        player.animator.SetFloat("Speed", player.MoveInput.magnitude);
+        //player.animator.SetFloat("Speed", player.MoveInput.magnitude);
+        player.animator.SetFloat("Speed", Mathf.Abs(player.MoveInput.x));
         player.rb.MovePosition(player.rb.position + (moveDirection * player.WalkSpeed * Time.deltaTime));
 
-        if (moveDirection.sqrMagnitude > 0.01f)
+        if (!player.IsShooting && moveDirection.sqrMagnitude > 0.01f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             player.rb.MoveRotation(Quaternion.Slerp(player.rb.rotation, targetRotation, player.RotateSpeed * Time.deltaTime));

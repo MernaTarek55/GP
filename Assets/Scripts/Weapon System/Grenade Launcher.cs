@@ -1,4 +1,4 @@
-//using UnityEngine;
+﻿//using UnityEngine;
 //using UnityEngine.EventSystems;
 //using UnityEngine.UI;
 //using System.Collections.Generic;
@@ -194,6 +194,8 @@ using System.Collections;
 
 public class GrenadeLauncher : Weapon
 {
+    Player player;
+
     [SerializeField] private GameObject grenadePrefab;
     [SerializeField] private Transform firePoint;
 
@@ -230,6 +232,8 @@ public class GrenadeLauncher : Weapon
     private void Awake()
     {
         base.Awake();
+        player = GetComponentInParent<Player>();
+
         if (weaponData == null)
         {
             Debug.LogError("WeaponData not assigned in Inspector.");
@@ -271,18 +275,18 @@ public class GrenadeLauncher : Weapon
                 bool isOverUI = IsTouchOverUI(touch.position);
                 touchStartedOverUI[fingerId] = isOverUI;
             }
-            else if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+            else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
             {
                 if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI)
                 {
-                    ShowTrajectory(touch.position);
+                    player?.SetShooting(true); // ✅ START shooting flag
                     ShootAtTouch(touch.position);
                 }
             }
-            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
             {
                 touchStartedOverUI.Remove(fingerId);
-                trajectoryLine.enabled = false;
+                player?.SetShooting(false); // ✅ END shooting flag
             }
         }
     }

@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     public Vector2 MoveInput => moveInput;
     public bool JumpPressed { get; private set; }
     public bool DeadEyePressed { get; private set; }
-
+    public bool IsShooting { get; private set; }
 
     public float deadEyeDuration = 10f;
     public float deadEyeCooldown = 30f;
@@ -91,5 +91,9 @@ public class Player : MonoBehaviour
     {
         GetComponent<InvisibilitySkill>().enabled = true; 
         invisibilityBtn.SetActive(true); 
+    }
+    public void SetShooting(bool isShooting)
+    {
+        IsShooting = isShooting;
     }
 }
