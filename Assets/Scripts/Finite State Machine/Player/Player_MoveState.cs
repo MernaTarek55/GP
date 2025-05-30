@@ -34,12 +34,15 @@ public class Player_MoveState : EntityState
         }
 
 
-        Vector3 camForward = player.mainCamera.transform.forward;
+        //Vector3 camForward = player.mainCamera.transform.forward;
         Vector3 camRight = player.mainCamera.transform.right;
-        camForward.y = 0; camRight.y = 0;
-        camForward.Normalize(); camRight.Normalize();
+        //camForward.y = 0; 
+        camRight.y = 0;
+        //camForward.Normalize(); 
+        camRight.Normalize();
 
-        Vector3 moveDirection = (camForward * player.MoveInput.y) + (camRight * player.MoveInput.x);
+        //Vector3 moveDirection = (camForward * player.MoveInput.y) + (camRight * player.MoveInput.x);
+        Vector3 moveDirection = camRight * player.MoveInput.x;
 
         player.animator.SetFloat("Speed", player.MoveInput.magnitude);
         player.rb.MovePosition(player.rb.position + (moveDirection * player.WalkSpeed * Time.deltaTime));
