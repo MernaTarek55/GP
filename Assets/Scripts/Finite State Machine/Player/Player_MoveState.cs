@@ -44,7 +44,8 @@ public class Player_MoveState : EntityState
         //Vector3 moveDirection = (camForward * player.MoveInput.y) + (camRight * player.MoveInput.x);
         Vector3 moveDirection = camRight * player.MoveInput.x;
 
-        player.animator.SetFloat("Speed", player.MoveInput.magnitude);
+        //player.animator.SetFloat("Speed", player.MoveInput.magnitude);
+        player.animator.SetFloat("Speed", Mathf.Abs(player.MoveInput.x));
         player.rb.MovePosition(player.rb.position + (moveDirection * player.WalkSpeed * Time.deltaTime));
 
         if (!player.IsShooting && moveDirection.sqrMagnitude > 0.01f)
