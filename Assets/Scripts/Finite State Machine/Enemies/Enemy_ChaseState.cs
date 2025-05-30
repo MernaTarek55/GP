@@ -9,6 +9,7 @@ public class Enemy_ChaseState : EntityState
     private InvisibilitySkill invisibilitySkill;
     private NavMeshAgent enemyAgent;  // to let the enemy move
     private Rigidbody enemyRigidbody; // to add force for the beyblade
+    private Rigidbody playerRigidbody; // to add force for the beyblade
     private  readonly GameObject enemyGO;
     private readonly Enemy enemy;
 
@@ -73,7 +74,10 @@ public class Enemy_ChaseState : EntityState
         if (entityGO.CompareTag("Player"))
         {
 
-
+            if (entityGO.TryGetComponent(out Rigidbody playerRB))
+                playerRigidbody = playerRB;
+            else
+                Debug.LogWarning("playerRigidbody not found");
             if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
             else Debug.LogWarning("invisibilitySkill not found");
         }
@@ -88,6 +92,7 @@ public class Enemy_ChaseState : EntityState
             else
                 Debug.LogWarning("enemyRigidbody not found");
         }
+        
     }
     private void ChasePlayer()
     {
@@ -117,6 +122,7 @@ public class Enemy_ChaseState : EntityState
             if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
             {
                 enemyRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
+                playerRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
                 if(enemy!=null)
                 { this.enemy.StartEnemyCoroutine(BeybladeWaitAttack()); }
 
