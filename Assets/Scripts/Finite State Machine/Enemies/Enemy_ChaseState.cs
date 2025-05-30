@@ -1,17 +1,30 @@
-﻿using Unity.VisualScripting;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
+
 
 public class Enemy_ChaseState : EntityState
 {
     private GameObject playerGO;
     private InvisibilitySkill invisibilitySkill;
+    private NavMeshAgent enemyAgent;  // to let the enemy move
+    private Rigidbody enemyRigidbody; // to add force for the beyblade
+    private  readonly GameObject enemyGO;
+    private readonly Enemy enemy;
 
-    public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
-        : base(stateMachine, stateName, enemyData, enemyGO)
+
+    public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData,
+                         GameObject enemyGO, GameObject playerGO, Enemy enemy)
+       : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
-        TryGetComponents(this.playerGO);
+        this.enemyGO = enemyGO;
 
+        this.enemy = enemy;  // Store the Enemy reference
+        //TODO fix the enemy null situation
+        if(enemy== null) { enemy = enemyGO.gameObject.GetComponent<Enemy>(); }
+        TryGetComponents(this.playerGO);
+        TryGetComponents(this.enemyGO);
     }
 
     public override void Update()
@@ -57,19 +70,35 @@ public class Enemy_ChaseState : EntityState
 
     private void TryGetComponents(GameObject entityGO)
     {
+        if (entityGO.CompareTag("Player"))
+        {
 
-        if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
-        else Debug.LogWarning("invisibilitySkill not found");
+
+            if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
+            else Debug.LogWarning("invisibilitySkill not found");
+        }
+        else
+        {
+            if (entityGO.TryGetComponent(out NavMeshAgent eNav))
+                enemyAgent = eNav;
+            else
+                Debug.LogWarning("Nav mesh not found");
+            if (entityGO.TryGetComponent(out Rigidbody enemyRB))
+                enemyRigidbody = enemyRB;
+            else
+                Debug.LogWarning("enemyRigidbody not found");
+        }
     }
     private void ChasePlayer()
     {
         if (playerGO == null || enemyGO == null) return;
-
-        float dirX = playerGO.transform.position.x - enemyGO.transform.position.x;
+        if(enemyAgent == null) return;
+        enemyAgent.SetDestination(playerGO.transform.position);
+        /*float dirX = playerGO.transform.position.x - enemyGO.transform.position.x;
         float dirZ = playerGO.transform.position.z - enemyGO.transform.position.z;
         Vector3 direction = new Vector3(dirX, 0, dirZ).normalized;
         //Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
-        enemyGO.transform.position += direction * enemyData.movementSpeed * Time.deltaTime;
+        enemyGO.transform.position += direction * enemyData.movementSpeed * Time.deltaTime;*/
         //Debug.Log(Vector3.Distance(playerGO.transform.position, enemyGO.transform.position));
         //if (playerGO.gameObject.tag)
         //{
@@ -84,8 +113,27 @@ public class Enemy_ChaseState : EntityState
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Enemy collided with Player � transitioning to Attack state");
+
+            if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
+            {
+                enemyRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
+                if(enemy!=null)
+                { this.enemy.StartEnemyCoroutine(BeybladeWaitAttack()); }
+
+            }
+
             stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
         }
+    }
+
+
+
+    private IEnumerator BeybladeWaitAttack()
+    {
+        enemyAgent.isStopped = true;
+        yield return new WaitForSeconds(1f);
+        enemyAgent.isStopped = false;
+
     }
 
     public override void CheckStateTransitions(float distanceToPlayer)
@@ -96,14 +144,10 @@ public class Enemy_ChaseState : EntityState
             return;
         }
 
-        if (distanceToPlayer <= 2f)
+        
+        if (distanceToPlayer > enemyData.DetectionRange)
         {
-            stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
-        }
-        else if (distanceToPlayer > enemyData.DetectionRange)
-        {
-            if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot ||
-                enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
+            if (enemyData.enemyType is EnemyData.EnemyType.LavaRobot or EnemyData.EnemyType.LavaRobotTypeB)
             {
                 stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
             }

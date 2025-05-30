@@ -6,7 +6,7 @@ public abstract class EntityState
     protected ExampleScript example;
     protected EnemyData enemyData;
     protected GameObject enemyGO;
-
+    protected Enemy enemy;
 
     protected Player player;
     protected StateMachine stateMachine;
@@ -47,6 +47,15 @@ public abstract class EntityState
         this.enemyData = enemyData;
         this.enemyGO = enemyGO;
     }
+
+    public EntityState(StateMachine stateMachine, string stateName, EnemyData enemyData, Enemy enemy)
+    {
+        this.stateMachine = stateMachine;
+        this.stateName = stateName;
+        this.enemyData = enemyData;
+        this.enemy = enemy;
+    }
+
 
     public virtual void Enter()
     {

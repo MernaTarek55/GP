@@ -105,7 +105,7 @@ public class Enemy_IdleState : EntityState
         {
             if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
             {
-                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO));
+                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO,enemy));
             }
             else if (enemyData.enemyType != EnemyData.EnemyType.LavaRobot &&
                      enemyData.enemyType != EnemyData.EnemyType.LavaRobotTypeB)

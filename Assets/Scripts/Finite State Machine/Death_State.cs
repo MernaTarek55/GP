@@ -1,4 +1,5 @@
 using UnityEngine;
+using static EnemyData;
 
 public class Death_State : EntityState
 {
@@ -6,6 +7,11 @@ public class Death_State : EntityState
     //private Animator animator;
     //private string animationTrigger = "Die";
     private float destroyDelay = 2f; // Adjust based on animation length
+    //private Vector3[] dropForce;
+    //private GameObject drop;
+    //private float dropChance;
+    //private int minDrops;
+    //private int maxDrops;
 
     public Death_State(StateMachine stateMachine, string stateName, Player player)
         : base(stateMachine, stateName, player)
@@ -14,10 +20,18 @@ public class Death_State : EntityState
         //this.animator = player.animator;
     }
 
-    public Death_State(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO)
-        : base(stateMachine, stateName, enemyData, enemyGO)
+
+
+    public Death_State(StateMachine stateMachine, string stateName, EnemyData enemyData, Enemy enemy)
+       : base(stateMachine, stateName, enemyData, enemy)
     {
-        this.entityGO = enemyGO;
+        this.entityGO = enemy.gameObject;
+        this.enemy = enemy;
+        TryGetComponents(entityGO);
+
+
+        //enemy.getDropProperties(drop, dropChance, minDrops, maxDrops, dropForce);
+
         //this.animator = enemyGO.GetComponent<Animator>();
     }
 
@@ -29,7 +43,67 @@ public class Death_State : EntityState
         //{
         //    animator.SetTrigger(animationTrigger);
         //}
-
+        SpawnDrops();
         Object.Destroy(entityGO, destroyDelay);
+    }
+
+    #region Enemy Drops 
+    //TODO: make the drop properties private and make a getter
+    private void SpawnSingleDrop(GameObject itemPrefab)
+    {
+        if (DropItemPool.Instance == null)
+        {
+            Debug.LogWarning("DropItemPool instance not found!");
+            _ = GameObject.Instantiate(itemPrefab, entityGO.transform.position + Vector3.up, Quaternion.identity);
+            return;
+        }
+
+        _ = entityGO.transform.position + Vector3.up;
+        GameObject drop = DropItemPool.Instance.GetDropFromPool(
+            entityGO.transform.position + Vector3.up,
+            Quaternion.identity
+        );
+
+        if (drop.TryGetComponent<Rigidbody>(out Rigidbody rb))
+        {
+            rb.AddForce(new Vector3(
+                Random.Range(enemy.dropForce[0].x, enemy.dropForce[1].x),
+                Random.Range(enemy.dropForce[0].y, enemy.dropForce[1].y),
+                Random.Range(enemy.dropForce[0].z, enemy.dropForce[1].z)
+            ), ForceMode.Impulse);
+        }
+    }
+
+    public void SpawnDrops()
+    {
+        if (enemy.drop == null)
+             return; 
+
+
+        if (Random.value > enemy.dropChance)
+            return;
+
+        int amount = Random.Range(enemy.minDrops, enemy.maxDrops + 1);
+
+        for (int i = 0; i < amount; i++)
+        {
+
+            SpawnSingleDrop(enemy.drop);
+        }
+    }
+
+    #endregion
+
+    private void TryGetComponents(GameObject entityGO)
+    {
+        if (entityGO.CompareTag("Player"))
+        return;
+        else
+       {
+            if (entityGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
+            else Debug.LogWarning("enemy not found");
+        }
+
+
     }
 }
