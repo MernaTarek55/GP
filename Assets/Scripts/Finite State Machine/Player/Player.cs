@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    //Player Sript
     public InputActionAsset InputActions;
     public Camera mainCamera;
     public Image deadEyeCooldownImage;
