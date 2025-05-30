@@ -65,10 +65,7 @@ public class Enemy_AttackState : EntityState
             {
                 ExplodingBall();
             }
-            else if(enemyData.enemyType == EnemyData.EnemyType.Beyblade)  
-            {
-                BeybladeAttack();
-            }
+            
         }
         else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
         {
@@ -80,8 +77,12 @@ public class Enemy_AttackState : EntityState
     {
 
         base.Exit();
-     
-        
+
+
+        if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
+        {
+            BeybladeAttack();
+        }
     }
     private void TryGetComponents(GameObject entityGO)
     {

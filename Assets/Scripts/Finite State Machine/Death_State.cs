@@ -76,6 +76,11 @@ public class Death_State : EntityState
 
     public void SpawnDrops()
     {
+        if(entityGO.CompareTag("Player"))
+        {
+            Debug.LogWarning("Entity GameObject is player.");
+            return;
+        }
         if (enemy.drop == null)
              return; 
 
