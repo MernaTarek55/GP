@@ -43,6 +43,9 @@ public class Player : MonoBehaviour
     public float lastDeadEyeTime = -Mathf.Infinity;
     public bool CanUseDeadEye => Time.time >= lastDeadEyeTime + deadEyeCooldown;
 
+
+    [Header("Invisibility Settings")]
+    [SerializeField]GameObject invisibilityBtn;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -83,5 +86,10 @@ public class Player : MonoBehaviour
         //DeadEyePressed = deadEyeAction.WasPressedThisFrame() && CanUseDeadEye;
         JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
         stateMachine.UpdateActiveState();
+    }
+    public void ActivateInvisibility()
+    {
+        GetComponent<InvisibilitySkill>().enabled = true; 
+        invisibilityBtn.SetActive(true); 
     }
 }
