@@ -9,8 +9,8 @@ public class Enemy_ChaseState : EntityState
     private InvisibilitySkill invisibilitySkill;
     private NavMeshAgent enemyAgent;  // to let the enemy move
     private Rigidbody enemyRigidbody; // to add force for the beyblade
-    private  GameObject enemyGO;
-    private Enemy enemy;
+    private  readonly GameObject enemyGO;
+    private readonly Enemy enemy;
 
 
     public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData,
@@ -19,7 +19,10 @@ public class Enemy_ChaseState : EntityState
     {
         this.playerGO = playerGO;
         this.enemyGO = enemyGO;
+
         this.enemy = enemy;  // Store the Enemy reference
+        //TODO fix the enemy null situation
+        if(enemy== null) { enemy = enemyGO.gameObject.GetComponent<Enemy>(); }
         TryGetComponents(this.playerGO);
         TryGetComponents(this.enemyGO);
     }
@@ -114,8 +117,8 @@ public class Enemy_ChaseState : EntityState
             if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
             {
                 enemyRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
-                //this.enemy.
-                //    StartEnemyCoroutine(BeybladeWaitAttack());
+                if(enemy!=null)
+                { this.enemy.StartEnemyCoroutine(BeybladeWaitAttack()); }
 
             }
 
@@ -126,7 +129,12 @@ public class Enemy_ChaseState : EntityState
 
 
     private IEnumerator BeybladeWaitAttack()
-    { yield return new WaitForSeconds(4f); }
+    {
+        enemyAgent.isStopped = true;
+        yield return new WaitForSeconds(1f);
+        enemyAgent.isStopped = false;
+
+    }
 
     public override void CheckStateTransitions(float distanceToPlayer)
     {

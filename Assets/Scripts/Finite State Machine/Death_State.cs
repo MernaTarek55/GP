@@ -20,13 +20,16 @@ public class Death_State : EntityState
         //this.animator = player.animator;
     }
 
-    
+
 
     public Death_State(StateMachine stateMachine, string stateName, EnemyData enemyData, Enemy enemy)
        : base(stateMachine, stateName, enemyData, enemy)
     {
         this.entityGO = enemy.gameObject;
         this.enemy = enemy;
+        TryGetComponents(entityGO);
+
+
         //enemy.getDropProperties(drop, dropChance, minDrops, maxDrops, dropForce);
 
         //this.animator = enemyGO.GetComponent<Animator>();
@@ -74,17 +77,11 @@ public class Death_State : EntityState
     public void SpawnDrops()
     {
         if (enemy.drop == null)
-        {
+             return; 
 
-            { return; }
-
-        }
 
         if (Random.value > enemy.dropChance)
-        {
-
             return;
-        }
 
         int amount = Random.Range(enemy.minDrops, enemy.maxDrops + 1);
 
@@ -96,4 +93,17 @@ public class Death_State : EntityState
     }
 
     #endregion
+
+    private void TryGetComponents(GameObject entityGO)
+    {
+        if (entityGO.CompareTag("Player"))
+        return;
+        else
+       {
+            if (entityGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
+            else Debug.LogWarning("enemy not found");
+        }
+
+
+    }
 }

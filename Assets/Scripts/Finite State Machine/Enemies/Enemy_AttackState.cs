@@ -237,7 +237,7 @@ public class Enemy_AttackState : EntityState
     private void BeybladeAttack()
     {
         RotateOnSelf(new Vector3(0, 540, 0), 1f, RotateMode.WorldAxisAdd);
-        playerHealth.TakeDamage(10f); 
+        playerHealth.TakeDamage(1f); 
     }
 
   

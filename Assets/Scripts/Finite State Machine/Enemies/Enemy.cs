@@ -15,11 +15,11 @@ public class Enemy : MonoBehaviour
 
     #region Enemy Drops
     [Header("Drops")]
-   public GameObject drop; // enemy drops for player to pick up the currency
+    public GameObject drop; // enemy drops for player to pick up the currency
     [Range(0, 1)] public float dropChance = 0.7f;
-   public int minDrops = 1;
-   public int maxDrops = 3;
-   public Vector3[] dropForce;
+    public int minDrops = 1;
+    public int maxDrops = 3;
+    public Vector3[] dropForce;
 
     #endregion
     public StateMachine enemyStateMachine {  get; private set; }
