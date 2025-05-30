@@ -44,7 +44,7 @@ public class Player_MoveState : EntityState
         player.animator.SetFloat("Speed", player.MoveInput.magnitude);
         player.rb.MovePosition(player.rb.position + (moveDirection * player.WalkSpeed * Time.deltaTime));
 
-        if (moveDirection.sqrMagnitude > 0.01f)
+        if (!player.IsShooting && moveDirection.sqrMagnitude > 0.01f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             player.rb.MoveRotation(Quaternion.Slerp(player.rb.rotation, targetRotation, player.RotateSpeed * Time.deltaTime));

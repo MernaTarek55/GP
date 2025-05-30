@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class AutoGun : Weapon
 {
+    Player player;
+
     [SerializeField] private DeadeyeSkill deadEye;
 
     [SerializeField] private GameObject bulletPrefab;
@@ -26,7 +28,6 @@ public class AutoGun : Weapon
     private Vector3 shootDirection;
 
     [SerializeField] private Transform playerBody;
-    [SerializeField] private Transform playerArmature_Mesh;
 
     [Header("UI")]
     [SerializeField] private GraphicRaycaster uiRaycaster;
@@ -36,6 +37,8 @@ public class AutoGun : Weapon
     private void Awake()
     {
         base.Awake();
+        player = GetComponentInParent<Player>();
+
         if (weaponData == null)
         {
             Debug.LogError("WeaponData not assigned in Inspector.");
@@ -80,27 +83,21 @@ public class AutoGun : Weapon
 
             if (touch.phase == TouchPhase.Began)
             {
-                // On first touch, record whether it started over UI
                 bool isOverUI = IsTouchOverUI(touch.position);
                 touchStartedOverUI[fingerId] = isOverUI;
             }
             else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
             {
-                // Only allow shooting if this finger started off-UI
                 if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI)
                 {
+                    player?.SetShooting(true); // ✅ START shooting flag
                     ShootAtTouch(touch.position);
                 }
             }
             else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
             {
-                // Clean up dictionary when touch ends
-                _ = touchStartedOverUI.Remove(fingerId);
-                if (deadEye.canShoot == true)
-                {
-                    Vector2 touchPos = touch.position;
-                    ShootAtTouch(touchPos);
-                }
+                touchStartedOverUI.Remove(fingerId);
+                player?.SetShooting(false); // ✅ END shooting flag
             }
         }
 
@@ -116,10 +113,10 @@ public class AutoGun : Weapon
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
         targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
-        Vector3 lookDirection = targetPoint - playerArmature_Mesh.position;
+        Vector3 lookDirection = targetPoint - playerBody.position;
         lookDirection.y = 0f; // Keep only horizontal rotation
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-        playerArmature_Mesh.rotation = targetRotation;
+        playerBody.rotation = targetRotation;
         Shoot();
     }
     private bool IsTouchOverUI(Vector2 screenPosition)
