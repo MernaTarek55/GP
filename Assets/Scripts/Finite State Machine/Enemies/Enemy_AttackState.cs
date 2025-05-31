@@ -286,15 +286,14 @@ public class Enemy_AttackState : EntityState
 
         if (distanceToPlayer > enemyData.DetectionRange)
         {
-            if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot ||
-                enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
-            {
+            //if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
+            //{
                 stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO,playerGO));
-            }
-            else
-            {
-                stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-            }
+            //}
+            //else
+            //{
+                //stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+            //}
         }
         else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser && distanceToPlayer > 2f)
         {

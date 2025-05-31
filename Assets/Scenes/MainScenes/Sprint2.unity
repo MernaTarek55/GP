@@ -1360,6 +1360,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &479404830
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 479404831}
+  m_Layer: 0
+  m_Name: LaserTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &479404831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479404830}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.96, y: -4.06, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 536505353}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &536505352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,6 +1425,8 @@ Transform:
   - {fileID: 718989024}
   - {fileID: 34538947}
   - {fileID: 386384506}
+  - {fileID: 2082772189}
+  - {fileID: 479404831}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &538105483
@@ -2543,6 +2576,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: beyblade
       objectReference: {fileID: 0}
+    - target: {fileID: 2734843001713718077, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5327970897280911028, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
       propertyPath: m_Drag
       value: 2.5
@@ -2683,6 +2720,10 @@ PrefabInstance:
     - target: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_Name
       value: Lava Robot
+      objectReference: {fileID: 0}
+    - target: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_TagString
@@ -3061,7 +3102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8980013216686658834, guid: d739f5c85028be24993c038c4651b080, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8980013216686658834, guid: d739f5c85028be24993c038c4651b080, type: 3}
       propertyPath: m_TagString
@@ -4628,7 +4669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2535750547211479320, guid: b75f68fba79ee7e47815f6dac3b90fc9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4755388878470207390, guid: b75f68fba79ee7e47815f6dac3b90fc9, type: 3}
       propertyPath: playerGO
@@ -6162,6 +6203,10 @@ PrefabInstance:
       value: Random Lava Robot
       objectReference: {fileID: 0}
     - target: {fileID: 850917478301423260, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 850917478301423260, guid: 1bd941729e2c99b4194f78fbe3341757, type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
@@ -6393,6 +6438,72 @@ GameObject:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4559003115922606091, guid: 02dac06f0927d0948b59318af20bdabe, type: 3}
   m_PrefabInstance: {fileID: 2069837807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2082772188
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 536505353}
+    m_Modifications:
+    - target: {fileID: 1057959752610491650, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: playerGO
+      value: 
+      objectReference: {fileID: 4975806584410215589}
+    - target: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2918080955536771293, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_Name
+      value: OneArmedRobot
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+--- !u!4 &2082772189 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2770740927497253962, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+  m_PrefabInstance: {fileID: 2082772188}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2084851157
 GameObject:
@@ -7190,7 +7301,7 @@ Transform:
   m_GameObject: {fileID: 6159160731599204637}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19532676, y: -0.7069034, z: 0.21381189, w: 0.6453058}
-  m_LocalPosition: {x: 13.7212515, y: 4.983173, z: 6.162262}
+  m_LocalPosition: {x: 13.573057, y: 4.9828362, z: 7.786618}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10934,7 +11045,7 @@ Transform:
   m_GameObject: {fileID: 8095704711729592555}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19532676, y: -0.7069034, z: 0.21381189, w: 0.6453058}
-  m_LocalPosition: {x: 13.7212515, y: 4.983173, z: 6.162262}
+  m_LocalPosition: {x: 13.573057, y: 4.9828362, z: 7.786618}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

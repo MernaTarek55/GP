@@ -100,10 +100,7 @@ public abstract class EntityState
     public virtual void OnCollisionEnter(Collision collision) { }
     public virtual void OnTriggerEnter(Collider collider) { }
 
-    public virtual void CheckStateTransitions(float distance)
-    {
-
-    }
+    public virtual void CheckStateTransitions(float distance){ }
 
     //protected virtual void UpdateTurret() { }
     //protected virtual void UpdateBallDroid() { }
