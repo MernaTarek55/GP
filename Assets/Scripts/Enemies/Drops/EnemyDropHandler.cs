@@ -7,12 +7,12 @@ public class EnemyDropHandler : MonoBehaviour
 
     public void SpawnDrops()
     {
-       
-           
-                SpawnSingleDrop(drop);
+
+
+        SpawnSingleDrop(drop);
     }
 
-  
+
     private void SpawnSingleDrop(GameObject itemPrefab)
     {
         // ... implementation ...

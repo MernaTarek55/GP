@@ -1,4 +1,4 @@
-using UnityEngine;
+
 
 public class StateMachine
 {
@@ -18,7 +18,7 @@ public class StateMachine
             currentState = newState;
             currentState.Enter();
         }
-            
+
     }
 
     public void UpdateActiveState()

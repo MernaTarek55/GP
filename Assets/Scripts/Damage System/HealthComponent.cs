@@ -13,13 +13,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
         currentHealth = maxHealth;
     }
 
-    private void Update()
-    {
-        //if (currentHealth <= 0)
-        //{
-        //    Die();
-        //}
-    }
+    
 
     public void TakeDamage(float damage)
     {
@@ -31,10 +25,10 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
         currentHealth -= damage;
 
-        Debug.Log("Take Damageeeeeeeeeeeeeeee, health: " + currentHealth);
+        Debug.Log("Take Damageeeeeeeeeeeeeeee, health: " + currentHealth); 
     }
 
-    public bool IsDead() 
+    public bool IsDead()
     {
         return isDead;
     }

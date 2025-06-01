@@ -11,6 +11,8 @@ public class Example_IdleState : EntityState
         base.Update();
 
         if (Input.GetKeyUp(KeyCode.F))
+        {
             stateMachine.ChangeState(example.expIdleState);
+        }
     }
 }

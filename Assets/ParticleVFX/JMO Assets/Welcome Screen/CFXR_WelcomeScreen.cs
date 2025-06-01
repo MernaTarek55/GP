@@ -15,9 +15,9 @@ namespace CartoonFX
                 {
                     return;
                 }
-            SessionState.SetBool("CFXR_WelcomeScreen_Shown", true);
+                SessionState.SetBool("CFXR_WelcomeScreen_Shown", true);
 
-                var importer = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath("bfd03f272fe010b4ba558a3bc456ffeb"));
+                AssetImporter importer = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath("bfd03f272fe010b4ba558a3bc456ffeb"));
                 if (importer != null && importer.userData == "dontshow")
                 {
                     return;
@@ -28,23 +28,24 @@ namespace CartoonFX
         }
 
         [MenuItem("Tools/Cartoon FX Remaster FREE - Welcome Screen")]
-        static void Open()
+        private static void Open()
         {
-            var window = GetWindow<CFXR_WelcomeScreen>(true, "Cartoon FX Remaster FREE", true);
+            CFXR_WelcomeScreen window = GetWindow<CFXR_WelcomeScreen>(true, "Cartoon FX Remaster FREE", true);
             window.minSize = new Vector2(516, 370);
             window.maxSize = new Vector2(516, 370);
         }
 
+        [System.Obsolete]
         private void CreateGUI()
         {
             VisualElement root = rootVisualElement;
             root.style.height = new StyleLength(new Length(100, LengthUnit.Percent));
 
             // UXML
-            var uxmlDocument = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(AssetDatabase.GUIDToAssetPath("bfd03f272fe010b4ba558a3bc456ffeb"));
+            VisualTreeAsset uxmlDocument = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(AssetDatabase.GUIDToAssetPath("bfd03f272fe010b4ba558a3bc456ffeb"));
             root.Add(uxmlDocument.Instantiate());
             // USS
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(AssetDatabase.GUIDToAssetPath("f8b971f10a610844f968f582415df874"));
+            StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(AssetDatabase.GUIDToAssetPath("f8b971f10a610844f968f582415df874"));
             root.styleSheets.Add(styleSheet);
 
             // Background image
@@ -52,7 +53,7 @@ namespace CartoonFX
             root.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
 
             // Logo image
-            var titleImage = root.Q<Image>("img_title");
+            Image titleImage = root.Q<Image>("img_title");
             titleImage.image = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath("a665b2e53088caa4c89dd09f9c889f62"));
 
             // Buttons
@@ -64,12 +65,12 @@ namespace CartoonFX
 
             root.Q<Button>("close_dontshow").RegisterCallback<ClickEvent>(evt =>
             {
-                this.Close();
-                var importer = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath("bfd03f272fe010b4ba558a3bc456ffeb"));
+                Close();
+                AssetImporter importer = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath("bfd03f272fe010b4ba558a3bc456ffeb"));
                 importer.userData = "dontshow";
                 importer.SaveAndReimport();
             });
-            root.Q<Button>("close").RegisterCallback<ClickEvent>(evt => { this.Close(); });
+            root.Q<Button>("close").RegisterCallback<ClickEvent>(evt => { Close(); });
         }
     }
 }

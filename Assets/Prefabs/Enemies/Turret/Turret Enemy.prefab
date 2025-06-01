@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5581989706188248348}
   - component: {fileID: 5607903125905859757}
+  - component: {fileID: 1333353403171224628}
   m_Layer: 0
   m_Name: Turret Enemy
   m_TagString: Untagged
@@ -80,6 +81,24 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: ada9dd18d4c824648b97e4932cd6350d, type: 2}
   playerGO: {fileID: 0}
   firePos: {fileID: 7145755701272447757}
+  enemyPS: {fileID: 0}
+  drop: {fileID: 0}
+  dropChance: 0.7
+  minDrops: 1
+  maxDrops: 3
+  dropForce: []
+--- !u!114 &1333353403171224628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980013216686658834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2369064090199110990
 PrefabInstance:
   m_ObjectHideFlags: 0

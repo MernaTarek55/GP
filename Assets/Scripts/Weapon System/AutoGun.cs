@@ -1,10 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Collections.Generic;
 public class AutoGun : Weapon
 {
+    Player player;
+
+    [SerializeField] private DeadeyeSkill deadEye;
+
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
 
@@ -28,8 +32,13 @@ public class AutoGun : Weapon
     [Header("UI")]
     [SerializeField] private GraphicRaycaster uiRaycaster;
     [SerializeField] private EventSystem eventSystem;
+    private readonly Dictionary<int, bool> touchStartedOverUI = new();
+
     private void Awake()
     {
+        base.Awake();
+        player = GetComponentInParent<Player>();
+
         if (weaponData == null)
         {
             Debug.LogError("WeaponData not assigned in Inspector.");
@@ -42,7 +51,9 @@ public class AutoGun : Weapon
     private void Update()
     {
         if (fireCooldown > 0)
+        {
             fireCooldown -= Time.deltaTime;
+        }
 
         if (!isReloading && currentAmmo == 0)
         {
@@ -58,25 +69,38 @@ public class AutoGun : Weapon
                 isReloading = false;
 
                 if (audioSource && reloadSound)
+                {
                     audioSource.PlayOneShot(reloadSound);
+                }
             }
         }
 
         // Check for touch input on mobile (hold)
-        if (Input.touchCount > 0)
+        for (int i = 0; i < Input.touchCount; i++)
         {
-            Touch touch = Input.GetTouch(0);
-            if (IsTouchOverUI(touch.position))
+            Touch touch = Input.GetTouch(i);
+            int fingerId = touch.fingerId;
+
+            if (touch.phase == TouchPhase.Began)
             {
-                Debug.Log("Touch is on UI — not shooting");
-                return;
+                bool isOverUI = IsTouchOverUI(touch.position);
+                touchStartedOverUI[fingerId] = isOverUI;
             }
-            if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+            else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
             {
-                Vector2 touchPos = touch.position;
-                ShootAtTouch(touchPos);
+                if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI)
+                {
+                    player?.SetShooting(true); // ✅ START shooting flag
+                    ShootAtTouch(touch.position);
+                }
+            }
+            else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
+            {
+                touchStartedOverUI.Remove(fingerId);
+                player?.SetShooting(false); // ✅ END shooting flag
             }
         }
+
     }
 
     private void ShootAtTouch(Vector2 screenPosition)
@@ -87,17 +111,9 @@ public class AutoGun : Weapon
         }
 
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
-        {
-            targetPoint = hit.point;
-        }
-        else
-        {
-            targetPoint = ray.origin + ray.direction * 100f;
-        }
-        Vector3 lookDirection = (targetPoint - playerBody.position);
+        targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
+        Vector3 lookDirection = targetPoint - playerBody.position;
         lookDirection.y = 0f; // Keep only horizontal rotation
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
         playerBody.rotation = targetRotation;
@@ -105,10 +121,12 @@ public class AutoGun : Weapon
     }
     private bool IsTouchOverUI(Vector2 screenPosition)
     {
-        PointerEventData eventData = new PointerEventData(eventSystem);
-        eventData.position = screenPosition;
+        PointerEventData eventData = new(eventSystem)
+        {
+            position = screenPosition
+        };
 
-        List<RaycastResult> results = new List<RaycastResult>();
+        List<RaycastResult> results = new();
         uiRaycaster.Raycast(eventData, results);
 
         return results.Count > 0;
@@ -119,7 +137,7 @@ public class AutoGun : Weapon
         if (ikHandler != null)
         {
             ikHandler.TriggerShootIK();
-            StartCoroutine(WaitAndShootWhenIKReady());
+            _ = StartCoroutine(WaitAndShootWhenIKReady());
         }
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
         //    return;
@@ -156,12 +174,17 @@ public class AutoGun : Weapon
 
         // Only shoot if allowed
         if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
+        {
             yield break;
+        }
 
         fireCooldown = weaponData.fireRate;
         currentAmmo--;
 
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
+        bullet.transform.position = firePoint.transform.position;
+        bullet.transform.rotation = firePoint.transform.rotation;
+        bullet.SetActive(true); 
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
@@ -170,13 +193,20 @@ public class AutoGun : Weapon
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
-            bulletScript.SetDamage(weaponData.damage);
+        {
+            //to change to the data in inventory 
+            bulletScript.SetDamage(10/*weaponData.damage*/);
+        }
 
         if (muzzleFlash != null)
+        {
             muzzleFlash.Play();
+        }
 
         if (audioSource && shootSound)
+        {
             audioSource.PlayOneShot(shootSound);
+        }
     }
 
     public override void Reload()
@@ -187,7 +217,9 @@ public class AutoGun : Weapon
             reloadTimer = weaponData.reloadTime;
 
             if (audioSource && reloadSound)
+            {
                 audioSource.PlayOneShot(reloadSound);
+            }
         }
     }
 }

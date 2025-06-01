@@ -1,11 +1,14 @@
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
+//need refactor struct? 
 public enum PlayerSkillsStats
 {
     MaxHealth,
     DeadEyeCoolDown,
-    DeadEyeDuration,
+    DeadeyeDuration,
+    InvesabilityDuration,
+    InvesabilityCoolDown,
 }
 
 public interface ItemEffect

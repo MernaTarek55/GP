@@ -1,12 +1,12 @@
-using System;
+
 using UnityEngine;
 
 public class MemoryManager : MonoBehaviour
 {
     public static MemoryManager Instance;
-    [SerializeField] GameObject[] memoriesArray;
-    int Currentindex = 0;
-    [SerializeField] GameObject endGamePanel;
+    [SerializeField] private GameObject[] memoriesArray;
+    private int Currentindex = 0;
+    [SerializeField] private GameObject endGamePanel;
     private void Awake()
     {
         Instance = this;
@@ -19,7 +19,7 @@ public class MemoryManager : MonoBehaviour
             return false;
         }
 
-        var expectedMemory = memoriesArray[Currentindex];
+        GameObject expectedMemory = memoriesArray[Currentindex];
 
         if (memoryObjects.transform == expectedMemory.transform ||
             memoryObjects.transform.IsChildOf(expectedMemory.transform))
