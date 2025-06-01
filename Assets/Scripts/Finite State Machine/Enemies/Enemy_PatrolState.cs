@@ -1,29 +1,23 @@
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class Enemy_PatrolState : EntityState
 {
     private NavMeshAgent enemyAgent;  // to let the enemy move
     private float walkRadius = 10f; // How far the enemy can walk
     private GameObject playerGO;
-    private Enemy enemy;
-    //private int counter = 0;
-
 
 
     public Enemy_PatrolState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
-        
         TryGetComponents(enemyGO);
     }
 
     public override void Enter()
     {
         base.Enter();
-        enemyAgent.SetDestination(enemy.NavTargets[enemy.counter].position);
         if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot) enemyAgent.isStopped = false;
 
     }
@@ -31,12 +25,8 @@ public class Enemy_PatrolState : EntityState
     public override void Update()
     {
         base.Update();
-        if (enemyData.enemyType != EnemyData.EnemyType.Turret  )
-            if(enemyData.enemyType  == EnemyData.EnemyType.OneArmedRobot)
-                SetTargetsDestination();
-            else
-                SetRandomDestination();
-        
+        if (enemyData.enemyType != EnemyData.EnemyType.Turret)
+            SetRandomDestination();
     }
 
     public override void Exit()
@@ -86,11 +76,6 @@ public class Enemy_PatrolState : EntityState
             enemyAgent = eNav;
         else
             Debug.LogWarning("Nav mesh not found");
-        if (enemyGO.TryGetComponent(out Enemy enemy))
-            this.enemy = enemy;
-        else
-            Debug.LogWarning("Nav mesh not found");
-
     }
 
     void SetRandomDestination()
@@ -116,24 +101,6 @@ public class Enemy_PatrolState : EntityState
 
             // If all attempts fail, just use current position
             enemyAgent.SetDestination(enemyGO.transform.position);
-        }
-    }
-    void SetTargetsDestination()
-    {
-
-        if (enemyAgent.remainingDistance < enemyAgent.stoppingDistance)
-        {
-            if (enemy.counter >= enemy.NavTargets.Length)
-            {
-                enemy.counter = 0;
-            }
-            else
-            {
-                enemyAgent.SetDestination(enemy.NavTargets[enemy.counter].position);
-                enemy.counter++;
-
-            }
-
         }
     }
 
