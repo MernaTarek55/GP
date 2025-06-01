@@ -115,7 +115,7 @@ public class Enemy_PatrolState : EntityState
             }
             else
             {
-                Debug.LogError("to attack");
+                Debug.Log("to attack");
                 stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
             }
         }
