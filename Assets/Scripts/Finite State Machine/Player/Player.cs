@@ -100,4 +100,9 @@ public class Player : MonoBehaviour
     {
         IsShooting = isShooting;
     }
+
+    public void ResetHealth()
+    {
+        healthComponent.RenewHealth();
+    }
 }
