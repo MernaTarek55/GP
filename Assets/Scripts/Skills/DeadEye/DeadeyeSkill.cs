@@ -12,6 +12,8 @@ public class DeadeyeSkill : MonoBehaviour
 
     [SerializeField] private IKHandler ikHandler;
 
+    [SerializeField] private WeaponSwitch currentWeapon;
+
 
     public bool canShoot = true;
 
@@ -76,8 +78,13 @@ public class DeadeyeSkill : MonoBehaviour
                 AddTapPosition(touchPos);
             }
 
-            UpdateTargetsImages();
         }
+        else // is not using ability
+        {
+            TerminateEnemies();
+        }
+
+        UpdateTargetsImages();
 
 
     }
@@ -188,7 +195,26 @@ public class DeadeyeSkill : MonoBehaviour
 
     private void TerminateEnemies()
     {
-        // uncomment this when the current weapon is done and add a serialize field for it 
-        
+        // Get the current weapon GameObject
+        GameObject weaponGO = currentWeapon.GetCurrentWeapon();
+
+        // Try to get any component that inherits from Weapon (including Pistol, Shotgun, etc.)
+        Weapon aykhara = weaponGO.GetComponent<Weapon>();
+
+        if (aykhara == null)
+        {
+            Debug.LogError("Current weapon does not have a Weapon-derived script attached!");
+            return;  // Exit early to avoid null reference
+        }
+
+        for (int i = 0; i < markedTargets.Count; i++)
+        {
+            aykhara.Shoot(markedTargets[i].position);
+            targetsImages[i].gameObject.SetActive(false);
+
+            Debug.Log("el mafrod adrab hena 3al enemies.. pew pew pew");
+        }
+
+        markedTargets.Clear();
     }
 }

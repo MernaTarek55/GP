@@ -13,6 +13,6 @@ public abstract class Weapon : MonoBehaviour
         currentAmmo = weaponData.maxAmmo;
     }
 
-    public abstract void Shoot();
+    public abstract void Shoot(Vector3 target);
     public abstract void Reload();
 }
