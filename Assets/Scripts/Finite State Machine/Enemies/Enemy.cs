@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     //TODO : make it get private set
     public ParticleSystem particleEffect; // particle system for enemy ball explosion
 
-
+    public int counter = 0;
     #region Enemy Drops
     [Header("Drops")]
     public GameObject drop; // enemy drops for player to pick up the currency
@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     public Enemy_ChaseState enemyChaseState {get; private set; }
     public Enemy_PatrolState enemyPatrolState {get; private set; }
     public Death_State enemyDeath { get; private set; }
-
+    
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();

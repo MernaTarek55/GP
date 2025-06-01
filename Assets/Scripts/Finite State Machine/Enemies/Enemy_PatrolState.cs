@@ -6,18 +6,23 @@ public class Enemy_PatrolState : EntityState
     private NavMeshAgent enemyAgent;  // to let the enemy move
     private float walkRadius = 10f; // How far the enemy can walk
     private GameObject playerGO;
+    private Enemy enemy;
+    //private int counter = 0;
+
 
 
     public Enemy_PatrolState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
+
         TryGetComponents(enemyGO);
     }
 
     public override void Enter()
     {
         base.Enter();
+        enemyAgent.SetDestination(enemy.NavTargets[enemy.counter].position);
         if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot) enemyAgent.isStopped = false;
 
     }
@@ -26,7 +31,11 @@ public class Enemy_PatrolState : EntityState
     {
         base.Update();
         if (enemyData.enemyType != EnemyData.EnemyType.Turret)
-            SetRandomDestination();
+            if (enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
+                SetTargetsDestination();
+            else
+                SetRandomDestination();
+
     }
 
     public override void Exit()
@@ -44,30 +53,30 @@ public class Enemy_PatrolState : EntityState
     //    // Turrets typically don't patrol
     //    SetRandomDestination();
 
-        //}
+    //}
 
-        //protected override void UpdateBallDroid()
-        //{
-        //    Debug.Log("BallDroid Patrol");
-        //    SetRandomDestination();
-        //}
+    //protected override void UpdateBallDroid()
+    //{
+    //    Debug.Log("BallDroid Patrol");
+    //    SetRandomDestination();
+    //}
 
-        //protected override void UpdateHumanoid()
-        //{
-        //    Debug.Log("Humanoid Patrol");
-        //    SetRandomDestination();
+    //protected override void UpdateHumanoid()
+    //{
+    //    Debug.Log("Humanoid Patrol");
+    //    SetRandomDestination();
 
-        //    // Implement humanoid patrol logic (e.g., navmesh waypoints)
-        //}
+    //    // Implement humanoid patrol logic (e.g., navmesh waypoints)
+    //}
 
-        //protected override void UpdateLavaRobot()
-        //{
-        //    Debug.Log("LavaRobot Patrol");
+    //protected override void UpdateLavaRobot()
+    //{
+    //    Debug.Log("LavaRobot Patrol");
 
-        //        SetRandomDestination();
+    //        SetRandomDestination();
 
-        //    // Implement lava robot patrol logic
-        //}
+    //    // Implement lava robot patrol logic
+    //}
 
 
     private void TryGetComponents(GameObject enemyGO)
@@ -76,6 +85,11 @@ public class Enemy_PatrolState : EntityState
             enemyAgent = eNav;
         else
             Debug.LogWarning("Nav mesh not found");
+        if (enemyGO.TryGetComponent(out Enemy enemy))
+            this.enemy = enemy;
+        else
+            Debug.LogWarning("Nav mesh not found");
+
     }
 
     void SetRandomDestination()
@@ -103,6 +117,24 @@ public class Enemy_PatrolState : EntityState
             enemyAgent.SetDestination(enemyGO.transform.position);
         }
     }
+    void SetTargetsDestination()
+    {
+
+        if (enemyAgent.remainingDistance < enemyAgent.stoppingDistance)
+        {
+            if (enemy.counter >= enemy.NavTargets.Length)
+            {
+                enemy.counter = 0;
+            }
+            else
+            {
+                enemyAgent.SetDestination(enemy.NavTargets[enemy.counter].position);
+                enemy.counter++;
+
+            }
+
+        }
+    }
 
     public override void CheckStateTransitions(float distanceToPlayer)
     {
@@ -111,11 +143,11 @@ public class Enemy_PatrolState : EntityState
 
             if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
             {
-                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO,enemy));
+                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
             }
             else
             {
-                Debug.Log("to attack");
+                Debug.LogError("to attack");
                 stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
             }
         }
