@@ -14,6 +14,7 @@ public class EnemyData : ScriptableObject
        , LavaRobot = 3
         , LavaRobotTypeB = 4
             , Beyblade = 5
+            , OneArmedRobot = 6
     }
     // Grouping Enemies 
     [Serializable]

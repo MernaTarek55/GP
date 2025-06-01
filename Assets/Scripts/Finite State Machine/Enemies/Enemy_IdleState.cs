@@ -101,8 +101,16 @@ public class Enemy_IdleState : EntityState
     }
     public override void CheckStateTransitions(float distanceToPlayer)
     {
-        if (distanceToPlayer <= enemyData.DetectionRange)
+
+
+        if (distanceToPlayer > enemyData.DetectionRange && enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter)
         {
+            stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+        }
+
+            if (distanceToPlayer <= enemyData.DetectionRange)
+        {
+            
             if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
             {
                 stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO,enemy));
