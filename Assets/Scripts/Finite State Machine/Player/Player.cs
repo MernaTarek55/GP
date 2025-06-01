@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
        // playerDeadEye = new Player_DeadEyeStateTest1(stateMachine, "DeadEye", this);
         playerDeath = new Death_State(stateMachine, "Death", this);
         //playerDeadEye = new Player_DeadEyeStateTest1(stateMachine, "DeadEye", this);
+        //Hello
     }
 
     private void OnEnable()
