@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private GameObject playerGO;
+    public Transform[] NavTargets;
     private NavMeshAgent agent;
     [Header("Enemy Components")]
     [SerializeField] private GameObject firePos;
