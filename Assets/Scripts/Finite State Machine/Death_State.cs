@@ -18,6 +18,7 @@ public class Death_State : EntityState
     {
         this.entityGO = player.gameObject;
         //this.animator = player.animator;
+        player.GetComponent<PlayerRespawn>().Respawn();
     }
 
 
