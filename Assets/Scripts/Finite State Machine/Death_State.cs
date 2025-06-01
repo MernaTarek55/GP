@@ -18,7 +18,6 @@ public class Death_State : EntityState
     {
         this.entityGO = player.gameObject;
         //this.animator = player.animator;
-        player.GetComponent<PlayerRespawn>().Respawn();
     }
 
 
@@ -45,7 +44,14 @@ public class Death_State : EntityState
         //    animator.SetTrigger(animationTrigger);
         //}
         SpawnDrops();
-        Object.Destroy(entityGO, destroyDelay);
+        if (entityGO.CompareTag("Player"))
+        {
+            player.GetComponent<PlayerRespawn>().Respawn();
+        }
+        else
+        {
+            Object.Destroy(entityGO, destroyDelay);
+        }
     }
 
     #region Enemy Drops 
@@ -103,9 +109,11 @@ public class Death_State : EntityState
     private void TryGetComponents(GameObject entityGO)
     {
         if (entityGO.CompareTag("Player"))
-        return;
+        {
+            return;
+        }
         else
-       {
+        {
             if (entityGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
             else Debug.LogWarning("enemy not found");
         }
