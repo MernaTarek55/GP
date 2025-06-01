@@ -8,7 +8,7 @@ public class Enemy_PatrolState : EntityState
     private float walkRadius = 10f; // How far the enemy can walk
     private GameObject playerGO;
     private Enemy enemy;
-    //private int counter = 0;
+    private int counter = 0;
 
 
 
@@ -23,7 +23,7 @@ public class Enemy_PatrolState : EntityState
     public override void Enter()
     {
         base.Enter();
-        enemyAgent.SetDestination(enemy.NavTargets[enemy.counter].position);
+        enemyAgent.SetDestination(enemy.NavTargets[counter].position);
         if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot) enemyAgent.isStopped = false;
 
     }
@@ -123,14 +123,14 @@ public class Enemy_PatrolState : EntityState
 
         if (enemyAgent.remainingDistance < enemyAgent.stoppingDistance)
         {
-            if (enemy.counter >= enemy.NavTargets.Length)
+            if (counter >= enemy.NavTargets.Length)
             {
-                enemy.counter = 0;
+                counter = 0;
             }
             else
             {
-                enemyAgent.SetDestination(enemy.NavTargets[enemy.counter].position);
-                enemy.counter++;
+                enemyAgent.SetDestination(enemy.NavTargets[counter].position);
+                counter++;
 
             }
 

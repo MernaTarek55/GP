@@ -145,7 +145,7 @@ public class Enemy_AttackState : EntityState
 
         enemyMR.enabled = false;
         sphereCollider.enabled = false;
-        //enemy.Die();
+        enemy.Die();
 
         //GameObject.Destroy(entityGO/*, enemyPSClone.main.duration*/);
 

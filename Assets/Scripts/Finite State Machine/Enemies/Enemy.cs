@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject firePos;
     //TODO : make it get private set
     public ParticleSystem particleEffect; // particle system for enemy ball explosion
-    public int counter = 0;
 
     #region Enemy Drops
     [Header("Drops")]
@@ -104,8 +103,9 @@ public class Enemy : MonoBehaviour
     }
     public void Die()
     {
+        Debug.LogWarning("Spawning drops for " + name);
 
-       
+
         enemyStateMachine.ChangeState(enemyDeath);
     }
 

@@ -4702,7 +4702,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2535750547211479320, guid: b75f68fba79ee7e47815f6dac3b90fc9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4755388878470207390, guid: b75f68fba79ee7e47815f6dac3b90fc9, type: 3}
       propertyPath: playerGO
@@ -6516,10 +6516,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4975806584410215589}
     - target: {fileID: 1057959752610491650, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
-      propertyPath: NavTargets.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1057959752610491650, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
       propertyPath: 'NavTargets.Array.data[0]'
       value: 
       objectReference: {fileID: 1972872002}
@@ -6575,9 +6571,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: OneArmedRobot
       objectReference: {fileID: 0}
-    - target: {fileID: 9018909717873413148, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
-      propertyPath: m_StoppingDistance
-      value: 0.2
+    - target: {fileID: 2918080955536771293, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7385,7 +7381,7 @@ Transform:
   m_GameObject: {fileID: 6159160731599204637}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19532676, y: -0.7069034, z: 0.21381189, w: 0.6453058}
-  m_LocalPosition: {x: 13.5716095, y: 4.982833, z: 7.8024817}
+  m_LocalPosition: {x: 13.782975, y: 4.9833126, z: 5.4857225}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11129,7 +11125,7 @@ Transform:
   m_GameObject: {fileID: 8095704711729592555}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19532676, y: -0.7069034, z: 0.21381189, w: 0.6453058}
-  m_LocalPosition: {x: 13.5716095, y: 4.982833, z: 7.8024817}
+  m_LocalPosition: {x: 13.782975, y: 4.9833126, z: 5.4857225}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
