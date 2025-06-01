@@ -1,34 +1,9 @@
 using UnityEngine;
-using System.Collections;
+
 
 public class LaserControl : MonoBehaviour
 {
-    public bool isShowingLaser = false;
-    private Renderer thisRenderer;
+    private void OnDrawGizmos() { Debug.DrawLine(transform.position, transform.position + transform.forward * 50); }
 
-    void Start()
-    {
-        thisRenderer = GetComponent<Renderer>();
-    }
 
-    public void ShowLaser()
-    {
-        if (isShowingLaser) return;
-        StartCoroutine(ShowLaserCoroutine());
-    }
-
-    private IEnumerator ShowLaserCoroutine()
-    {
-        isShowingLaser = true;
-        thisRenderer.enabled = true;
-        yield return new WaitForSeconds(0.05f);
-        ResetLaser();
-        isShowingLaser = false;
-    }
-
-    private void ResetLaser()
-    {
-        // Add your laser reset logic here
-        thisRenderer.enabled = false;
-    }
 }

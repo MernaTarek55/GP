@@ -46,10 +46,11 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
 
-        enemyStateMachine.Initalize(enemyIdleState);
-        if (enemyData.enemyType is EnemyData.EnemyType.LavaRobot or EnemyData.EnemyType.LavaRobotTypeB) { enemyStateMachine.ChangeState(enemyPatrolState); }
-        //enemyAttackState.getfirePos(firePos);
-        Debug.Log("START " + firePos);
+        if (enemyData.enemyGroup is EnemyData.EnemyGroup.Shooter && enemyData.enemyType is not EnemyData.EnemyType.Turret) { enemyStateMachine.Initalize(enemyPatrolState); }
+        else enemyStateMachine.Initalize(enemyIdleState);
+        
+            //enemyAttackState.getfirePos(firePos);
+            Debug.Log("START " + firePos);
 
     }
 

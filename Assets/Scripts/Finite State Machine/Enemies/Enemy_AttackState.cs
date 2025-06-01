@@ -39,7 +39,7 @@ public class Enemy_AttackState : EntityState
     public override void Update()
     {
         base.Update();
-        if (enemyData.enemyType == EnemyData.EnemyType.Turret)
+        if (enemyData.enemyType == EnemyData.EnemyType.Turret || enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
         {
             Debug.Log("Turret Attack");
             if (invisibilitySkill.isInvisible)

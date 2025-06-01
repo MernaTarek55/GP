@@ -108,12 +108,14 @@ public class Enemy_PatrolState : EntityState
     {
         if (distanceToPlayer <= enemyData.DetectionRange)
         {
+
             if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
             {
                 stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO,enemy));
             }
             else
             {
+                Debug.LogError("to attack");
                 stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
             }
         }
