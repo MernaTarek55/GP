@@ -6086,7 +6086,7 @@ Transform:
   m_GameObject: {fileID: 980003302}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.43, y: 0.15, z: -7.95}
+  m_LocalPosition: {x: 9.68, y: 0.15, z: -7.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6245,6 +6245,7 @@ MonoBehaviour:
   deadEyeDuration: 10
   deadEyeCooldown: 30
   lastDeadEyeTime: -Infinity
+  pistol: {fileID: 1522867342}
   invisibilityBtn: {fileID: 884053450}
 --- !u!136 &980003309
 CapsuleCollider:
@@ -6306,7 +6307,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 114
   m_CollisionDetection: 0
 --- !u!114 &980003312
 MonoBehaviour:
@@ -8290,7 +8291,7 @@ Transform:
   m_GameObject: {fileID: 1309203529}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19532676, y: -0.7069034, z: 0.21381189, w: 0.6453058}
-  m_LocalPosition: {x: 17.531256, y: 5.5831532, z: -4.3377376}
+  m_LocalPosition: {x: 17.781256, y: 5.5831532, z: -4.3377376}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11578,7 +11579,7 @@ Transform:
   m_GameObject: {fileID: 1805451957}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19532676, y: -0.7069034, z: 0.21381189, w: 0.6453058}
-  m_LocalPosition: {x: 17.531256, y: 5.5831532, z: -4.3377376}
+  m_LocalPosition: {x: 17.781256, y: 5.5831532, z: -4.3377376}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15240,9 +15241,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 100
   rotationAxis: {x: 0, y: 1, z: 0}
-  Invisibility: {fileID: 7199694300364494388}
   hoverHeight: 0.2
   hoverSpeed: 2
+  powerUpType: 1
 --- !u!114 &6602013947971821710
 MonoBehaviour:
   m_ObjectHideFlags: 0

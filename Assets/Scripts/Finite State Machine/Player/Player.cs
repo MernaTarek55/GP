@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     public float lastDeadEyeTime = -Mathf.Infinity;
     public bool CanUseDeadEye => Time.time >= lastDeadEyeTime + deadEyeCooldown;
 
-
+    [SerializeField]GameObject pistol;
     [Header("Invisibility Settings")]
     [SerializeField]GameObject invisibilityBtn;
     private void Awake()
@@ -91,6 +91,10 @@ public class Player : MonoBehaviour
     {
         GetComponent<InvisibilitySkill>().enabled = true; 
         invisibilityBtn.SetActive(true); 
+    }
+    public void ActivatePistol()
+    {
+        pistol.SetActive(true);
     }
     public void SetShooting(bool isShooting)
     {
