@@ -7,12 +7,13 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private GameObject playerGO;
+    public Transform[] NavTargets;
     private NavMeshAgent agent;
     [Header("Enemy Components")]
     [SerializeField] private GameObject firePos;
     //TODO : make it get private set
     public ParticleSystem particleEffect; // particle system for enemy ball explosion
-
+    public int counter = 0;
 
     #region Enemy Drops
     [Header("Drops")]
@@ -46,7 +47,8 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
 
-        if (enemyData.enemyGroup is EnemyData.EnemyGroup.Shooter && enemyData.enemyType is not EnemyData.EnemyType.Turret) { enemyStateMachine.Initalize(enemyPatrolState); }
+        if (enemyData.enemyGroup is EnemyData.EnemyGroup.Shooter && enemyData.enemyType is not EnemyData.EnemyType.Turret) 
+        { enemyStateMachine.Initalize(enemyPatrolState); }
         else enemyStateMachine.Initalize(enemyIdleState);
         
             //enemyAttackState.getfirePos(firePos);

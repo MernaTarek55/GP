@@ -64,7 +64,7 @@ public abstract class EntityState
 
     public virtual void Update()
     {
-        Debug.Log("I am in " + stateName);
+        Debug.Log(enemyGO?.name +"in " + stateName);
 
         //if (enemyData != null)
         //{
