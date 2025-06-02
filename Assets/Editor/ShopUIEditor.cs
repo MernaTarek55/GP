@@ -12,14 +12,14 @@ public class ShopUIEditorGenerator : EditorWindow
     public static void GenerateShopUI()
     {
         // Check or create Canvas
-        Canvas canvas = Object.FindFirstObjectByType<Canvas>();
+        Canvas canvas = null;
         if (canvas == null)
         {
             GameObject canvasGO = new("ShopCanvas");
             canvas = canvasGO.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            _ = canvasGO.AddComponent<CanvasScaler>();
-            _ = canvasGO.AddComponent<GraphicRaycaster>();
+            canvasGO.AddComponent<CanvasScaler>();
+            canvasGO.AddComponent<GraphicRaycaster>();
         }
 
         // Create root panel for shop UI
