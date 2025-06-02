@@ -1,0 +1,13 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=102f65cee4c5a3f4e83ac04830fcfac3&amp;type=3#MainMenuStyle" />
+    <engine:VisualElement name="Container" style="flex-grow: 1;">
+        <engine:VisualElement name="GameTitle" style="flex-grow: 1; max-height: 131px;">
+            <engine:Label text="T.B.N" name="Title" class="header" style="font-size: 50px; -unity-text-align: middle-center; position: relative; top: 50px; -unity-font-style: bold; color: rgb(255, 0, 210);" />
+        </engine:VisualElement>
+        <engine:VisualElement name="ButtonWrapper" style="flex-grow: 1; top: -1px;">
+            <engine:Button text="Start" name="StartGame" class="button" style="top: 117px;" />
+            <engine:Button text="Settings" name="Settings" class="button" />
+            <engine:Button text="Exit" name="ExitGame" class="button" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
