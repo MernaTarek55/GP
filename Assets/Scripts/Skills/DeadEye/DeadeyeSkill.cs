@@ -1,19 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.Android;
 using UnityEngine.UI;
 
 public class DeadeyeSkill : MonoBehaviour
 {
-    [SerializeField] private float slowMotionFactor = 0; // Factor by which time will be slowed down
+    [SerializeField] private float slowMotionFactor = 0;
 
     [SerializeField] private IKHandler ikHandler;
-
     [SerializeField] private WeaponSwitch currentWeapon;
-
 
     public bool canShoot = true;
 
@@ -22,11 +20,10 @@ public class DeadeyeSkill : MonoBehaviour
     private float cooldownTime;
     private float lastUsedTime;
 
-    //private List<GameObject> markedTargets = new List<GameObject>();
     private List<Transform> markedTargets = new List<Transform>();
     [SerializeField] private Transform[] targetsImages;
 
-    private bool canUseAbility;
+    private bool isExcutingTargets;
     private bool isUsingAbility;
 
     [SerializeField] private Image deadEyeCooldownImage;
@@ -35,31 +32,25 @@ public class DeadeyeSkill : MonoBehaviour
 
     private PlayerInventory playerInventory;
 
-    //player and else should subscribe to this event
     public event Action OnDeadeyeEffectEnded;
 
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         GameObject player = GameObject.FindWithTag("Player");
         playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
 
-        //init stats
-        //cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.DeadEyeCoolDown);
-        cooldownTime = 3f;
-        duration = 10f;
+        cooldownTime = 1f;
+        duration = 3f;
         lastUsedTime = Time.time - cooldownTime;
 
         canShoot = true;
     }
 
-    // Update is called once per frame
     private void Update()
     {
-        if (Time.time - lastUsedTime >= cooldownTime) {
-            canUseAbility = true;
+        if (Time.time - lastUsedTime >= cooldownTime)
+        {
+            isExcutingTargets = false;
             canShoot = true;
             isUsingAbility = false;
             UpdateCooldownUI(1);
@@ -77,35 +68,25 @@ public class DeadeyeSkill : MonoBehaviour
                 Vector2 touchPos = Input.GetTouch(0).position;
                 AddTapPosition(touchPos);
             }
-
         }
-        else // is not using ability
+        else if (!isUsingAbility && !isExcutingTargets)
         {
             TerminateEnemies();
         }
-
-        UpdateTargetsImages();
-
-
+        if (!isExcutingTargets)
+        {
+            UpdateTargetsImages();
+        }
     }
+
     public void UseDeadeye()
     {
-        //if (!canUseAbility) return;
-
-        // for future
-        //UpdateStats();
-
-
-
         if (Time.time - lastUsedTime >= cooldownTime)
         {
-            canUseAbility = false;
             markedTargets.Clear();
-
             timer = 0;
-
             lastUsedTime = Time.time;
-            //TODO: Implement the logic for using the Deadeye skill
+
             Debug.Log("Deadeye skill used!");
             Time.timeScale = slowMotionFactor;
             StartCoroutine(DeadeyeEffectCoroutine());
@@ -119,17 +100,11 @@ public class DeadeyeSkill : MonoBehaviour
         }
     }
 
-    private void UpdateStats()
-    {
-        // for future
-        duration = playerInventory.getPlayerStat(PlayerSkillsStats.DeadeyeDuration);
-        cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.DeadEyeCoolDown);
-    }
-
-    private System.Collections.IEnumerator DeadeyeEffectCoroutine()
+    private IEnumerator DeadeyeEffectCoroutine()
     {
         yield return new WaitForSecondsRealtime(duration);
         Time.timeScale = 1f;
+        isUsingAbility = false; // ✅ Ensure it resets here
         OnDeadeyeEffectEnded?.Invoke();
         Debug.Log("Deadeye effect ended.");
     }
@@ -144,12 +119,12 @@ public class DeadeyeSkill : MonoBehaviour
 
     private void AddTapPosition(Vector2 screenPosition)
     {
-        // each tap
-        GameObject tap = new();
+        if (markedTargets.Count >= targetsImages.Length)
+            return;
 
+        GameObject tap = new();
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         RaycastHit hit;
-
 
         if (Physics.Raycast(ray, out hit))
         {
@@ -162,12 +137,9 @@ public class DeadeyeSkill : MonoBehaviour
 
         if (hit.collider.gameObject.CompareTag("Enemy"))
         {
+            tap.transform.parent = hit.collider.transform;
+            markedTargets.Add(tap.transform);
 
-            tap.transform.parent = hit.collider.transform; // Attach to enemy
-            markedTargets.Add(tap.transform); // Track this anchor for UI updates
-
-
-            // Create a temporary GameObject at the hit point and parent it to the enemy (can be used for visual markers or debugging)
             GameObject tmpImage = new();
             tmpImage.transform.position = hit.point;
             tmpImage.transform.parent = hit.transform;
@@ -176,6 +148,8 @@ public class DeadeyeSkill : MonoBehaviour
 
     private void UpdateTargetsImages()
     {
+        markedTargets.RemoveAll(marker => marker == null);
+
         for (int i = 0; i < targetsImages.Length; i++)
         {
             if (i < markedTargets.Count && markedTargets[i] != null)
@@ -187,34 +161,47 @@ public class DeadeyeSkill : MonoBehaviour
             {
                 targetsImages[i].gameObject.SetActive(false);
             }
-
-            // Clean up any destroyed markers from the list
-            markedTargets.RemoveAll(marker => marker == null);
         }
     }
 
     private void TerminateEnemies()
     {
-        // Get the current weapon GameObject
         GameObject weaponGO = currentWeapon.GetCurrentWeapon();
+        Weapon weapon = weaponGO.GetComponent<Weapon>();
 
-        // Try to get any component that inherits from Weapon (including Pistol, Shotgun, etc.)
-        Weapon aykhara = weaponGO.GetComponent<Weapon>();
-
-        if (aykhara == null)
+        if (weapon == null)
         {
             Debug.LogError("Current weapon does not have a Weapon-derived script attached!");
-            return;  // Exit early to avoid null reference
+            return;
         }
 
+        isExcutingTargets = true;
+        StartCoroutine(ShootEnemiesSequentially(weapon));
+    }
+
+    private IEnumerator ShootEnemiesSequentially(Weapon weapon)
+    {
         for (int i = 0; i < markedTargets.Count; i++)
         {
-            aykhara.Shoot(markedTargets[i].position);
-            targetsImages[i].gameObject.SetActive(false);
+            Transform target = markedTargets[i];
+            if (target == null) continue;
 
-            Debug.Log("el mafrod adrab hena 3al enemies.. pew pew pew");
+            weapon.Shoot(target.position);
+
+            if (i < targetsImages.Length)
+            {
+                targetsImages[i].gameObject.SetActive(false);
+            }
+
+            if (i < markedTargets.Count && markedTargets[i] != null)
+                targetsImages[i].position = Camera.main.WorldToScreenPoint(markedTargets[i].position);
+
+            Debug.Log("Shooting at marked enemy " + i);
+            yield return new WaitForSeconds(weapon.GetFireRate());
+            //yield return new WaitForSeconds(1f);
         }
 
         markedTargets.Clear();
+        isExcutingTargets = false;
     }
 }
