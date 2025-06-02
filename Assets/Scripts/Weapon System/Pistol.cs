@@ -200,6 +200,7 @@ public class Pistol : Weapon
             yield return null; // wait for next frame
         }
 
+
         // moved these here - to get the final firePoint calculations after doing the ik
         shootDirection = (targetPoint - firePoint.position).normalized;
         firePoint.rotation = Quaternion.LookRotation(shootDirection);
@@ -248,6 +249,7 @@ public class Pistol : Weapon
         }
 
     }
+
 
     public override void Reload()
     {

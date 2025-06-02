@@ -51,7 +51,7 @@ public class IKHandler : MonoBehaviour
         Debug.Log("TriggerShootIK called"); // Add this
         isShooting = true;
         CancelInvoke(nameof(ResetShootIK));
-        Invoke(nameof(ResetShootIK), 0.8f);
+        Invoke(nameof(ResetShootIK), 0.3f);
     }
 
 
