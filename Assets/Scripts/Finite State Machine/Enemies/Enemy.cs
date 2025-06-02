@@ -14,7 +14,6 @@ public class Enemy : MonoBehaviour
     //TODO : make it get private set
     public ParticleSystem particleEffect; // particle system for enemy ball explosion
 
-    public int counter = 0;
     #region Enemy Drops
     [Header("Drops")]
     public GameObject drop; // enemy drops for player to pick up the currency
@@ -57,7 +56,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        enemyStateMachine.currentState.Update();
+        
         //if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
         //{
         //Debug.Log("Player is invisible");
@@ -66,6 +65,7 @@ public class Enemy : MonoBehaviour
 
         float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
         enemyStateMachine.currentState.CheckStateTransitions(distance);
+        enemyStateMachine.currentState.Update();
         /*if (distance <= enemyData.DetectionRange)
         {
             if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)

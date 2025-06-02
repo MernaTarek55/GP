@@ -145,7 +145,7 @@ public class Enemy_AttackState : EntityState
 
         enemyMR.enabled = false;
         sphereCollider.enabled = false;
-        //enemy.Die();
+        enemy.Die();
 
         //GameObject.Destroy(entityGO/*, enemyPSClone.main.duration*/);
 
@@ -279,17 +279,19 @@ public class Enemy_AttackState : EntityState
 
     public override void CheckStateTransitions(float distanceToPlayer)
     {
-        if (invisibilitySkill.isInvisible)
+        if (invisibilitySkill.isInvisible && enemyData.enemyType != EnemyData.EnemyType.LavaRobot && enemyData.enemyType != EnemyData.EnemyType.LavaRobotTypeB && enemyData.enemyType != EnemyData.EnemyType.OneArmedRobot)
         {
+            Debug.Log("Player is invisible, enemy does nothing.");
             stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-            return;
+            //return;
         }
 
         if (distanceToPlayer > enemyData.DetectionRange)
         {
+            Debug.Log("Distance to player is greater than detection range, switching to Patrol state.");
             //if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
             //{
-                stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO,playerGO));
+            stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO,playerGO));
             //}
             //else
             //{
@@ -298,6 +300,7 @@ public class Enemy_AttackState : EntityState
         }
         else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser && distanceToPlayer > 2f)
         {
+            Debug.Log("Distance to player is greater than 2, switching to Chase state.");
             stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
         }
     }
