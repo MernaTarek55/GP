@@ -188,17 +188,19 @@ public class DeadeyeSkill : MonoBehaviour
 
             weapon.Shoot(target.position);
 
+
+            if (i < markedTargets.Count && markedTargets[i] != null)
+            {
+                targetsImages[i].position = Camera.main.WorldToScreenPoint(markedTargets[i].position);
+            }
+
+            Debug.Log("Shooting at marked enemy " + i);
+            yield return new WaitForSeconds(weapon.GetFireRate());
+            
             if (i < targetsImages.Length)
             {
                 targetsImages[i].gameObject.SetActive(false);
             }
-
-            if (i < markedTargets.Count && markedTargets[i] != null)
-                targetsImages[i].position = Camera.main.WorldToScreenPoint(markedTargets[i].position);
-
-            Debug.Log("Shooting at marked enemy " + i);
-            yield return new WaitForSeconds(weapon.GetFireRate());
-            //yield return new WaitForSeconds(1f);
         }
 
         markedTargets.Clear();
