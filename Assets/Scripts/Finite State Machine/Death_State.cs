@@ -58,15 +58,15 @@ public class Death_State : EntityState
     //TODO: make the drop properties private and make a getter
     private void SpawnSingleDrop(GameObject itemPrefab)
     {
-        if (DropItemPool.Instance == null)
+        if (PoolManager.Instance == null)
         {
-            Debug.LogWarning("DropItemPool instance not found!");
+            Debug.LogWarning("PoolManager instance not found!");
             _ = GameObject.Instantiate(itemPrefab, entityGO.transform.position + Vector3.up, Quaternion.identity);
             return;
         }
 
         _ = entityGO.transform.position + Vector3.up;
-        GameObject drop = DropItemPool.Instance.GetDropFromPool(
+        GameObject drop = PoolManager.Instance.SpawnFromPool(PoolType.DropItem,
             entityGO.transform.position + Vector3.up,
             Quaternion.identity
         );

@@ -3,10 +3,13 @@ using UnityEngine;
 public class LavaProjectile : MonoBehaviour
 {
 
+    private QuadraticCurve quadraticCurve;
+
     [System.Serializable]
     public struct Range4
     {
         public float minX, maxX, minZ, maxZ;
+
 
         public Range4(float minX, float maxX, float minY, float maxY)
         {
@@ -26,18 +29,20 @@ public class LavaProjectile : MonoBehaviour
     }
     [SerializeField] private float speed = 1f;
     [Header("Positions")]
-    public GameObject LavaRobot;
+    //public GameObject LavaRobot;
     private Vector3 initialA;
     private Vector3 initialControl;
     private Vector3 initialB;
     [SerializeField] private Range4 randomRange; // (minX, maxX, minZ, maxZ)
     private Vector2 randomizer;
+    [Header("References")]
+    private  QuadraticCurve curve;
+    private  Vector3 enemyPosition;
 
     public ProjectileEnemyType projectileType;
 
 
     private float _sampleTime;
-    private QuadraticCurve curve;
 
 
     private void OnEnable()
@@ -53,14 +58,15 @@ public class LavaProjectile : MonoBehaviour
 
     private void CheckingForEmptyReferences()
     {
-        if (LavaRobot == null)
-        {
-            Debug.LogError("LavaRobot reference is missing!");
-            ReturnToPool();
-            return;
-        }
+        //if (LavaRobot == null)
+        //{
+        //    Debug.LogError("LavaRobot reference is missing!");
+        //    ReturnToPool();
+        //    return;
+        //}
 
-        curve = LavaRobot.GetComponentInChildren<QuadraticCurve>();
+        if (quadraticCurve != null)
+            curve = quadraticCurve;
         if (curve.Control == null)
         {
             Debug.LogError("Missing QuadraticCurve control point!");
@@ -98,7 +104,8 @@ public class LavaProjectile : MonoBehaviour
         switch (projectileType)
         {
             case ProjectileEnemyType.Random:
-                initialB = new Vector3(randomizer.x, curve.B.position.y, randomizer.y);
+                initialB = new Vector3(enemyPosition.x+randomizer.x, curve.B.position.y, enemyPosition.z+randomizer.y);
+                Debug.LogWarning(initialB);
                 Debug.Log("Projectile Random");
                 break;
             case ProjectileEnemyType.Target:
@@ -139,7 +146,8 @@ public class LavaProjectile : MonoBehaviour
 
         if (_sampleTime >= 1f)
         {
-            ReturnToPool();
+           //if(projectileType == ProjectileEnemyType.Target)
+           //     ReturnToPool();
         }
     }
 
@@ -166,4 +174,19 @@ public class LavaProjectile : MonoBehaviour
         gameObject.SetActive(false);
         PoolManager.Instance?.ReturnToPool(PoolType.LavaProjectile,gameObject);
     }
+
+    public void InitcurveController()
+    {
+
+    }
+
+    public void SetQuadraticCurve(QuadraticCurve quadraticCurve)
+    {
+        this.quadraticCurve = quadraticCurve;
+    }
+    public void SetenemyPosition(Vector3 enemyPos)
+    {
+        this.enemyPosition = enemyPos;
+    }
+
 }

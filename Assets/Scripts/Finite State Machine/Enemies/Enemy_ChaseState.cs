@@ -134,8 +134,8 @@ public class Enemy_ChaseState : EntityState
         float impactForce = collision.impulse.magnitude;
 
         // Calculate the push-back force (double the impact force)
-        float pushBackForce = impactForce;
-
+        float pushBackForce = impactForce * 100 ;
+        Debug.LogWarning("pushBackForce" + pushBackForce);
         // Get the collision normal (direction perpendicular to the surface)
         Vector3 collisionNormal = collision.contacts[0].normal;
 

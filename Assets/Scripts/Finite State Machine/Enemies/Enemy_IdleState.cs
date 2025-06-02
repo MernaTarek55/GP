@@ -23,7 +23,8 @@ public class Enemy_IdleState : EntityState
             case EnemyData.EnemyType.Turret:
                 if (!_isRotating)
                 {
-                    RotateWithTween(new Vector3(160, 0, -90), new Vector3(0, 0, -90), 4f, 4f, RotateMode.Fast);
+                    Debug.LogWarning("Turret Idle");
+                    RotateWithTween(new Vector3(0, -160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
                 }
                 break; 
 
@@ -32,6 +33,8 @@ public class Enemy_IdleState : EntityState
                 break; 
             case EnemyData.EnemyType.Beyblade:
                 RotateOnSelf(new Vector3(0, 360, 0), 1f, RotateMode.WorldAxisAdd);
+                break;
+            default:
                 break;
         }
     }
@@ -103,7 +106,7 @@ public class Enemy_IdleState : EntityState
     {
 
 
-        if (distanceToPlayer > enemyData.DetectionRange && enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter)
+        if (distanceToPlayer > enemyData.DetectionRange && enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
         {
             stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
         }
