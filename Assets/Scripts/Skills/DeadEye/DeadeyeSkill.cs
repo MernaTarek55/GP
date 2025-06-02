@@ -73,9 +73,14 @@ public class DeadeyeSkill : MonoBehaviour
         {
             TerminateEnemies();
         }
+
         if (!isExcutingTargets)
         {
             UpdateTargetsImages();
+        }
+        else
+        {
+            UpdateTargetsImagesforAfterDeadeye();
         }
     }
 
@@ -160,6 +165,18 @@ public class DeadeyeSkill : MonoBehaviour
             else
             {
                 targetsImages[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void UpdateTargetsImagesforAfterDeadeye()
+    {
+
+        for (int i = 0; i < targetsImages.Length; i++)
+        {
+            if (i < markedTargets.Count && markedTargets[i] != null)
+            {
+                targetsImages[i].position = Camera.main.WorldToScreenPoint(markedTargets[i].position);
             }
         }
     }

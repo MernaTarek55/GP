@@ -87,7 +87,7 @@ public class AutoGun : Weapon
             }
             else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
             {
-                if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI)
+                if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI && deadEye.canShoot == true)
                 {
                     player?.SetShooting(true); // ✅ START shooting flag
                     ShootAtTouch(touch.position);
@@ -138,6 +138,8 @@ public class AutoGun : Weapon
             ikHandler.TriggerShootIK();
             _ = StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         }
+
+
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
         //    return;
 

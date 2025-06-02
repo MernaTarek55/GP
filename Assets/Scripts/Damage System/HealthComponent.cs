@@ -9,7 +9,13 @@ public class HealthComponent : MonoBehaviour, IDamageable
     private void Awake()
     {
         isDead = false;
-        maxHealth = 100;
+
+
+        // don't merge this change!!!!!!!
+        maxHealth = 100000;
+        //maxHealth = 100;
+
+
         currentHealth = maxHealth;
     }
 

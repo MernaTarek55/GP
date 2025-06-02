@@ -104,34 +104,6 @@ public class Pistol : Weapon
                 player?.SetShooting(false); // ✅ END shooting flag
             }
         }
-
-        //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && deadEye.canShoot == true)
-        //{
-        //    Touch touch = Input.GetTouch(0);
-        //    int fingerId = touch.fingerId;
-
-        //    if (touch.phase == TouchPhase.Began)
-        //    {
-        //        // On first touch, record whether it started over UI
-        //        bool isOverUI = IsTouchOverUI(touch.position);
-        //        touchStartedOverUI[fingerId] = isOverUI;
-        //    }
-        //    else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
-        //    {
-        //        // Only allow shooting if this finger started off-UI
-        //        if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI)
-        //        {
-        //            Debug.Log("deadEye.canShoot///////////////////////////");
-        //            Debug.Log(deadEye.canShoot);
-        //            ShootAtTouch(touch.position);
-        //        }
-        //    }
-        //    else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
-        //    {
-        //        // Clean up dictionary when touch ends
-        //        _ = touchStartedOverUI.Remove(fingerId);
-        //    }
-        //}
     }
 
     private void ShootAtTouch(Vector2 screenPosition)
@@ -215,9 +187,7 @@ public class Pistol : Weapon
         currentAmmo--;
 
         GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
-        //bullet.transform.position = firePoint.transform.position;
         bullet.transform.position = firePoint.position;
-        //bullet.transform.rotation = firePoint.transform.rotation;
         bullet.transform.rotation = Quaternion.LookRotation(shootDirection); // make sure it's updated
         bullet.SetActive(true);
 
