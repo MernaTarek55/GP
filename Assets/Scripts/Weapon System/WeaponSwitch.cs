@@ -31,4 +31,9 @@ public class WeaponSwitch : MonoBehaviour
             }
         }
     }
+   
+    public GameObject GetCurrentWeapon()
+    {
+        return weapons[currentWeaponIndex];
+    }
 }

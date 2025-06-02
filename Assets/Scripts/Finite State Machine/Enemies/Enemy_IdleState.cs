@@ -23,7 +23,7 @@ public class Enemy_IdleState : EntityState
             case EnemyData.EnemyType.Turret:
                 if (!_isRotating)
                 {
-                    RotateWithTween(new Vector3(0, 160, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
+                    RotateWithTween(new Vector3(160, 0, -90), new Vector3(0, 0, -90), 4f, 4f, RotateMode.Fast);
                 }
                 break; 
 

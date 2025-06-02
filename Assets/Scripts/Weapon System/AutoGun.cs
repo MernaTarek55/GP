@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class AutoGun : Weapon
 {
+    Player player;
+
     [SerializeField] private DeadeyeSkill deadEye;
 
     [SerializeField] private GameObject bulletPrefab;
@@ -22,11 +24,9 @@ public class AutoGun : Weapon
     private float fireCooldown;
     private bool isReloading;
 
-    private Vector3 targetPoint;
     private Vector3 shootDirection;
 
     [SerializeField] private Transform playerBody;
-    [SerializeField] private Transform playerArmature_Mesh;
 
     [Header("UI")]
     [SerializeField] private GraphicRaycaster uiRaycaster;
@@ -36,6 +36,8 @@ public class AutoGun : Weapon
     private void Awake()
     {
         base.Awake();
+        player = GetComponentInParent<Player>();
+
         if (weaponData == null)
         {
             Debug.LogError("WeaponData not assigned in Inspector.");
@@ -80,27 +82,21 @@ public class AutoGun : Weapon
 
             if (touch.phase == TouchPhase.Began)
             {
-                // On first touch, record whether it started over UI
                 bool isOverUI = IsTouchOverUI(touch.position);
                 touchStartedOverUI[fingerId] = isOverUI;
             }
             else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
             {
-                // Only allow shooting if this finger started off-UI
                 if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI)
                 {
+                    player?.SetShooting(true); // ✅ START shooting flag
                     ShootAtTouch(touch.position);
                 }
             }
             else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
             {
-                // Clean up dictionary when touch ends
-                _ = touchStartedOverUI.Remove(fingerId);
-                if (deadEye.canShoot == true)
-                {
-                    Vector2 touchPos = touch.position;
-                    ShootAtTouch(touchPos);
-                }
+                touchStartedOverUI.Remove(fingerId);
+                player?.SetShooting(false); // ✅ END shooting flag
             }
         }
 
@@ -115,12 +111,12 @@ public class AutoGun : Weapon
 
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
-        targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
-        Vector3 lookDirection = targetPoint - playerArmature_Mesh.position;
+        Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
+        Vector3 lookDirection = targetPoint - playerBody.position;
         lookDirection.y = 0f; // Keep only horizontal rotation
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-        playerArmature_Mesh.rotation = targetRotation;
-        Shoot();
+        playerBody.rotation = targetRotation;
+        Shoot(targetPoint);
     }
     private bool IsTouchOverUI(Vector2 screenPosition)
     {
@@ -135,12 +131,12 @@ public class AutoGun : Weapon
         return results.Count > 0;
     }
 
-    public override void Shoot()
+    public override void Shoot(Vector3 targetPoint)
     {
         if (ikHandler != null)
         {
             ikHandler.TriggerShootIK();
-            _ = StartCoroutine(WaitAndShootWhenIKReady());
+            _ = StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         }
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
         //    return;
@@ -163,7 +159,7 @@ public class AutoGun : Weapon
         //    audioSource.PlayOneShot(shootSound);
     }
 
-    private IEnumerator WaitAndShootWhenIKReady()
+    private IEnumerator WaitAndShootWhenIKReady(Vector3 targetPoint)
     {
         // Wait until IK weight is close to 1
         while (ikHandler.rig.weight < 0.8f)
@@ -187,9 +183,13 @@ public class AutoGun : Weapon
         GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
         bullet.transform.position = firePoint.transform.position;
         bullet.transform.rotation = firePoint.transform.rotation;
-        bullet.SetActive(true); 
+        bullet.SetActive(true);
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
+
+        // reset liner and angular velocity to make the bullet hit right
+        rb.linearVelocity = Vector3.zero; // reset!
+        rb.angularVelocity = Vector3.zero;
 
         rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
 

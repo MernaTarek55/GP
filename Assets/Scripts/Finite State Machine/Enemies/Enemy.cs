@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     public Enemy_ChaseState enemyChaseState {get; private set; }
     public Enemy_PatrolState enemyPatrolState {get; private set; }
     public Death_State enemyDeath { get; private set; }
-
+    
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -46,8 +46,7 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
 
-        if (enemyData.enemyGroup is EnemyData.EnemyGroup.Shooter && enemyData.enemyType is not EnemyData.EnemyType.Turret) 
-        { enemyStateMachine.Initalize(enemyPatrolState); }
+        if (enemyData.enemyGroup is EnemyData.EnemyGroup.Shooter && enemyData.enemyType is not EnemyData.EnemyType.Turret) { enemyStateMachine.Initalize(enemyPatrolState); }
         else enemyStateMachine.Initalize(enemyIdleState);
         
             //enemyAttackState.getfirePos(firePos);
@@ -57,7 +56,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        enemyStateMachine.currentState.Update();
+        
         //if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
         //{
         //Debug.Log("Player is invisible");
@@ -66,6 +65,7 @@ public class Enemy : MonoBehaviour
 
         float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
         enemyStateMachine.currentState.CheckStateTransitions(distance);
+        enemyStateMachine.currentState.Update();
         /*if (distance <= enemyData.DetectionRange)
         {
             if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)

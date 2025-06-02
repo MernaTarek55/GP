@@ -2508,7 +2508,7 @@ GameObject:
   m_Layer: 0
   m_Name: Target1 (1)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2886,7 +2886,7 @@ GameObject:
   m_Layer: 0
   m_Name: Target1 (2)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4702,7 +4702,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2535750547211479320, guid: b75f68fba79ee7e47815f6dac3b90fc9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4755388878470207390, guid: b75f68fba79ee7e47815f6dac3b90fc9, type: 3}
       propertyPath: playerGO
@@ -5792,7 +5792,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 7dee5d2751a7208458ee376cd740a30b, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 9ca58b5a33639fc4e8659f8302e009cc, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &1922691237
 GameObject:
@@ -6111,7 +6111,7 @@ GameObject:
   m_Layer: 0
   m_Name: Target1
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6571,10 +6571,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: OneArmedRobot
       objectReference: {fileID: 0}
-    - target: {fileID: 2918080955536771293, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6875,7 +6871,6 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   ikHandler: {fileID: 1024126835845342425}
   playerBody: {fileID: 8486386432693121833}
-  playerArmature_Mesh: {fileID: 7077778035529591856}
   uiRaycaster: {fileID: 1526665787219997427}
   eventSystem: {fileID: 9079450573092104412}
 --- !u!1 &43487866012339261
@@ -7381,7 +7376,7 @@ Transform:
   m_GameObject: {fileID: 6159160731599204637}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19532676, y: -0.7069034, z: 0.21381189, w: 0.6453058}
-  m_LocalPosition: {x: 13.782975, y: 4.9833126, z: 5.4857225}
+  m_LocalPosition: {x: 13.75169, y: 4.983242, z: 5.8286357}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9825,7 +9820,6 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   ikHandler: {fileID: 1024126835845342425}
   playerBody: {fileID: 8486386432693121833}
-  playerArmature_Mesh: {fileID: 7077778035529591856}
   uiRaycaster: {fileID: 1526665787219997427}
   eventSystem: {fileID: 9079450573092104412}
 --- !u!4 &4707035413932567101
@@ -11125,7 +11119,7 @@ Transform:
   m_GameObject: {fileID: 8095704711729592555}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19532676, y: -0.7069034, z: 0.21381189, w: 0.6453058}
-  m_LocalPosition: {x: 13.782975, y: 4.9833126, z: 5.4857225}
+  m_LocalPosition: {x: 13.75169, y: 4.983242, z: 5.8286357}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12185,6 +12179,8 @@ MonoBehaviour:
   deadEyeDuration: 10
   deadEyeCooldown: 30
   lastDeadEyeTime: -Infinity
+  pistol: {fileID: 0}
+  invisibilityBtn: {fileID: 0}
 --- !u!136 &8486386432693121835
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -12261,13 +12257,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4975806584410215589}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7050a6a9a959d084bab973782e1f1a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slowMotionFactor: 0.1
   ikHandler: {fileID: 1024126835845342425}
+  currentWeapon: {fileID: 0}
   canShoot: 1
   targetsImages:
   - {fileID: 1485745079}

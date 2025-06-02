@@ -13,10 +13,15 @@ public class HealthComponent : MonoBehaviour, IDamageable
         currentHealth = maxHealth;
     }
 
-    
+    public void RenewHealth()
+    {
+        isDead = false;
+        currentHealth = 100;
+    }
 
     public void TakeDamage(float damage)
     {
+        if (isDead) return;
         if (currentHealth <= 0)
         {
             Die();
@@ -25,7 +30,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
         currentHealth -= damage;
 
-        Debug.Log("Take Damageeeeeeeeeeeeeeee, health: " + currentHealth); 
+        Debug.Log("Take Damageeeeeeeeeeeeeeee, health: " + currentHealth);
     }
 
     public bool IsDead()
@@ -36,7 +41,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
     private void Die()
     {
         isDead = true;
-
-        Debug.Log("brakh, I think I am no longer alive");
+        GetComponentInParent<Enemy>()?.Die();
+        Debug.Log("bruh, I think I am no longer alive");
     }
 }

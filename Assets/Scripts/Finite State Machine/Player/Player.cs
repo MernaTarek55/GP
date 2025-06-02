@@ -36,13 +36,16 @@ public class Player : MonoBehaviour
     public Vector2 MoveInput => moveInput;
     public bool JumpPressed { get; private set; }
     public bool DeadEyePressed { get; private set; }
-
+    public bool IsShooting { get; private set; }
 
     public float deadEyeDuration = 10f;
     public float deadEyeCooldown = 30f;
     public float lastDeadEyeTime = -Mathf.Infinity;
     public bool CanUseDeadEye => Time.time >= lastDeadEyeTime + deadEyeCooldown;
 
+    [SerializeField]GameObject pistol;
+    [Header("Invisibility Settings")]
+    [SerializeField]GameObject invisibilityBtn;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -84,5 +87,23 @@ public class Player : MonoBehaviour
         //DeadEyePressed = deadEyeAction.WasPressedThisFrame() && CanUseDeadEye;
         JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
         stateMachine.UpdateActiveState();
+    }
+    public void ActivateInvisibility()
+    {
+        GetComponent<InvisibilitySkill>().enabled = true; 
+        invisibilityBtn.SetActive(true); 
+    }
+    public void ActivatePistol()
+    {
+        pistol.SetActive(true);
+    }
+    public void SetShooting(bool isShooting)
+    {
+        IsShooting = isShooting;
+    }
+
+    public void ResetHealth()
+    {
+        healthComponent.RenewHealth();
     }
 }
