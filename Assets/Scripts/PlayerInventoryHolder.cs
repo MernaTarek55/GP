@@ -7,7 +7,8 @@ public class PlayerInventoryHolder : MonoBehaviour
 
     //PlayerInventoryHolder 
 
-    private void Start()
+
+    private void Awake()
     {
         WeaponData[] allWeaponData = Resources.LoadAll<WeaponData>("WeaponData");
         Inventory.InitializeWeaponUpgrades(allWeaponData.ToList());
