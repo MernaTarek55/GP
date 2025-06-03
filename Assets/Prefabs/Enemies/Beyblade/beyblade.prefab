@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 279794576011442022}
   - component: {fileID: 774035841073579967}
   - component: {fileID: 5327970897280911028}
+  - component: {fileID: 2459758960331293404}
   m_Layer: 0
   m_Name: beyblade
   m_TagString: Untagged
@@ -269,10 +270,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: b9d7b18d1d97a154dbf3c0b508089274, type: 2}
   playerGO: {fileID: 0}
+  NavTargets: []
   firePos: {fileID: 2734843001713718077}
   particleEffect: {fileID: 0}
   drop: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
-  dropChance: 0.7
+  dropChance: 1
   minDrops: 1
   maxDrops: 3
   dropForce:
@@ -287,7 +289,7 @@ Rigidbody:
   m_GameObject: {fileID: 2734843001713718077}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 2.5
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -305,6 +307,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2459758960331293404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2734843001713718077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3298799873958301901
 GameObject:
   m_ObjectHideFlags: 0

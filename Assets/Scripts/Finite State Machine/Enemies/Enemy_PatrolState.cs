@@ -8,6 +8,7 @@ public class Enemy_PatrolState : EntityState
     private GameObject playerGO;
     //private Enemy enemy;
     private int counter =0;
+    private InvisibilitySkill invisibilitySkill;
 
     //private int counter = 0;
 
@@ -82,13 +83,20 @@ public class Enemy_PatrolState : EntityState
     //}
 
 
-    private void TryGetComponents(GameObject enemyGO)
+    private void TryGetComponents(GameObject entityGO)
     {
-        if (enemyGO.TryGetComponent(out NavMeshAgent eNav))
+        if (entityGO.CompareTag("Player"))
+        {
+
+            if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
+            else Debug.LogWarning("invisibilitySkill not found");
+
+        }
+        if (entityGO.TryGetComponent(out NavMeshAgent eNav))
             enemyAgent = eNav;
         else
             Debug.LogWarning("Nav mesh not found");
-        if (enemyGO.TryGetComponent(out Enemy enemy))
+        if (entityGO.TryGetComponent(out Enemy enemy))
             this.enemy = enemy;
         else
             Debug.LogWarning("Nav mesh not found");
@@ -141,18 +149,22 @@ public class Enemy_PatrolState : EntityState
 
     public override void CheckStateTransitions(float distanceToPlayer)
     {
-        if (distanceToPlayer <= enemyData.DetectionRange)
+        if (!invisibilitySkill.isInvisible)
         {
+            if (distanceToPlayer <= enemyData.DetectionRange)
+            {
 
-            if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
-            {
-                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
-            }
-            else
-            {
-                Debug.Log("to attack");
-                stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+                if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
+                {
+                    stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
+                }
+                else
+                {
+                    Debug.Log("to attack");
+                    stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+                }
             }
         }
     }
+ 
 }

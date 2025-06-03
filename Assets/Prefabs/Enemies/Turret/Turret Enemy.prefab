@@ -42,9 +42,10 @@ GameObject:
   - component: {fileID: 5581989706188248348}
   - component: {fileID: 5607903125905859757}
   - component: {fileID: 1333353403171224628}
+  - component: {fileID: 292645360022527404}
   m_Layer: 0
   m_Name: Turret Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,10 +81,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: ada9dd18d4c824648b97e4932cd6350d, type: 2}
   playerGO: {fileID: 0}
+  NavTargets: []
   firePos: {fileID: 7145755701272447757}
-  enemyPS: {fileID: 0}
+  particleEffect: {fileID: 0}
   drop: {fileID: 0}
-  dropChance: 0.7
+  dropChance: 1
   minDrops: 1
   maxDrops: 3
   dropForce: []
@@ -99,6 +101,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &292645360022527404
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980013216686658834}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.5382473, z: 2.0492606}
+  m_Center: {x: 0, y: 0.76912344, z: -0.03591609}
 --- !u!1001 &2369064090199110990
 PrefabInstance:
   m_ObjectHideFlags: 0
