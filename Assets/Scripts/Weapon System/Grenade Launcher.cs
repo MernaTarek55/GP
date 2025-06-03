@@ -209,7 +209,7 @@ public class GrenadeLauncher : Weapon
     [SerializeField] private Transform playerBody;
 
     [Header("UI")]
-    [SerializeField] private GraphicRaycaster uiRaycaster;
+    [SerializeField] private List<GraphicRaycaster> uiRaycasters = new();
     [SerializeField] private EventSystem eventSystem;
 
     [Header("Launcher")]
@@ -423,10 +423,17 @@ public class GrenadeLauncher : Weapon
         PointerEventData eventData = new PointerEventData(eventSystem);
         eventData.position = screenPosition;
 
-        List<RaycastResult> results = new List<RaycastResult>();
-        uiRaycaster.Raycast(eventData, results);
+        foreach (var raycaster in uiRaycasters)
+        {
+            List<RaycastResult> results = new();
+            raycaster.Raycast(eventData, results);
+            if (results.Count > 0)
+            {
+                return true;
+            }
+        }
 
-        return results.Count > 0;
+        return false;
     }
 }
 

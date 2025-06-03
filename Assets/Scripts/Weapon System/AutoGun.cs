@@ -29,7 +29,7 @@ public class AutoGun : Weapon
     [SerializeField] private Transform playerBody;
 
     [Header("UI")]
-    [SerializeField] private GraphicRaycaster uiRaycaster;
+    [SerializeField] private List<GraphicRaycaster> uiRaycasters = new();
     [SerializeField] private EventSystem eventSystem;
     private readonly Dictionary<int, bool> touchStartedOverUI = new();
 
@@ -125,10 +125,16 @@ public class AutoGun : Weapon
             position = screenPosition
         };
 
-        List<RaycastResult> results = new();
-        uiRaycaster.Raycast(eventData, results);
-
-        return results.Count > 0;
+        foreach (var raycaster in uiRaycasters)
+        {
+            List<RaycastResult> results = new();
+            raycaster.Raycast(eventData, results);
+            if (results.Count > 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public override void Shoot(Vector3 targetPoint)
