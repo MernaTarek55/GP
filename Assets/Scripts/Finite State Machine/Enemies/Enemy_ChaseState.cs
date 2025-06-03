@@ -121,10 +121,7 @@ public class Enemy_ChaseState : EntityState
 
             if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
             {
-                enemyRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
-                playerRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
-                if(enemy!=null)
-                { this.enemy.StartEnemyCoroutine(BeybladeWaitAttack()); }
+                CollidingFriction(collision);
 
             }
 
@@ -132,7 +129,25 @@ public class Enemy_ChaseState : EntityState
         }
     }
 
+    private void CollidingFriction(Collision collision)
+    {
+        float impactForce = collision.impulse.magnitude;
 
+        // Calculate the push-back force (double the impact force)
+        float pushBackForce = impactForce * 100 ;
+        Debug.LogWarning("pushBackForce" + pushBackForce);
+        // Get the collision normal (direction perpendicular to the surface)
+        Vector3 collisionNormal = collision.contacts[0].normal;
+
+        // Apply force in the opposite direction of the impact
+        enemyRigidbody.AddForce(collisionNormal * pushBackForce, ForceMode.Impulse);
+        playerRigidbody.AddForce(collisionNormal * pushBackForce, ForceMode.Impulse);
+
+        //enemyRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
+        //playerRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
+        if (enemy != null)
+        { this.enemy.StartEnemyCoroutine(BeybladeWaitAttack()); }
+    }
 
     private IEnumerator BeybladeWaitAttack()
     {

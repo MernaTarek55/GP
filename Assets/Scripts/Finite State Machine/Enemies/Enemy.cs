@@ -45,12 +45,11 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret) { enemyStateMachine.Initalize(enemyPatrolState); }
+        else { enemyStateMachine.Initalize(enemyIdleState); }
 
-        if (enemyData.enemyGroup is EnemyData.EnemyGroup.Shooter && enemyData.enemyType is not EnemyData.EnemyType.Turret) { enemyStateMachine.Initalize(enemyPatrolState); }
-        else enemyStateMachine.Initalize(enemyIdleState);
-        
-            //enemyAttackState.getfirePos(firePos);
-            Debug.Log("START " + firePos);
+        //enemyAttackState.getfirePos(firePos);
+        Debug.Log("START " + firePos);
 
     }
 
@@ -64,8 +63,8 @@ public class Enemy : MonoBehaviour
         //}
 
         float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
-        enemyStateMachine.currentState.CheckStateTransitions(distance);
         enemyStateMachine.currentState.Update();
+        enemyStateMachine.currentState.CheckStateTransitions(distance);
         /*if (distance <= enemyData.DetectionRange)
         {
             if (enemyData.enemyType == EnemyData.EnemyType.ballDroid)
@@ -103,8 +102,9 @@ public class Enemy : MonoBehaviour
     }
     public void Die()
     {
+        Debug.LogWarning("Spawning drops for " + name);
 
-       
+
         enemyStateMachine.ChangeState(enemyDeath);
     }
 

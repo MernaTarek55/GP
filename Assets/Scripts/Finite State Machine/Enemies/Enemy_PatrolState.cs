@@ -26,7 +26,7 @@ public class Enemy_PatrolState : EntityState
         base.Enter();
         if(enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
         enemyAgent.SetDestination(enemy.NavTargets[counter].position);
-        if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot) enemyAgent.isStopped = false;
+        if (enemyData.enemyType != EnemyData.EnemyType.Turret && enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter) enemyAgent.isStopped = false;
         
     }
 
@@ -44,7 +44,7 @@ public class Enemy_PatrolState : EntityState
     public override void Exit()
     {
         base.Exit();
-        if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot)
+        if (enemyData.enemyType != EnemyData.EnemyType.Turret && enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter)
         {
             enemyAgent.isStopped = true;
         }

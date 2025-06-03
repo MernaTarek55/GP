@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Security.Cryptography;
 ﻿using DG.Tweening;
 using Unity.VisualScripting;
@@ -27,19 +28,24 @@ public class Enemy_AttackState : EntityState
         TryGetComponents(playerGO);
 
 
+
     }
 
     public override void Enter()
     {
         base.Enter();
         firePoint = enemy.getfirePos();
+        if (firePoint == null)
+        {
+            Debug.LogError("Fire position not found!");
+        }
 
     }
 
     public override void Update()
     {
         base.Update();
-        if (enemyData.enemyType == EnemyData.EnemyType.Turret || enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
+        if (enemyData.enemyType == EnemyData.EnemyType.Turret  || enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
         {
             Debug.Log("Turret Attack");
             if (invisibilitySkill.isInvisible)
@@ -50,8 +56,13 @@ public class Enemy_AttackState : EntityState
             }
 
             RotateTowardPlayer();
+            if(enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
+            ShootRobot();
+            else
             Shoot();
         }
+
+
         else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
         {
             Debug.Log("BallDroid Attack");
@@ -168,6 +179,7 @@ public class Enemy_AttackState : EntityState
 
     private void ShootLava()
     {
+        Debug.LogWarning("LavaRobot Attack");
         if (invisibilitySkill.isInvisible)
         {
             Debug.Log("Player is invisible, ball droid does nothing.");
@@ -187,8 +199,11 @@ public class Enemy_AttackState : EntityState
         {
             // Set up the projectile
             GameObject projectile = PoolManager.Instance.GetPrefabByTag(PoolType.LavaProjectile);
-            initProjectileType(projectile.GetComponent<LavaProjectile>());
-            projectile.GetComponent<LavaProjectile>().LavaRobot = enemyGO;
+            LavaProjectile lavaProjectile = projectile.GetComponent<LavaProjectile>();
+            Debug.Log("LavaProjectile: " + lavaProjectile);
+            initProjectileType(lavaProjectile);
+
+            //projectile.GetComponent<LavaProjectile>().LavaRobot = enemyGO;
             if (enemyData.bulletPrefab != null && firePoint != null)
             {
                 // Set up the projectile
@@ -196,7 +211,6 @@ public class Enemy_AttackState : EntityState
                 //projectile.transform.rotation = firePoint.transform.rotation;
 
                 // Assign the LavaRobot reference (critical!)
-               
                 projectile.SetActive(true);
                 _lastShootTime = Time.time; // Update last shoot time
             }
@@ -213,6 +227,73 @@ public class Enemy_AttackState : EntityState
             
             enemyGO.transform.rotation = Quaternion.Slerp(enemyGO.transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
+    }
+    private void ShootRobot()
+    {
+        if (Time.time - _lastShootTime < enemyData.shootCooldown)
+            return;
+
+        // Get shoot position from child object
+        Transform shootPos = GetChildrenWithTag(enemyGO)?.transform;
+        if (shootPos == null)
+        {
+            Debug.LogError("Shoot position not found!");
+            return;
+        }
+
+        // Check if facing player (relax angle check slightly)
+        Vector3 directionToPlayer = (playerGO.transform.position - enemyGO.transform.position).normalized;
+        directionToPlayer.y = 0;
+        float angle = Vector3.Angle(enemyGO.transform.forward, directionToPlayer);
+
+        if (angle > 30f) return;
+
+        // Get bullet from pool
+        if (PoolManager.Instance == null)
+        {
+            Debug.LogError("PoolManager instance not found!");
+            return;
+        }
+
+        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
+        if (bullet == null)
+        {
+            Debug.LogError("Bullet prefab not found in pool!");
+            return;
+        }
+
+        // Set bullet position and rotation
+        bullet.transform.position = firePoint.transform.position;
+        bullet.transform.rotation = firePoint.transform.rotation;
+        bullet.SetActive(true);
+
+        // Add movement towards player
+        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+        if (bulletRb != null)
+        {
+            // Calculate direction to player (ignore height differences)
+            Vector3 targetPosition = new Vector3(
+                playerGO.transform.position.x,
+                bullet.transform.position.y,  // Keep bullet's current height
+                playerGO.transform.position.z
+            );
+
+            Vector3 shootDirection = (targetPosition - bullet.transform.position).normalized;
+            bulletRb.linearVelocity = shootDirection * enemyData.movementSpeed;
+
+            // Optional: Make bullet rotate to face movement direction
+            if (shootDirection != Vector3.zero)
+            {
+                bullet.transform.rotation = Quaternion.LookRotation(shootDirection);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Bullet has no Rigidbody component, cannot apply physics movement");
+        }
+
+        Debug.Log($"Shooting at player - Angle: {angle}, Position: {shootPos.position}");
+        _lastShootTime = Time.time;
     }
 
     private void Shoot()
@@ -255,8 +336,15 @@ public class Enemy_AttackState : EntityState
 
     public void initProjectileType(LavaProjectile lavaProjectile)
     {
-        
 
+
+        
+            QuadraticCurve quadraticCurve = enemyGO.GetComponentInChildren<QuadraticCurve>();
+
+   
+
+            lavaProjectile.SetQuadraticCurve(quadraticCurve);
+            lavaProjectile.SetenemyPosition(enemyGO.transform.position);
             switch (enemyData.enemyType)
             {
             
@@ -264,15 +352,13 @@ public class Enemy_AttackState : EntityState
 
             case EnemyData.EnemyType.LavaRobot:
                 lavaProjectile.projectileType = LavaProjectile.ProjectileEnemyType.Target;  //Target shooting:
-                Debug.Log("Enemy Target");
                 break;
             case EnemyData.EnemyType.LavaRobotTypeB:
                 lavaProjectile.projectileType = LavaProjectile.ProjectileEnemyType.Random; //Random shooting
-                Debug.Log("Enemy Random");
 
                 break;
             }
-
+        
         
 
     }
@@ -283,25 +369,39 @@ public class Enemy_AttackState : EntityState
         {
             Debug.Log("Player is invisible, enemy does nothing.");
             stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-            //return;
+            return;
         }
+       
+            if (distanceToPlayer > enemyData.DetectionRange)
+            {
+                if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
+                {
+                    stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+                }
+                else
+                {
+                    stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+                }
+            }
+            else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser && distanceToPlayer > 2f)
+            {
+                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
+            }
+    }
+    private GameObject GetChildrenWithTag(GameObject parentObject)
+    {
+        if (parentObject == null) return null;
 
-        if (distanceToPlayer > enemyData.DetectionRange)
+        foreach (Transform child in parentObject.transform)
         {
-            Debug.Log("Distance to player is greater than detection range, switching to Patrol state.");
-            //if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
-            //{
-            stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO,playerGO));
-            //}
-            //else
-            //{
-                //stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-            //}
+            if (child.CompareTag("ShootPos"))
+                return child.gameObject;
+
+            // Recursively check children if needed
+            var foundInChild = GetChildrenWithTag(child.gameObject);
+            if (foundInChild != null)
+                return foundInChild;
         }
-        else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser && distanceToPlayer > 2f)
-        {
-            Debug.Log("Distance to player is greater than 2, switching to Chase state.");
-            stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
-        }
+        return null;
     }
 }
