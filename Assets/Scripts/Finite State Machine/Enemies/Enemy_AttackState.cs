@@ -13,7 +13,6 @@ public class Enemy_AttackState : EntityState
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
     private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
     private SphereCollider sphereCollider;
-    private Enemy enemy;
     private HealthComponent playerHealth;
     private InvisibilitySkill invisibilitySkill;
     private bool hasExploded = false; // to instantiate one explosion when the enemy explodes

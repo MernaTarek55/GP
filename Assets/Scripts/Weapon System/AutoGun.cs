@@ -33,7 +33,7 @@ public class AutoGun : Weapon
     [SerializeField] private EventSystem eventSystem;
     private readonly Dictionary<int, bool> touchStartedOverUI = new();
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         player = GetComponentInParent<Player>();
@@ -43,6 +43,7 @@ public class AutoGun : Weapon
             Debug.LogError("WeaponData not assigned in Inspector.");
             return;
         }
+
         currentAmmo = weaponData.maxAmmo;
         Debug.Log($"Weapon Type: {WeaponType}");
     }

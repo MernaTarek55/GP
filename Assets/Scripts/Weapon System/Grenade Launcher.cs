@@ -229,7 +229,7 @@ public class GrenadeLauncher : Weapon
     private Vector3 targetPoint;
     private Vector3 shootDirection;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         player = GetComponentInParent<Player>();

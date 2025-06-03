@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Player_JumpState : EntityState
 {
-    private readonly bool hasJumped = false;
+    //private readonly bool hasJumped = false;
 
     public Player_JumpState(StateMachine stateMachine, string stateName, Player player) : base(stateMachine, stateName, player)
     {

@@ -16,7 +16,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
     public void RenewHealth()
     {
         isDead = false;
-        currentHealth = 100;
+        currentHealth = maxHealth;
     }
     public void setMaxHealth(float maxHealth)
     {

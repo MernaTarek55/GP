@@ -10,8 +10,7 @@ public class Enemy_ChaseState : EntityState
     private NavMeshAgent enemyAgent;  // to let the enemy move
     private Rigidbody enemyRigidbody; // to add force for the beyblade
     private Rigidbody playerRigidbody; // to add force for the beyblade
-    private  readonly GameObject enemyGO;
-    private readonly Enemy enemy;
+    //private  readonly GameObject enemyGO;
 
 
     public Enemy_ChaseState(StateMachine stateMachine, string stateName, EnemyData enemyData,
