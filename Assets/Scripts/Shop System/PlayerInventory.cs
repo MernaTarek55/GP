@@ -23,7 +23,29 @@ public class PlayerInventory
         }
     }
 
-
+    public float MaxHealth
+    {
+        get => getPlayerStat(PlayerSkillsStats.MaxHealth);
+        set => SetPlayerStat(PlayerSkillsStats.MaxHealth, value);
+    }
+    public float CurrentHealth
+    {
+        get => inventorySaveData.currentHealth;
+        set
+        {
+            inventorySaveData.currentHealth = Mathf.Clamp(value, 0, MaxHealth);
+            // You might want to add an OnHealthChanged event here
+        }
+    }
+    public void InitializePlayerStats()
+    {
+        // Set default health if not already set
+        if (!inventorySaveData.playerStats.ContainsKey(PlayerSkillsStats.MaxHealth))
+        {
+            SetPlayerStat(PlayerSkillsStats.MaxHealth, 100f); // Default max health
+        }
+        CurrentHealth = MaxHealth; // Start with full health
+    }
     public void InitializeWeaponUpgrades(List<WeaponData> weaponDataList)
     {
         Debug.Log("Initializing weapon upgrades...");

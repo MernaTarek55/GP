@@ -5,6 +5,7 @@ using UnityEngine;
 public class InventorySaveData
 {
     public int credits;
+    public float currentHealth;
     public List<WeaponType> ownedWeapons = new List<WeaponType>();
     public Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new Dictionary<WeaponType, WeaponUpgradeState>();
     public Dictionary<WeaponType, float> bulletsCount = new Dictionary<WeaponType, float>();

@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
-            other.gameObject.GetComponentInChildren<HealthComponent>().TakeDamage(damage);
+            other.gameObject.GetComponentInChildren<PlayerHealthComponent>().TakeDamage(damage);
 
         if (other.gameObject.CompareTag("Enemy"))
             other.gameObject.GetComponentInChildren<HealthComponent>().TakeDamage(damage);

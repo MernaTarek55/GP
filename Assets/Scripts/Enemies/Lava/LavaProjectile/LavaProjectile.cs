@@ -163,7 +163,7 @@ public class LavaProjectile : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<HealthComponent>().TakeDamage(10);
+            other.gameObject.GetComponent<PlayerHealthComponent>().TakeDamage(10);
         }
 
 

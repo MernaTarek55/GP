@@ -13,7 +13,7 @@ public class Enemy_AttackState : EntityState
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
     private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
     private SphereCollider sphereCollider;
-    private HealthComponent playerHealth;
+    private PlayerHealthComponent playerHealth;
     private InvisibilitySkill invisibilitySkill;
     private bool hasExploded = false; // to instantiate one explosion when the enemy explodes
 
@@ -98,7 +98,7 @@ public class Enemy_AttackState : EntityState
     {
         if (entityGO.CompareTag("Player"))
         {
-            if(entityGO.TryGetComponent(out HealthComponent healthComponent)) playerHealth = healthComponent;
+            if(entityGO.TryGetComponent(out PlayerHealthComponent healthComponent)) playerHealth = healthComponent;
             else Debug.LogWarning("Health Component not found");
             if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
             else Debug.LogWarning("invisibilitySkill not found");

@@ -15,6 +15,7 @@ public class PlayerInventoryHolder : MonoBehaviour
 
         WeaponData[] allWeaponData = Resources.LoadAll<WeaponData>("WeaponData");
         Inventory.InitializeWeaponUpgrades(allWeaponData.ToList());
+        Inventory.InitializePlayerStats();
         // Initialize skill defaults
         Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityDuration, 5f); // 5 seconds default
         Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityCoolDown, 10f); // 10 seconds default
