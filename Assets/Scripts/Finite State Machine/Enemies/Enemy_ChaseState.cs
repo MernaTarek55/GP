@@ -112,57 +112,49 @@ public class Enemy_ChaseState : EntityState
         //if(enemyGo.gameObject.tag) {
     }
 
-    public override void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Enemy collided with Player � transitioning to Attack state");
+    //public override void OnCollisionEnter(Collision collision)
+    //{
+    //    //if (collision.gameObject.CompareTag("Player"))
+    //    //{
+    //    //    Debug.Log("Enemy collided with Player � transitioning to Attack state");
 
-            if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
-            {
-                CollidingFriction(collision);
+    //    //    if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
+    //    //    {
+    //    //        //CollidingFriction(collision);
 
-            }
+    //    //    }
 
-            stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
-        }
-    }
+    //    //    stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+    //    //}
+    //}
 
-    private void CollidingFriction(Collision collision)
-    {
-        float impactForce = collision.impulse.magnitude;
+    //private void CollidingFriction(Collision collision)
+    //{
+    //    float impactForce = 1;
 
-        // Calculate the push-back force (tweak multiplier as needed)
-        float pushBackForce = impactForce * 20f;
-        Debug.LogWarning("pushBackForce: " + pushBackForce);
+    //    // Calculate the push-back force (tweak multiplier as needed)
+    //    Debug.LogWarning("pushBackForce: " + impactForce);
 
-        // Determine relative X position
-        float directionX = playerGO.transform.position.x - enemyGO.transform.position.x;
-        float pushDirection = directionX >= 0 ? 1f : -1f;
+    //    // Determine relative X position
+    //    float directionX =playerGO.transform.position.x - enemyGO.transform.position.x;
+    //    float pushDirection = directionX >= 0 ? 1f : -1f;
 
-        // Create push direction only on the X-axis
-        Vector3 pushVector = new Vector3(Mathf.Sign(pushDirection), 0f, 0f);
+    //    // Create push direction only on the X-axis
+    //    Vector3 pushVector = new Vector3(Mathf.Sign(pushDirection), 0f, 0f);
 
-        // Apply push force to both enemy and player
-        enemyRigidbody.AddForce(-pushVector * pushBackForce, ForceMode.Impulse); // Enemy gets opposite force
-        playerRigidbody.AddForce(pushVector * pushBackForce, ForceMode.Impulse); // Player gets force based on enemy's position
+    //    // Apply push force to both enemy and player
+    //    enemyRigidbody.AddForce(-pushVector * impactForce, ForceMode.Impulse); // Enemy gets opposite force
+    //    playerRigidbody.AddForce(pushVector * impactForce, ForceMode.Impulse); // Player gets force based on enemy's position
 
-        // Optional: Add a temporary movement freeze for beyblade effect
-        if (enemy != null)
-        {
-            enemy.StartEnemyCoroutine(BeybladeWaitAttack());
-        }
-    }
+    //    // Optional: Add a temporary movement freeze for beyblade effect
+    //    if (enemy != null)
+    //    {
+    //        enemy.StartEnemyCoroutine(BeybladeWaitAttack());
+    //    }
+    //}
 
 
-    private IEnumerator BeybladeWaitAttack()
-    {
-        enemyAgent.isStopped = true;
-        yield return new WaitForSeconds(1f);
-        enemyAgent.isStopped = false;
-
-    }
-
+  
     public override void CheckStateTransitions(float distanceToPlayer)
     {
         if (invisibilitySkill.isInvisible)
@@ -182,6 +174,11 @@ public class Enemy_ChaseState : EntityState
             {
                 stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
             }
+        }
+        else if (distanceToPlayer < 1.3f)
+        {
+            Debug.LogWarning("Player too close");  
+            stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
         }
     }
 }

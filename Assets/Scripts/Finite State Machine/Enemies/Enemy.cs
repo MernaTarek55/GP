@@ -63,7 +63,6 @@ public class Enemy : MonoBehaviour
         //}
 
         float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
-        Debug.Log($"Enemy {name}: State={enemyStateMachine.currentState.GetType().Name}, Distance={distance:F2}, DetectionRange={enemyData.DetectionRange}");
 
         enemyStateMachine.currentState.Update();
         enemyStateMachine.currentState.CheckStateTransitions(distance);

@@ -469,7 +469,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   ikHandler: {fileID: 1024126835845342425}
   playerBody: {fileID: 8486386432693121833}
-  uiRaycaster: {fileID: 1526665787219997427}
+  uiRaycasters: []
   eventSystem: {fileID: 9079450573092104412}
   upwardMultiplier: 0.2
   forwardForce: 20
@@ -2688,6 +2688,10 @@ PrefabInstance:
     - target: {fileID: 2734843001713718077, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
       propertyPath: m_Name
       value: beyblade
+      objectReference: {fileID: 0}
+    - target: {fileID: 5327970897280911028, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5516573870154009116, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7256,7 +7260,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   ikHandler: {fileID: 1024126835845342425}
   playerBody: {fileID: 8486386432693121833}
-  uiRaycaster: {fileID: 1526665787219997427}
+  uiRaycasters: []
   eventSystem: {fileID: 9079450573092104412}
 --- !u!1 &43487866012339261
 GameObject:
@@ -10205,7 +10209,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   ikHandler: {fileID: 1024126835845342425}
   playerBody: {fileID: 8486386432693121833}
-  uiRaycaster: {fileID: 1526665787219997427}
+  uiRaycasters: []
   eventSystem: {fileID: 9079450573092104412}
 --- !u!4 &4707035413932567101
 Transform:
@@ -12560,7 +12564,7 @@ MonoBehaviour:
   groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   hasJumped: 0
   deadEyeDuration: 10
   deadEyeCooldown: 30

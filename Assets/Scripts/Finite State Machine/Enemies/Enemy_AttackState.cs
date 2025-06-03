@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 ﻿using DG.Tweening;
@@ -19,6 +21,9 @@ public class Enemy_AttackState : EntityState
 
     private float _lastShootTime;
 
+    public Rigidbody enemyRigidbody { get; private set; }
+    public Rigidbody playerRigidbody { get; private set; }
+
     public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
@@ -38,6 +43,8 @@ public class Enemy_AttackState : EntityState
         {
             Debug.LogError("Fire position not found!");
         }
+       
+
 
     }
 
@@ -75,12 +82,48 @@ public class Enemy_AttackState : EntityState
             {
                 ExplodingBall();
             }
+            if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
+            {
+                PushBackPlayer();
+            }
             
         }
         else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
         {
             ShootLava();
         }
+    }
+
+    private void PushBackPlayer()
+    {
+        float impactForce = 1;
+
+        // Calculate the push-back force (tweak multiplier as needed)
+        Debug.LogWarning("pushBackForce: " + impactForce);
+
+        // Determine relative X position
+        float directionX = playerGO.transform.position.x - enemyGO.transform.position.x;
+        float pushDirection = directionX >= 0 ? 1f : -1f;
+
+        // Create push direction only on the X-axis
+        Vector3 pushVector = new Vector3(Mathf.Sign(pushDirection), 0f, 0f);
+
+        // Apply push force to both enemy and player
+        enemyRigidbody.AddForce(-pushVector * impactForce, ForceMode.Impulse); // Enemy gets opposite force
+        playerRigidbody.AddForce(pushVector * impactForce, ForceMode.Impulse); // Player gets force based on enemy's position
+
+        // Optional: Add a temporary movement freeze for beyblade effect
+        if (enemy != null)
+        {
+            enemy.StartEnemyCoroutine(BeybladeWaitAttack());
+        }
+    }
+    private IEnumerator BeybladeWaitAttack()
+    {
+        enemyAgent.isStopped = true;
+        yield return new WaitForSeconds(1f);
+        enemyAgent.isStopped = false;
+
     }
 
     public override void Exit()
@@ -102,7 +145,9 @@ public class Enemy_AttackState : EntityState
             else Debug.LogWarning("Health Component not found");
             if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
             else Debug.LogWarning("invisibilitySkill not found");
-            
+            if (entityGO.TryGetComponent(out Rigidbody entityRigidbody)) this.playerRigidbody = entityRigidbody;
+            else Debug.LogWarning("entityRigidbody not found");
+
         }
         else
         {
@@ -116,8 +161,12 @@ public class Enemy_AttackState : EntityState
   
             if (entityGO.TryGetComponent(out SphereCollider sphereCollider)) this.sphereCollider = sphereCollider;
             else Debug.LogWarning("Mesh Renderer not found");
+            if (entityGO.TryGetComponent(out Rigidbody entityRigidbody)) this.enemyRigidbody = entityRigidbody;
+            else Debug.LogWarning("entityRigidbody not found");
         }
-}
+     
+
+    }
 
     //protected override void UpdateTurret()
     //{
@@ -232,13 +281,6 @@ public class Enemy_AttackState : EntityState
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
             return;
 
-        // Get shoot position from child object
-        Transform shootPos = GetChildrenWithTag(enemyGO)?.transform;
-        if (shootPos == null)
-        {
-            Debug.LogError("Shoot position not found!");
-            return;
-        }
 
         // Check if facing player (relax angle check slightly)
         Vector3 directionToPlayer = (playerGO.transform.position - enemyGO.transform.position).normalized;
@@ -291,7 +333,6 @@ public class Enemy_AttackState : EntityState
             Debug.LogWarning("Bullet has no Rigidbody component, cannot apply physics movement");
         }
 
-        Debug.Log($"Shooting at player - Angle: {angle}, Position: {shootPos.position}");
         _lastShootTime = Time.time;
     }
 
@@ -320,6 +361,8 @@ public class Enemy_AttackState : EntityState
 
     private void BeybladeAttack()
     {
+
+        
         RotateOnSelf(new Vector3(0, 540, 0), 1f, RotateMode.WorldAxisAdd);
         playerHealth.TakeDamage(1f); 
     }
@@ -387,20 +430,5 @@ public class Enemy_AttackState : EntityState
                 stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
             }
     }
-    private GameObject GetChildrenWithTag(GameObject parentObject)
-    {
-        if (parentObject == null) return null;
-
-        foreach (Transform child in parentObject.transform)
-        {
-            if (child.CompareTag("ShootPos"))
-                return child.gameObject;
-
-            // Recursively check children if needed
-            var foundInChild = GetChildrenWithTag(child.gameObject);
-            if (foundInChild != null)
-                return foundInChild;
-        }
-        return null;
-    }
+ 
 }

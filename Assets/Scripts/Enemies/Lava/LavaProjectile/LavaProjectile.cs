@@ -105,12 +105,12 @@ public class LavaProjectile : MonoBehaviour
         {
             case ProjectileEnemyType.Random:
                 initialB = new Vector3(enemyPosition.x+randomizer.x, curve.B.position.y, enemyPosition.z+randomizer.y);
-                Debug.LogWarning(initialB);
-                Debug.Log("Projectile Random");
+                //Debug.LogWarning(initialB);
+                //Debug.Log("Projectile Random");
                 break;
             case ProjectileEnemyType.Target:
                 initialB = curve.B.position;
-                Debug.Log("Projectile Target");
+                //Debug.Log("Projectile Target");
                 break;
 
         }
@@ -175,10 +175,7 @@ public class LavaProjectile : MonoBehaviour
         PoolManager.Instance?.ReturnToPool(PoolType.LavaProjectile,gameObject);
     }
 
-    public void InitcurveController()
-    {
-
-    }
+   
 
     public void SetQuadraticCurve(QuadraticCurve quadraticCurve)
     {
