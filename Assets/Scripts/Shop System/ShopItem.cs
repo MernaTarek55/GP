@@ -67,10 +67,23 @@ public class WeaponUpgradeItem : ShopItem
 public class PlayerSkillItem : ShopItem
 {
     public PlayerSkillsStats skill;
+    public float amountToIncrease = 1f; // Add this field to configure increase amount
+
     public override void OnPurchase(PlayerInventory inventory)
     {
         float currentValue = inventory.getPlayerStat(skill);
-        inventory.SetPlayerStat(skill, currentValue + 1); 
+        inventory.SetPlayerStat(skill, currentValue + amountToIncrease);
+
+        // Find the player's InvisibilitySkill and update its stats
+        var player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            var skillComponent = player.GetComponent<InvisibilitySkill>();
+            if (skillComponent != null)
+            {
+                skillComponent.UpdateStatsFromInventory();
+            }
+        }
     }
 }
 [CreateAssetMenu(menuName = "Shop/Health Item")]

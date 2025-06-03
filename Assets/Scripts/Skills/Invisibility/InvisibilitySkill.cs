@@ -13,7 +13,7 @@ public class InvisibilitySkill : MonoBehaviour
     private float cooldownTime;
     public float invisibilityDuration = 30f;
     public float cooldownDuration = 10f;
-    private float lastUsedTime;
+    //private float lastUsedTime;
     public float fadeSpeed = 2f;
     private PlayerInventory playerInventory;
     public bool isInvisible = false;
@@ -34,11 +34,25 @@ public class InvisibilitySkill : MonoBehaviour
     }
     private void Start()
     {
-        var player = GameObject.FindWithTag("Player");
-        playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
+        var holder = GameObject.FindWithTag("Player").GetComponent<PlayerInventoryHolder>();
+        if (holder == null)
+        {
+            Debug.LogError("PlayerInventoryHolder not found on player!");
+            return;
+        }
+
+        playerInventory = holder.Inventory;
+
+        // Load the stats from inventory
+        UpdateStatsFromInventory();
+        //lastUsedTime = Time.time - cooldownTime;
+    }
+    public void UpdateStatsFromInventory()
+    {
         cooldownDuration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
         invisibilityDuration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityDuration);
-        lastUsedTime = Time.time - cooldownTime;
+
+        Debug.Log($"Invisibility Skill Updated - Duration: {invisibilityDuration}, Cooldown: {cooldownDuration}");
     }
     public void UseInvisibility()
     {
