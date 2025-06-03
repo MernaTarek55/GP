@@ -39,10 +39,9 @@ public class Player : MonoBehaviour
     public bool IsShooting { get; private set; }
 
     public float deadEyeDuration = 10f;
-    public float deadEyeCooldown = 30f;
+    public float deadEyeCooldown = 30f;//inventory.getPlayerStat(PlayerSkillsStats.DeadEyeCoolDown);
     public float lastDeadEyeTime = -Mathf.Infinity;
     public bool CanUseDeadEye => Time.time >= lastDeadEyeTime + deadEyeCooldown;
-
     [SerializeField]GameObject pistol;
     [Header("Invisibility Settings")]
     [SerializeField]GameObject invisibilityBtn;
@@ -51,7 +50,7 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         healthComponent = gameObject.GetComponent<HealthComponent>();
-
+        //healthComponent.setMaxHealth(inventory.getPlayerStat(PlayerSkillsStats.MaxHealth));
         moveAction = InputActions.FindActionMap("Player").FindAction("Move");
         jumpAction = InputActions.FindActionMap("Player").FindAction("Jump");
         //deadEyeAction = InputActions.FindActionMap("Player").FindAction("DeadEye");

@@ -18,7 +18,10 @@ public class HealthComponent : MonoBehaviour, IDamageable
         isDead = false;
         currentHealth = 100;
     }
-
+    public void setMaxHealth(float maxHealth)
+    {
+        this.maxHealth = maxHealth;
+    }
     public void TakeDamage(float damage)
     {
         if (isDead) return;

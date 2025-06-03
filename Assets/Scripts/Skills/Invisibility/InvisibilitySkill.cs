@@ -10,12 +10,12 @@ public class InvisibilitySkill : MonoBehaviour
     private Material[] materials;
     //need refactor
     private readonly float duration;
-    private readonly float cooldownTime;
-    public float invisibilityDuration = 10f;
+    private float cooldownTime;
+    public float invisibilityDuration = 30f;
     public float cooldownDuration = 10f;
     private float lastUsedTime;
     public float fadeSpeed = 2f;
-    private readonly PlayerInventory playerInventory;
+    private PlayerInventory playerInventory;
     public bool isInvisible = false;
     private bool isOnCooldown = false;
     public Button InvisibleButton;
@@ -34,9 +34,10 @@ public class InvisibilitySkill : MonoBehaviour
     }
     private void Start()
     {
-        //var player = GameObject.FindWithTag("Player");
-        //playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
-        //cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
+        var player = GameObject.FindWithTag("Player");
+        playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
+        cooldownDuration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
+        invisibilityDuration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityDuration);
         lastUsedTime = Time.time - cooldownTime;
     }
     public void UseInvisibility()

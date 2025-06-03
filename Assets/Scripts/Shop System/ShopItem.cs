@@ -69,7 +69,8 @@ public class PlayerSkillItem : ShopItem
     public PlayerSkillsStats skill;
     public override void OnPurchase(PlayerInventory inventory)
     {
-        //TODO
+        float currentValue = inventory.getPlayerStat(skill);
+        inventory.SetPlayerStat(skill, currentValue + 1); 
     }
 }
 [CreateAssetMenu(menuName = "Shop/Health Item")]
@@ -79,6 +80,12 @@ public class HealthItem : ShopItem
 
     public override void OnPurchase(PlayerInventory inventory)
     {
-        //TODO
+        // Assuming MaxHealth is tracked in playerStats
+        float currentHealth = inventory.getPlayerStat(PlayerSkillsStats.MaxHealth);
+        inventory.SetPlayerStat(PlayerSkillsStats.MaxHealth, currentHealth + healthIncrease);
+
+        // You may also want to immediately heal the player
+        // This would require access to the Player component
+
     }
 }
