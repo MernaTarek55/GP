@@ -50,7 +50,30 @@ public class ShopManager : MonoBehaviour
     }
     public bool Buy(ShopItem item)
     {
-        int cost = item is WeaponUpgradeItem upgradeItem ? upgradeItem.GetLevelCost(playerInventory) : item.GetCost();
+        int cost = 0;
+
+        if (item != null)
+        {
+            if (item is WeaponUpgradeItem upgradeItem)
+            {
+                if (playerInventory != null)
+                {
+                    cost = upgradeItem.GetLevelCost(playerInventory);
+                }
+                else
+                {
+                    Debug.LogError("PlayerInventory is null in ShopManager.Buy()");
+                }
+            }
+            else
+            {
+                cost = item.GetCost();
+            }
+        }
+        else
+        {
+            Debug.LogError("Tried to buy a null item in ShopManager.Buy()");
+        }
         if (cost <= 0)
         {
             Debug.LogWarning($"Item {item.name} has a cost of {cost}, cannot be purchased.");

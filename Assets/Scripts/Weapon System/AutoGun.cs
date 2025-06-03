@@ -35,7 +35,7 @@ public class AutoGun : Weapon
     private readonly Dictionary<int, bool> touchStartedOverUI = new();
 
     private float totalAmmo; // Ammo in inventory
-    private bool hasInfiniteAmmo = false;
+    private bool hasInfiniteAmmo = true;
     protected override void Awake()
     {
         base.Awake();

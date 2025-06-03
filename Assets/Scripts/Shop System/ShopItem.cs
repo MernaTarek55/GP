@@ -84,7 +84,7 @@ public class PlayerSkillItem : ShopItem
                 skillComponent.UpdateStatsFromInventory();
             }
         }
-        inventory.UpgradePlayerStat(skill)
+        //inventory.UpgradePlayerStat(skill)
     }
 }
 [CreateAssetMenu(menuName = "Shop/Health Item")]
