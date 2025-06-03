@@ -20,6 +20,7 @@ public class PlayerInventoryHolder : MonoBehaviour
         Inventory.SetPlayerStat(PlayerSkillsStats.InvesabilityCoolDown, 10f); // 10 seconds default
         Inventory.PrintWeaponUpgrades();
     }
+
     //for testing purposes
     private void Update()
     {

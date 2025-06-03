@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 public class AutoGun : Weapon
 {
     Player player;
@@ -33,6 +34,8 @@ public class AutoGun : Weapon
     [SerializeField] private EventSystem eventSystem;
     private readonly Dictionary<int, bool> touchStartedOverUI = new();
 
+    private float totalAmmo; // Ammo in inventory
+    private bool hasInfiniteAmmo = false;
     protected override void Awake()
     {
         base.Awake();
@@ -44,8 +47,11 @@ public class AutoGun : Weapon
             return;
         }
 
+        // Initialize ammo from inventory
         currentAmmo = weaponData.maxAmmo;
-        Debug.Log($"Weapon Type: {WeaponType}");
+        totalAmmo = PlayerInventoryHolder.instance.Inventory.GetAmmo(weaponData.weaponType);
+
+        Debug.Log($"Weapon Type: {WeaponType}, Loaded: {currentAmmo}/{weaponData.maxAmmo}, Total: {totalAmmo}");
     }
 
     private void Update()
@@ -171,14 +177,12 @@ public class AutoGun : Weapon
         // Wait until IK weight is close to 1
         while (ikHandler.rig.weight < 0.8f)
         {
-            yield return null; // wait for next frame
+            yield return null;
         }
 
-        // moved these here - to get the final firePoint calculations after doing the ik
         shootDirection = (targetPoint - firePoint.position).normalized;
         firePoint.rotation = Quaternion.LookRotation(shootDirection);
 
-        // Only shoot if allowed
         if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
         {
             yield break;
@@ -193,19 +197,18 @@ public class AutoGun : Weapon
         bullet.SetActive(true);
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
-
-        // reset liner and angular velocity to make the bullet hit right
-        rb.linearVelocity = Vector3.zero; // reset!
+        rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-
         rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
-
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
         {
-            //to change to the data in inventory 
-            bulletScript.SetDamage(10/*weaponData.damage*/);
+            // Get damage from weapon data and upgrades
+            float baseDamage = weaponData.damage;
+            var upgradeState = PlayerInventoryHolder.instance.Inventory.GetUpgradeState(weaponData.weaponType);
+            float damageMultiplier = 1f + (upgradeState?.GetLevel(UpgradableStatType.Damage) ?? 0) * 0.1f; // 10% per level
+            bulletScript.SetDamage(baseDamage * damageMultiplier);
         }
 
         if (muzzleFlash != null)
@@ -221,15 +224,45 @@ public class AutoGun : Weapon
 
     public override void Reload()
     {
-        if (!isReloading && currentAmmo < weaponData.maxAmmo)
-        {
-            isReloading = true;
-            reloadTimer = weaponData.reloadTime;
+        if (isReloading || currentAmmo == weaponData.maxAmmo)
+            return;
 
-            if (audioSource && reloadSound)
-            {
-                audioSource.PlayOneShot(reloadSound);
-            }
+        // Check if we have ammo to reload
+        if (totalAmmo <= 0 && !hasInfiniteAmmo)
+        {
+            Debug.Log("Out of ammo!");
+            return;
         }
+
+        isReloading = true;
+        reloadTimer = weaponData.reloadTime;
+
+        // Calculate how much ammo to add
+        int ammoNeeded = weaponData.maxAmmo - currentAmmo;
+        int ammoToAdd = Mathf.Min(ammoNeeded, (int)totalAmmo);
+
+        // For infinite ammo mode (debug/cheat)
+        if (hasInfiniteAmmo)
+        {
+            ammoToAdd = ammoNeeded;
+        }
+        else
+        {
+            totalAmmo -= ammoToAdd;
+            PlayerInventoryHolder.instance.Inventory.SetAmmo(weaponData.weaponType, totalAmmo);
+        }
+
+        currentAmmo += ammoToAdd;
+
+        if (audioSource && reloadSound)
+        {
+            audioSource.PlayOneShot(reloadSound);
+        }
+
+        Debug.Log($"Reloaded: +{ammoToAdd}, Now: {currentAmmo}/{weaponData.maxAmmo}, Total: {totalAmmo}");
+    }
+    public (int current, int total) GetAmmoInfo()
+    {
+        return (currentAmmo, (int)totalAmmo);
     }
 }
