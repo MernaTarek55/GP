@@ -5,48 +5,52 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerInventory
 {
-    HashSet<WeaponType> ownedWeapons = new();
-    Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new();
+    public InventorySaveData inventorySaveData = new InventorySaveData();
 
-    private int _credits;
     public event Action<int> OnCreditsChanged;
 
     public int Credits
     {
-        get => _credits;
+        get => inventorySaveData.credits;
         set
         {
-            if (_credits != value)
+            if (inventorySaveData.credits != value)
             {
-                _credits = value;
-                OnCreditsChanged?.Invoke(_credits);
+                inventorySaveData.credits = value;
+                OnCreditsChanged?.Invoke(inventorySaveData.credits);
             }
         }
     }
 
-    
+
     public void InitializeWeaponUpgrades(List<WeaponData> weaponDataList)
     {
         Debug.Log("Initializing weapon upgrades...");
         foreach (WeaponData weaponData in weaponDataList)
         {
             Debug.Log($"Initializing weapon: {weaponData.weaponType}");
-            var upgradeState = new WeaponUpgradeState();
+            WeaponUpgradeState upgradeState = new WeaponUpgradeState();
 
-            foreach (var stat in weaponData.upgradableStats)
+            foreach (UpgradableStat stat in weaponData.upgradableStats)
             {
                 Debug.Log($"Setting level for stat: {stat.statType}");
                 upgradeState.SetLevel(stat.statType, 0);
             }
-
-            weaponUpgrades[weaponData.weaponType] = upgradeState;
+            if (inventorySaveData.weaponUpgrades.ContainsKey(weaponData.weaponType))
+            {
+                inventorySaveData.weaponUpgrades[weaponData.weaponType] = upgradeState;
+            }
+            else
+            {
+                inventorySaveData.weaponUpgrades.Add(weaponData.weaponType, upgradeState);
+            }
         }
     }
 
     //for testing
     public void PrintWeaponUpgrades()
     {
-        foreach (var weapon in weaponUpgrades)
+        foreach (KeyValuePair<WeaponType, WeaponUpgradeState> weapon in inventorySaveData.weaponUpgrades)
         {
 
             Debug.Log($"Weapon: {weapon.Key}, Upgrade State: {weapon.Value}");
@@ -57,24 +61,64 @@ public class PlayerInventory
     public WeaponUpgradeState GetUpgradeState(WeaponType type)
     {
         Debug.Log($"Getting upgrade state for weapon: {type}");
-        if (weaponUpgrades.ContainsKey(type))
-            return weaponUpgrades[type];
-
-        return null;
+        return inventorySaveData.weaponUpgrades.ContainsKey(type) ? inventorySaveData.weaponUpgrades[type] : null;
     }
     public void SetUpgradeState(WeaponType type, WeaponUpgradeState state)
     {
-        if (weaponUpgrades.ContainsKey(type))
-            weaponUpgrades[type] = state;
+        if (inventorySaveData.weaponUpgrades.ContainsKey(type))
+        {
+            inventorySaveData.weaponUpgrades[type] = state;
+        }
         else
-            weaponUpgrades.Add(type, state);
+        {
+            inventorySaveData.weaponUpgrades.Add(type, state);
+        }
     }
+
+    public float getPlayerStat(PlayerSkillsStats stat)
+    {
+        if (inventorySaveData.playerStats.TryGetValue(stat, out float value))
+        {
+            Debug.Log($"Player stat {stat} value: {value}");
+            return value;
+        }
+        Debug.LogWarning($"Player stat {stat} not found, returning 0.");
+        return 0f;
+    }
+    public void SetPlayerStat(PlayerSkillsStats stat, float value)
+    {
+        if (inventorySaveData.playerStats.ContainsKey(stat))
+        {
+            inventorySaveData.playerStats[stat] = value;
+        }
+        else
+        {
+            inventorySaveData.playerStats.Add(stat, value);
+        }
+        Debug.Log($"Set player stat {stat} to {value}");
+    }
+    public float GetAmmo(WeaponType weapon)
+    {
+        return inventorySaveData.bulletsCount.ContainsKey(weapon) ? inventorySaveData.bulletsCount[weapon] : 0f;
+    }
+    public void SetAmmo(WeaponType weapon, float value)
+    {
+        if (inventorySaveData.bulletsCount.ContainsKey(weapon))
+        {
+            inventorySaveData.bulletsCount[weapon] = value;
+        }
+    }
+
+
     public void AddWeapon(WeaponType type)
     {
         if (!HasWeapon(type))
         {
-            ownedWeapons.Add(type);
+            inventorySaveData.ownedWeapons.Add(type);
         }
     }
-    public bool HasWeapon(WeaponType type) => ownedWeapons.Contains(type);
+    public bool HasWeapon(WeaponType type)
+    {
+        return inventorySaveData.ownedWeapons.Contains(type);
+    }
 }

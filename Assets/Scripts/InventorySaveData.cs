@@ -10,7 +10,6 @@ public class InventorySaveData
     public Dictionary<WeaponType, float> bulletsCount = new Dictionary<WeaponType, float>();
     public Dictionary<PlayerSkillsStats, float> playerStats = new Dictionary<PlayerSkillsStats, float>();
 
-
     public void printData()
     {
         Debug.Log($"Credits: {credits}");

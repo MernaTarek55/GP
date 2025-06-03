@@ -9,7 +9,8 @@ public enum WeaponType
     GrenadeLauncher,
     Melee
 }
-[CreateAssetMenu(menuName = "Weapons/WeaponData")]
+
+[CreateAssetMenu(fileName = "NewWeapon", menuName = "Weapon/WeaponData")]
 public class WeaponData : ScriptableObject
 {
     public WeaponType weaponType;
@@ -29,4 +30,7 @@ public class WeaponData : ScriptableObject
         return upgradableStats.Find(stat => stat.statType == type);
     }
 
+
+    public float damage;
+    public float fireRate;
 }
