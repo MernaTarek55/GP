@@ -12,7 +12,9 @@ public static class ShopItemGenerator
         string outputPath = "Assets/Resources/ShopItems";
 
         if (!Directory.Exists(outputPath))
+        {
             Directory.CreateDirectory(outputPath);
+        }
 
         //foreach (var asset in Directory.GetFiles(outputPath, "*.asset"))
         //    AssetDatabase.DeleteAsset(asset);
