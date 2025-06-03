@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 [System.Serializable]
 public class PlayerInventory
@@ -96,6 +97,13 @@ public class PlayerInventory
             inventorySaveData.playerStats.Add(stat, value);
         }
         Debug.Log($"Set player stat {stat} to {value}");
+    }
+    public void UpgradePlayerStat(PlayerSkillsStats stat)
+    {
+        if (inventorySaveData.playerStats.ContainsKey(stat))
+        {
+            inventorySaveData.playerStats[stat]++;
+        }
     }
     public float GetAmmo(WeaponType weapon)
     {

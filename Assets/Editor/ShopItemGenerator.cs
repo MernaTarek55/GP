@@ -12,7 +12,7 @@ public static class ShopItemGenerator
 
         if (!Directory.Exists(outputPath))
         {
-            _ = Directory.CreateDirectory(outputPath);
+            Directory.CreateDirectory(outputPath);
         }
 
         //foreach (var asset in Directory.GetFiles(outputPath, "*.asset"))
@@ -44,6 +44,16 @@ public static class ShopItemGenerator
 
                 AssetDatabase.CreateAsset(upgradeItem, $"{outputPath}/Upgrade_{weapon.weaponType}_{stat.statType}_ShopItem.asset");
             }
+        }
+
+        //make shopitem for all PlayerSkillsStats
+        foreach (PlayerSkillsStats skill in System.Enum.GetValues(typeof(PlayerSkillsStats)))
+        {
+
+            PlayerSkillItem skillItem = ScriptableObject.CreateInstance<PlayerSkillItem>();
+            skillItem.name = $"Upgrade {skill}";
+
+            AssetDatabase.CreateAsset(skillItem, $"{outputPath}/Skill_{skill}_ShopItem.asset");
         }
 
         AssetDatabase.SaveAssets();
