@@ -35,7 +35,10 @@ public class Enemy_AttackState : EntityState
     {
         base.Enter();
         firePoint = enemy.getfirePos();
-
+        if (firePoint == null)
+        {
+            Debug.LogError("Fire position not found!");
+        }
 
     }
 
@@ -230,24 +233,39 @@ public class Enemy_AttackState : EntityState
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
             return;
 
-        Vector3 directionToPlayer = (playerGO.transform.position - enemyGO.transform.position).normalized;
-        directionToPlayer.y = 0;
-        Debug.Log(GetChildrenWithTag(enemyGO).transform.name + "Child with tag   ");
-        Transform shootPos = GetChildrenWithTag(enemyGO).transform;
-        Debug.Log(shootPos);  
-        float angle = Vector3.Angle(shootPos.forward, directionToPlayer);
-
-        if (angle > 10f) return;
-
-        if (enemyData.bulletPrefab != null && firePoint != null)
+        // Get shoot position from child object
+        Transform shootPos = GetChildrenWithTag(enemyGO)?.transform;
+        if (shootPos == null)
         {
-            GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
-            bullet.transform.position = shootPos.transform.position;
-            bullet.transform.rotation = shootPos.transform.rotation;
-            bullet.SetActive(true);
-            Debug.Log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            Debug.LogError("Shoot position not found!");
+            return;
         }
 
+        // Check if facing player (relax angle check slightly)
+        Vector3 directionToPlayer = (playerGO.transform.position - enemyGO.transform.position).normalized;
+        directionToPlayer.y = 0;
+        float angle = Vector3.Angle(enemyGO.transform.forward, directionToPlayer);
+
+        if (angle > 30f) return; // Increased from 10 to 30 degrees
+
+        // Get bullet from pool
+        if (PoolManager.Instance == null)
+        {
+            Debug.LogError("PoolManager instance not found!");
+            return;
+        }
+
+        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
+        if (bullet == null)
+        {
+            Debug.LogError("Bullet prefab not found in pool!");
+            return;
+        }
+
+        bullet.transform.position = shootPos.position;
+        bullet.transform.rotation = shootPos.rotation;
+        bullet.SetActive(true);
+        Debug.Log($"Shooting - Angle to player: {angle}, FirePos: {shootPos.position}");
         _lastShootTime = Time.time;
     }
 
@@ -345,10 +363,17 @@ public class Enemy_AttackState : EntityState
     }
     private GameObject GetChildrenWithTag(GameObject parentObject)
     {
+        if (parentObject == null) return null;
+
         foreach (Transform child in parentObject.transform)
         {
             if (child.CompareTag("ShootPos"))
                 return child.gameObject;
+
+            // Recursively check children if needed
+            var foundInChild = GetChildrenWithTag(child.gameObject);
+            if (foundInChild != null)
+                return foundInChild;
         }
         return null;
     }

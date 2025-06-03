@@ -141,7 +141,7 @@ public class Enemy_ChaseState : EntityState
 
         // Apply force in the opposite direction of the impact
         enemyRigidbody.AddForce(collisionNormal * pushBackForce, ForceMode.Impulse);
-        //playerRigidbody.AddForce(collisionNormal * pushBackForce, ForceMode.Impulse);
+        playerRigidbody.AddForce(collisionNormal * pushBackForce, ForceMode.Impulse);
 
         //enemyRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
         //playerRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
