@@ -115,7 +115,7 @@ public class DeadeyeSkill : MonoBehaviour
     private void UpdateStats()
     {
         // for future
-        duration = playerInventory.getPlayerStat(PlayerSkillsStats.DeadeyeDuration);
+        duration = playerInventory.getPlayerStat(PlayerSkillsStats.DeadEyeDuration);
         cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.DeadEyeCoolDown);
     }
 

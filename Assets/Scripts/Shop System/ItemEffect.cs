@@ -7,8 +7,8 @@ public enum PlayerSkillsStats
     MaxHealth,
     DeadEyeCoolDown,
     DeadEyeDuration,
-    InviibilityCoolDown,
-    InviibilityDuration
+    InvisibilityCoolDown,
+    InvisibilityDuration
 }
 
 public interface ItemEffect

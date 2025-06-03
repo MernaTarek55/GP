@@ -69,7 +69,7 @@ public class PlayerSkillItem : ShopItem
     public PlayerSkillsStats skill;
     public override void OnPurchase(PlayerInventory inventory)
     {
-        //TODO
+        inventory.UpgradePlayerStat(skill);
     }
 }
 [CreateAssetMenu(menuName = "Shop/Health Item")]

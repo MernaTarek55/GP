@@ -46,6 +46,16 @@ public static class ShopItemGenerator
             }
         }
 
+        //make shopitem for all PlayerSkillsStats
+        foreach (PlayerSkillsStats skill in System.Enum.GetValues(typeof(PlayerSkillsStats)))
+        {
+
+            PlayerSkillItem skillItem = ScriptableObject.CreateInstance<PlayerSkillItem>();
+            skillItem.name = $"Upgrade {skill}";
+
+            AssetDatabase.CreateAsset(skillItem, $"{outputPath}/Skill_{skill}_ShopItem.asset");
+        }
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         Debug.Log("Shop items generated successfully.");
