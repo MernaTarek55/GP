@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerInventoryHolder : MonoBehaviour
 {
+    public static PlayerInventoryHolder instance;
     public PlayerInventory Inventory { get; private set; } = new PlayerInventory();
 
     //PlayerInventoryHolder 
@@ -10,6 +11,8 @@ public class PlayerInventoryHolder : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
+
         WeaponData[] allWeaponData = Resources.LoadAll<WeaponData>("WeaponData");
         Inventory.InitializeWeaponUpgrades(allWeaponData.ToList());
         // Initialize skill defaults

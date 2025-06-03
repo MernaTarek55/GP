@@ -3,28 +3,30 @@ using UnityEngine;
 
 public class MoneyCount : MonoBehaviour
 {
-    public static MoneyCount instance;
     public TMP_Text scoreText;
-    private int moneyCount = 0;
-    private void Awake()
-    {
-        instance = this;
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private PlayerInventory playerInventory;
+
     private void Start()
     {
-        if (scoreText != null)
-        {
-            scoreText.text = "Money: " + moneyCount.ToString();
-        }
+        // Get the reference
+        playerInventory = PlayerInventoryHolder.instance.Inventory;
+
+        // Subscribe to the credits changed event
+        playerInventory.OnCreditsChanged += UpdateCreditsUI;
+
+        // Optional: initialize UI
+        UpdateCreditsUI(playerInventory.Credits);
     }
 
-    public void AddMoney(int manageScore)
+    private void OnDestroy()
+    {
+        if (playerInventory != null)
+            playerInventory.OnCreditsChanged -= UpdateCreditsUI;
+    }
+
+    private void UpdateCreditsUI(int credits)
     {
         if (scoreText != null)
-        {
-            moneyCount += manageScore;
-            scoreText.text = "Money: " + moneyCount.ToString();
-        }
+            scoreText.text = "Money: " + credits.ToString();
     }
 }
