@@ -246,7 +246,7 @@ public class Enemy_AttackState : EntityState
         directionToPlayer.y = 0;
         float angle = Vector3.Angle(enemyGO.transform.forward, directionToPlayer);
 
-        if (angle > 30f) return; // Increased from 10 to 30 degrees
+        if (angle > 30f) return;
 
         // Get bullet from pool
         if (PoolManager.Instance == null)
@@ -262,10 +262,37 @@ public class Enemy_AttackState : EntityState
             return;
         }
 
-        bullet.transform.position = shootPos.position;
-        bullet.transform.rotation = shootPos.rotation;
+        // Set bullet position and rotation
+        bullet.transform.position = firePoint.transform.position;
+        bullet.transform.rotation = firePoint.transform.rotation;
         bullet.SetActive(true);
-        Debug.Log($"Shooting - Angle to player: {angle}, FirePos: {shootPos.position}");
+
+        // Add movement towards player
+        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+        if (bulletRb != null)
+        {
+            // Calculate direction to player (ignore height differences)
+            Vector3 targetPosition = new Vector3(
+                playerGO.transform.position.x,
+                bullet.transform.position.y,  // Keep bullet's current height
+                playerGO.transform.position.z
+            );
+
+            Vector3 shootDirection = (targetPosition - bullet.transform.position).normalized;
+            bulletRb.linearVelocity = shootDirection * enemyData.movementSpeed;
+
+            // Optional: Make bullet rotate to face movement direction
+            if (shootDirection != Vector3.zero)
+            {
+                bullet.transform.rotation = Quaternion.LookRotation(shootDirection);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Bullet has no Rigidbody component, cannot apply physics movement");
+        }
+
+        Debug.Log($"Shooting at player - Angle: {angle}, Position: {shootPos.position}");
         _lastShootTime = Time.time;
     }
 
