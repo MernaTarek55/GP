@@ -132,21 +132,28 @@ public class Enemy_ChaseState : EntityState
     {
         float impactForce = collision.impulse.magnitude;
 
-        // Calculate the push-back force (double the impact force)
-        float pushBackForce = impactForce * 100 ;
-        Debug.LogWarning("pushBackForce" + pushBackForce);
-        // Get the collision normal (direction perpendicular to the surface)
-        Vector3 collisionNormal = collision.contacts[0].normal;
+        // Calculate the push-back force (tweak multiplier as needed)
+        float pushBackForce = impactForce * 20f;
+        Debug.LogWarning("pushBackForce: " + pushBackForce);
 
-        // Apply force in the opposite direction of the impact
-        enemyRigidbody.AddForce(collisionNormal * pushBackForce, ForceMode.Impulse);
-        playerRigidbody.AddForce(collisionNormal * pushBackForce, ForceMode.Impulse);
+        // Determine relative X position
+        float directionX = playerGO.transform.position.x - enemyGO.transform.position.x;
+        float pushDirection = directionX >= 0 ? 1f : -1f;
 
-        //enemyRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
-        //playerRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
+        // Create push direction only on the X-axis
+        Vector3 pushVector = new Vector3(Mathf.Sign(pushDirection), 0f, 0f);
+
+        // Apply push force to both enemy and player
+        enemyRigidbody.AddForce(-pushVector * pushBackForce, ForceMode.Impulse); // Enemy gets opposite force
+        playerRigidbody.AddForce(pushVector * pushBackForce, ForceMode.Impulse); // Player gets force based on enemy's position
+
+        // Optional: Add a temporary movement freeze for beyblade effect
         if (enemy != null)
-        { this.enemy.StartEnemyCoroutine(BeybladeWaitAttack()); }
+        {
+            enemy.StartEnemyCoroutine(BeybladeWaitAttack());
+        }
     }
+
 
     private IEnumerator BeybladeWaitAttack()
     {
