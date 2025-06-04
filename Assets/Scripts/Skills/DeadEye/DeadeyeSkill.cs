@@ -69,7 +69,7 @@ public class DeadeyeSkill : MonoBehaviour
                 AddTapPosition(touchPos);
             }
         }
-        else if (!isUsingAbility && !isExcutingTargets)
+        else if (!isUsingAbility && !isExcutingTargets && markedTargets.Count > 0)
         {
             TerminateEnemies();
         }
@@ -127,29 +127,31 @@ public class DeadeyeSkill : MonoBehaviour
         if (markedTargets.Count >= targetsImages.Length)
             return;
 
-        GameObject tap = new();
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
-            tap.transform.position = hit.point;
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                GameObject tap = new GameObject("TargetMarker");
+                tap.transform.position = hit.point;
+                tap.transform.parent = hit.collider.transform;
+                markedTargets.Add(tap.transform);
+
+                GameObject tmpImage = new GameObject("TargetImage");
+                tmpImage.transform.position = hit.point;
+                tmpImage.transform.parent = hit.transform;
+            }
         }
         else
         {
+            // Optional: if you want to create a fallback marker in empty space
+            GameObject tap = new GameObject("TargetMarker");
             tap.transform.position = ray.origin + ray.direction * 100f;
         }
-
-        if (hit.collider.gameObject.CompareTag("Enemy"))
-        {
-            tap.transform.parent = hit.collider.transform;
-            markedTargets.Add(tap.transform);
-
-            GameObject tmpImage = new();
-            tmpImage.transform.position = hit.point;
-            tmpImage.transform.parent = hit.transform;
-        }
     }
+
 
     private void UpdateTargetsImages()
     {
@@ -212,8 +214,9 @@ public class DeadeyeSkill : MonoBehaviour
             }
 
             Debug.Log("Shooting at marked enemy " + i);
-            yield return new WaitForSeconds(weapon.GetFireRate());
-            
+            //yield return new WaitForSeconds(weapon.GetFireRate());
+            yield return new WaitForSecondsRealtime(weapon.GetFireRate());
+
             if (i < targetsImages.Length)
             {
                 targetsImages[i].gameObject.SetActive(false);

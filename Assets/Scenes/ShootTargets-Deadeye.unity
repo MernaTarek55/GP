@@ -426,25 +426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8a598e42d2aec45b25c8ec1155ceb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponType: 3
-  grenadePrefab: {fileID: 5034746122431111857, guid: 59fd4b5ecbe463246bb6714eeead4ba7, type: 3}
-  firePoint: {fileID: 388888645}
-  muzzleFlash: {fileID: 0}
-  shootSound: {fileID: 0}
-  reloadSound: {fileID: 0}
-  audioSource: {fileID: 0}
-  ikHandler: {fileID: 1024126835845342425}
-  playerBody: {fileID: 8486386432693121833}
-  uiRaycaster: {fileID: 1526665787219997427}
-  eventSystem: {fileID: 9079450573092104412}
-  upwardMultiplier: 0.5
-  forwardForce: 20
-  trajectoryLine: {fileID: 388888644}
-  trajectoryPoints: 30
-  timeBetweenPoints: 0.05
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!4 &195135503
 Transform:
   m_ObjectHideFlags: 0
@@ -6722,30 +6703,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2140772817}
   m_Mesh: {fileID: 6404525966283137366, guid: 7f6124faaca648449b3c4117dc7d5ed0, type: 3}
---- !u!114 &36644253980839985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2179029606666277219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc9718763704e35419727efec2c1adbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WeaponType: 1
-  deadEye: {fileID: 8486386432693121838}
-  bulletPrefab: {fileID: 8196268080365182981, guid: 20db0b4c5ad30c24e80087dad19fb355, type: 3}
-  firePoint: {fileID: 2835707429619210564}
-  muzzleFlash: {fileID: 0}
-  shootSound: {fileID: 0}
-  reloadSound: {fileID: 0}
-  audioSource: {fileID: 0}
-  ikHandler: {fileID: 1024126835845342425}
-  playerBody: {fileID: 8486386432693121833}
-  uiRaycaster: {fileID: 1526665787219997427}
-  eventSystem: {fileID: 9079450573092104412}
 --- !u!1 &43487866012339261
 GameObject:
   m_ObjectHideFlags: 0
@@ -8045,7 +8002,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7900315806864434887}
-  - component: {fileID: 36644253980839985}
+  - component: {fileID: 7900315806864434888}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -11764,6 +11721,30 @@ Transform:
   - {fileID: 2835707429619210564}
   m_Father: {fileID: 5400242830897645170}
   m_LocalEulerAnglesHint: {x: -64.368, y: -73.11, z: -53.228}
+--- !u!114 &7900315806864434888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2179029606666277219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9718763704e35419727efec2c1adbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WeaponType: 1
+  deadEye: {fileID: 8486386432693121838}
+  bulletPrefab: {fileID: 8196268080365182981, guid: 20db0b4c5ad30c24e80087dad19fb355, type: 3}
+  firePoint: {fileID: 2835707429619210564}
+  muzzleFlash: {fileID: 0}
+  shootSound: {fileID: 0}
+  reloadSound: {fileID: 0}
+  audioSource: {fileID: 0}
+  ikHandler: {fileID: 1024126835845342425}
+  playerBody: {fileID: 8486386432693121833}
+  uiRaycaster: {fileID: 1526665787219997427}
+  eventSystem: {fileID: 9079450573092104412}
 --- !u!4 &8013706106333489670
 Transform:
   m_ObjectHideFlags: 0
@@ -12490,7 +12471,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8938986635367901147}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc9718763704e35419727efec2c1adbc, type: 3}
   m_Name: 
@@ -12514,23 +12495,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8938986635367901147}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e0e95e9fbec9c441bd6698d61a21582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponType: 2
-  deadEye: {fileID: 8486386432693121838}
-  bulletPrefab: {fileID: 8196268080365182981, guid: 20db0b4c5ad30c24e80087dad19fb355, type: 3}
-  firePoint: {fileID: 2467181058850249550}
-  muzzleFlash: {fileID: 0}
-  shootSound: {fileID: 0}
-  reloadSound: {fileID: 0}
-  audioSource: {fileID: 0}
-  ikHandler: {fileID: 1024126835845342425}
-  playerBody: {fileID: 8486386432693121833}
-  uiRaycaster: {fileID: 1526665787219997427}
-  eventSystem: {fileID: 9079450573092104412}
 --- !u!1 &8954300012449778289
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,230 +1,240 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-public class AutoGun : Weapon
-{
-    Player player;
+﻿//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
+//using UnityEngine.EventSystems;
+//using UnityEngine.UI;
+//public class AutoGun : Weapon
+//{
+//    Player player;
 
-    [SerializeField] private DeadeyeSkill deadEye;
+//    [SerializeField] private DeadeyeSkill deadEye;
 
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform firePoint;
+//    [SerializeField] private GameObject bulletPrefab;
+//    [SerializeField] private Transform firePoint;
 
-    [Header("Effects")]
-    [SerializeField] private ParticleSystem muzzleFlash;
-    [SerializeField] private AudioClip shootSound;
-    [SerializeField] private AudioClip reloadSound;
-    [SerializeField] private AudioSource audioSource;
+//    [Header("Effects")]
+//    [SerializeField] private ParticleSystem muzzleFlash;
+//    [SerializeField] private AudioClip shootSound;
+//    [SerializeField] private AudioClip reloadSound;
+//    [SerializeField] private AudioSource audioSource;
 
-    [SerializeField] private IKHandler ikHandler;
+//    [SerializeField] private IKHandler ikHandler;
 
-    private float reloadTimer;
-    private float fireCooldown;
-    private bool isReloading;
+//    private float reloadTimer;
+//    private float fireCooldown;
+//    private bool isReloading;
 
-    private Vector3 shootDirection;
+//    private Vector3 shootDirection;
 
-    [SerializeField] private Transform playerBody;
+//    [SerializeField] private Transform playerBody;
 
-    [Header("UI")]
-    [SerializeField] private GraphicRaycaster uiRaycaster;
-    [SerializeField] private EventSystem eventSystem;
-    private readonly Dictionary<int, bool> touchStartedOverUI = new();
+//    [Header("UI")]
+//    [SerializeField] private GraphicRaycaster uiRaycaster;
+//    [SerializeField] private EventSystem eventSystem;
+//    private readonly Dictionary<int, bool> touchStartedOverUI = new();
 
-    private void Awake()
-    {
-        base.Awake();
-        player = GetComponentInParent<Player>();
+//    private void Awake()
+//    {
+//        base.Awake();
+//        player = GetComponentInParent<Player>();
 
-        if (weaponData == null)
-        {
-            Debug.LogError("WeaponData not assigned in Inspector.");
-            return;
-        }
-        currentAmmo = weaponData.maxAmmo;
-        Debug.Log($"Weapon Type: {WeaponType}");
-    }
+//        if (weaponData == null)
+//        {
+//            Debug.LogError("WeaponData not assigned in Inspector.");
+//            return;
+//        }
+//        currentAmmo = weaponData.maxAmmo;
+//        Debug.Log($"Weapon Type: {WeaponType}");
+//    }
 
-    private void Update()
-    {
-        if (fireCooldown > 0)
-        {
-            fireCooldown -= Time.deltaTime;
-        }
+//    private void Update()
+//    {
+//        if (fireCooldown > 0)
+//        {
+//            fireCooldown -= Time.deltaTime;
+//        }
 
-        if (!isReloading && currentAmmo == 0)
-        {
-            Reload();
-        }
+//        if (!isReloading && currentAmmo == 0)
+//        {
+//            Reload();
+//        }
 
-        if (isReloading)
-        {
-            reloadTimer -= Time.deltaTime;
-            if (reloadTimer <= 0f)
-            {
-                currentAmmo = weaponData.maxAmmo;
-                isReloading = false;
+//        if (isReloading)
+//        {
+//            reloadTimer -= Time.deltaTime;
+//            if (reloadTimer <= 0f)
+//            {
+//                currentAmmo = weaponData.maxAmmo;
+//                isReloading = false;
 
-                if (audioSource && reloadSound)
-                {
-                    audioSource.PlayOneShot(reloadSound);
-                }
-            }
-        }
+//                if (audioSource && reloadSound)
+//                {
+//                    audioSource.PlayOneShot(reloadSound);
+//                }
+//            }
+//        }
 
-        // Check for touch input on mobile (hold)
-        for (int i = 0; i < Input.touchCount; i++)
-        {
-            Touch touch = Input.GetTouch(i);
-            int fingerId = touch.fingerId;
+//        // Check for touch input on mobile (hold)
+//        for (int i = 0; i < Input.touchCount; i++)
+//        {
+//            Touch touch = Input.GetTouch(i);
+//            int fingerId = touch.fingerId;
 
-            if (touch.phase == TouchPhase.Began)
-            {
-                bool isOverUI = IsTouchOverUI(touch.position);
-                touchStartedOverUI[fingerId] = isOverUI;
-            }
-            else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
-            {
-                if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI && deadEye.canShoot == true)
-                {
-                    player?.SetShooting(true); // ✅ START shooting flag
-                    ShootAtTouch(touch.position);
-                }
-            }
-            else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
-            {
-                touchStartedOverUI.Remove(fingerId);
-                player?.SetShooting(false); // ✅ END shooting flag
-            }
-        }
+//            if (touch.phase == TouchPhase.Began)
+//            {
+//                bool isOverUI = IsTouchOverUI(touch.position);
+//                touchStartedOverUI[fingerId] = isOverUI;
+//            }
+//            else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
+//            {
+//                if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI && deadEye.canShoot == true)
+//                {
+//                    player?.SetShooting(true); // ✅ START shooting flag
+//                    ShootAtTouch(touch.position);
+//                }
+//            }
+//            else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
+//            {
+//                touchStartedOverUI.Remove(fingerId);
+//                player?.SetShooting(false); // ✅ END shooting flag
+//            }
+//        }
 
-    }
+//    }
 
-    private void ShootAtTouch(Vector2 screenPosition)
-    {
-        if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
-        {
-            return;
-        }
+//    private void ShootAtTouch(Vector2 screenPosition)
+//    {
+//        if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
+//        {
+//            return;
+//        }
 
-        Ray ray = Camera.main.ScreenPointToRay(screenPosition);
+//        Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
-        Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
-        Vector3 lookDirection = targetPoint - playerBody.position;
-        lookDirection.y = 0f; // Keep only horizontal rotation
-        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-        playerBody.rotation = targetRotation;
-        Shoot(targetPoint);
-    }
-    private bool IsTouchOverUI(Vector2 screenPosition)
-    {
-        PointerEventData eventData = new(eventSystem)
-        {
-            position = screenPosition
-        };
+//        Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
+//        Vector3 lookDirection = targetPoint - playerBody.position;
+//        lookDirection.y = 0f; // Keep only horizontal rotation
+//        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+//        playerBody.rotation = targetRotation;
+//        Shoot(targetPoint);
+//    }
+//    private bool IsTouchOverUI(Vector2 screenPosition)
+//    {
+//        PointerEventData eventData = new(eventSystem)
+//        {
+//            position = screenPosition
+//        };
 
-        List<RaycastResult> results = new();
-        uiRaycaster.Raycast(eventData, results);
+//        List<RaycastResult> results = new();
+//        uiRaycaster.Raycast(eventData, results);
 
-        return results.Count > 0;
-    }
+//        return results.Count > 0;
+//    }
 
-    public override void Shoot(Vector3 targetPoint)
-    {
-        if (ikHandler != null)
-        {
-            ikHandler.TriggerShootIK();
-            _ = StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
-        }
-
-
-        //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
-        //    return;
-
-        //fireCooldown = weaponData.fireRate;
-        //currentAmmo--;
-
-        //GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        //Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        //rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
-
-        //Bullet bulletScript = bullet.GetComponent<Bullet>();
-        //if (bulletScript != null)
-        //    bulletScript.SetDamage(weaponData.damage);
-
-        //if (muzzleFlash != null)
-        //    muzzleFlash.Play();
-
-        //if (audioSource && shootSound)
-        //    audioSource.PlayOneShot(shootSound);
-    }
-
-    private IEnumerator WaitAndShootWhenIKReady(Vector3 targetPoint)
-    {
-        // Wait until IK weight is close to 1
-        while (ikHandler.rig.weight < 0.8f)
-        {
-            yield return null; // wait for next frame
-        }
-
-        // moved these here - to get the final firePoint calculations after doing the ik
-        shootDirection = (targetPoint - firePoint.position).normalized;
-        firePoint.rotation = Quaternion.LookRotation(shootDirection);
-
-        // Only shoot if allowed
-        if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
-        {
-            yield break;
-        }
-
-        fireCooldown = weaponData.fireRate;
-        currentAmmo--;
-
-        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
-        bullet.transform.position = firePoint.transform.position;
-        bullet.transform.rotation = firePoint.transform.rotation;
-        bullet.SetActive(true);
-
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-
-        // reset liner and angular velocity to make the bullet hit right
-        rb.linearVelocity = Vector3.zero; // reset!
-        rb.angularVelocity = Vector3.zero;
-
-        rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
+//    public override void Shoot(Vector3 targetPoint)
+//    {
+//        if (ikHandler != null)
+//        {
+//            ikHandler.TriggerShootIK();
+//            _ = StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
+//        }
 
 
-        Bullet bulletScript = bullet.GetComponent<Bullet>();
-        if (bulletScript != null)
-        {
-            //to change to the data in inventory 
-            bulletScript.SetDamage(10/*weaponData.damage*/);
-        }
+//        //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
+//        //    return;
 
-        if (muzzleFlash != null)
-        {
-            muzzleFlash.Play();
-        }
+//        //fireCooldown = weaponData.fireRate;
+//        //currentAmmo--;
 
-        if (audioSource && shootSound)
-        {
-            audioSource.PlayOneShot(shootSound);
-        }
-    }
+//        //GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+//        //Rigidbody rb = bullet.GetComponent<Rigidbody>();
+//        //rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
 
-    public override void Reload()
-    {
-        if (!isReloading && currentAmmo < weaponData.maxAmmo)
-        {
-            isReloading = true;
-            reloadTimer = weaponData.reloadTime;
+//        //Bullet bulletScript = bullet.GetComponent<Bullet>();
+//        //if (bulletScript != null)
+//        //    bulletScript.SetDamage(weaponData.damage);
 
-            if (audioSource && reloadSound)
-            {
-                audioSource.PlayOneShot(reloadSound);
-            }
-        }
-    }
-}
+//        //if (muzzleFlash != null)
+//        //    muzzleFlash.Play();
+
+//        //if (audioSource && shootSound)
+//        //    audioSource.PlayOneShot(shootSound);
+//    }
+
+//    public void Shoot2(Vector3 targetPoint, bool bypassChecks = false)
+//    {
+//        if (ikHandler != null)
+//        {
+//            ikHandler.TriggerShootIK();
+//            StartCoroutine(WaitAndShootWhenIKReady(targetPoint, bypassChecks));
+//        }
+//    }
+
+
+//    private IEnumerator WaitAndShootWhenIKReady(Vector3 targetPoint, bool bypassChecks = false)
+//    {
+//        while (ikHandler.rig.weight < 0.8f)
+//        {
+//            yield return null;
+//        }
+
+//        shootDirection = (targetPoint - firePoint.position).normalized;
+//        firePoint.rotation = Quaternion.LookRotation(shootDirection);
+
+//        // ✅ Only apply fire checks if not bypassing
+//        if (!bypassChecks && (isReloading || currentAmmo <= 0 || fireCooldown > 0f))
+//        {
+//            yield break;
+//        }
+
+//        fireCooldown = weaponData.fireRate;
+
+//        if (!bypassChecks)
+//        {
+//            currentAmmo--;
+//        }
+
+//        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
+//        bullet.transform.position = firePoint.position;
+//        bullet.transform.rotation = firePoint.rotation;
+//        bullet.SetActive(true);
+
+//        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+//        rb.linearVelocity = Vector3.zero;
+//        rb.angularVelocity = Vector3.zero;
+//        rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
+
+//        Bullet bulletScript = bullet.GetComponent<Bullet>();
+//        if (bulletScript != null)
+//        {
+//            bulletScript.SetDamage(10);
+//        }
+
+//        if (muzzleFlash != null)
+//        {
+//            muzzleFlash.Play();
+//        }
+
+//        if (audioSource && shootSound)
+//        {
+//            audioSource.PlayOneShot(shootSound);
+//        }
+//    }
+
+
+
+
+//    public override void Reload()
+//    {
+//        if (!isReloading && currentAmmo < weaponData.maxAmmo)
+//        {
+//            isReloading = true;
+//            reloadTimer = weaponData.reloadTime;
+
+//            if (audioSource && reloadSound)
+//            {
+//                audioSource.PlayOneShot(reloadSound);
+//            }
+//        }
+//    }
+//}
