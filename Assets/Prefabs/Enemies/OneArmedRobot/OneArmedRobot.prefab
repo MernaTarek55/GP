@@ -4176,6 +4176,7 @@ GameObject:
   - component: {fileID: 4478462413230652910}
   - component: {fileID: 8160947140645742903}
   - component: {fileID: 1057959752610491650}
+  - component: {fileID: 8203513382604227514}
   m_Layer: 0
   m_Name: OneArmedRobot
   m_TagString: Untagged
@@ -4385,10 +4386,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.30644226
   m_Height: 1.2074311
   m_Direction: 1
-  m_Center: {x: 0, y: 0.20215046, z: 0}
+  m_Center: {x: 0, y: 0.20215046, z: -0.19355774}
 --- !u!114 &1057959752610491650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4410,12 +4411,24 @@ MonoBehaviour:
   firePos: {fileID: 2291859958117269031}
   particleEffect: {fileID: 0}
   drop: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
-  dropChance: 0.7
+  dropChance: 1
   minDrops: 1
   maxDrops: 3
   dropForce:
   - {x: 0.01, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
+--- !u!114 &8203513382604227514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2918080955536771293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3007736276647961792
 GameObject:
   m_ObjectHideFlags: 0
@@ -9424,7 +9437,7 @@ GameObject:
   - component: {fileID: 9140191902271220873}
   m_Layer: 0
   m_Name: LeftHand
-  m_TagString: Untagged
+  m_TagString: ShootPos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
