@@ -407,28 +407,35 @@ public class Enemy_AttackState : EntityState
 
     public override void CheckStateTransitions(float distanceToPlayer)
     {
-        if (invisibilitySkill.isInvisible && enemyData.enemyType != EnemyData.EnemyType.LavaRobot && enemyData.enemyType != EnemyData.EnemyType.LavaRobotTypeB && enemyData.enemyType != EnemyData.EnemyType.OneArmedRobot)
+
+        if (!invisibilitySkill.isInvisible)
         {
-            Debug.Log("Player is invisible, enemy does nothing.");
-            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-            return;
-        }
-       
+
             if (distanceToPlayer > enemyData.DetectionRange)
             {
-                if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
-                {
-                    stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
-                }
-                else
-                {
-                    stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-                }
+                PatrolOrIdleStates();
             }
             else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser && distanceToPlayer > 2f)
             {
                 stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
             }
+        }
+        else 
+        {
+
+            PatrolOrIdleStates();
+        }
     }
- 
+
+    private void PatrolOrIdleStates()
+    {
+        if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
+        {
+            stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+        }
+        else
+        {
+            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+        }
+    }
 }

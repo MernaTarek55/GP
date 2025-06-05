@@ -120,11 +120,9 @@ public class Enemy_PatrolState : EntityState
 
     public override void CheckStateTransitions(float distanceToPlayer)
     {
-        // FIX: Add null check for invisibilitySkill
-        bool playerVisible = invisibilitySkill == null || !invisibilitySkill.isInvisible;
-
-        if (playerVisible)
+        if (!invisibilitySkill.isInvisible)
         {
+
             if (distanceToPlayer <= enemyData.DetectionRange)
             {
                 Debug.Log($"Enemy {enemyGO.name} detected player at distance {distanceToPlayer}, transitioning from Patrol");
@@ -140,10 +138,7 @@ public class Enemy_PatrolState : EntityState
                     stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
                 }
             }
-        }
-        else
-        {
-            Debug.Log("Player is invisible, staying in patrol");
+
         }
     }
 }
