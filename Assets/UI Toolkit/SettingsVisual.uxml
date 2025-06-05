@@ -2,8 +2,14 @@
     <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=102f65cee4c5a3f4e83ac04830fcfac3&amp;type=3#MainMenuStyle" />
     <engine:VisualElement name="SettingsScreen" style="flex-grow: 1;">
         <engine:VisualElement name="Container" style="flex-grow: 1;">
-            <engine:Label text="Settings" name="Title" class="header" style="font-size: 40px; -unity-text-align: middle-center; position: relative; top: 50px; -unity-font-style: bold; color: rgb(255, 0, 210);" />
-            <engine:Button text="Back" name="BackButton" class="button" />
+            <engine:VisualElement name="SettingsTitle" style="flex-grow: 1; max-height: 117px;">
+                <engine:Label text="Settings" name="Title" class="header" style="font-size: 40px; -unity-text-align: middle-center; position: relative; top: 43px; -unity-font-style: bold; color: rgb(255, 0, 210);" />
+            </engine:VisualElement>
+            <engine:VisualElement name="VolumeSettings" style="flex-grow: 1; max-height: 861px;">
+                <engine:Label text="Music Volume" name="MusicVolume" class="header2" style="width: 190px;" />
+                <engine:SliderInt value="50" high-value="100" fill="true" direction="Horizontal" inverted="false" enabled="true" focusable="true" style="height: 72px; background-image: url(&quot;project://database/Assets/ParticleVFX/JMO%20Assets/Cartoon%20FX%20Remaster/CFXR%20Assets/Graphics/cfxr%20card%20club.png?fileID=2800000&amp;guid=d92fa0efcefbc2e4db627980b9abdb4c&amp;type=3#cfxr card club&quot;); background-size: 9% 100%; background-position-x: left 0; font-size: 0; -unity-text-align: middle-center;" />
+            </engine:VisualElement>
+            <engine:Button text="Back" name="BackButton" class="button" style="top: -19px;" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
