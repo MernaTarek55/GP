@@ -1077,7 +1077,7 @@ Rigidbody:
   m_GameObject: {fileID: 4975806584410215589}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 10
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -2688,10 +2688,6 @@ PrefabInstance:
     - target: {fileID: 2734843001713718077, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
       propertyPath: m_Name
       value: beyblade
-      objectReference: {fileID: 0}
-    - target: {fileID: 5327970897280911028, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5516573870154009116, guid: 3fdf5c9c20aa8bb4d9492bbfd280f5e9, type: 3}
       propertyPath: m_LocalPosition.x
