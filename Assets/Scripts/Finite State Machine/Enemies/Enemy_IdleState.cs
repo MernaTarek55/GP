@@ -128,6 +128,13 @@ public class Enemy_IdleState : EntityState
                 }
             }
         }
+        else
+        {
+            if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
+            {
+                stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+            }
+        }
     }
 
     private void TryGetComponents(GameObject entityGO)

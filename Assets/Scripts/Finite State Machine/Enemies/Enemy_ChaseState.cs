@@ -157,28 +157,26 @@ public class Enemy_ChaseState : EntityState
   
     public override void CheckStateTransitions(float distanceToPlayer)
     {
-        if (invisibilitySkill.isInvisible)
+        if (!invisibilitySkill.isInvisible)
         {
-            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-            return;
-        }
 
-        
-        if (distanceToPlayer > enemyData.DetectionRange)
-        {
-            if (enemyData.enemyType is EnemyData.EnemyType.LavaRobot or EnemyData.EnemyType.LavaRobotTypeB)
+
+            if (distanceToPlayer > enemyData.DetectionRange)
             {
-                stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+                if (enemyData.enemyType is EnemyData.EnemyType.LavaRobot or EnemyData.EnemyType.LavaRobotTypeB)
+                {
+                    stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+                }
+                else
+                {
+                    stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+                }
             }
-            else
+            else if (distanceToPlayer < 1.3f)
             {
-                stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+                Debug.LogWarning("Player too close");
+                stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
             }
-        }
-        else if (distanceToPlayer < 1.3f)
-        {
-            Debug.LogWarning("Player too close");  
-            stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
         }
     }
 }

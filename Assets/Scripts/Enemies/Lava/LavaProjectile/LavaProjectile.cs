@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class LavaProjectile : MonoBehaviour
 {
-
     private QuadraticCurve quadraticCurve;
+    private float lifetime = 2f; // 2 second lifetime
+    private float spawnTime; // to remove it after certain time
 
     [System.Serializable]
     public struct Range4
     {
         public float minX, maxX, minZ, maxZ;
-
 
         public Range4(float minX, float maxX, float minY, float maxY)
         {
@@ -20,109 +20,145 @@ public class LavaProjectile : MonoBehaviour
         }
     }
 
-
-    // For different enemy types (for now Random shooting or target shooting)
     public enum ProjectileEnemyType
     {
-        Target
-        , Random
+        Target,
+        Random
     }
+
     [SerializeField] private float speed = 1f;
     [Header("Positions")]
-    //public GameObject LavaRobot;
     private Vector3 initialA;
     private Vector3 initialControl;
     private Vector3 initialB;
     [SerializeField] private Range4 randomRange; // (minX, maxX, minZ, maxZ)
     private Vector2 randomizer;
     [Header("References")]
-    private  QuadraticCurve curve;
-    private  Vector3 enemyPosition;
-
+    private QuadraticCurve curve;
+    private Vector3 enemyPosition;
     public ProjectileEnemyType projectileType;
-
-
     private float _sampleTime;
 
+    // Flag to track if projectile is properly initialized
+    private bool isInitialized = false;
 
     private void OnEnable()
     {
-        CheckingForEmptyReferences();
+        // Reset state when projectile is reused from pool
+        ResetProjectile();
 
-        StoringProjectPositions(); // Storing positions of start and end points of the projectile path
-        /**/
-        // Initialize movement
-        _sampleTime = 0f;
-       // transform.position = initialA;
+        if (CheckingForEmptyReferences())
+        {
+            StoringProjectPositions(); // Storing positions of start and end points of the projectile path
+            InitializeMovement();
+            isInitialized = true;
+        }
+        else
+        {
+            Debug.LogError("LavaProjectile: Failed to initialize - missing references!");
+            ReturnToPool();
+        }
     }
 
-    private void CheckingForEmptyReferences()
+    private void ResetProjectile()
     {
-        //if (LavaRobot == null)
-        //{
-        //    Debug.LogError("LavaRobot reference is missing!");
-        //    ReturnToPool();
-        //    return;
-        //}
+        _sampleTime = 0f;
+        spawnTime = Time.time;
+        isInitialized = false;
+    }
 
-        if (quadraticCurve != null)
-            curve = quadraticCurve;
+    private bool CheckingForEmptyReferences()
+    {
+        // First check if quadraticCurve is assigned
+        if (quadraticCurve == null)
+        {
+            Debug.LogError("LavaProjectile: quadraticCurve is null! Make sure to call SetQuadraticCurve() before activating.");
+            return false;
+        }
+
+        curve = quadraticCurve;
+
+        // Check all required components
+        if (curve == null)
+        {
+            Debug.LogError("LavaProjectile: Missing QuadraticCurve reference!");
+            return false;
+        }
+
+        if (curve.A == null)
+        {
+            Debug.LogError("LavaProjectile: Missing QuadraticCurve point A!");
+            return false;
+        }
+
+        if (curve.B == null)
+        {
+            Debug.LogError("LavaProjectile: Missing QuadraticCurve point B!");
+            return false;
+        }
+
         if (curve.Control == null)
         {
-            Debug.LogError("Missing QuadraticCurve control point!");
-            ReturnToPool();
-            return;
+            Debug.LogError("LavaProjectile: Missing QuadraticCurve control point!");
+            return false;
         }
-        if (curve == null)
 
-        {
-            Debug.LogError("Missing QuadraticCurve ");
-            ReturnToPool();
-            return;
-        }
-        if (curve.A == null || curve.B == null)
-        {
-            Debug.LogError("Missing Elements from quadratic curve!");
-            ReturnToPool();
-            return;
-        }
+        return true;
     }
 
     private void StoringProjectPositions()
     {
         // Cache positions at activation
         initialA = curve.A.position;
-        Debug.Log("Projectile A: " + initialA);
-        Debug.Log("curve a: " + curve.A.position);
         initialControl = curve.Control.position;
-        //change if u want to change target
+
+        Debug.Log($"LavaProjectile initialized - A: {initialA}, Control: {initialControl}");
+
+        // Generate random offset for random projectile type
         randomizer.x = Random.Range(randomRange.minX, randomRange.maxX);
         randomizer.y = Random.Range(randomRange.minZ, randomRange.maxZ);
-
-
 
         switch (projectileType)
         {
             case ProjectileEnemyType.Random:
-                initialB = new Vector3(enemyPosition.x+randomizer.x, curve.B.position.y, enemyPosition.z+randomizer.y);
-                //Debug.LogWarning(initialB);
-                //Debug.Log("Projectile Random");
+                initialB = new Vector3(enemyPosition.x + randomizer.x, curve.B.position.y, enemyPosition.z + randomizer.y);
+                Debug.Log($"Random target set to: {initialB}");
                 break;
             case ProjectileEnemyType.Target:
                 initialB = curve.B.position;
-                //Debug.Log("Projectile Target");
+                Debug.Log($"Direct target set to: {initialB}");
                 break;
-
         }
+    }
+
+    private void InitializeMovement()
+    {
+        // Initialize movement parameters
+        _sampleTime = 0f;
+        lifetime = 2f;
+        spawnTime = Time.time;
+
+        // Set initial position
+        transform.position = initialA;
     }
 
     private void Update()
     {
-        if (!gameObject.activeSelf)
+        // Safety check - don't update if not properly initialized
+        if (!isInitialized || !gameObject.activeSelf)
         {
             return;
         }
 
+        // Check if lifetime has expired
+        if (Time.time - spawnTime >= lifetime)
+        {
+            Debug.Log("LavaProjectile: Lifetime expired, returning to pool");
+            ReturnToPool();
+            return;
+        }
+
+        // Update movement along curve
         _sampleTime += Time.deltaTime * speed;
         _sampleTime = Mathf.Clamp01(_sampleTime);
 
@@ -133,21 +169,21 @@ public class LavaProjectile : MonoBehaviour
         float lookAhead = Mathf.Max(0.001f, Mathf.Min(0.1f, (1f - _sampleTime) * 0.5f));
         Vector3 nextPosition = Evaluate(_sampleTime + lookAhead);
 
-
-
-        Debug.DrawLine(initialA, initialControl, Color.red); // A to Control point
-        Debug.DrawLine(initialControl, initialB, Color.red); // Control to B point
+        // Debug visualization
+        Debug.DrawLine(initialA, initialControl, Color.red, 0.1f);
+        Debug.DrawLine(initialControl, initialB, Color.red, 0.1f);
 
         Vector3 direction = nextPosition - position;
-        if (direction.sqrMagnitude > 0.0001f) // More precise zero check
+        if (direction.sqrMagnitude > 0.0001f)
         {
             transform.forward = direction.normalized;
         }
 
+        // Check if projectile reached the end
         if (_sampleTime >= 1f)
         {
-           //if(projectileType == ProjectileEnemyType.Target)
-           //     ReturnToPool();
+            Debug.Log("LavaProjectile: Reached end of path, returning to pool");
+            ReturnToPool();
         }
     }
 
@@ -165,25 +201,47 @@ public class LavaProjectile : MonoBehaviour
         {
             other.gameObject.GetComponent<PlayerHealthComponent>().TakeDamage(10);
         }
-
-
         ReturnToPool();
     }
+
     private void ReturnToPool()
     {
+        isInitialized = false;
         gameObject.SetActive(false);
-        PoolManager.Instance?.ReturnToPool(PoolType.LavaProjectile,gameObject);
+
+        // Try both pool systems for compatibility
+        if (LavaProjectilePool.Instance != null)
+        {
+            LavaProjectilePool.Instance.ReturnToPool(gameObject);
+        }
+        else if (PoolManager.Instance != null)
+        {
+            PoolManager.Instance.ReturnToPool(PoolType.LavaProjectile, gameObject);
+        }
     }
 
-   
-
+    // Public methods for setup
     public void SetQuadraticCurve(QuadraticCurve quadraticCurve)
     {
         this.quadraticCurve = quadraticCurve;
     }
-    public void SetenemyPosition(Vector3 enemyPos)
+
+    public void SetEnemyPosition(Vector3 enemyPos)
     {
         this.enemyPosition = enemyPos;
     }
 
+    // Keep the old method name for backward compatibility
+    public void SetenemyPosition(Vector3 enemyPos)
+    {
+        SetEnemyPosition(enemyPos);
+    }
+
+    // Method to properly initialize projectile when spawned
+    public void Initialize(QuadraticCurve curve, Vector3 enemyPos, ProjectileEnemyType type)
+    {
+        SetQuadraticCurve(curve);
+        SetEnemyPosition(enemyPos);
+        projectileType = type;
+    }
 }
