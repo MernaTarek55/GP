@@ -31,6 +31,9 @@ public class WeaponItem : ShopItem
             Debug.LogWarning("Weapon added" + weaponType);
             inventory.AddWeapon(weaponType);
             inventory.inventorySaveData.printData();
+            // Notify weapon switch system
+            var weaponSwitch = FindObjectOfType<WeaponSwitch>();
+            weaponSwitch?.OnWeaponPurchased(weaponType);
         }
     }
 }

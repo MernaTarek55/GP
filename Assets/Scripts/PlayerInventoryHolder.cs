@@ -19,6 +19,7 @@ public class PlayerInventoryHolder : MonoBehaviour
         // Initialize skill defaults
         Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityDuration, 5f); // 5 seconds default
         Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityCoolDown, 10f); // 10 seconds default
+        //Inventory.AddWeapon(WeaponType.Gun);
         Inventory.PrintWeaponUpgrades();
     }
 

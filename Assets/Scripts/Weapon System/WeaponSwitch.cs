@@ -1,24 +1,54 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponSwitch : MonoBehaviour
 {
     [SerializeField] private GameObject[] weapons;
-    private int currentWeaponIndex = 0;
-    private readonly PlayerInventory inventory;
+    [SerializeField] private PlayerInventoryHolder inventoryHolder;
+
+    private List<WeaponType> ownedWeapons;
+    private int currentWeaponIndex = 0; 
     private void Start()
     {
+        if (inventoryHolder == null)
+        {
+            inventoryHolder = FindObjectOfType<PlayerInventoryHolder>();
+        }
 
+        ownedWeapons = inventoryHolder.Inventory.inventorySaveData.ownedWeapons;
+        FilterOwnedWeapons();
         ActivateWeapon(currentWeaponIndex);
-
     }
 
-   
+
+
+    private void FilterOwnedWeapons()
+    {
+        // Deactivate weapons player doesn't own
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            var weapon = weapons[i].GetComponent<Weapon>();
+            if (weapon != null && !ownedWeapons.Contains(weapon.WeaponType))
+            {
+                weapons[i].SetActive(false);
+            }
+        }
+    }
 
     public void SwitchWeapons()
     {
-        currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Length;
-        ActivateWeapon(currentWeaponIndex);
+        do
+        {
+            currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Length;
+        } while (!IsWeaponOwned(currentWeaponIndex));
 
+        ActivateWeapon(currentWeaponIndex);
+    }
+
+    private bool IsWeaponOwned(int index)
+    {
+        var weapon = weapons[index].GetComponent<Weapon>();
+        return weapon != null && ownedWeapons.Contains(weapon.WeaponType);
     }
 
     private void ActivateWeapon(int index)
@@ -27,13 +57,41 @@ public class WeaponSwitch : MonoBehaviour
         {
             if (weapons[i] != null)
             {
-                weapons[i].SetActive(i == index);
+                bool shouldActivate = i == index && IsWeaponOwned(i);
+                weapons[i].SetActive(shouldActivate);
+
+                if (shouldActivate)
+                {
+                    var weapon = weapons[i].GetComponent<Weapon>();
+                    //weapon.ApplyUpgrades(inventoryHolder.Inventory);
+                }
             }
         }
     }
-   
+
     public GameObject GetCurrentWeapon()
     {
         return weapons[currentWeaponIndex];
+    }
+
+    public void OnWeaponPurchased(WeaponType weaponType)
+    {
+        // Refresh owned weapons list
+        ownedWeapons = inventoryHolder.Inventory.inventorySaveData.ownedWeapons;
+
+        // If this was the first weapon purchased, activate it
+        if (ownedWeapons.Count == 1)
+        {
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                var weapon = weapons[i].GetComponent<Weapon>();
+                if (weapon != null && weapon.WeaponType == weaponType)
+                {
+                    currentWeaponIndex = i;
+                    ActivateWeapon(currentWeaponIndex);
+                    break;
+                }
+            }
+        }
     }
 }
