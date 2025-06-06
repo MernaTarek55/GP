@@ -96,7 +96,7 @@ public class Enemy_AttackState : EntityState
 
     private void PushBackPlayer()
     {
-        float impactForce = 1;
+        float impactForce = 0.2f;
 
         // Calculate the push-back force (tweak multiplier as needed)
         Debug.LogWarning("pushBackForce: " + impactForce);

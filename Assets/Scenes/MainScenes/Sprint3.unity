@@ -1312,7 +1312,7 @@ Rigidbody:
   m_GameObject: {fileID: 4975806584410215589}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 13
+  m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -8431,7 +8431,7 @@ GameObject:
   - component: {fileID: 1912920941}
   - component: {fileID: 1912920940}
   - component: {fileID: 1912920944}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18731,7 +18731,7 @@ MonoBehaviour:
   groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   hasJumped: 0
   deadEyeDuration: 10
   deadEyeCooldown: 30
