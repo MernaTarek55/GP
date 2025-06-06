@@ -8,7 +8,10 @@ public class ShellBullet : Projectile
     {
         Destroy(gameObject, lifetime);
     }
-
+    public override void SetDamage(float Damage)
+    {
+        damage = Damage;
+    }
     protected override void OnHit(Collider other)
     {
         // Damage enemy

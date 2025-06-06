@@ -228,20 +228,29 @@ public class GrenadeLauncher : Weapon
     private bool isReloading;
     private Vector3 targetPoint;
     private Vector3 shootDirection;
-
+    private PlayerInventoryHolder playerInventoryHolder;
+    WeaponUpgradeState upgradeState ;
     protected override void Awake()
     {
         base.Awake();
         player = GetComponentInParent<Player>();
+        playerInventoryHolder = player.GetComponentInParent<PlayerInventoryHolder>();
 
+        
         if (weaponData == null)
         {
             Debug.LogError("WeaponData not assigned in Inspector.");
             return;
         }
-
+        
         currentAmmo = weaponData.maxAmmo;
         Debug.Log($"Weapon Type: {WeaponType}");
+    }
+
+    private void Start()
+    {
+        upgradeState = playerInventoryHolder.Inventory.GetUpgradeState(WeaponType);
+        if (upgradeState == null) Debug.LogWarning("Upgrade state is null for weapon: " + WeaponType);
     }
 
     private void Update()
@@ -389,7 +398,9 @@ public class GrenadeLauncher : Weapon
         if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
             yield break;
 
-        fireCooldown = weaponData.fireRate;
+        //fireCooldown = weaponData.fireRate;
+        fireCooldown = upgradeState.GetLevel(UpgradableStatType.FireRate);
+        Debug.LogWarning(fireCooldown + " fire rate");
         currentAmmo--;
 
         GameObject grenade = Instantiate(grenadePrefab, firePoint.position, Quaternion.identity);
@@ -413,9 +424,12 @@ public class GrenadeLauncher : Weapon
 
         trajectoryLine.enabled = false;
 
-        Bullet bulletScript = grenade.GetComponent<Bullet>();
+        ShellBullet bulletScript = grenade.GetComponent<ShellBullet>();
         if (bulletScript != null)
-            bulletScript.SetDamage(weaponData.damage);
+        {
+            Debug.LogWarning(weaponData.damage * upgradeState.GetLevel(UpgradableStatType.Damage));
+            bulletScript.SetDamage(weaponData.damage*upgradeState.GetLevel(UpgradableStatType.Damage));
+        }
     }
 
     private bool IsTouchOverUI(Vector2 screenPosition)

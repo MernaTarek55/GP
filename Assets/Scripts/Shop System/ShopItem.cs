@@ -28,7 +28,9 @@ public class WeaponItem : ShopItem
     {
         if (!inventory.HasWeapon(weaponType))
         {
+            Debug.LogWarning("Weapon added" + weaponType);
             inventory.AddWeapon(weaponType);
+            inventory.inventorySaveData.printData();
         }
     }
 }

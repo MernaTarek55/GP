@@ -142,27 +142,27 @@ public class Enemy_AttackState : EntityState
         if (entityGO.CompareTag("Player"))
         {
             if(entityGO.TryGetComponent(out PlayerHealthComponent healthComponent)) playerHealth = healthComponent;
-            else Debug.LogWarning("Health Component not found");
+            else Debug.Log("Health Component not found");
             if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
-            else Debug.LogWarning("invisibilitySkill not found");
+            else Debug.Log("invisibilitySkill not found");
             if (entityGO.TryGetComponent(out Rigidbody entityRigidbody)) this.playerRigidbody = entityRigidbody;
-            else Debug.LogWarning("entityRigidbody not found");
+            else Debug.Log("entityRigidbody not found");
 
         }
         else
         {
             if (entityGO.TryGetComponent(out MeshRenderer mr)) enemyMR = mr;
-            else Debug.LogWarning("Mesh Renderer not found");
+            else Debug.Log("Mesh Renderer not found");
             if (entityGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
-            else Debug.LogWarning("Enemy script not found");
+            else Debug.Log("Enemy script not found");
 
             if (entityGO.TryGetComponent(out NavMeshAgent eNav)) enemyAgent = eNav;
-            else Debug.LogWarning("Nav mesh not found");
+            else Debug.Log("Nav mesh not found");
   
             if (entityGO.TryGetComponent(out SphereCollider sphereCollider)) this.sphereCollider = sphereCollider;
-            else Debug.LogWarning("Mesh Renderer not found");
+            else Debug.Log("Mesh Renderer not found");
             if (entityGO.TryGetComponent(out Rigidbody entityRigidbody)) this.enemyRigidbody = entityRigidbody;
-            else Debug.LogWarning("entityRigidbody not found");
+            else Debug.Log("entityRigidbody not found");
         }
      
 
