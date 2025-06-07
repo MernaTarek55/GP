@@ -131,7 +131,10 @@ public class Enemy_AttackState : EntityState
 
         base.Exit();
 
-
+        if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
+        {
+            enemyGO.GetComponentInChildren<Laser>().SetActive(false);
+        }
         if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
         {
             BeybladeAttack();
@@ -267,6 +270,7 @@ public class Enemy_AttackState : EntityState
 
     private void RotateTowardPlayer()
     {
+        
         Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
         direction.y = 0;
         if (direction != Vector3.zero)
@@ -275,6 +279,7 @@ public class Enemy_AttackState : EntityState
             
             enemyGO.transform.rotation = Quaternion.Slerp(enemyGO.transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
+        
     }
     private void ShootRobot()
     {
@@ -335,7 +340,7 @@ public class Enemy_AttackState : EntityState
 
         _lastShootTime = Time.time;
     }
-
+    private GameObject currentLaser;
     private void Shoot()
     {
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
@@ -349,11 +354,20 @@ public class Enemy_AttackState : EntityState
 
         if (enemyData.bulletPrefab != null && firePoint != null)
         {
+            if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
+            {
+                enemyGO.GetComponentInChildren<Laser>().SetActive(true);
+                Debug.Log("Laser shot from turret");
+            }
+            else
+            {
+
             GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
             bullet.transform.position = firePoint.transform.position;
             bullet.transform.rotation = firePoint.transform.rotation;
             bullet.SetActive(true);
             Debug.Log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            }
         }
 
         _lastShootTime = Time.time;

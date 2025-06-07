@@ -13,11 +13,11 @@ public class Laser : MonoBehaviour
 
     private bool activated = false;
     private LineRenderer lineRenderer;
-    private Vector3 sourcePosition;
     private const float farDistance = 1000f;
     private List<Vector3> bouncePositions;
     private LaserSensor prevStruckSensor = null;
     private IInput input;
+
 
     void Awake()
     {
