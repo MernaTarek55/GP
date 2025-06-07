@@ -436,7 +436,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8796618140212664281}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3904353789135091859}
+        m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+        m_MethodName: OnButtonClick
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7573652735518219122}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2476851872322403828
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,7 +659,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7027665664387166954}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3904353789135091859}
+        m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+        m_MethodName: OnButtonClick
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8473712258761732566}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2726800353860297311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1309,6 +1333,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4476281721000203003}
+  - component: {fileID: 3904353789135091859}
   m_Layer: 5
   m_Name: -----------Settings-----------
   m_TagString: Untagged
@@ -1336,6 +1361,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3904353789135091859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5675593031091856330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a27c9e2b67bc4a942b5ac8898c99a2dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsPanel: {fileID: 5675593031091856330}
+  mainMenuPanel: {fileID: 0}
+  pauseMenuPanel: {fileID: 0}
+  panelList:
+  - {fileID: 8473712258761732566}
+  - {fileID: 7573652735518219122}
 --- !u!1 &7014839863359916746
 GameObject:
   m_ObjectHideFlags: 0
