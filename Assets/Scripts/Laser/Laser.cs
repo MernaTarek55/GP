@@ -29,6 +29,7 @@ public class Laser : MonoBehaviour
     private void InitializeLineRenderer()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.enabled = false;
 
         if (laserRendererSettings == null)
         {

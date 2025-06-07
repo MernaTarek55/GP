@@ -133,7 +133,7 @@ public class Enemy_AttackState : EntityState
 
         if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
         {
-            enemyGO.GetComponentInChildren<Laser>().SetActive(false);
+            enemyGO.GetComponentInChildren<LineRenderer>().enabled = false;
         }
         if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
         {
@@ -356,7 +356,7 @@ public class Enemy_AttackState : EntityState
         {
             if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
             {
-                enemyGO.GetComponentInChildren<Laser>().SetActive(true);
+                enemyGO.GetComponentInChildren<LineRenderer>().enabled = true;
                 Debug.Log("Laser shot from turret");
             }
             else
