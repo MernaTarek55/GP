@@ -6,7 +6,7 @@ public class Laser : MonoBehaviour
     [Header("Configuration")]
     [SerializeField] private LaserRendererSettings laserRendererSettings;
     [SerializeField] private GameObject inputGO;
-    [SerializeField][Range(1, 100)] private int maxBounces = 100;
+    [SerializeField][Range(1, 100)] private int maxBounces = 3;
 
     [Header("Debug")]
     [SerializeField] private bool drawDebugRays = false;
