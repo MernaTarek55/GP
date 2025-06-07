@@ -9,7 +9,7 @@ public class MenuManager : MonoBehaviour
 
     public void PlayGameButton()
     {
-        SceneManager.LoadScene("PauseMenu");
+        SceneManager.LoadScene("Sprint3");
     }
 
     public void QuitGame()
