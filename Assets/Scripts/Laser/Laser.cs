@@ -38,7 +38,9 @@ public class Laser : MonoBehaviour
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.enabled = IsNotTurret;
-
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, new Vector3(0, 0, 0));
+        lineRenderer.SetPosition(1, new Vector3(0, 0, 0.1f));
         if (laserRendererSettings == null)
         {
             Debug.LogError("LaserRendererSettings is not assigned!", this);
@@ -246,7 +248,7 @@ public class Laser : MonoBehaviour
         transform.rotation = rotation;
         gameObject.SetActive(true);
         currentLifetime = lifetime;
-
+        
         // Reset any previous state
         ClearLaser();
     }
