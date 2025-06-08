@@ -3621,8 +3621,8 @@ MonoBehaviour:
     prefab: {fileID: 4876149916586524456, guid: 8d4e9e2f44902a248b127887f8f206b9, type: 3}
     size: 5
   - type: 1
-    prefab: {fileID: 8344829288771224763, guid: 995642b2545f8a44fa1c747162fe80c4, type: 3}
-    size: 2
+    prefab: {fileID: 8344829288771224763, guid: 5b84705e535ce6c4aa2e4eb126f35e54, type: 3}
+    size: 10
 --- !u!224 &870331389 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6969746345352372341, guid: a6f32d0d603792e4baee48f2e3e3a7f5, type: 3}
@@ -10206,7 +10206,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: c6d359a85b6c37e4ba746a9f5e5af48b, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &1922691237
 GameObject:
@@ -18373,7 +18373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponType: 2
   deadEye: {fileID: 8486386432693121838}
-  bulletPrefab: {fileID: 8196268080365182981, guid: 20db0b4c5ad30c24e80087dad19fb355, type: 3}
+  bulletPrefab: {fileID: 8344829288771224763, guid: 5b84705e535ce6c4aa2e4eb126f35e54, type: 3}
   firePoint: {fileID: 2467181058850249550}
   muzzleFlash: {fileID: 0}
   shootSound: {fileID: 0}
@@ -21210,7 +21210,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &8954300012449778289
 GameObject:
   m_ObjectHideFlags: 0
