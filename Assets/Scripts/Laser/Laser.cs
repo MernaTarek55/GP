@@ -7,9 +7,12 @@ public class Laser : MonoBehaviour
     [SerializeField] private LaserRendererSettings laserRendererSettings;
     [SerializeField] private GameObject inputGO;
     [SerializeField][Range(1, 3)] private int maxBounces = 3;
+    [SerializeField] private float lifetime = 0.05f; // Only used when IsNotTurret is true
 
     [Header("Debug")]
     [SerializeField] private bool drawDebugRays = false;
+    [SerializeField] private bool IsNotTurret = false;
+    [SerializeField] private PoolType poolType = PoolType.Laser;
 
     private bool activated = false;
     private LineRenderer lineRenderer;
@@ -17,24 +20,29 @@ public class Laser : MonoBehaviour
     private List<Vector3> bouncePositions;
     private LaserSensor prevStruckSensor = null;
     private IInput input;
-
+    private float currentLifetime;
 
     void Awake()
     {
         InitializeLineRenderer();
         InitializeInputSystem();
         activated = inputGO == null; // Activate if no input is assigned
+
+        if (IsNotTurret)
+        {
+            currentLifetime = lifetime;
+        }
     }
 
     private void InitializeLineRenderer()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.enabled = false;
+        lineRenderer.enabled = IsNotTurret;
 
         if (laserRendererSettings == null)
         {
             Debug.LogError("LaserRendererSettings is not assigned!", this);
-            enabled = false; // Disable the script
+            enabled = false;
             return;
         }
 
@@ -55,8 +63,23 @@ public class Laser : MonoBehaviour
         RegisterToInput(input);
     }
 
+    void OnEnable()
+    {
+        if (IsNotTurret)
+        {
+            currentLifetime = lifetime;
+            activated = true;
+            ClearLaser(); // Reset laser state when re-enabled
+        }
+    }
+
     void FixedUpdate()
     {
+        if (IsNotTurret)
+        {
+            UpdateLifetime();
+        }
+
         if (!activated)
         {
             ClearLaser();
@@ -64,6 +87,27 @@ public class Laser : MonoBehaviour
         }
 
         UpdateLaserBeam();
+    }
+
+    private void UpdateLifetime()
+    {
+        currentLifetime -= Time.fixedDeltaTime;
+        if (currentLifetime <= 0f)
+        {
+            ReturnToPool();
+        }
+    }
+
+    private void ReturnToPool()
+    {
+        if (PoolManager.Instance != null)
+        {
+            PoolManager.Instance.ReturnToPool(poolType, gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void ClearLaser()
@@ -138,6 +182,12 @@ public class Laser : MonoBehaviour
         {
             var currentSensor = hitInfo.collider.GetComponent<LaserSensor>();
             UpdateSensorState(currentSensor);
+
+            // For bullet-like behavior, check if we hit something that should stop the laser
+            if (IsNotTurret && hitInfo.collider.GetComponent<IDamageable>() != null)
+            {
+                currentLifetime = 0; // Immediately return to pool
+            }
         }
     }
 
@@ -187,5 +237,17 @@ public class Laser : MonoBehaviour
             LaserSensor.HandleLaser(this, prevStruckSensor, null);
             prevStruckSensor = null;
         }
+    }
+
+    // Call this when spawning the laser to initialize it
+    public void InitializeLaser(Vector3 position, Quaternion rotation, bool isFromPool = true)
+    {
+        transform.position = position;
+        transform.rotation = rotation;
+        gameObject.SetActive(true);
+        currentLifetime = lifetime;
+
+        // Reset any previous state
+        ClearLaser();
     }
 }
