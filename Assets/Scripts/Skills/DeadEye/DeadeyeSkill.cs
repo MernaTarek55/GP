@@ -174,7 +174,7 @@ public class DeadeyeSkill : MonoBehaviour
 
     private void TerminateEnemies()
     {
-        GameObject weaponGO = currentWeapon.GetCurrentWeapon();
+        GameObject weaponGO = currentWeapon?.GetCurrentWeapon();
         Weapon weapon = weaponGO.GetComponent<Weapon>();
 
         if (weapon == null)

@@ -356,6 +356,7 @@ public class Enemy_AttackState : EntityState
         {
             if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
             {
+                Debug.Log("Shooting laser from turret");
                 enemyGO.GetComponentInChildren<LineRenderer>().enabled = true;
                 Debug.Log("Laser shot from turret");
             }

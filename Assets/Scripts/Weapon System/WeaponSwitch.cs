@@ -71,8 +71,27 @@ public class WeaponSwitch : MonoBehaviour
 
     public GameObject GetCurrentWeapon()
     {
+        if (weapons == null || weapons.Length == 0)
+        {
+            Debug.LogWarning("Weapons array is null or empty.");
+            return null;
+        }
+
+        if (currentWeaponIndex < 0 || currentWeaponIndex >= weapons.Length)
+        {
+            Debug.LogWarning("Current weapon index is out of range.");
+            return null;
+        }
+
+        if (weapons[currentWeaponIndex] == null)
+        {
+            Debug.LogWarning("Current weapon is null.");
+            return null;
+        }
+
         return weapons[currentWeaponIndex];
     }
+
 
     public void OnWeaponPurchased(WeaponType weaponType)
     {
