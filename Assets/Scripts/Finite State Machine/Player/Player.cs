@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
     [SerializeField]GameObject pistol;
     [Header("Invisibility Settings")]
     [SerializeField]GameObject invisibilityBtn;
+    [Header("DeadEye Settings")]
+    [SerializeField] GameObject DeadEyeBtn;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -87,10 +89,16 @@ public class Player : MonoBehaviour
         JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
         stateMachine.UpdateActiveState();
     }
+    //TODO: Put it invisibility 
     public void ActivateInvisibility()
     {
         GetComponent<InvisibilitySkill>().enabled = true; 
         invisibilityBtn.SetActive(true); 
+    }
+
+    public void ActivateDeadEye()
+    {
+        DeadEyeBtn.SetActive(true);
     }
     public void ActivatePistol()
     {
