@@ -1,10 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
 
     protected int currentAmmo;
-    [SerializeField] protected WeaponType WeaponType;
+    [SerializeField] public WeaponType WeaponType;
     protected WeaponData weaponData;
 
     protected virtual void Awake()
@@ -19,5 +20,11 @@ public abstract class Weapon : MonoBehaviour
     public float GetFireRate()
     {
         return weaponData.fireRate;
+    }
+
+    public virtual IEnumerator ShootForDeadEye(Vector3 target)
+    {
+        Shoot(target);
+        yield return null;
     }
 }

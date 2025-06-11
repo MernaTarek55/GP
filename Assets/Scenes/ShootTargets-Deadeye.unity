@@ -426,6 +426,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8a598e42d2aec45b25c8ec1155ceb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WeaponType: 0
+  grenadePrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  muzzleFlash: {fileID: 0}
+  shootSound: {fileID: 0}
+  reloadSound: {fileID: 0}
+  audioSource: {fileID: 0}
+  ikHandler: {fileID: 0}
+  playerBody: {fileID: 0}
+  uiRaycaster: {fileID: 0}
+  eventSystem: {fileID: 0}
+  upwardMultiplier: 0.5
+  forwardForce: 20
+  trajectoryLine: {fileID: 0}
+  trajectoryPoints: 30
+  timeBetweenPoints: 0.05
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &195135503
 Transform:
   m_ObjectHideFlags: 0
@@ -12106,35 +12125,6 @@ MonoBehaviour:
   - {fileID: 214457024}
   - {fileID: 2019028121}
   - {fileID: 2136950006}
-  - {fileID: 1366080056}
-  - {fileID: 311443783}
-  - {fileID: 274035950}
-  - {fileID: 1922691238}
-  - {fileID: 550268518}
-  - {fileID: 688224338}
-  - {fileID: 474995776}
-  - {fileID: 1072545093}
-  - {fileID: 2124344264}
-  - {fileID: 1149116480}
-  - {fileID: 1962602338}
-  - {fileID: 1018143660}
-  - {fileID: 890370431}
-  - {fileID: 2056865189}
-  - {fileID: 611159578}
-  - {fileID: 1433115533}
-  - {fileID: 1335889134}
-  - {fileID: 2084851158}
-  - {fileID: 1580591185}
-  - {fileID: 1714397147}
-  - {fileID: 1700446650}
-  - {fileID: 1273915799}
-  - {fileID: 156321005}
-  - {fileID: 2140772818}
-  - {fileID: 1225427174}
-  - {fileID: 1219578258}
-  - {fileID: 165674019}
-  - {fileID: 1900608937}
-  - {fileID: 1982784129}
   deadEyeCooldownImage: {fileID: 1320362555}
   targetImage: {fileID: 9114369375030210280, guid: cc7aa3871ea52d743ad80a3895820a9a, type: 3}
   parentPanel: {fileID: 1247964233}

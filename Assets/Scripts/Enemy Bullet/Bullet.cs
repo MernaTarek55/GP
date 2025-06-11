@@ -34,7 +34,10 @@ public class Bullet : MonoBehaviour
             other.gameObject.GetComponentInChildren<HealthComponent>().TakeDamage(damage);
 
         if (other.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Ana enemy hit");
             other.gameObject.GetComponentInChildren<HealthComponent>().TakeDamage(damage);
+        }
         Disable();
     }
 }

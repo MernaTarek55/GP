@@ -93,9 +93,13 @@ public class DeadeyeSkill : MonoBehaviour
             lastUsedTime = Time.time;
 
             Debug.Log("Deadeye skill used!");
-            Time.timeScale = slowMotionFactor;
-            StartCoroutine(DeadeyeEffectCoroutine());
 
+            // Apply different slow-motion based on weapon type
+            GameObject weaponGO = currentWeapon.GetCurrentWeapon();
+            Weapon weapon = weaponGO.GetComponent<Weapon>();
+            Time.timeScale = (weapon.WeaponType is WeaponType.Auto) ? 0.5f : slowMotionFactor;
+
+            StartCoroutine(DeadeyeEffectCoroutine());
             isUsingAbility = true;
         }
         else
@@ -107,9 +111,16 @@ public class DeadeyeSkill : MonoBehaviour
 
     private IEnumerator DeadeyeEffectCoroutine()
     {
+        // Apply slow-motion at the start
+        GameObject weaponGO = currentWeapon.GetCurrentWeapon();
+        Weapon weapon = weaponGO.GetComponent<Weapon>();
+        Time.timeScale = (weapon.WeaponType is WeaponType.Auto) ? 0.5f : slowMotionFactor;
+
         yield return new WaitForSecondsRealtime(duration);
+
+        // Reset time scale when DeadEye ends
         Time.timeScale = 1f;
-        isUsingAbility = false; // ✅ Ensure it resets here
+        isUsingAbility = false;
         OnDeadeyeEffectEnded?.Invoke();
         Debug.Log("Deadeye effect ended.");
     }
@@ -186,11 +197,16 @@ public class DeadeyeSkill : MonoBehaviour
     private void TerminateEnemies()
     {
         GameObject weaponGO = currentWeapon.GetCurrentWeapon();
-        Weapon weapon = weaponGO.GetComponent<Weapon>();
-
-        if (weapon == null)
+        if (weaponGO == null) // Add null check
         {
-            Debug.LogError("Current weapon does not have a Weapon-derived script attached!");
+            Debug.LogError("No current weapon found!");
+            return;
+        }
+
+        Weapon weapon = weaponGO.GetComponent<Weapon>();
+        if (weapon == null) // Add null check
+        {
+            Debug.LogError("Current weapon has no Weapon component!");
             return;
         }
 
@@ -200,30 +216,25 @@ public class DeadeyeSkill : MonoBehaviour
 
     private IEnumerator ShootEnemiesSequentially(Weapon weapon)
     {
-        for (int i = 0; i < markedTargets.Count; i++)
+        // Create a copy to avoid modification during iteration
+        List<Transform> targetsToShoot = new List<Transform>(markedTargets);
+
+        foreach (Transform target in targetsToShoot)
         {
-            Transform target = markedTargets[i];
             if (target == null) continue;
 
-            weapon.Shoot(target.position);
+            Debug.Log($"Shooting at target: {target.position}");
 
+            // Use StartCoroutine and yield return to wait properly
+            yield return StartCoroutine(weapon.ShootForDeadEye(target.position));
 
-            if (i < markedTargets.Count && markedTargets[i] != null)
-            {
-                targetsImages[i].position = Camera.main.WorldToScreenPoint(markedTargets[i].position);
-            }
-
-            Debug.Log("Shooting at marked enemy " + i);
-            //yield return new WaitForSeconds(weapon.GetFireRate());
-            yield return new WaitForSecondsRealtime(weapon.GetFireRate());
-
-            if (i < targetsImages.Length)
-            {
-                targetsImages[i].gameObject.SetActive(false);
-            }
+            // Optional: Update UI
+            UpdateTargetsImagesforAfterDeadeye();
         }
 
+        // Clear only after all shots are done
         markedTargets.Clear();
         isExcutingTargets = false;
+        
     }
 }

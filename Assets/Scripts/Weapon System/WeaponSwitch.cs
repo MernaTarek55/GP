@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class WeaponSwitch : MonoBehaviour
@@ -31,9 +32,13 @@ public class WeaponSwitch : MonoBehaviour
             }
         }
     }
-   
+
     public GameObject GetCurrentWeapon()
     {
-        return weapons[currentWeaponIndex];
+        if (currentWeaponIndex >= 0 && currentWeaponIndex < weapons.Length)
+        {
+            return weapons[currentWeaponIndex];
+        }
+        return null;
     }
 }

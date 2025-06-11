@@ -81,7 +81,7 @@ public class PoolManager : MonoBehaviour
 
     public void ReturnToPool(PoolType type, GameObject obj)
     {
-        obj.SetActive(false);
+        //obj.SetActive(false);
         poolDictionary[type].Enqueue(obj);
     }
 

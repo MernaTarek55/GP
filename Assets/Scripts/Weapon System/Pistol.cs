@@ -56,7 +56,7 @@ public class Pistol : Weapon
     {
         if (fireCooldown > 0)
         {
-            fireCooldown -= Time.deltaTime;
+            fireCooldown -= Time.unscaledDeltaTime; 
         }
 
         if (!isReloading && currentAmmo == 0)
@@ -233,5 +233,50 @@ public class Pistol : Weapon
                 audioSource.PlayOneShot(reloadSound);
             }
         }
+    }
+    public override IEnumerator ShootForDeadEye(Vector3 targetPosition)
+    {
+        if (WeaponType == WeaponType.Auto)
+        {
+            shootDirection = (targetPosition - firePoint.position).normalized;
+            firePoint.rotation = Quaternion.LookRotation(shootDirection);
+
+            // Shoot
+            Shoot(targetPosition);
+
+            // Longer delay than normal firing rate for DeadEye
+            yield return new WaitForSecondsRealtime(0.15f);
+        }
+        else
+        {
+            // Skip IK wait if IKHandler is missing
+            if (ikHandler == null)
+            {
+                Shoot(targetPosition);
+                yield break;
+            }
+
+            //Trigger IK aiming
+            ikHandler.TriggerShootIK();
+            shootDirection = (targetPosition - firePoint.position).normalized;
+            firePoint.rotation = Quaternion.LookRotation(shootDirection);
+
+            float maxWaitTime = 0.5f;
+            float timer = 0f;
+
+            while (ikHandler.rig.weight < 0.8f && timer < maxWaitTime)
+            {
+                timer += Time.unscaledDeltaTime;
+                yield return null;
+            }
+
+            // Proceed with shooting even if IK isn't perfectly aligned
+            Shoot(targetPosition);
+
+            // Small delay between shots (adjust as needed)
+            yield return new WaitForSecondsRealtime(0.6f);
+
+        }
+
     }
 }
