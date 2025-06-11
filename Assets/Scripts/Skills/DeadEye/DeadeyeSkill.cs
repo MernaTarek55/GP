@@ -213,7 +213,7 @@ public class DeadeyeSkill : MonoBehaviour
         isExcutingTargets = true;
         StartCoroutine(ShootEnemiesSequentially(weapon));
     }
-
+    
     private IEnumerator ShootEnemiesSequentially(Weapon weapon)
     {
         // Create a copy to avoid modification during iteration

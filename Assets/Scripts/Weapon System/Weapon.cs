@@ -24,7 +24,7 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual IEnumerator ShootForDeadEye(Vector3 target)
     {
-        Shoot(target);
+        //Shoot(target);
         yield return null;
     }
 }

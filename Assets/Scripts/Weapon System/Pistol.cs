@@ -245,7 +245,7 @@ public class Pistol : Weapon
             Shoot(targetPosition);
 
             // Longer delay than normal firing rate for DeadEye
-            yield return new WaitForSecondsRealtime(weaponData.fireRate);
+            yield return new WaitForSecondsRealtime(0.25f);
         }
         else
         {
