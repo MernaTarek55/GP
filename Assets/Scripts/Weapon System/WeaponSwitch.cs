@@ -15,9 +15,7 @@ public class WeaponSwitch : MonoBehaviour
             inventoryHolder = FindObjectOfType<PlayerInventoryHolder>();
         }
 
-        inventoryHolder.Inventory.AddWeapon(WeaponType.Gun);
-        inventoryHolder.Inventory.AddWeapon(WeaponType.Auto);
-        inventoryHolder.Inventory.AddWeapon(WeaponType.GrenadeLauncher);
+  
 
         ownedWeapons = inventoryHolder.Inventory.inventorySaveData.ownedWeapons;
         FilterOwnedWeapons();
