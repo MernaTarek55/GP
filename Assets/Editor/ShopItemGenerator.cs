@@ -1,8 +1,7 @@
 #if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using System.IO;
-using Unity.VisualScripting;
 
 public static class ShopItemGenerator
 {
@@ -12,12 +11,14 @@ public static class ShopItemGenerator
         string outputPath = "Assets/Resources/ShopItems";
 
         if (!Directory.Exists(outputPath))
+        {
             Directory.CreateDirectory(outputPath);
+        }
 
         //foreach (var asset in Directory.GetFiles(outputPath, "*.asset"))
         //    AssetDatabase.DeleteAsset(asset);
 
-        var allWeapons = Resources.LoadAll<WeaponData>("WeaponData");
+        WeaponData[] allWeapons = Resources.LoadAll<WeaponData>("WeaponData");
 
         foreach (WeaponData weapon in allWeapons)
         {
@@ -43,6 +44,16 @@ public static class ShopItemGenerator
 
                 AssetDatabase.CreateAsset(upgradeItem, $"{outputPath}/Upgrade_{weapon.weaponType}_{stat.statType}_ShopItem.asset");
             }
+        }
+
+        //make shopitem for all PlayerSkillsStats
+        foreach (PlayerSkillsStats skill in System.Enum.GetValues(typeof(PlayerSkillsStats)))
+        {
+
+            PlayerSkillItem skillItem = ScriptableObject.CreateInstance<PlayerSkillItem>();
+            skillItem.name = $"Upgrade {skill}";
+
+            AssetDatabase.CreateAsset(skillItem, $"{outputPath}/Skill_{skill}_ShopItem.asset");
         }
 
         AssetDatabase.SaveAssets();

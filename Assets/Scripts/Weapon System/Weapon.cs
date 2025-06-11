@@ -2,13 +2,22 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    [SerializeField] protected WeaponData weaponData;
+
     protected int currentAmmo;
-    private void Start()
+    [SerializeField] public WeaponType WeaponType;
+    protected WeaponData weaponData;
+
+    protected virtual void Awake()
     {
+        weaponData = WeaponDatabase.GetWeaponData(WeaponType);
         currentAmmo = weaponData.maxAmmo;
     }
 
-    public abstract void Shoot();
+    public abstract void Shoot(Vector3 target);
     public abstract void Reload();
+
+    public float GetFireRate()
+    {
+        return weaponData.fireRate;
+    }
 }

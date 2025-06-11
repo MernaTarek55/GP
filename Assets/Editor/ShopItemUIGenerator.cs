@@ -1,8 +1,6 @@
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
-using System.IO;
 
 public class ShopUIGenerator : EditorWindow
 {
@@ -11,6 +9,7 @@ public class ShopUIGenerator : EditorWindow
     {
         ShopItem[] shopItems = Resources.LoadAll<ShopItem>("ShopItems");
         GameObject itemUIPrefab = Resources.Load<GameObject>("ShopItemUITemplet");
+        Debug.Log($"Found {shopItems.Length} shop items");
         if (itemUIPrefab == null)
         {
             Debug.LogError("ShopItemUI prefab not found");
@@ -18,15 +17,18 @@ public class ShopUIGenerator : EditorWindow
         }
         string outputPath = "Assets/Resources/ShopItemUIPrefabs";
         if (!AssetDatabase.IsValidFolder(outputPath))
+        {
             AssetDatabase.CreateFolder("Assets/Resources", "ShopItemUIPrefabs");
+        }
 
         foreach (ShopItem item in shopItems)
         {
+            Debug.Log($"Generating UI for {item.name}");
             GameObject uiGO = (GameObject)PrefabUtility.InstantiatePrefab(itemUIPrefab);
             ShopItemUI shopItemUI = uiGO.GetComponent<ShopItemUI>();
             if (shopItemUI == null)
             {
-                Debug.LogError("ShopItemUI prefab does not contain ShopItemUI script.");
+                Debug.LogWarning("ShopItemUI prefab does not contain ShopItemUI script.");
                 GameObject.DestroyImmediate(uiGO);
                 continue;
             }
@@ -47,11 +49,11 @@ public class ShopUIGenerator : EditorWindow
         Debug.Log("ShopItemUI prefabs generated in Resources/ShopItemUIPrefabs");
     }
 
-    static Sprite LoadIconForItem(string itemName)
+    private static Sprite LoadIconForItem(string itemName)
     {
         return Resources.Load<Sprite>($"Icons/{itemName}") ?? Resources.Load<Sprite>("Icons/Default");
     }
-    static string GetDisplayNameFromAsset(ShopItem item)
+    private static string GetDisplayNameFromAsset(ShopItem item)
     {
         string path = AssetDatabase.GetAssetPath(item);
         string filename = System.IO.Path.GetFileNameWithoutExtension(path);
@@ -71,7 +73,16 @@ public class ShopUIGenerator : EditorWindow
             string weapon = tokens[1];
             return $"{weapon} Weapon";
         }
-        //TODO : if case for health and skills
+        else if (tokens.Length >= 2 && tokens[0] == "Skill")
+        {
+            string skill = tokens[1];
+            return $"{skill} Skill Upgrade";
+        }
+        else if (tokens.Length >= 2 && tokens[0] == "Health")
+        {
+            string healthType = tokens[1];
+            return $"{healthType} Health Upgrade";
+        }
         else
         {
             // Fallback to raw filename with spaces

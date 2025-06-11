@@ -1,99 +1,189 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System.IO;
 
-public class ShopUIEditor : EditorWindow
+public class ShopUIEditorGenerator : EditorWindow
 {
+    private static readonly List<Button> allTabButtons = new();
+    private static readonly List<GameObject> allTabPanels = new();
+
     [MenuItem("Tools/Generate Shop UI")]
     public static void GenerateShopUI()
     {
-        ShopItem[] allItems = Resources.LoadAll<ShopItem>("ShopItems");
-
-        Dictionary<string, List<ShopItem>> tabGroups = new();
-
-        foreach (var item in allItems)
+        // Check or create Canvas
+        Canvas canvas = null;
+        if (canvas == null)
         {
-            string tabName = GetTabName(item);
-            if (!tabGroups.ContainsKey(tabName))
-                tabGroups[tabName] = new List<ShopItem>();
-
-            tabGroups[tabName].Add(item);
+            GameObject canvasGO = new("ShopCanvas");
+            canvas = canvasGO.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvasGO.AddComponent<CanvasScaler>();
+            canvasGO.AddComponent<GraphicRaycaster>();
         }
 
-        // Find the ShopPanel in the scene
-        var shopPanel = GameObject.Find("ShopPanel");
-        if (shopPanel == null)
+        // Create root panel for shop UI
+        GameObject rootPanel = new("ShopRootPanel", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        rootPanel.transform.SetParent(canvas.transform, false);
+        Image img = rootPanel.GetComponent<Image>();
+        img.color = new Color(0, 0, 0, 0.5f);
+        RectTransform rootRect = rootPanel.GetComponent<RectTransform>();
+        rootRect.anchorMin = Vector2.zero;
+        rootRect.anchorMax = Vector2.one;
+        rootRect.offsetMin = rootRect.offsetMax = Vector2.zero;
+
+        // Create tab buttons container
+        GameObject tabButtonsPanel = new("TabButtonsPanel", typeof(RectTransform), typeof(HorizontalLayoutGroup));
+        tabButtonsPanel.transform.SetParent(rootPanel.transform, false);
+        HorizontalLayoutGroup tabLayout = tabButtonsPanel.GetComponent<HorizontalLayoutGroup>();
+        tabLayout.childForceExpandWidth = false;
+        tabLayout.childForceExpandHeight = false;
+        RectTransform tabButtonsRect = tabButtonsPanel.GetComponent<RectTransform>();
+        tabButtonsRect.anchorMin = new Vector2(0, 1);
+        tabButtonsRect.anchorMax = new Vector2(1, 1);
+        tabButtonsRect.pivot = new Vector2(0.5f, 1);
+        tabButtonsRect.sizeDelta = new Vector2(0, 40);
+        tabButtonsRect.anchoredPosition = Vector2.zero;
+
+        // Create container for tab content panels
+        GameObject tabContentContainer = new("TabContentContainer", typeof(RectTransform));
+        tabContentContainer.transform.SetParent(rootPanel.transform, false);
+        RectTransform contentRect = tabContentContainer.GetComponent<RectTransform>();
+
+        TabsManager tm = tabContentContainer.AddComponent<TabsManager>();
+        tm.tabContentContainer = contentRect;
+
+
+        contentRect.anchorMin = new Vector2(0, 0);
+        contentRect.anchorMax = new Vector2(1, 1);
+        contentRect.offsetMin = new Vector2(0, 0);
+        contentRect.offsetMax = new Vector2(0, -80);
+
+        // Load all ShopItemUI prefabs
+        ShopItemUI[] allShopItemUIs = Resources.LoadAll<ShopItemUI>("ShopItemUIPrefabs");
+        if (allShopItemUIs == null || allShopItemUIs.Length == 0)
         {
-            Debug.LogError("ShopPanel not found in scene.");
+            Debug.LogError("No ShopItemUI prefabs found in Resources/ShopItemUIPrefabs");
             return;
         }
 
-        Transform tabContainer = shopPanel.transform.Find("TabPagesContainer");
-        if (tabContainer == null)
+        // Categorize by tab
+        Dictionary<string, List<ShopItemUI>> categorized = new();
+
+        foreach (ShopItemUI itemUI in allShopItemUIs)
         {
-            Debug.LogError("TabPagesContainer not found in ShopPanel.");
-            return;
-        }
-        Transform tabButtons = shopPanel.transform.Find("TabButtonContainer");
-        if (tabButtons == null)
-        {
-            Debug.LogError("TabButtonContainer not found in ShopPanel.");
-            return;
-        }
-        GameObject itemUIPrefab = Resources.Load<GameObject>("ShopItems");
+            string tabKey = GetTabKeyFromName(itemUI.name);
 
-        if (itemUIPrefab == null)
-        {
-            Debug.LogError("Missing ShopItemUI prefab in Resources.");
-            return;
-        }
-
-        // Clear previous
-        foreach (Transform child in tabContainer)
-            DestroyImmediate(child.gameObject);
-
-        foreach (Transform child in tabButtons)
-            DestroyImmediate(child.gameObject);
-
-        foreach (var kvp in tabGroups)
-        {
-            string tabName = kvp.Key;
-            List<ShopItem> items = kvp.Value;
-
-            // Create Tab Page
-            GameObject tabPage = new GameObject($"Tab_{tabName}", typeof(RectTransform), typeof(CanvasRenderer), typeof(VerticalLayoutGroup));
-            tabPage.transform.SetParent(tabContainer, false);
-
-            // Add UI Items
-            foreach (var item in items)
+            Debug.Log($"Creating new category: {tabKey}");
+            if (!categorized.ContainsKey(tabKey))
             {
-                var ui = PrefabUtility.InstantiatePrefab(itemUIPrefab, tabPage.transform) as GameObject;
-                var shopItemUI = ui.GetComponent<ShopItemUI>();
-                shopItemUI.Bind(item);
+                categorized[tabKey] = new List<ShopItemUI>();
             }
 
-            // Create Tab Button
-            GameObject tabButton = new GameObject($"TabButton_{tabName}", typeof(Button), typeof(Text));
-            tabButton.transform.SetParent(tabButtons, false);
-            tabButton.GetComponentInChildren<Text>().text = tabName;
-            // (You can hook up OnClick logic here)
+            categorized[tabKey].Add(itemUI);
         }
 
-        Debug.Log("Shop UI Generated.");
+        // For each category: create tab button & content panel & add item UIs
+        foreach (KeyValuePair<string, List<ShopItemUI>> kvp in categorized)
+        {
+            string tabName = kvp.Key;
+            List<ShopItemUI> items = kvp.Value;
+
+            // Create tab button
+            GameObject tabButton = new($"TabButton_{tabName}", typeof(RectTransform), typeof(Button), typeof(Text));
+            tabButton.transform.SetParent(tabButtonsPanel.transform, false);
+
+            Text btnText = tabButton.GetComponent<Text>();
+            btnText.text = tabName;
+            btnText.alignment = TextAnchor.MiddleCenter;
+            btnText.color = Color.black;
+
+            // Create tab content panel
+            GameObject tabPanel = new($"TabPanel_{tabName}", typeof(RectTransform), typeof(CanvasGroup));
+            tabPanel.transform.SetParent(tabContentContainer.transform, false);
+            RectTransform tabRect = tabPanel.GetComponent<RectTransform>();
+            tabRect.anchorMin = Vector2.zero;
+            tabRect.anchorMax = Vector2.one;
+            tabRect.offsetMin = Vector2.zero;
+            tabRect.offsetMax = Vector2.zero;
+
+            allTabButtons.Add(tabButton.GetComponent<Button>());
+            allTabPanels.Add(tabPanel);
+
+            tm.tabs.Add(new TabsManager.TabData
+            {
+                tabButton = tabButton.GetComponent<Button>(),
+                tabPanel = tabPanel
+            });
+            // Add layout group to tab panel for items
+            VerticalLayoutGroup layout = tabPanel.AddComponent<VerticalLayoutGroup>();
+            layout.childForceExpandWidth = true;
+            layout.childForceExpandHeight = false;
+            layout.spacing = 55;
+
+            // Instantiate each ShopItemUI prefab under tabPanel
+            foreach (ShopItemUI itemUI in items)
+            {
+                GameObject go = (GameObject)PrefabUtility.InstantiatePrefab(itemUI.gameObject);
+                go.transform.SetParent(tabPanel.transform, false);
+            }
+
+            // Optionally disable all tabs except first
+            if (tabName != "Weapons")
+            {
+                tabPanel.SetActive(false);
+            }
+
+            // TODO: Add tab button click logic to toggle tab panels
+            Button button = tabButton.GetComponent<Button>();
+            button.onClick.AddListener(() =>
+            {
+                Debug.Log($"Switching to tab: {tabName}");
+                foreach (Transform child in tabContentContainer.transform)
+                {
+                    child.gameObject.SetActive(false);
+                }
+                tabPanel.SetActive(true);
+            });
+
+        }
+        TabsManager tabsManager = rootPanel.AddComponent<TabsManager>();
+        tabsManager.tabContentContainer = tabContentContainer.GetComponent<RectTransform>();
+
+        for (int i = 0; i < allTabButtons.Count; i++)
+        {
+            TabsManager.TabData data = new()
+            {
+                tabButton = allTabButtons[i],
+                tabPanel = allTabPanels[i]
+            };
+            tabsManager.tabs.Add(data);
+        }
+
+        Debug.Log("Shop UI generated in scene");
     }
 
-    static string GetTabName(ShopItem item)
+    private static string GetTabKeyFromName(string name)
     {
-        if (item is WeaponItem weapon)
-            return weapon.weaponType.ToString();
-        else if (item is WeaponUpgradeItem upgrade)
+        // Example: "ShopItemUI_Upgrade_Sniper_Damage" -> "Sniper"
+        // Or fallback to generic categories like Weapons, Skills, Health
+        if (name.Contains("Upgrade"))
         {
-                return upgrade.weaponType.ToString(); // Stat upgrades per weapon tab
+            return name.Split("_")[1];
         }
-        else if(item is PlayerSkillItem || item is HealthItem)
-            return "SkillsAndHealth"; // General player upgrades
+        else if (name.Contains("Weapon"))
+        {
+            return "Weapons";
+        }
+        else if (name.Contains("Skill"))
+        {
+            return "Skills";
+        }
+        else if (name.Contains("Health"))
+        {
+            return "Health";
+        }
+
         return "Misc";
     }
 }
