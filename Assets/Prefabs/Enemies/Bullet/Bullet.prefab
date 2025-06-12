@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -1833632258241645102}
   - component: {fileID: 7732449548735547726}
   m_Layer: 3
-  m_Name: Capsule
+  m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.19034672, y: -2.0200002, z: 3.6695023}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8196268080365182981}
-  m_Mesh: {fileID: -5076798556035486163, guid: 981b5589462068b4a8d52fef97a4188b, type: 3}
+  m_Mesh: {fileID: -5076798556035486163, guid: c7bc8ed9dbd5aea4bbb3c5aaa2296904, type: 3}
 --- !u!23 &7435431356382263355
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 452d7225dc036a24aabc563ddeecd419, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,9 +109,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Height: 2.62
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.22}
 --- !u!54 &-1833632258241645102
 Rigidbody:
   m_ObjectHideFlags: 0
