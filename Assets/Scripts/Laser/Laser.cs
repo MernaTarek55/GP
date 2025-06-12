@@ -22,7 +22,7 @@ public class Laser : MonoBehaviour
     private IInput input;
     private float currentLifetime;
 
-    private float laserDamage; // Nano: to set the damage of the laser
+    private float laserDamage = 20; // Nano: to set the damage of the laser
 
     void Awake()
     {
