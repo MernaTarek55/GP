@@ -22,6 +22,8 @@ public class Laser : MonoBehaviour
     private IInput input;
     private float currentLifetime;
 
+    private float laserDamage; // Nano: to set the damage of the laser
+
     void Awake()
     {
         InitializeLineRenderer();
@@ -188,10 +190,13 @@ public class Laser : MonoBehaviour
             // For bullet-like behavior, check if we hit something that should stop the laser
             if (IsNotTurret && hitInfo.collider.GetComponent<IDamageable>() != null)
             {
+                IDamageable enemyDamage = hitInfo.collider.GetComponent<IDamageable>();
+                enemyDamage.TakeDamage(laserDamage); // Nano: set laser damage from the weapon first 
+
                 currentLifetime = 0; // Immediately return to pool
             }
         }
-    }
+    }   
 
     private void UpdateSensorState(LaserSensor currentSensor)
     {
@@ -251,5 +256,11 @@ public class Laser : MonoBehaviour
         
         // Reset any previous state
         ClearLaser();
+    }
+
+    // Nano: call this function to set damage
+    public void SetLaserDamage(float damage)
+    {
+        laserDamage = damage;
     }
 }
