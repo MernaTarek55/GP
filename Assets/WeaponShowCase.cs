@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 using UnityEditor.Rendering.LookDev;
+using Unity.VisualScripting;
 
 public class WeaponShowCase : MonoBehaviour
 {
@@ -27,7 +28,10 @@ public class WeaponShowCase : MonoBehaviour
     {
         weaponImage.sprite = weaponItems[currentIndex].icon;
         weaponNameText.text = weaponItems[currentIndex].GetItemName();
-        weaponCostText.text = $"Cost: {weaponItems[currentIndex].GetItemCost()}";
+        if (weaponItems[currentIndex].IsFullyBought())
+            weaponCostText.text = "";
+        else
+            weaponCostText.text = $"Cost: {weaponItems[currentIndex].GetItemCost()}";
     }
 
     public void ShowNextWeapon()
@@ -85,5 +89,14 @@ public class WeaponShowCase : MonoBehaviour
 
         isTransitioning = false;
 
+    }
+
+    public void OnBuyButtonClicked()
+    {
+        weaponItems[currentIndex].OnBuyButtonClicked();
+        if (weaponItems[currentIndex].IsFullyBought())
+        {
+            weaponCostText.text = $"";
+        }
     }
 }

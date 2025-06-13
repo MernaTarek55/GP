@@ -4,6 +4,7 @@ public abstract class ShopItem : ScriptableObject
 {
     [SerializeField]
     protected int baseCost;
+    public bool isOwned = false;
     public abstract void OnPurchase(PlayerInventory inventory);
     public virtual int GetCost()
     {
@@ -23,6 +24,7 @@ public abstract class ShopItem : ScriptableObject
 public class WeaponItem : ShopItem
 {
     public WeaponType weaponType;
+    
 
     public override void OnPurchase(PlayerInventory inventory)
     {
@@ -35,6 +37,7 @@ public class WeaponItem : ShopItem
             var weaponSwitch = FindObjectOfType<WeaponSwitch>();
             weaponSwitch?.OnWeaponPurchased(weaponType);
         }
+            isOwned = true;
     }
 }
 [CreateAssetMenu(menuName = "Shop/Weapon Upgrade Item")]

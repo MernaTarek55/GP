@@ -34,7 +34,10 @@ public class ShopItemUI : MonoBehaviour
     {
         return itemNameText.text;
     }
-
+    public bool IsFullyBought()
+    {
+        return currentItem.isOwned;
+    }
     public void OnBuyButtonClicked()
     {
         if (ShopManager.Singelton.Buy(currentItem))
@@ -49,6 +52,10 @@ public class ShopItemUI : MonoBehaviour
         if (currentItem is WeaponUpgradeItem upgradeItem)
         {
             costText.text = $"Cost: {GetItemCost()}";
+        }
+        else
+        {
+            costText.text = "";
         }
     }
 }
