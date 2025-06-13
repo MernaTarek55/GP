@@ -2198,7 +2198,6 @@ GameObject:
   - component: {fileID: 655303354}
   - component: {fileID: 655303357}
   - component: {fileID: 655303356}
-  - component: {fileID: 655303355}
   m_Layer: 5
   m_Name: 'HealthPercentage '
   m_TagString: Untagged
@@ -2226,21 +2225,6 @@ RectTransform:
   m_AnchoredPosition: {x: -267.1, y: -28.344456}
   m_SizeDelta: {x: 55, y: 55}
   m_Pivot: {x: 1, y: 1}
---- !u!114 &655303355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 655303353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a130a5857d537f428a444a3be7fdac9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerInventoryHolder: {fileID: 8486386432693121836}
-  fillImage: {fileID: 0}
-  healthText: {fileID: 0}
 --- !u!114 &655303356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6581,7 +6565,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 13.350037, y: 25}
+  m_AnchoredPosition: {x: 13.350098, y: 25}
   m_SizeDelta: {x: 196.70001, y: 56.688904}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1503451377
