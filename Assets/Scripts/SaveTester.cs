@@ -13,10 +13,10 @@ public class SaveTester : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (!GameStartType.IsNewGame)
-        {
             playerInventory = playerInventoryHolder.Inventory;
             saveData = playerInventory.inventorySaveData;
+        if (!GameStartType.IsNewGame)
+        {
             saveManager = new InventorySaveManager(saveData.ownedWeapons, saveData.weaponUpgrades, saveData.bulletsCount, saveData.playerStats, saveData.credits);
 
             InventorySaveData data = saveManager.Load();
@@ -32,16 +32,24 @@ public class SaveTester : MonoBehaviour
                 foreach (var kv in data.playerStats) saveData.playerStats[kv.Key] = kv.Value;
             }
         }
+        else
+        {
+            saveManager = new InventorySaveManager(
+                saveData.ownedWeapons,
+                saveData.weaponUpgrades,
+                saveData.bulletsCount,
+                saveData.playerStats,
+                saveData.credits
+            );
+            Debug.Log("New game started, inventory initialized for saving.");
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    void OnApplicationQuit()
     {
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log("S pressed, saving game");
-            SaveGame();
-        }
+        Debug.Log("Application is quitting, saving game...");
+        SaveGame();
     }
     public void SaveGame()
     {
