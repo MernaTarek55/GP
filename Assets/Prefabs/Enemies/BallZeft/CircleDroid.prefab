@@ -18,7 +18,6 @@ GameObject:
   - component: {fileID: 630782752505935080}
   - component: {fileID: 3526792775988367378}
   - component: {fileID: 7182546543125189594}
-  - component: {fileID: 5830654878879111336}
   m_Layer: 0
   m_Name: CircleDroid
   m_TagString: Enemy
@@ -48,7 +47,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2535750547211479320}
-  m_Mesh: {fileID: 4068373912626513877, guid: b8b883c51b1c3064ab9e979daf64f434, type: 3}
+  m_Mesh: {fileID: 4068373912626513877, guid: 5db9aa4389e196447947fed75d683db1, type: 3}
 --- !u!23 &2446475001907968461
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4924,18 +4923,6 @@ NavMeshAgent:
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &7182546543125189594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2535750547211479320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5830654878879111336
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

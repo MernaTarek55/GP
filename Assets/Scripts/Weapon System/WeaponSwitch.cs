@@ -15,6 +15,8 @@ public class WeaponSwitch : MonoBehaviour
             inventoryHolder = FindObjectOfType<PlayerInventoryHolder>();
         }
 
+  
+
         ownedWeapons = inventoryHolder.Inventory.inventorySaveData.ownedWeapons;
         FilterOwnedWeapons();
         ActivateWeapon(currentWeaponIndex);

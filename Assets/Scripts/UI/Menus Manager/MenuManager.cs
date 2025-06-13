@@ -1,15 +1,26 @@
-using StarterAssets;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+public static class GameStartType
+{
+    public static bool IsNewGame = true;
+}
 
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] private SettingsMenu settingsMenu;
     [SerializeField] private GameObject menuPanel;
+    [SerializeField] private SceneLoader sceneLoader; 
+    [SerializeField] private string gameSceneName = "Sprint4";
 
-    public void PlayGameButton()
+    public void PlayNewGame()
     {
-        SceneManager.LoadScene("Sprint3");
+        GameStartType.IsNewGame = true;
+        sceneLoader.LoadScene(gameSceneName);
+    }
+
+    public void ContinueGame()
+    {
+        GameStartType.IsNewGame = false;
+        sceneLoader.LoadScene(gameSceneName);
     }
 
     public void QuitGame()
