@@ -18,6 +18,7 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            LoadVolumeSettings();
         }
         else
         {
@@ -58,14 +59,22 @@ public class AudioManager : MonoBehaviour
     {
         musicVolume = Mathf.Clamp01(volume);
         musicSource.volume = musicVolume;
+        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
+        PlayerPrefs.Save();
     }
 
     public void SetSFXVolume(float volume)
     {
         //PlayOneShot uses volume directly, so we don't change AudioSource.volume
         soundEffectVolume = Mathf.Clamp01(volume);
+        PlayerPrefs.SetFloat("SFXVolume", soundEffectVolume);
+        PlayerPrefs.Save();
     }
-
+    private void LoadVolumeSettings()
+    {
+        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+        soundEffectVolume = PlayerPrefs.GetFloat("SFXVolume", 0.5f);
+    }
     private void Start()
     {
         PlayMusic(SoundType.BG);
