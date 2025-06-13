@@ -221,6 +221,17 @@ public class Pistol : Weapon
     }
 
 
+    public void ShootTargets(List<Transform> targets)
+    {
+        if (ikHandler != null)
+        {
+            ikHandler.TriggerShootIK();
+            StartCoroutine(ShootTargetsSequentially(targets));
+            //_ = StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
+        }
+    }
+
+
     private IEnumerator ShootTargetsSequentially(List<Transform> targets)
     {
         while (ikHandler.rig.weight < 0.8f)
