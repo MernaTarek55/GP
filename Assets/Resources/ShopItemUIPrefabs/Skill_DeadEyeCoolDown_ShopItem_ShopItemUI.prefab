@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4737834564647303696
+--- !u!1001 &6009180152125587613
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3355547771811557481, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
       propertyPath: m_text
-      value: 'Cost: 0'
+      value: 'Cost: 50'
       objectReference: {fileID: 0}
     - target: {fileID: 5768259966045267581, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
       propertyPath: m_text
-      value: Gun Weapon
+      value: DeadEyeCoolDown Upgrade
       objectReference: {fileID: 0}
     - target: {fileID: 7858176489345593236, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
       propertyPath: m_Pivot.x
@@ -42,11 +42,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7858176489345593236, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 113
       objectReference: {fileID: 0}
     - target: {fileID: 7858176489345593236, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 30
+      value: 114
       objectReference: {fileID: 0}
     - target: {fileID: 7858176489345593236, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
       propertyPath: m_LocalPosition.x
@@ -97,24 +97,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8964620521530442406, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
-      propertyPath: icon
-      value: 
-      objectReference: {fileID: 534135737, guid: eef1d370851a0294bb6b1d9a672d2272, type: 3}
-    - target: {fileID: 8964620521530442406, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
-      propertyPath: buyButton
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8964620521530442406, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
       propertyPath: currentItem
       value: 
-      objectReference: {fileID: 11400000, guid: 1220da037a0f5b0439d8bd525c34b086, type: 2}
+      objectReference: {fileID: 11400000, guid: ae5ae8034c62de148bfd972d62edade4, type: 2}
     - target: {fileID: 9018649516374913670, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
       propertyPath: m_Name
-      value: ShopItemUI_Weapon_Gun_ShopItem
+      value: Skill_DeadEyeCoolDown_ShopItem_ShopItemUI
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8578306388255280719, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
-    - {fileID: 3806631693750042586, guid: 8605b11ad54702947b0d67e1a8f4be46, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

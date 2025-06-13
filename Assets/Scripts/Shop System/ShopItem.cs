@@ -2,8 +2,7 @@ using UnityEngine;
 
 public abstract class ShopItem : ScriptableObject
 {
-    [SerializeField]
-    protected int baseCost;
+    public int baseCost;
     public bool isOwned = false;
     public abstract void OnPurchase(PlayerInventory inventory);
     public virtual int GetCost()

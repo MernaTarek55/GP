@@ -20,7 +20,7 @@ public class ShopItemUI : MonoBehaviour
     public void Bind(ShopItem item)
     {
         currentItem = item;
-        costText.text = $"Cost: {GetItemCost()}";
+        costText.text = $"Cost: {currentItem.GetCost()}";
     }
     public int GetItemCost() 
     {
