@@ -221,6 +221,90 @@ public class Pistol : Weapon
     }
 
 
+    private IEnumerator ShootTargetsSequentially(List<Transform> targets)
+    {
+        while (ikHandler.rig.weight < 0.8f)
+        {
+            yield return null; // wait for next frame
+        }
+
+        deadEye.canShoot = false;
+        currentAmmo = weaponData.maxAmmo;
+
+
+        //Invoke("etfo", targets, weaponData.fireRate);
+
+
+        deadEye.canShoot = true;
+        currentAmmo = weaponData.maxAmmo;
+
+        yield return null;
+    }
+
+    private IEnumerator nady3laetfo(List<Transform> targets)
+    {
+        yield return new WaitForSeconds(weaponData.fireRate);
+
+        Debug.Log($"fire rate = {weaponData.fireRate}");
+
+        if (targets.Count > 0)
+        {
+            etfo(targets);
+        }
+    }
+
+    private void etfo(List<Transform> targets)
+    {
+        shootDirection = (targets[targets.Count - 1].position - firePoint.position).normalized;
+        firePoint.rotation = Quaternion.LookRotation(shootDirection);
+
+
+        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
+
+        Debug.Log($"bullet is {(bullet == null ? "NULL" : "OK")}.");
+
+        bullet.transform.position = firePoint.position;
+        bullet.transform.rotation = Quaternion.LookRotation(shootDirection); // make sure it's updated
+        bullet.SetActive(true);
+
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+
+        // reset liner and angular velocity to make the bullet hit right
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
+
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        if (bulletScript != null)
+        {
+            //to change to the data in inventory 
+            bulletScript.SetDamage(-1/*weaponData.damage*/);
+            // bulletScript.SetDamage(weaponData.damage);
+        }
+
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.Play();
+        }
+
+        if (audioSource && shootSound)
+        {
+            audioSource.PlayOneShot(shootSound);
+        }
+
+        targets.Remove(targets[targets.Count - 1]);
+
+        if (targets.Count > 0)
+        {
+            Debug.Log("double etfo");
+            StartCoroutine(nady3laetfo(targets));
+        }
+
+        Debug.Log($"targets count {targets.Count}");
+    }
+
+
     public override void Reload()
     {
         if (!isReloading && currentAmmo < weaponData.maxAmmo)
