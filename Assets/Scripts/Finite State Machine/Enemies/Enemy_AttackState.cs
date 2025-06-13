@@ -364,6 +364,8 @@ public class Enemy_AttackState : EntityState
             {
                 Debug.Log("Shooting laser from turret");
                 enemyGO.GetComponentInChildren<LineRenderer>().enabled = true;
+                Debug.Log("anaaaaaaaaa henaaaaaaaaaaaaaaaa" + enemyData.damage);
+                enemyGO.GetComponentInChildren<Laser>().SetLaserDamage(enemyData.damage);
                 Debug.Log("Laser shot from turret");
             }
             else

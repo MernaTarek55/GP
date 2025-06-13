@@ -14,6 +14,7 @@ public class Laser : MonoBehaviour
     [SerializeField] private bool IsNotTurret = false;
     [SerializeField] private PoolType poolType = PoolType.Laser;
 
+    private bool hasDoneDamage; // Nano: bool to check if the same laser causes damage twice
     private bool activated = false;
     private LineRenderer lineRenderer;
     private const float farDistance = 1000f;
@@ -22,6 +23,7 @@ public class Laser : MonoBehaviour
     private IInput input;
     private float currentLifetime;
 
+
     private float laserDamage = 20; // Nano: to set the damage of the laser
 
     void Awake()
@@ -29,6 +31,8 @@ public class Laser : MonoBehaviour
         InitializeLineRenderer();
         InitializeInputSystem();
         activated = inputGO == null; // Activate if no input is assigned
+
+        hasDoneDamage = false;
 
         if (IsNotTurret)
         {
@@ -126,6 +130,8 @@ public class Laser : MonoBehaviour
             LaserSensor.HandleLaser(this, prevStruckSensor, null);
             prevStruckSensor = null;
         }
+
+        hasDoneDamage = false;
     }
 
     private void UpdateLaserBeam()
@@ -188,12 +194,15 @@ public class Laser : MonoBehaviour
             UpdateSensorState(currentSensor);
 
             // For bullet-like behavior, check if we hit something that should stop the laser
-            if (IsNotTurret && hitInfo.collider.GetComponent<IDamageable>() != null)
+            IDamageable damagable = hitInfo.collider.GetComponent<IDamageable>();
+            if (damagable != null && hasDoneDamage == false)
             {
-                IDamageable enemyDamage = hitInfo.collider.GetComponent<IDamageable>();
-                enemyDamage.TakeDamage(laserDamage); // Nano: set laser damage from the weapon first 
-
+                Debug.Log("Nano: ana hena aho");
+                
+                damagable.TakeDamage(laserDamage); // Nano: set laser damage from the weapon first 
                 currentLifetime = 0; // Immediately return to pool
+
+                hasDoneDamage = true;
             }
         }
     }   
