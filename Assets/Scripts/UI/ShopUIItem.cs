@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ShopItemUI : MonoBehaviour
 {
     public TextMeshProUGUI itemNameText;
-    public Image icon;
+    public Sprite icon;
     public TextMeshProUGUI costText;
 
     [SerializeField] private Button buyButton;
@@ -13,16 +13,30 @@ public class ShopItemUI : MonoBehaviour
 
     private void Awake()
     {
-        buyButton.onClick.AddListener(OnBuyButtonClicked);
-
+        if(buyButton != null)
+            buyButton.onClick.AddListener(OnBuyButtonClicked);
     }
     public void Bind(ShopItem item)
     {
         currentItem = item;
-        Debug.Log($"Binding {currentItem.name} to UI");
         costText.text = $"Cost: {currentItem.GetCost()}";
     }
-
+    public int GetItemCost() 
+    {
+        if (currentItem is WeaponUpgradeItem upgradeItem)
+        {
+            return upgradeItem.GetLevelCost(ShopManager.Singelton.playerInventory);
+        }
+        return currentItem.GetCost();
+    }
+    public string GetItemName()
+    {
+        return itemNameText.text;
+    }
+    public bool IsFullyBought()
+    {
+        return currentItem.isOwned;
+    }
     public void OnBuyButtonClicked()
     {
         if (ShopManager.Singelton.Buy(currentItem))
@@ -32,11 +46,15 @@ public class ShopItemUI : MonoBehaviour
         //TODO: sound effect?
     }
 
-    private void UpdateUICost()
+    public void UpdateUICost()
     {
         if (currentItem is WeaponUpgradeItem upgradeItem)
         {
-            costText.text = $"Cost: {upgradeItem.GetLevelCost(ShopManager.Singelton.playerInventory)}";
+            costText.text = $"Cost: {GetItemCost()}";
+        }
+        else
+        {
+            costText.text = "";
         }
     }
 }

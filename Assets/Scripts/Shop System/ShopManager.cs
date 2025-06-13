@@ -18,7 +18,7 @@ public class ShopManager : MonoBehaviour
             return;
         }
         Singelton = this;
-        availableItems = Resources.LoadAll<ShopItem>("ShopItems").ToList();
+        //availableItems = Resources.LoadAll<ShopItem>("ShopItems").ToList();
 
         //TODO: remove this 
         //GameObject player = GameObject.FindWithTag("Player");

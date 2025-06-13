@@ -124,8 +124,10 @@ public class Enemy_IdleState : EntityState
                 else if (enemyData.enemyType != EnemyData.EnemyType.LavaRobot &&
                          enemyData.enemyType != EnemyData.EnemyType.LavaRobotTypeB)
                 {
+                    
                     stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
                 }
+
             }
         }
         else

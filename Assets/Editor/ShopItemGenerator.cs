@@ -26,7 +26,7 @@ public static class ShopItemGenerator
             weaponItem.weaponType = weapon.weaponType;
 
             //weaponItem.itemName = $"Buy {weapon.weaponType}";
-            //weaponItem.baseCost = weapon.baseCost;
+            weaponItem.baseCost = 500;
             //weaponItem.icon = weapon.icon;
 
             AssetDatabase.CreateAsset(weaponItem, $"{outputPath}/Weapon_{weapon.weaponType}_ShopItem.asset");
@@ -39,10 +39,14 @@ public static class ShopItemGenerator
                 upgradeItem.statToUpgrade = stat.statType;
 
                 //upgradeItem.itemName = $"{weapon.weaponType} - Upgrade {stat.statType}";
-                //upgradeItem.baseCost = stat.costPerLevel[0];
+                upgradeItem.baseCost = 40;
                 //upgradeItem.icon = weapon.icon;
-
-                AssetDatabase.CreateAsset(upgradeItem, $"{outputPath}/Upgrade_{weapon.weaponType}_{stat.statType}_ShopItem.asset");
+                //create assest if not already existed
+                if (!AssetDatabase.IsValidFolder($"{outputPath}/Upgrade_{weapon.weaponType}_{stat.statType}_ShopItem.asset"))
+                {
+                    
+                    AssetDatabase.CreateAsset(upgradeItem, $"{outputPath}/Upgrade_{weapon.weaponType}_{stat.statType}_ShopItem.asset");
+                }
             }
         }
 
@@ -52,8 +56,9 @@ public static class ShopItemGenerator
 
             PlayerSkillItem skillItem = ScriptableObject.CreateInstance<PlayerSkillItem>();
             skillItem.name = $"Upgrade {skill}";
-
-            AssetDatabase.CreateAsset(skillItem, $"{outputPath}/Skill_{skill}_ShopItem.asset");
+            skillItem.baseCost = 50;
+            if (!AssetDatabase.IsValidFolder($"{outputPath}/Skill_{skill}_ShopItem.asset"))
+                AssetDatabase.CreateAsset(skillItem, $"{outputPath}/Skill_{skill}_ShopItem.asset");
         }
 
         AssetDatabase.SaveAssets();
