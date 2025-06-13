@@ -4,7 +4,7 @@ public abstract class Weapon : MonoBehaviour
 {
 
     protected int currentAmmo;
-    [SerializeField] protected WeaponType WeaponType;
+    [SerializeField] public WeaponType WeaponType;
     protected WeaponData weaponData;
 
     protected virtual void Awake()

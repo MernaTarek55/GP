@@ -18,7 +18,7 @@ public class ShopUIGenerator : EditorWindow
         string outputPath = "Assets/Resources/ShopItemUIPrefabs";
         if (!AssetDatabase.IsValidFolder(outputPath))
         {
-            _ = AssetDatabase.CreateFolder("Assets/Resources", "ShopItemUIPrefabs");
+            AssetDatabase.CreateFolder("Assets/Resources", "ShopItemUIPrefabs");
         }
 
         foreach (ShopItem item in shopItems)
@@ -28,7 +28,7 @@ public class ShopUIGenerator : EditorWindow
             ShopItemUI shopItemUI = uiGO.GetComponent<ShopItemUI>();
             if (shopItemUI == null)
             {
-                Debug.LogError("ShopItemUI prefab does not contain ShopItemUI script.");
+                Debug.LogWarning("ShopItemUI prefab does not contain ShopItemUI script.");
                 GameObject.DestroyImmediate(uiGO);
                 continue;
             }
@@ -41,7 +41,7 @@ public class ShopUIGenerator : EditorWindow
             shopItemUI.Bind(item);
 
             string filename = $"ShopItemUI_{item.name}.prefab";
-            _ = PrefabUtility.SaveAsPrefabAsset(uiGO, Path.Combine(outputPath, filename));
+            PrefabUtility.SaveAsPrefabAsset(uiGO, Path.Combine(outputPath, filename));
             GameObject.DestroyImmediate(uiGO);
         }
 
@@ -73,7 +73,16 @@ public class ShopUIGenerator : EditorWindow
             string weapon = tokens[1];
             return $"{weapon} Weapon";
         }
-        //TODO : if case for health and skills
+        else if (tokens.Length >= 2 && tokens[0] == "Skill")
+        {
+            string skill = tokens[1];
+            return $"{skill} Skill Upgrade";
+        }
+        else if (tokens.Length >= 2 && tokens[0] == "Health")
+        {
+            string healthType = tokens[1];
+            return $"{healthType} Health Upgrade";
+        }
         else
         {
             // Fallback to raw filename with spaces

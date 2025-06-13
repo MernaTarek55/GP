@@ -6,7 +6,7 @@ public class KoraBt3mlDamage : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<HealthComponent>().TakeDamage(10);
+            other.gameObject.GetComponent<PlayerHealthComponent>().TakeDamage(10);
         }
 
         if (other.gameObject.CompareTag("Destructible"))

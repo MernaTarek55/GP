@@ -3,6 +3,7 @@ using UnityEngine;
 public enum PoolType
 {
     Bullet,
+    Laser,
     LavaProjectile,
     DropItem
 }

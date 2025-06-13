@@ -45,9 +45,11 @@ GameObject:
   - component: {fileID: 7489762896441028355}
   - component: {fileID: -1124280754691726229}
   - component: {fileID: 2662196925404066316}
+  - component: {fileID: 3193709881443915267}
+  - component: {fileID: 6309118969647405234}
   m_Layer: 9
   m_Name: Lava RobotTypeB
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,7 +79,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 850917478301423260}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -5597002278806442958, guid: 179803a74ee55ad4691ef5bcc562851e, type: 3}
 --- !u!23 &5393485364121303187
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -158,10 +160,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: 4d47998f5a86a944a9198cbeb2ceeb71, type: 2}
   playerGO: {fileID: 0}
+  NavTargets: []
   firePos: {fileID: 5145247578527658450}
-  enemyPS: {fileID: 0}
+  particleEffect: {fileID: 0}
   drop: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
-  dropChance: 0.7
+  dropChance: 1
   minDrops: 2
   maxDrops: 5
   dropForce:
@@ -189,6 +192,30 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &3193709881443915267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850917478301423260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6309118969647405234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850917478301423260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2147523308040884472
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   A: {fileID: 5685012763328612990}
-  B: {fileID: 7781798132856513584, guid: 155e0adf6255e984a87d0056da870c64, type: 3}
+  B: {fileID: 0}
   Control: {fileID: 8431188704817870475}
 --- !u!1 &5145247578527658450
 GameObject:
@@ -359,8 +386,8 @@ Transform:
   m_GameObject: {fileID: 8685501899012052247}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.47500002, z: 0.0089998245}
-  m_LocalScale: {x: 1, y: 0.041648, z: 1}
+  m_LocalPosition: {x: 0, y: 0.352, z: 0.025}
+  m_LocalScale: {x: 0.54744, y: 0.02279978, z: 0.54744}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5819782264139901582}

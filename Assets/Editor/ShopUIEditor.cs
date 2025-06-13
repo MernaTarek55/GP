@@ -49,6 +49,11 @@ public class ShopUIEditorGenerator : EditorWindow
         GameObject tabContentContainer = new("TabContentContainer", typeof(RectTransform));
         tabContentContainer.transform.SetParent(rootPanel.transform, false);
         RectTransform contentRect = tabContentContainer.GetComponent<RectTransform>();
+
+        TabsManager tm = tabContentContainer.AddComponent<TabsManager>();
+        tm.tabContentContainer = contentRect;
+
+
         contentRect.anchorMin = new Vector2(0, 0);
         contentRect.anchorMax = new Vector2(1, 1);
         contentRect.offsetMin = new Vector2(0, 0);
@@ -69,6 +74,7 @@ public class ShopUIEditorGenerator : EditorWindow
         {
             string tabKey = GetTabKeyFromName(itemUI.name);
 
+            Debug.Log($"Creating new category: {tabKey}");
             if (!categorized.ContainsKey(tabKey))
             {
                 categorized[tabKey] = new List<ShopItemUI>();
@@ -104,6 +110,11 @@ public class ShopUIEditorGenerator : EditorWindow
             allTabButtons.Add(tabButton.GetComponent<Button>());
             allTabPanels.Add(tabPanel);
 
+            tm.tabs.Add(new TabsManager.TabData
+            {
+                tabButton = tabButton.GetComponent<Button>(),
+                tabPanel = tabPanel
+            });
             // Add layout group to tab panel for items
             VerticalLayoutGroup layout = tabPanel.AddComponent<VerticalLayoutGroup>();
             layout.childForceExpandWidth = true;
@@ -163,6 +174,14 @@ public class ShopUIEditorGenerator : EditorWindow
         else if (name.Contains("Weapon"))
         {
             return "Weapons";
+        }
+        else if (name.Contains("Skill"))
+        {
+            return "Skills";
+        }
+        else if (name.Contains("Health"))
+        {
+            return "Health";
         }
 
         return "Misc";

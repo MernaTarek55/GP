@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     public Death_State playerDeath { get; private set; }
     public Animator animator { get; private set; }
     public Rigidbody rb { get; private set; }
-    public HealthComponent healthComponent { get; private set; }
+    public PlayerHealthComponent healthComponent { get; private set; }
 
 
     public float WalkSpeed = 5f;
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        healthComponent = gameObject.GetComponent<HealthComponent>();
+        healthComponent = gameObject.GetComponent<PlayerHealthComponent>();
         //healthComponent.setMaxHealth(inventory.getPlayerStat(PlayerSkillsStats.MaxHealth));
         moveAction = InputActions.FindActionMap("Player").FindAction("Move");
         jumpAction = InputActions.FindActionMap("Player").FindAction("Jump");

@@ -28,7 +28,12 @@ public class WeaponItem : ShopItem
     {
         if (!inventory.HasWeapon(weaponType))
         {
+            Debug.LogWarning("Weapon added" + weaponType);
             inventory.AddWeapon(weaponType);
+            inventory.inventorySaveData.printData();
+            // Notify weapon switch system
+            var weaponSwitch = FindObjectOfType<WeaponSwitch>();
+            weaponSwitch?.OnWeaponPurchased(weaponType);
         }
     }
 }
@@ -67,12 +72,26 @@ public class WeaponUpgradeItem : ShopItem
 public class PlayerSkillItem : ShopItem
 {
     public PlayerSkillsStats skill;
-    public float amountToIncrease = 1f; // Add this field to configure increase amount
+    public float amountToIncrease = 1f;
+    public float amountToDecrease = -1f;
 
     public override void OnPurchase(PlayerInventory inventory)
     {
         float currentValue = inventory.getPlayerStat(skill);
-        inventory.SetPlayerStat(skill, currentValue + amountToIncrease);
+
+        // Determine the amount based on the skill
+        float amountToApply;
+
+        if (skill == PlayerSkillsStats.InvisibilityCoolDown || skill == PlayerSkillsStats.DeadEyeCoolDown)
+        {
+            amountToApply = amountToDecrease; // For cooldowns, we want to reduce the value
+        }
+        else
+        {
+            amountToApply = amountToIncrease; // For other stats, we increase
+        }
+
+        inventory.SetPlayerStat(skill, currentValue + amountToApply);
 
         // Find the player's InvisibilitySkill and update its stats
         var player = GameObject.FindWithTag("Player");
@@ -86,6 +105,7 @@ public class PlayerSkillItem : ShopItem
         }
     }
 }
+
 [CreateAssetMenu(menuName = "Shop/Health Item")]
 public class HealthItem : ShopItem
 {
@@ -94,7 +114,9 @@ public class HealthItem : ShopItem
     public override void OnPurchase(PlayerInventory inventory)
     {
         // Assuming MaxHealth is tracked in playerStats
-        float currentHealth = inventory.getPlayerStat(PlayerSkillsStats.MaxHealth);
+        float currentHealth = inventory.CurrentHealth;
+        Debug.Log("inventory.CurrentHealth");
+        Debug.Log(inventory.CurrentHealth);
         inventory.SetPlayerStat(PlayerSkillsStats.MaxHealth, currentHealth + healthIncrease);
 
         // You may also want to immediately heal the player

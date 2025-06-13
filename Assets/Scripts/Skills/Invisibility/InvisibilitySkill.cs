@@ -49,8 +49,8 @@ public class InvisibilitySkill : MonoBehaviour
     }
     public void UpdateStatsFromInventory()
     {
-        cooldownDuration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityCoolDown);
-        invisibilityDuration = playerInventory.getPlayerStat(PlayerSkillsStats.InvesabilityDuration);
+        cooldownDuration = playerInventory.getPlayerStat(PlayerSkillsStats.InvisibilityCoolDown);
+        invisibilityDuration = playerInventory.getPlayerStat(PlayerSkillsStats.InvisibilityDuration);
 
         Debug.Log($"Invisibility Skill Updated - Duration: {invisibilityDuration}, Cooldown: {cooldownDuration}");
     }

@@ -23,13 +23,13 @@ public class Enemy : MonoBehaviour
     public Vector3[] dropForce;
 
     #endregion
-    public StateMachine enemyStateMachine {  get; private set; }
-    public Enemy_IdleState enemyIdleState {get; private set; }
-    public Enemy_AttackState enemyAttackState {get; private set; }
-    public Enemy_ChaseState enemyChaseState {get; private set; }
-    public Enemy_PatrolState enemyPatrolState {get; private set; }
+    public StateMachine enemyStateMachine { get; private set; }
+    public Enemy_IdleState enemyIdleState { get; private set; }
+    public Enemy_AttackState enemyAttackState { get; private set; }
+    public Enemy_ChaseState enemyChaseState { get; private set; }
+    public Enemy_PatrolState enemyPatrolState { get; private set; }
     public Death_State enemyDeath { get; private set; }
-    
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        
+
         //if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
         //{
         //Debug.Log("Player is invisible");
@@ -63,6 +63,7 @@ public class Enemy : MonoBehaviour
         //}
 
         float distance = Vector3.Distance(gameObject.transform.position, playerGO.transform.position);
+
         enemyStateMachine.currentState.Update();
         enemyStateMachine.currentState.CheckStateTransitions(distance);
         /*if (distance <= enemyData.DetectionRange)
@@ -148,7 +149,7 @@ public class Enemy : MonoBehaviour
         return firePos;
     }
 
-   
+
     public void getDropProperties(GameObject drop, float dropChance, int minDrops, int maxDrops, Vector3[] dropForce)
     {
         drop = this.drop;
@@ -157,7 +158,7 @@ public class Enemy : MonoBehaviour
         maxDrops = this.maxDrops;
         dropForce = this.dropForce;
 
-        Debug.LogError(drop+" "+dropChance+" "+minDrops+" "+maxDrops+" "+dropForce);
+        Debug.LogError(drop + " " + dropChance + " " + minDrops + " " + maxDrops + " " + dropForce);
     }
 
 

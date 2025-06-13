@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 ﻿using DG.Tweening;
@@ -13,11 +15,14 @@ public class Enemy_AttackState : EntityState
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
     private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
     private SphereCollider sphereCollider;
-    private HealthComponent playerHealth;
+    private PlayerHealthComponent playerHealth;
     private InvisibilitySkill invisibilitySkill;
     private bool hasExploded = false; // to instantiate one explosion when the enemy explodes
 
     private float _lastShootTime;
+
+    public Rigidbody enemyRigidbody { get; private set; }
+    public Rigidbody playerRigidbody { get; private set; }
 
     public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
@@ -38,6 +43,8 @@ public class Enemy_AttackState : EntityState
         {
             Debug.LogError("Fire position not found!");
         }
+       
+
 
     }
 
@@ -75,6 +82,10 @@ public class Enemy_AttackState : EntityState
             {
                 ExplodingBall();
             }
+            if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
+            {
+                PushBackPlayer();
+            }
             
         }
         else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
@@ -83,12 +94,47 @@ public class Enemy_AttackState : EntityState
         }
     }
 
+    private void PushBackPlayer()
+    {
+        float impactForce = 0.2f;
+
+        // Calculate the push-back force (tweak multiplier as needed)
+        Debug.LogWarning("pushBackForce: " + impactForce);
+
+        // Determine relative X position
+        float directionX = playerGO.transform.position.x - enemyGO.transform.position.x;
+        float pushDirection = directionX >= 0 ? 1f : -1f;
+
+        // Create push direction only on the X-axis
+        Vector3 pushVector = new Vector3(Mathf.Sign(pushDirection), 0f, 0f);
+
+        // Apply push force to both enemy and player
+        enemyRigidbody.AddForce(-pushVector * impactForce, ForceMode.Impulse); // Enemy gets opposite force
+        playerRigidbody.AddForce(pushVector * impactForce, ForceMode.Impulse); // Player gets force based on enemy's position
+
+        // Optional: Add a temporary movement freeze for beyblade effect
+        if (enemy != null)
+        {
+            enemy.StartEnemyCoroutine(BeybladeWaitAttack());
+        }
+    }
+    private IEnumerator BeybladeWaitAttack()
+    {
+        enemyAgent.isStopped = true;
+        yield return new WaitForSeconds(1f);
+        enemyAgent.isStopped = false;
+
+    }
+
     public override void Exit()
     {
 
         base.Exit();
 
-
+        if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
+        {
+            enemyGO.GetComponentInChildren<LineRenderer>().enabled = false;
+        }
         if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
         {
             BeybladeAttack();
@@ -98,26 +144,32 @@ public class Enemy_AttackState : EntityState
     {
         if (entityGO.CompareTag("Player"))
         {
-            if(entityGO.TryGetComponent(out HealthComponent healthComponent)) playerHealth = healthComponent;
-            else Debug.LogWarning("Health Component not found");
+            if(entityGO.TryGetComponent(out PlayerHealthComponent healthComponent)) playerHealth = healthComponent;
+            else Debug.Log("Health Component not found");
             if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
-            else Debug.LogWarning("invisibilitySkill not found");
-            
+            else Debug.Log("invisibilitySkill not found");
+            if (entityGO.TryGetComponent(out Rigidbody entityRigidbody)) this.playerRigidbody = entityRigidbody;
+            else Debug.Log("entityRigidbody not found");
+
         }
         else
         {
             if (entityGO.TryGetComponent(out MeshRenderer mr)) enemyMR = mr;
-            else Debug.LogWarning("Mesh Renderer not found");
+            else Debug.Log("Mesh Renderer not found");
             if (entityGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
-            else Debug.LogWarning("Enemy script not found");
+            else Debug.Log("Enemy script not found");
 
             if (entityGO.TryGetComponent(out NavMeshAgent eNav)) enemyAgent = eNav;
-            else Debug.LogWarning("Nav mesh not found");
+            else Debug.Log("Nav mesh not found");
   
             if (entityGO.TryGetComponent(out SphereCollider sphereCollider)) this.sphereCollider = sphereCollider;
-            else Debug.LogWarning("Mesh Renderer not found");
+            else Debug.Log("Mesh Renderer not found");
+            if (entityGO.TryGetComponent(out Rigidbody entityRigidbody)) this.enemyRigidbody = entityRigidbody;
+            else Debug.Log("entityRigidbody not found");
         }
-}
+     
+
+    }
 
     //protected override void UpdateTurret()
     //{
@@ -218,6 +270,7 @@ public class Enemy_AttackState : EntityState
 
     private void RotateTowardPlayer()
     {
+        
         Vector3 direction = (playerGO.transform.position - enemyGO.transform.position).normalized;
         direction.y = 0;
         if (direction != Vector3.zero)
@@ -226,19 +279,13 @@ public class Enemy_AttackState : EntityState
             
             enemyGO.transform.rotation = Quaternion.Slerp(enemyGO.transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
+        
     }
     private void ShootRobot()
     {
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
             return;
 
-        // Get shoot position from child object
-        Transform shootPos = GetChildrenWithTag(enemyGO)?.transform;
-        if (shootPos == null)
-        {
-            Debug.LogError("Shoot position not found!");
-            return;
-        }
 
         // Check if facing player (relax angle check slightly)
         Vector3 directionToPlayer = (playerGO.transform.position - enemyGO.transform.position).normalized;
@@ -291,10 +338,9 @@ public class Enemy_AttackState : EntityState
             Debug.LogWarning("Bullet has no Rigidbody component, cannot apply physics movement");
         }
 
-        Debug.Log($"Shooting at player - Angle: {angle}, Position: {shootPos.position}");
         _lastShootTime = Time.time;
     }
-
+    private GameObject currentLaser;
     private void Shoot()
     {
         if (Time.time - _lastShootTime < enemyData.shootCooldown)
@@ -308,11 +354,21 @@ public class Enemy_AttackState : EntityState
 
         if (enemyData.bulletPrefab != null && firePoint != null)
         {
+            if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
+            {
+                Debug.Log("Shooting laser from turret");
+                enemyGO.GetComponentInChildren<LineRenderer>().enabled = true;
+                Debug.Log("Laser shot from turret");
+            }
+            else
+            {
+
             GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
             bullet.transform.position = firePoint.transform.position;
             bullet.transform.rotation = firePoint.transform.rotation;
             bullet.SetActive(true);
             Debug.Log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            }
         }
 
         _lastShootTime = Time.time;
@@ -320,6 +376,8 @@ public class Enemy_AttackState : EntityState
 
     private void BeybladeAttack()
     {
+
+        
         RotateOnSelf(new Vector3(0, 540, 0), 1f, RotateMode.WorldAxisAdd);
         playerHealth.TakeDamage(1f); 
     }
@@ -364,43 +422,35 @@ public class Enemy_AttackState : EntityState
 
     public override void CheckStateTransitions(float distanceToPlayer)
     {
-        if (invisibilitySkill.isInvisible && enemyData.enemyType != EnemyData.EnemyType.LavaRobot && enemyData.enemyType != EnemyData.EnemyType.LavaRobotTypeB && enemyData.enemyType != EnemyData.EnemyType.OneArmedRobot)
+
+        if (!invisibilitySkill.isInvisible)
         {
-            Debug.Log("Player is invisible, enemy does nothing.");
-            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-            return;
-        }
-       
+
             if (distanceToPlayer > enemyData.DetectionRange)
             {
-                if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
-                {
-                    stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
-                }
-                else
-                {
-                    stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-                }
+                PatrolOrIdleStates();
             }
             else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser && distanceToPlayer > 2f)
             {
                 stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
             }
-    }
-    private GameObject GetChildrenWithTag(GameObject parentObject)
-    {
-        if (parentObject == null) return null;
-
-        foreach (Transform child in parentObject.transform)
-        {
-            if (child.CompareTag("ShootPos"))
-                return child.gameObject;
-
-            // Recursively check children if needed
-            var foundInChild = GetChildrenWithTag(child.gameObject);
-            if (foundInChild != null)
-                return foundInChild;
         }
-        return null;
+        else 
+        {
+
+            PatrolOrIdleStates();
+        }
+    }
+
+    private void PatrolOrIdleStates()
+    {
+        if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
+        {
+            stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+        }
+        else
+        {
+            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+        }
     }
 }

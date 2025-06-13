@@ -112,68 +112,70 @@ public class Enemy_ChaseState : EntityState
         //if(enemyGo.gameObject.tag) {
     }
 
-    public override void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Enemy collided with Player � transitioning to Attack state");
+    //public override void OnCollisionEnter(Collision collision)
+    //{
+    //    //if (collision.gameObject.CompareTag("Player"))
+    //    //{
+    //    //    Debug.Log("Enemy collided with Player � transitioning to Attack state");
 
-            if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
-            {
-                CollidingFriction(collision);
+    //    //    if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
+    //    //    {
+    //    //        //CollidingFriction(collision);
 
-            }
+    //    //    }
 
-            stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
-        }
-    }
+    //    //    stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+    //    //}
+    //}
 
-    private void CollidingFriction(Collision collision)
-    {
-        float impactForce = collision.impulse.magnitude;
+    //private void CollidingFriction(Collision collision)
+    //{
+    //    float impactForce = 1;
 
-        // Calculate the push-back force (double the impact force)
-        float pushBackForce = impactForce * 100 ;
-        Debug.LogWarning("pushBackForce" + pushBackForce);
-        // Get the collision normal (direction perpendicular to the surface)
-        Vector3 collisionNormal = collision.contacts[0].normal;
+    //    // Calculate the push-back force (tweak multiplier as needed)
+    //    Debug.LogWarning("pushBackForce: " + impactForce);
 
-        // Apply force in the opposite direction of the impact
-        enemyRigidbody.AddForce(collisionNormal * pushBackForce, ForceMode.Impulse);
-        playerRigidbody.AddForce(collisionNormal * pushBackForce, ForceMode.Impulse);
+    //    // Determine relative X position
+    //    float directionX =playerGO.transform.position.x - enemyGO.transform.position.x;
+    //    float pushDirection = directionX >= 0 ? 1f : -1f;
 
-        //enemyRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
-        //playerRigidbody.AddForce(Vector3.right * 10f, ForceMode.Impulse);
-        if (enemy != null)
-        { this.enemy.StartEnemyCoroutine(BeybladeWaitAttack()); }
-    }
+    //    // Create push direction only on the X-axis
+    //    Vector3 pushVector = new Vector3(Mathf.Sign(pushDirection), 0f, 0f);
 
-    private IEnumerator BeybladeWaitAttack()
-    {
-        enemyAgent.isStopped = true;
-        yield return new WaitForSeconds(1f);
-        enemyAgent.isStopped = false;
+    //    // Apply push force to both enemy and player
+    //    enemyRigidbody.AddForce(-pushVector * impactForce, ForceMode.Impulse); // Enemy gets opposite force
+    //    playerRigidbody.AddForce(pushVector * impactForce, ForceMode.Impulse); // Player gets force based on enemy's position
 
-    }
+    //    // Optional: Add a temporary movement freeze for beyblade effect
+    //    if (enemy != null)
+    //    {
+    //        enemy.StartEnemyCoroutine(BeybladeWaitAttack());
+    //    }
+    //}
 
+
+  
     public override void CheckStateTransitions(float distanceToPlayer)
     {
-        if (invisibilitySkill.isInvisible)
+        if (!invisibilitySkill.isInvisible)
         {
-            stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
-            return;
-        }
 
-        
-        if (distanceToPlayer > enemyData.DetectionRange)
-        {
-            if (enemyData.enemyType is EnemyData.EnemyType.LavaRobot or EnemyData.EnemyType.LavaRobotTypeB)
+
+            if (distanceToPlayer > enemyData.DetectionRange)
             {
-                stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+                if (enemyData.enemyType is EnemyData.EnemyType.LavaRobot or EnemyData.EnemyType.LavaRobotTypeB)
+                {
+                    stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+                }
+                else
+                {
+                    stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+                }
             }
-            else
+            else if (distanceToPlayer < 1.3f)
             {
-                stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
+                Debug.LogWarning("Player too close");
+                stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
             }
         }
     }

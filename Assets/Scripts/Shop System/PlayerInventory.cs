@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 [System.Serializable]
 public class PlayerInventory
@@ -22,7 +23,30 @@ public class PlayerInventory
         }
     }
 
-
+    public float MaxHealth
+    {
+        get => getPlayerStat(PlayerSkillsStats.MaxHealth);
+        set => SetPlayerStat(PlayerSkillsStats.MaxHealth, value);
+    }
+    public float CurrentHealth
+    {
+        get => inventorySaveData.currentHealth;
+        set
+        {
+            inventorySaveData.currentHealth = Mathf.Clamp(value, 0, MaxHealth);
+            OnHealthChanged?.Invoke(inventorySaveData.currentHealth / MaxHealth);
+        }
+    }
+    public event Action<float> OnHealthChanged;
+    public void InitializePlayerStats()
+    {
+        // Set default health if not already set
+        if (!inventorySaveData.playerStats.ContainsKey(PlayerSkillsStats.MaxHealth))
+        {
+            SetPlayerStat(PlayerSkillsStats.MaxHealth, 100f); // Default max health
+        }
+        CurrentHealth = MaxHealth; // Start with full health
+    }
     public void InitializeWeaponUpgrades(List<WeaponData> weaponDataList)
     {
         Debug.Log("Initializing weapon upgrades...");
@@ -96,6 +120,13 @@ public class PlayerInventory
             inventorySaveData.playerStats.Add(stat, value);
         }
         Debug.Log($"Set player stat {stat} to {value}");
+    }
+    public void UpgradePlayerStat(PlayerSkillsStats stat)
+    {
+        if (inventorySaveData.playerStats.ContainsKey(stat))
+        {
+            inventorySaveData.playerStats[stat]++;
+        }
     }
     public float GetAmmo(WeaponType weapon)
     {

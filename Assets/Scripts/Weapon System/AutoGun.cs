@@ -35,7 +35,7 @@ public class AutoGun : Weapon
     private readonly Dictionary<int, bool> touchStartedOverUI = new();
 
     private float totalAmmo; // Ammo in inventory
-    private bool hasInfiniteAmmo = false;
+    private bool hasInfiniteAmmo = true;
     protected override void Awake()
     {
         base.Awake();
@@ -191,25 +191,28 @@ public class AutoGun : Weapon
         fireCooldown = weaponData.fireRate;
         currentAmmo--;
 
-        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
-        bullet.transform.position = firePoint.transform.position;
-        bullet.transform.rotation = firePoint.transform.rotation;
-        bullet.SetActive(true);
+        GameObject Laser = PoolManager.Instance.GetPrefabByTag(PoolType.Laser);
+        Laser.GetComponent<Laser>().InitializeLaser(firePoint.transform.position, firePoint.transform.rotation, true);
+        Laser.GetComponent<Laser>().SetLaserDamage(weaponData.damage);
+        AudioManager.Instance.PlaySound(SoundType.Laser);
+        //Laser.transform.position = firePoint.transform.position;
+        //Laser.transform.rotation = firePoint.transform.rotation;
+        //Laser.SetActive(true);
 
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        Rigidbody rb = Laser.GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
-
-        Bullet bulletScript = bullet.GetComponent<Bullet>();
-        if (bulletScript != null)
-        {
-            // Get damage from weapon data and upgrades
-            float baseDamage = weaponData.damage;
-            var upgradeState = PlayerInventoryHolder.instance.Inventory.GetUpgradeState(weaponData.weaponType);
-            float damageMultiplier = 1f + (upgradeState?.GetLevel(UpgradableStatType.Damage) ?? 0) * 0.1f; // 10% per level
-            bulletScript.SetDamage(baseDamage * damageMultiplier);
-        }
+        rb.AddForce(Laser.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
+        //To Do
+        //Laser bulletScript = Laser.GetComponent<Laser>();
+        //if (bulletScript != null)
+        //{
+        //    // Get damage from weapon data and upgrades
+        //    float baseDamage = weaponData.damage;
+        //    var upgradeState = PlayerInventoryHolder.instance.Inventory.GetUpgradeState(weaponData.weaponType);
+        //    float damageMultiplier = 1f + (upgradeState?.GetLevel(UpgradableStatType.Damage) ?? 0) * 0.1f; // 10% per level
+        //    bulletScript.SetDamage(baseDamage * damageMultiplier);
+        //}
 
         if (muzzleFlash != null)
         {

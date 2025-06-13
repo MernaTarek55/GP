@@ -100,7 +100,15 @@ public class DeadeyeSkill : MonoBehaviour
         }
     }
 
-    private IEnumerator DeadeyeEffectCoroutine()
+  
+    private void UpdateStats()
+    {
+        // for future
+        duration = playerInventory.getPlayerStat(PlayerSkillsStats.DeadEyeDuration);
+        cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.DeadEyeCoolDown);
+    }
+
+      private IEnumerator DeadeyeEffectCoroutine()
     {
         yield return new WaitForSecondsRealtime(duration);
         Time.timeScale = 1f;
@@ -166,7 +174,7 @@ public class DeadeyeSkill : MonoBehaviour
 
     private void TerminateEnemies()
     {
-        GameObject weaponGO = currentWeapon.GetCurrentWeapon();
+        GameObject weaponGO = currentWeapon?.GetCurrentWeapon();
         Weapon weapon = weaponGO.GetComponent<Weapon>();
 
         if (weapon == null)

@@ -1,17 +1,19 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.AI;
 
 public class Enemy_IdleState : EntityState
 {
     private bool _isRotating = false;
     private Tween[] _currentTween;
     private GameObject playerGO;
-
+    private InvisibilitySkill invisibilitySkill;
 
     public Enemy_IdleState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
+        TryGetComponents(playerGO);
         _currentTween = new Tween[2];
     }
 
@@ -104,25 +106,46 @@ public class Enemy_IdleState : EntityState
     }
     public override void CheckStateTransitions(float distanceToPlayer)
     {
-
-
-        if (distanceToPlayer > enemyData.DetectionRange && enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
+        if (!invisibilitySkill.isInvisible)
         {
-            stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
-        }
+
+            if (distanceToPlayer > enemyData.DetectionRange && enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
+            {
+                stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+            }
 
             if (distanceToPlayer <= enemyData.DetectionRange)
-        {
-            
-            if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
             {
-                stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO,enemy));
-            }
-            else if (enemyData.enemyType != EnemyData.EnemyType.LavaRobot &&
-                     enemyData.enemyType != EnemyData.EnemyType.LavaRobotTypeB)
-            {
-                stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+
+                if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
+                {
+                    stateMachine.ChangeState(new Enemy_ChaseState(stateMachine, "Chase", enemyData, enemyGO, playerGO, enemy));
+                }
+                else if (enemyData.enemyType != EnemyData.EnemyType.LavaRobot &&
+                         enemyData.enemyType != EnemyData.EnemyType.LavaRobotTypeB)
+                {
+                    stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));
+                }
             }
         }
+        else
+        {
+            if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
+            {
+                stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
+            }
+        }
+    }
+
+    private void TryGetComponents(GameObject entityGO)
+    {
+        if (entityGO.CompareTag("Player"))
+        {
+          
+            if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
+            else Debug.LogWarning("invisibilitySkill not found");
+
+        }
+      
     }
 }
