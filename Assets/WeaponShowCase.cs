@@ -8,6 +8,8 @@ using Unity.VisualScripting;
 public class WeaponShowCase : MonoBehaviour
 {
     [SerializeField] private ShopItemUI[] weaponItems;
+    //make sure they are in same order
+    [SerializeField] private GameObject[] statsPanels;
     [SerializeField] private Image weaponImage;
     [SerializeField] private TextMeshProUGUI weaponNameText;
     [SerializeField] private TextMeshProUGUI weaponCostText;
@@ -22,6 +24,11 @@ public class WeaponShowCase : MonoBehaviour
     {
         weaponItemsLen = weaponItems.Length;
         updateData();
+        foreach (GameObject panel in statsPanels)
+        {
+            panel.SetActive(false);
+        }
+        statsPanels[currentIndex].SetActive(true);
     }
 
     private void updateData()
@@ -67,7 +74,9 @@ public class WeaponShowCase : MonoBehaviour
             yield return null;
         }
 
+        statsPanels[currentIndex].SetActive(false);
         currentIndex = newIndex;
+        statsPanels[currentIndex].SetActive(true);
         updateData();
 
         weaponImage.rectTransform.anchoredPosition = startPos + new Vector2(direction * 200, 0);

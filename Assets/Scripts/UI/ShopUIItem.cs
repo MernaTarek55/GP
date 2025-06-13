@@ -15,7 +15,6 @@ public class ShopItemUI : MonoBehaviour
     {
         if(buyButton != null)
             buyButton.onClick.AddListener(OnBuyButtonClicked);
-
     }
     public void Bind(ShopItem item)
     {
