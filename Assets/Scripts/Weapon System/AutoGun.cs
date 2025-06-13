@@ -193,6 +193,7 @@ public class AutoGun : Weapon
 
         GameObject Laser = PoolManager.Instance.GetPrefabByTag(PoolType.Laser);
         Laser.GetComponent<Laser>().InitializeLaser(firePoint.transform.position, firePoint.transform.rotation, true);
+        Laser.GetComponent<Laser>().SetLaserDamage(weaponData.damage);
         AudioManager.Instance.PlaySound(SoundType.Laser);
         //Laser.transform.position = firePoint.transform.position;
         //Laser.transform.rotation = firePoint.transform.rotation;
