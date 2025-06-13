@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ShopItemUI : MonoBehaviour
 {
     public TextMeshProUGUI itemNameText;
-    public Image icon;
+    public Sprite icon;
     public TextMeshProUGUI costText;
 
     [SerializeField] private Button buyButton;
