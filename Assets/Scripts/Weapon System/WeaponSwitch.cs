@@ -39,6 +39,11 @@ public class WeaponSwitch : MonoBehaviour
 
     public void SwitchWeapons()
     {
+        if (ownedWeapons == null || ownedWeapons.Count == 0)
+        {
+            Debug.LogWarning("No owned weapons to switch.");
+            return;
+        }
         do
         {
             currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Length;

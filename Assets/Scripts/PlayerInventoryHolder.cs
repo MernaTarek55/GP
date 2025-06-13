@@ -4,14 +4,19 @@ using UnityEngine;
 public class PlayerInventoryHolder : MonoBehaviour
 {
     public static PlayerInventoryHolder instance;
-    public PlayerInventory Inventory { get; private set; } = new PlayerInventory();
+    public PlayerInventory Inventory { get; private set; }
 
     //PlayerInventoryHolder 
-
-
     private void Awake()
     {
         instance = this;
+        Inventory = new PlayerInventory();
+    }
+
+
+    private void Start()
+    {
+        //instance = this;
 
         WeaponData[] allWeaponData = Resources.LoadAll<WeaponData>("WeaponData");
         Inventory.InitializeWeaponUpgrades(allWeaponData.ToList());
