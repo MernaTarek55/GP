@@ -188,7 +188,7 @@ public class Laser : MonoBehaviour
             UpdateSensorState(currentSensor);
 
             // For bullet-like behavior, check if we hit something that should stop the laser
-            if (IsNotTurret && hitInfo.collider.GetComponent<IDamageable>() != null)
+            if ( hitInfo.collider.GetComponent<IDamageable>() != null)
             {
                 IDamageable enemyDamage = hitInfo.collider.GetComponent<IDamageable>();
                 enemyDamage.TakeDamage(laserDamage); // Nano: set laser damage from the weapon first 
