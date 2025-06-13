@@ -154,6 +154,7 @@ public class Laser : MonoBehaviour
 
     public void CastBeam(Vector3 origin, Vector3 direction)
     {
+        Debug.Log($"Casting beam from {origin} in direction {direction}");
         if (bouncePositions == null || bouncePositions.Count > maxBounces)
         {
             return;
@@ -195,14 +196,16 @@ public class Laser : MonoBehaviour
 
             // For bullet-like behavior, check if we hit something that should stop the laser
             IDamageable damagable = hitInfo.collider.GetComponent<IDamageable>();
-            if (damagable != null && hasDoneDamage == false)
+            if (damagable != null)
             {
-                Debug.Log("Nano: ana hena aho");
-                
-                damagable.TakeDamage(laserDamage); // Nano: set laser damage from the weapon first 
-                currentLifetime = 0; // Immediately return to pool
+                if (!IsNotTurret || (IsNotTurret && !hasDoneDamage))
+                {
+                    damagable.TakeDamage(laserDamage);
+                    currentLifetime = 0;
 
-                hasDoneDamage = true;
+                    if (IsNotTurret)
+                        hasDoneDamage = true;
+                }
             }
         }
     }   
