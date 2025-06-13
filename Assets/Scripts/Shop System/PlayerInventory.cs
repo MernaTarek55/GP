@@ -34,9 +34,10 @@ public class PlayerInventory
         set
         {
             inventorySaveData.currentHealth = Mathf.Clamp(value, 0, MaxHealth);
-            // You might want to add an OnHealthChanged event here
+            OnHealthChanged?.Invoke(inventorySaveData.currentHealth / MaxHealth);
         }
     }
+    public event Action<float> OnHealthChanged;
     public void InitializePlayerStats()
     {
         // Set default health if not already set
