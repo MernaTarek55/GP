@@ -13,14 +13,26 @@ public class ShopItemUI : MonoBehaviour
 
     private void Awake()
     {
-        buyButton.onClick.AddListener(OnBuyButtonClicked);
+        if(buyButton != null)
+            buyButton.onClick.AddListener(OnBuyButtonClicked);
 
     }
     public void Bind(ShopItem item)
     {
         currentItem = item;
-        Debug.Log($"Binding {currentItem.name} to UI");
-        costText.text = $"Cost: {currentItem.GetCost()}";
+        costText.text = $"Cost: {GetItemCost()}";
+    }
+    public int GetItemCost() 
+    {
+        if (currentItem is WeaponUpgradeItem upgradeItem)
+        {
+            return upgradeItem.GetLevelCost(ShopManager.Singelton.playerInventory);
+        }
+        return currentItem.GetCost();
+    }
+    public string GetItemName()
+    {
+        return itemNameText.text;
     }
 
     public void OnBuyButtonClicked()
@@ -32,11 +44,11 @@ public class ShopItemUI : MonoBehaviour
         //TODO: sound effect?
     }
 
-    private void UpdateUICost()
+    public void UpdateUICost()
     {
         if (currentItem is WeaponUpgradeItem upgradeItem)
         {
-            costText.text = $"Cost: {upgradeItem.GetLevelCost(ShopManager.Singelton.playerInventory)}";
+            costText.text = $"Cost: {GetItemCost()}";
         }
     }
 }
