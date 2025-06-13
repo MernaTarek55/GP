@@ -139,7 +139,7 @@ public class Pistol : Weapon
         if (ikHandler != null)
         {
             ikHandler.TriggerShootIK();
-            _ = StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
+            StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         }
 
 
@@ -166,6 +166,7 @@ public class Pistol : Weapon
 
     private IEnumerator WaitAndShootWhenIKReady(Vector3 targetPoint)
     {
+        
         // Wait until IK weight is close to 1
         while (ikHandler.rig.weight < 0.8f)
         {
@@ -198,7 +199,7 @@ public class Pistol : Weapon
         rb.angularVelocity = Vector3.zero;
 
         rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
-
+        Debug.Log("Shoting");
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
@@ -329,7 +330,7 @@ public class Pistol : Weapon
             Shoot(targetPosition);
 
             // Longer delay than normal firing rate for DeadEye
-            yield return new WaitForSecondsRealtime(0.25f);
+            //yield return new WaitForSecondsRealtime(0.25f);
         }
         else
         {
@@ -358,7 +359,7 @@ public class Pistol : Weapon
             Shoot(targetPosition);
 
             // Small delay between shots (adjust as needed)
-            yield return new WaitForSecondsRealtime(1f);
+            //yield return new WaitForSecondsRealtime(1f);
 
         }
 

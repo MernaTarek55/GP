@@ -25,6 +25,7 @@ public class DeadeyeSkill : MonoBehaviour
 
     private bool isExcutingTargets;
     private bool isUsingAbility;
+    private bool doneWithLastTargets = true;
 
     [SerializeField] private Image deadEyeCooldownImage;
     [SerializeField] private Image targetImage;
@@ -69,7 +70,7 @@ public class DeadeyeSkill : MonoBehaviour
                 AddTapPosition(touchPos);
             }
         }
-        else if (!isUsingAbility && !isExcutingTargets && markedTargets.Count > 0)
+        else if (!isUsingAbility && doneWithLastTargets && !isExcutingTargets && markedTargets.Count > 0)
         {
             TerminateEnemies();
         }
@@ -94,10 +95,7 @@ public class DeadeyeSkill : MonoBehaviour
 
             Debug.Log("Deadeye skill used!");
 
-            // Apply different slow-motion based on weapon type
-            GameObject weaponGO = currentWeapon.GetCurrentWeapon();
-            Weapon weapon = weaponGO.GetComponent<Weapon>();
-            Time.timeScale = (weapon.WeaponType is WeaponType.Auto) ? 0.5f : slowMotionFactor;
+            Time.timeScale = slowMotionFactor;
 
             StartCoroutine(DeadeyeEffectCoroutine());
             isUsingAbility = true;
@@ -111,10 +109,7 @@ public class DeadeyeSkill : MonoBehaviour
 
     private IEnumerator DeadeyeEffectCoroutine()
     {
-        // Apply slow-motion at the start
-        GameObject weaponGO = currentWeapon.GetCurrentWeapon();
-        Weapon weapon = weaponGO.GetComponent<Weapon>();
-        Time.timeScale = (weapon.WeaponType is WeaponType.Auto) ? 0.5f : slowMotionFactor;
+        Time.timeScale = slowMotionFactor;
 
         yield return new WaitForSecondsRealtime(duration);
 
@@ -218,19 +213,21 @@ public class DeadeyeSkill : MonoBehaviour
     {
         // Create a copy to avoid modification during iteration
         List<Transform> targetsToShoot = new List<Transform>(markedTargets);
-
+        int i = 0;
+        doneWithLastTargets = false;
         foreach (Transform target in targetsToShoot)
         {
             if (target == null) continue;
-
-            Debug.Log($"Shooting at target: {target.position}");
-
+            Debug.Log("here for "+i);
+            i++;
             // Use StartCoroutine and yield return to wait properly
             yield return StartCoroutine(weapon.ShootForDeadEye(target.position));
 
             // Optional: Update UI
             UpdateTargetsImagesforAfterDeadeye();
         }
+        doneWithLastTargets = true;
+        Debug.Log("Deadeye Done");
 
         // Clear only after all shots are done
         markedTargets.Clear();

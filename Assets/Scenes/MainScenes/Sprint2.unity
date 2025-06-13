@@ -9611,30 +9611,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &4676788202834647269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8938986635367901147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e0e95e9fbec9c441bd6698d61a21582, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WeaponType: 2
-  deadEye: {fileID: 8486386432693121838}
-  bulletPrefab: {fileID: 8196268080365182981, guid: 20db0b4c5ad30c24e80087dad19fb355, type: 3}
-  firePoint: {fileID: 2467181058850249550}
-  muzzleFlash: {fileID: 0}
-  shootSound: {fileID: 0}
-  reloadSound: {fileID: 0}
-  audioSource: {fileID: 0}
-  ikHandler: {fileID: 1024126835845342425}
-  playerBody: {fileID: 8486386432693121833}
-  uiRaycaster: {fileID: 1526665787219997427}
-  eventSystem: {fileID: 9079450573092104412}
 --- !u!4 &4707035413932567101
 Transform:
   m_ObjectHideFlags: 0
@@ -12076,6 +12052,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowMotionFactor: 0.1
   ikHandler: {fileID: 1024126835845342425}
+  currentWeapon: {fileID: 643028695}
   canShoot: 1
   targetsImages:
   - {fileID: 1485745079}
@@ -12437,7 +12414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1000884707929837725}
-  - component: {fileID: 4676788202834647269}
+  - component: {fileID: 8938986635367901148}
   m_Layer: 0
   m_Name: AutoGun
   m_TagString: Untagged
@@ -12445,6 +12422,30 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &8938986635367901148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8938986635367901147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9718763704e35419727efec2c1adbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WeaponType: 2
+  deadEye: {fileID: 8486386432693121838}
+  bulletPrefab: {fileID: 8196268080365182981, guid: 20db0b4c5ad30c24e80087dad19fb355, type: 3}
+  firePoint: {fileID: 2835707429619210564}
+  muzzleFlash: {fileID: 0}
+  shootSound: {fileID: 0}
+  reloadSound: {fileID: 0}
+  audioSource: {fileID: 0}
+  ikHandler: {fileID: 1024126835845342425}
+  playerBody: {fileID: 8486386432693121833}
+  uiRaycaster: {fileID: 1526665787219997427}
+  eventSystem: {fileID: 9079450573092104412}
 --- !u!1 &8954300012449778289
 GameObject:
   m_ObjectHideFlags: 0
