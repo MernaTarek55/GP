@@ -24,7 +24,7 @@ public class SaveTester : MonoBehaviour
             else Debug.Log("No save data found, initializing new inventory.");
             if (data != null)
             {
-                saveData.credits = data.credits;
+                playerInventory.Credits = data.credits;
                 saveData.ownedWeapons.Clear();
                 foreach (var w in data.ownedWeapons) saveData.ownedWeapons.Add(w);
                 foreach (var kv in data.weaponUpgrades) saveData.weaponUpgrades[kv.Key] = kv.Value;
