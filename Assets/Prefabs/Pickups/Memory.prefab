@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2164477190414510678}
   - component: {fileID: 7468062804026831248}
   - component: {fileID: 5921671517896000982}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,9 +113,9 @@ GameObject:
   - component: {fileID: 7082543722353178629}
   - component: {fileID: 8592497632343285644}
   - component: {fileID: 6969836146948755565}
-  - component: {fileID: 9202287158962754208}
-  - component: {fileID: 3392267494262422442}
-  m_Layer: 0
+  - component: {fileID: 8396128842315507403}
+  - component: {fileID: 2840357549473934086}
+  m_Layer: 8
   m_Name: Memory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,8 +158,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.2851486, y: 0.5578952, z: 0.21566868}
-  m_Center: {x: -0.50277424, y: 0.22105241, z: -0.026181698}
+  m_Size: {x: 1.9678459, y: 0.8273461, z: 0.21566868}
+  m_Center: {x: -0.41607475, y: 0.15772974, z: -0.026181698}
 --- !u!114 &6969836146948755565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,21 +174,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WrongMemoryMessage: {fileID: 8969606159291551849}
   messageDuration: 3
---- !u!114 &9202287158962754208
-MonoBehaviour:
+--- !u!54 &8396128842315507403
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4559003115922606091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f16ade56d700af4ebae7492fd3b2814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WrongMemoryMessage: {fileID: 8969606159291551849}
-  messageDuration: 3
---- !u!65 &3392267494262422442
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &2840357549473934086
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -198,17 +211,17 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.12596315, y: 0.020224005, z: 0.0049375007}
-  m_Center: {x: -0.054306865, y: -0.0021878849, z: -0.00000018020525}
+  m_Size: {x: 1.1574222, y: 0.46667087, z: 0.23010969}
+  m_Center: {x: -0.5282454, y: 0.18286973, z: 0.02224505}
 --- !u!1 &8265166975650359063
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,7 +233,8 @@ GameObject:
   - component: {fileID: 1391825873190120802}
   - component: {fileID: 5968378694416818984}
   - component: {fileID: 4539415581938032093}
-  m_Layer: 0
+  - component: {fileID: 5907321227367284890}
+  m_Layer: 8
   m_Name: uploads_files_5461622_Biochip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,6 +320,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5907321227367284890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8265166975650359063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f16ade56d700af4ebae7492fd3b2814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WrongMemoryMessage: {fileID: 8969606159291551849}
+  messageDuration: 3
 --- !u!1 &8969606159291551849
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +345,7 @@ GameObject:
   - component: {fileID: 4697338219837862460}
   - component: {fileID: 5223621762776936}
   - component: {fileID: 8398839635141504089}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
