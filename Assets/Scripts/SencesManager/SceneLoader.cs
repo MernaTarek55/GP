@@ -7,8 +7,8 @@ using TMPro;
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField] private GameObject loadingScreen;
-    [SerializeField] private Image progressBar; // or use Image fill
-    [SerializeField] private TextMeshProUGUI loadingText;   // optional
+    [SerializeField] private Image progressBar; 
+    [SerializeField] private TextMeshProUGUI loadingText;   
 
     public void LoadScene(string sceneName)
     {

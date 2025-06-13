@@ -279,16 +279,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 557899713}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
+      - m_Target: {fileID: 557899712}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: PlayNewGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Sprint3
+          m_StringArgument: Sprint4
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &149133053
@@ -804,6 +804,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingsMenu: {fileID: 1179951856}
   menuPanel: {fileID: 313831319}
+  sceneLoader: {fileID: 557899713}
+  gameSceneName: Sprint4
 --- !u!114 &557899713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1022,7 +1024,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 608575144}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 557899712}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: ContinueGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &608575144
 MonoBehaviour:
   m_ObjectHideFlags: 0
