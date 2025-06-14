@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 [System.Serializable]
 public class PlayerInventory
@@ -28,6 +27,8 @@ public class PlayerInventory
         get => getPlayerStat(PlayerSkillsStats.MaxHealth);
         set => SetPlayerStat(PlayerSkillsStats.MaxHealth, value);
     }
+    
+    public event Action<float> OnHealthChanged;
     public float CurrentHealth
     {
         get => inventorySaveData.currentHealth;
@@ -37,7 +38,6 @@ public class PlayerInventory
             OnHealthChanged?.Invoke(inventorySaveData.currentHealth / MaxHealth);
         }
     }
-    public event Action<float> OnHealthChanged;
     public void InitializePlayerStats()
     {
         // Set default health if not already set

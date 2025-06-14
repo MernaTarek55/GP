@@ -23,7 +23,7 @@ public class Enemy_AttackState : EntityState
 
     public Rigidbody enemyRigidbody { get; private set; }
     public Rigidbody playerRigidbody { get; private set; }
-
+    private Animator animator;
     public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
@@ -88,8 +88,12 @@ public class Enemy_AttackState : EntityState
             }
             
         }
-        else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
+        else if (enemyData.enemyType == EnemyData.EnemyType.
+            LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
         {
+            
+            animator.SetBool("IsIdle", true);
+            
             ShootLava();
         }
     }
@@ -144,6 +148,7 @@ public class Enemy_AttackState : EntityState
     {
         if (entityGO.CompareTag("Player"))
         {
+
             if(entityGO.TryGetComponent(out PlayerHealthComponent healthComponent)) playerHealth = healthComponent;
             else Debug.Log("Health Component not found");
             if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
@@ -166,6 +171,7 @@ public class Enemy_AttackState : EntityState
             else Debug.Log("Mesh Renderer not found");
             if (entityGO.TryGetComponent(out Rigidbody entityRigidbody)) this.enemyRigidbody = entityRigidbody;
             else Debug.Log("entityRigidbody not found");
+            animator = enemyGO.gameObject.GetComponentInChildren<Animator>();
         }
      
 
@@ -358,6 +364,8 @@ public class Enemy_AttackState : EntityState
             {
                 Debug.Log("Shooting laser from turret");
                 enemyGO.GetComponentInChildren<LineRenderer>().enabled = true;
+                Debug.Log("anaaaaaaaaa henaaaaaaaaaaaaaaaa" + enemyData.damage);
+                enemyGO.GetComponentInChildren<Laser>().SetLaserDamage(enemyData.damage);
                 Debug.Log("Laser shot from turret");
             }
             else
@@ -437,7 +445,7 @@ public class Enemy_AttackState : EntityState
         }
         else 
         {
-
+            
             PatrolOrIdleStates();
         }
     }
@@ -446,6 +454,7 @@ public class Enemy_AttackState : EntityState
     {
         if (enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter && enemyData.enemyType != EnemyData.EnemyType.Turret)
         {
+            animator.SetBool("IsIdle", false);
             stateMachine.ChangeState(new Enemy_PatrolState(stateMachine, "Patrol", enemyData, enemyGO, playerGO));
         }
         else

@@ -14,6 +14,7 @@ public class Laser : MonoBehaviour
     [SerializeField] private bool IsNotTurret = false;
     [SerializeField] private PoolType poolType = PoolType.Laser;
 
+    private bool hasDoneDamage; // Nano: bool to check if the same laser causes damage twice
     private bool activated = false;
     private LineRenderer lineRenderer;
     private const float farDistance = 1000f;
@@ -22,6 +23,7 @@ public class Laser : MonoBehaviour
     private IInput input;
     private float currentLifetime;
 
+
     private float laserDamage = 20; // Nano: to set the damage of the laser
 
     void Awake()
@@ -29,6 +31,8 @@ public class Laser : MonoBehaviour
         InitializeLineRenderer();
         InitializeInputSystem();
         activated = inputGO == null; // Activate if no input is assigned
+
+        hasDoneDamage = false;
 
         if (IsNotTurret)
         {
@@ -41,8 +45,8 @@ public class Laser : MonoBehaviour
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.enabled = IsNotTurret;
         lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, new Vector3(0, 0, 0));
-        lineRenderer.SetPosition(1, new Vector3(0, 0, 0.1f));
+        //lineRenderer.SetPosition(0, new Vector3(0, 0, 0));
+        //lineRenderer.SetPosition(1, new Vector3(0, 0, 0.1f));
         if (laserRendererSettings == null)
         {
             Debug.LogError("LaserRendererSettings is not assigned!", this);
@@ -126,6 +130,8 @@ public class Laser : MonoBehaviour
             LaserSensor.HandleLaser(this, prevStruckSensor, null);
             prevStruckSensor = null;
         }
+
+        hasDoneDamage = false;
     }
 
     private void UpdateLaserBeam()
@@ -148,6 +154,7 @@ public class Laser : MonoBehaviour
 
     public void CastBeam(Vector3 origin, Vector3 direction)
     {
+        Debug.Log($"Casting beam from {origin} in direction {direction}");
         if (bouncePositions == null || bouncePositions.Count > maxBounces)
         {
             return;
@@ -188,12 +195,17 @@ public class Laser : MonoBehaviour
             UpdateSensorState(currentSensor);
 
             // For bullet-like behavior, check if we hit something that should stop the laser
-            if (IsNotTurret && hitInfo.collider.GetComponent<IDamageable>() != null)
+            IDamageable damagable = hitInfo.collider.GetComponent<IDamageable>();
+            if (damagable != null)
             {
-                IDamageable enemyDamage = hitInfo.collider.GetComponent<IDamageable>();
-                enemyDamage.TakeDamage(laserDamage); // Nano: set laser damage from the weapon first 
+                if (!IsNotTurret || (IsNotTurret && !hasDoneDamage))
+                {
+                    damagable.TakeDamage(laserDamage);
+                    currentLifetime = 0;
 
-                currentLifetime = 0; // Immediately return to pool
+                    if (IsNotTurret)
+                        hasDoneDamage = true;
+                }
             }
         }
     }   

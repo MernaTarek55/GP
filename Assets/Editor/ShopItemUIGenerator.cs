@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopUIGenerator : EditorWindow
 {
@@ -23,6 +24,7 @@ public class ShopUIGenerator : EditorWindow
 
         foreach (ShopItem item in shopItems)
         {
+            
             Debug.Log($"Generating UI for {item.name}");
             GameObject uiGO = (GameObject)PrefabUtility.InstantiatePrefab(itemUIPrefab);
             ShopItemUI shopItemUI = uiGO.GetComponent<ShopItemUI>();
@@ -37,10 +39,23 @@ public class ShopUIGenerator : EditorWindow
             //TODO
             //Sprite icon = LoadIconForItem(displayName);
 
-            shopItemUI.itemNameText.text = displayName;
             shopItemUI.Bind(item);
 
-            string filename = $"ShopItemUI_{item.name}.prefab";
+            string filename = $"{item.name}_ShopItemUI.prefab";
+            if(item.name.Contains("Weapon"))
+            {
+                Button btn = uiGO.GetComponent<Button>();
+                Image img = uiGO.GetComponent<Image>();
+
+                if (img != null)
+                {
+                    GameObject.DestroyImmediate(img);
+                    GameObject.DestroyImmediate(btn);
+                }
+                //delete word from string
+                displayName = displayName.Replace("Weapon", "").Trim();
+            }
+            shopItemUI.itemNameText.text = displayName;
             PrefabUtility.SaveAsPrefabAsset(uiGO, Path.Combine(outputPath, filename));
             GameObject.DestroyImmediate(uiGO);
         }
@@ -76,7 +91,7 @@ public class ShopUIGenerator : EditorWindow
         else if (tokens.Length >= 2 && tokens[0] == "Skill")
         {
             string skill = tokens[1];
-            return $"{skill} Skill Upgrade";
+            return $"{skill} Upgrade";
         }
         else if (tokens.Length >= 2 && tokens[0] == "Health")
         {
