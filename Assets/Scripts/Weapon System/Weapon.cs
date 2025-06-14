@@ -17,6 +17,8 @@ public abstract class Weapon : MonoBehaviour
     public abstract void Shoot(Vector3 target);
     public abstract void Reload();
 
+
+
     public float GetFireRate()
     {
         return weaponData.fireRate;

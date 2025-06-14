@@ -212,10 +212,10 @@ public class DeadeyeSkill : MonoBehaviour
     private IEnumerator ShootEnemiesSequentially(Weapon weapon)
     {
         // Create a copy to avoid modification during iteration
-        List<Transform> targetsToShoot = new List<Transform>(markedTargets);
+        //List<Transform> targetsToShoot = new List<Transform>(markedTargets);
         int i = 0;
         doneWithLastTargets = false;
-        foreach (Transform target in targetsToShoot)
+        foreach (Transform target in markedTargets)
         {
             if (target == null) continue;
             Debug.Log("here for "+i);

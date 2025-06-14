@@ -7,7 +7,7 @@ public class IKHandler : MonoBehaviour
     public Rig rig; // Reference to your specific rig (e.g. right hand IK)
 
     [Header("IK Weights")]
-    public float shootIKWeight = 1f;
+    public float shootIKWeight = 0.7f;
     public float normalIKWeight = 0f;
     public float ikBlendSpeed = 5f;
 

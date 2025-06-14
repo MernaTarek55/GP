@@ -3,7 +3,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float speed = 20f;
-    public float lifeTime =10f;
+    public float lifeTime =100f;
     float damage = 10;
     private void OnEnable()
     {
@@ -38,6 +38,6 @@ public class Bullet : MonoBehaviour
             Debug.Log("Ana enemy hit");
             other.gameObject.GetComponentInChildren<HealthComponent>().TakeDamage(damage);
         }
-        Disable();
+        //Disable();
     }
 }

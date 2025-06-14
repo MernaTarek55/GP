@@ -9,6 +9,7 @@ public class Pistol : Weapon
     Player player;
 
     [SerializeField] private DeadeyeSkill deadEye;
+    [SerializeField] private bool deadEyeBool = false;
 
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
@@ -20,7 +21,6 @@ public class Pistol : Weapon
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private AudioSource audioSource;
 
-    [SerializeField] private IKHandler ikHandler;
 
     private float reloadTimer;
     private float fireCooldown;
@@ -30,10 +30,10 @@ public class Pistol : Weapon
     private Vector3 shootDirection;
 
     [SerializeField] private Transform playerBody;
-
     [Header("UI")]
     [SerializeField] private GraphicRaycaster uiRaycaster;
     [SerializeField] private EventSystem eventSystem;
+
 
     //Dictionary
     private readonly Dictionary<int, bool> touchStartedOverUI = new();
@@ -136,13 +136,13 @@ public class Pistol : Weapon
     }
     public override void Shoot(Vector3 targetPoint) // add parameter the target you want to shoot
     {
-        if (ikHandler != null)
-        {
-            ikHandler.TriggerShootIK();
+        //if (ikHandler != null)
+        //{
+        //    ikHandler.TriggerShootIK();
+        //}
+
             StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
-        }
-
-
+        deadEyeBool = false;
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
         //    return;
 
@@ -168,26 +168,29 @@ public class Pistol : Weapon
     {
         
         // Wait until IK weight is close to 1
-        while (ikHandler.rig.weight < 0.8f)
-        {
-            yield return null; // wait for next frame
-        }
+        //while (ikHandler.rig.weight < 0.8f)
+        //{
+        //    yield return null; // wait for next frame
+        //}
 
-
+        Debug.Log("ANaaaaaaaaaaaaaaaaa henaaaaaaaaaaaaaaaa m3 nano");
         // moved these here - to get the final firePoint calculations after doing the ik
         shootDirection = (targetPoint - firePoint.position).normalized;
         firePoint.rotation = Quaternion.LookRotation(shootDirection);
 
         // Only shoot if allowed
-        if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
+        if (isReloading &&  fireCooldown > 0f)
         {
             yield break;
         }
-
+        if (!deadEyeBool)
+        {
         fireCooldown = weaponData.fireRate;
+
+        }
         currentAmmo--;
 
-        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
+        GameObject bullet = /*Instantiate(bulletPrefab , firePoint.position , Quaternion.identity);*/PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
         bullet.transform.position = firePoint.position;
         bullet.transform.rotation = Quaternion.LookRotation(shootDirection); // make sure it's updated
         bullet.SetActive(true);
@@ -206,6 +209,7 @@ public class Pistol : Weapon
         {
             //to change to the data in inventory 
             bulletScript.SetDamage(5/*weaponData.damage*/);
+            
         }
         // bulletScript.SetDamage(weaponData.damage);
 
@@ -224,21 +228,21 @@ public class Pistol : Weapon
 
     public void ShootTargets(List<Transform> targets)
     {
-        if (ikHandler != null)
-        {
-            ikHandler.TriggerShootIK();
             StartCoroutine(ShootTargetsSequentially(targets));
-            //_ = StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
-        }
+        //if (ikHandler != null)
+        //{
+        //    ikHandler.TriggerShootIK();
+        //    //_ = StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
+        //}
     }
 
 
     private IEnumerator ShootTargetsSequentially(List<Transform> targets)
     {
-        while (ikHandler.rig.weight < 0.8f)
-        {
-            yield return null; // wait for next frame
-        }
+        //while (ikHandler.rig.weight < 0.8f)
+        //{
+        //    yield return null; // wait for next frame
+        //}
 
         deadEye.canShoot = false;
         currentAmmo = weaponData.maxAmmo;
@@ -253,68 +257,68 @@ public class Pistol : Weapon
         yield return null;
     }
 
-    private IEnumerator nady3laetfo(List<Transform> targets)
-    {
-        yield return new WaitForSeconds(weaponData.fireRate);
+    //private IEnumerator nady3laetfo(List<Transform> targets)
+    //{
+    //    yield return new WaitForSeconds(weaponData.fireRate);
 
-        Debug.Log($"fire rate = {weaponData.fireRate}");
+    //    Debug.Log($"fire rate = {weaponData.fireRate}");
 
-        if (targets.Count > 0)
-        {
-            etfo(targets);
-        }
-    }
+    //    if (targets.Count > 0)
+    //    {
+    //        etfo(targets);
+    //    }
+    //}
 
-    private void etfo(List<Transform> targets)
-    {
-        shootDirection = (targets[targets.Count - 1].position - firePoint.position).normalized;
-        firePoint.rotation = Quaternion.LookRotation(shootDirection);
+    //private void etfo(List<Transform> targets)
+    //{
+    //    shootDirection = (targets[targets.Count - 1].position - firePoint.position).normalized;
+    //    firePoint.rotation = Quaternion.LookRotation(shootDirection);
 
 
-        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
+    //    GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
 
-        Debug.Log($"bullet is {(bullet == null ? "NULL" : "OK")}.");
+    //    Debug.Log($"bullet is {(bullet == null ? "NULL" : "OK")}.");
 
-        bullet.transform.position = firePoint.position;
-        bullet.transform.rotation = Quaternion.LookRotation(shootDirection); // make sure it's updated
-        bullet.SetActive(true);
+    //    bullet.transform.position = firePoint.position;
+    //    bullet.transform.rotation = Quaternion.LookRotation(shootDirection); // make sure it's updated
+    //    bullet.SetActive(true);
 
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+    //    Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
-        // reset liner and angular velocity to make the bullet hit right
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+    //    // reset liner and angular velocity to make the bullet hit right
+    //    rb.linearVelocity = Vector3.zero;
+    //    rb.angularVelocity = Vector3.zero;
 
-        rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
+    //    rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
 
-        Bullet bulletScript = bullet.GetComponent<Bullet>();
-        if (bulletScript != null)
-        {
-            //to change to the data in inventory 
-            bulletScript.SetDamage(-1/*weaponData.damage*/);
-            // bulletScript.SetDamage(weaponData.damage);
-        }
+    //    Bullet bulletScript = bullet.GetComponent<Bullet>();
+    //    if (bulletScript != null)
+    //    {
+    //        //to change to the data in inventory 
+    //        bulletScript.SetDamage(-1/*weaponData.damage*/);
+    //        // bulletScript.SetDamage(weaponData.damage);
+    //    }
 
-        if (muzzleFlash != null)
-        {
-            muzzleFlash.Play();
-        }
+    //    if (muzzleFlash != null)
+    //    {
+    //        muzzleFlash.Play();
+    //    }
 
-        if (audioSource && shootSound)
-        {
-            audioSource.PlayOneShot(shootSound);
-        }
+    //    if (audioSource && shootSound)
+    //    {
+    //        audioSource.PlayOneShot(shootSound);
+    //    }
 
-        targets.Remove(targets[targets.Count - 1]);
+    //    targets.Remove(targets[targets.Count - 1]);
 
-        if (targets.Count > 0)
-        {
-            Debug.Log("double etfo");
-            StartCoroutine(nady3laetfo(targets));
-        }
+    //    if (targets.Count > 0)
+    //    {
+    //        Debug.Log("double etfo");
+    //        StartCoroutine(nady3laetfo(targets));
+    //    }
 
-        Debug.Log($"targets count {targets.Count}");
-    }
+    //    Debug.Log($"targets count {targets.Count}");
+    //}
 
 
     public override void Reload()
@@ -336,7 +340,7 @@ public class Pistol : Weapon
         {
             shootDirection = (targetPosition - firePoint.position).normalized;
             firePoint.rotation = Quaternion.LookRotation(shootDirection);
-
+            deadEyeBool = true;
             // Shoot
             Shoot(targetPosition);
 
@@ -346,31 +350,33 @@ public class Pistol : Weapon
         else
         {
             // Skip IK wait if IKHandler is missing
-            if (ikHandler == null)
-            {
-                Shoot(targetPosition);
-                yield break;
-            }
+            //if (ikHandler == null)
+            //{
+            //    Shoot(targetPosition);
+            //    yield break;
+            //}
 
             //Trigger IK aiming
-            ikHandler.TriggerShootIK();
-            shootDirection = (targetPosition - firePoint.position).normalized;
-            firePoint.rotation = Quaternion.LookRotation(shootDirection);
+            //ikHandler.TriggerShootIK();
+            //shootDirection = (targetPosition - firePoint.position).normalized;
+            //firePoint.rotation = Quaternion.LookRotation(shootDirection);
 
             float maxWaitTime = 0.5f;
             float timer = 0f;
 
-            while (ikHandler.rig.weight < 0.8f && timer < maxWaitTime)
-            {
-                timer += Time.unscaledDeltaTime;
-                yield return null;
-            }
+            //while (ikHandler.rig.weight < 0.8f && timer < maxWaitTime)
+            //{
+            //    timer += Time.unscaledDeltaTime;
+            //    yield return null;
+            //}
 
             // Proceed with shooting even if IK isn't perfectly aligned
+            deadEyeBool = true;
+            Debug.Log("Ana hena");
             Shoot(targetPosition);
 
             // Small delay between shots (adjust as needed)
-            //yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(1f);
 
         }
 
