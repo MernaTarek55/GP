@@ -1,78 +1,46 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DeadeyeSkill : MonoBehaviour
 {
     [SerializeField] private float slowMotionFactor = 0;
-
     [SerializeField] private IKHandler ikHandler;
-    [SerializeField] private WeaponSwitch currentWeapon;
+    [SerializeField] PlayerInventoryHolder playerInventoryHolder;
 
-    public bool canShoot = true;
-
-    private float duration;
     private float timer;
-    private float cooldownTime;
     private float lastUsedTime;
+    private bool isUsingAbility = false;
+    //getter and setter for isUsingAbility
+    public bool IsUsingAbility
+    {
+        get { return isUsingAbility; }
+        private set { }
+    }
 
     private List<Transform> markedTargets = new List<Transform>();
     [SerializeField] private Transform[] targetsImages;
 
-    private bool isExcutingTargets;
-    private bool isUsingAbility;
-    private bool doneWithLastTargets = true;
-
-    [SerializeField] private Image deadEyeCooldownImage;
-    [SerializeField] private Image targetImage;
-    [SerializeField] private GameObject parentPanel;
-
     private PlayerInventory playerInventory;
-
-    public event Action OnDeadeyeEffectEnded;
+    [SerializeField] WeaponSwitch weapons;
 
     private void Start()
     {
-        GameObject player = GameObject.FindWithTag("Player");
-        playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
-
-        cooldownTime = 1f;
-        duration = 3f;
-        lastUsedTime = Time.time - cooldownTime;
-
-        canShoot = true;
+        playerInventory = playerInventoryHolder.Inventory;
     }
 
     private void Update()
     {
-        if (Time.time - lastUsedTime >= cooldownTime)
-        {
-            isExcutingTargets = false;
-            canShoot = true;
-            isUsingAbility = false;
-            UpdateCooldownUI(1);
-        }
 
         if (isUsingAbility)
         {
-            canShoot = false;
-
-            timer += Time.unscaledDeltaTime;
-            UpdateCooldownUI(1 - (timer / duration));
-
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 Vector2 touchPos = Input.GetTouch(0).position;
                 AddTapPosition(touchPos);
             }
-        }
-        else if (!isUsingAbility && doneWithLastTargets && !isExcutingTargets && markedTargets.Count > 0)
-        {
-            TerminateEnemies();
         }
 
         if (!isExcutingTargets)
@@ -87,7 +55,7 @@ public class DeadeyeSkill : MonoBehaviour
 
     public void UseDeadeye()
     {
-        if (Time.time - lastUsedTime >= cooldownTime)
+        if (Time.time - lastUsedTime >= playerInventory.getPlayerStat(PlayerSkillsStats.DeadEyeCoolDown))
         {
             markedTargets.Clear();
             timer = 0;
@@ -111,20 +79,21 @@ public class DeadeyeSkill : MonoBehaviour
     {
         Time.timeScale = slowMotionFactor;
 
-        yield return new WaitForSecondsRealtime(duration);
+        yield return new WaitForSecondsRealtime(playerInventory.getPlayerStat(PlayerSkillsStats.DeadeyeDuration));
 
         // Reset time scale when DeadEye ends
         Time.timeScale = 1f;
         isUsingAbility = false;
-        OnDeadeyeEffectEnded?.Invoke();
         Debug.Log("Deadeye effect ended.");
+        ShootTargets();
     }
 
-    private void UpdateCooldownUI(float fillAmount)
+    private void ShootTargets()
     {
-        if (deadEyeCooldownImage != null)
+        for (int i = 0; i < markedTargets.Count; i++)
         {
-            deadEyeCooldownImage.fillAmount = fillAmount;
+            weapons.GetCurrentWeapon().ShootForDeadEye(markedTargets[i].position);
+            
         }
     }
 

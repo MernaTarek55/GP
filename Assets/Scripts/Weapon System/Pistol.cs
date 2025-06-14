@@ -142,7 +142,7 @@ public class Pistol : Weapon
             StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         }
 
-
+        /*
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
         //    return;
 
@@ -162,6 +162,7 @@ public class Pistol : Weapon
 
         //if (audioSource && shootSound)
         //    audioSource.PlayOneShot(shootSound);
+        */
     }
 
     private IEnumerator WaitAndShootWhenIKReady(Vector3 targetPoint)

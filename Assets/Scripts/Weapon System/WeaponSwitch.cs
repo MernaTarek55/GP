@@ -33,11 +33,11 @@ public class WeaponSwitch : MonoBehaviour
         }
     }
 
-    public GameObject GetCurrentWeapon()
+    public Weapon GetCurrentWeapon()
     {
         if (currentWeaponIndex >= 0 && currentWeaponIndex < weapons.Length)
         {
-            return weapons[currentWeaponIndex];
+            return weapons[currentWeaponIndex].GetComponent<Weapon>();
         }
         return null;
     }
