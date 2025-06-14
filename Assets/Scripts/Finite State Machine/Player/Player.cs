@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -112,5 +113,10 @@ public class Player : MonoBehaviour
     public void ResetHealth()
     {
         healthComponent.RenewHealth();
+    }
+
+    public void IncreaseDamage()
+    {
+        //TODO: Increase damage of the weapon
     }
 }
