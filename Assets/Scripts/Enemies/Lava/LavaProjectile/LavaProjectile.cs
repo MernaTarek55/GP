@@ -121,12 +121,10 @@ public class LavaProjectile : MonoBehaviour
         switch (projectileType)
         {
             case ProjectileEnemyType.Random:
-                initialB = new Vector3(enemyPosition.x + randomizer.x, curve.B.position.y, enemyPosition.z + randomizer.y);
-                Debug.Log($"Random target set to: {initialB}");
+                initialB = new Vector3(randomizer.x, curve.B.position.y, randomizer.y);
                 break;
             case ProjectileEnemyType.Target:
                 initialB = curve.B.position;
-                Debug.Log($"Direct target set to: {initialB}");
                 break;
         }
     }

@@ -53,10 +53,8 @@ public class Enemy_AttackState : EntityState
         base.Update();
         if (enemyData.enemyType == EnemyData.EnemyType.Turret  || enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
         {
-            Debug.Log("Turret Attack");
             if (invisibilitySkill.isInvisible)
             {
-                Debug.Log("Player is invisible");
                 stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
                 return;
             }
@@ -71,11 +69,8 @@ public class Enemy_AttackState : EntityState
 
         else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
         {
-            Debug.Log("BallDroid Attack");
-            Debug.Log(invisibilitySkill.isInvisible);
             if (invisibilitySkill.isInvisible)
             {
-                Debug.Log("Player is invisible, ball droid does nothing.");
                 return;
             }
             if (!hasExploded && enemyData.enemyType == EnemyData.EnemyType.ballDroid)
@@ -420,7 +415,7 @@ public class Enemy_AttackState : EntityState
                 break;
             case EnemyData.EnemyType.LavaRobotTypeB:
                 lavaProjectile.projectileType = LavaProjectile.ProjectileEnemyType.Random; //Random shooting
-
+                
                 break;
             }
         
