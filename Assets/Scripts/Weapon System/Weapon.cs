@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
@@ -16,8 +17,16 @@ public abstract class Weapon : MonoBehaviour
     public abstract void Shoot(Vector3 target);
     public abstract void Reload();
 
+
+
     public float GetFireRate()
     {
         return weaponData.fireRate;
+    }
+
+    public virtual IEnumerator ShootForDeadEye(Vector3 target)
+    {
+        //Shoot(target);
+        yield return null;
     }
 }

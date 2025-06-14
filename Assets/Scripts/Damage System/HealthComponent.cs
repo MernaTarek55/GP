@@ -33,7 +33,6 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
         currentHealth -= damage;
 
-        Debug.Log("Take Damageeeeeeeeeeeeeeee, health: " + currentHealth);
     }
 
     public bool IsDead()
@@ -44,7 +43,5 @@ public class HealthComponent : MonoBehaviour, IDamageable
     private void Die()
     {
         isDead = true;
-        GetComponentInParent<Enemy>()?.Die();
-        Debug.Log("bruh, I think I am no longer alive");
     }
 }

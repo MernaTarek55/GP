@@ -25,6 +25,7 @@ public class DeadeyeSkill : MonoBehaviour
 
     private bool isExcutingTargets;
     private bool isUsingAbility;
+    private bool doneWithLastTargets = true;
 
     [SerializeField] private Image deadEyeCooldownImage;
     [SerializeField] private Image targetImage;
@@ -69,13 +70,18 @@ public class DeadeyeSkill : MonoBehaviour
                 AddTapPosition(touchPos);
             }
         }
-        else if (!isUsingAbility && !isExcutingTargets)
+        else if (!isUsingAbility && doneWithLastTargets && !isExcutingTargets && markedTargets.Count > 0)
         {
             TerminateEnemies();
         }
+
         if (!isExcutingTargets)
         {
             UpdateTargetsImages();
+        }
+        else
+        {
+            UpdateTargetsImagesforAfterDeadeye();
         }
     }
 
@@ -88,9 +94,10 @@ public class DeadeyeSkill : MonoBehaviour
             lastUsedTime = Time.time;
 
             Debug.Log("Deadeye skill used!");
-            Time.timeScale = slowMotionFactor;
-            StartCoroutine(DeadeyeEffectCoroutine());
 
+            Time.timeScale = slowMotionFactor;
+
+            StartCoroutine(DeadeyeEffectCoroutine());
             isUsingAbility = true;
         }
         else
@@ -100,19 +107,15 @@ public class DeadeyeSkill : MonoBehaviour
         }
     }
 
-  
-    private void UpdateStats()
+    private IEnumerator DeadeyeEffectCoroutine()
     {
-        // for future
-        duration = playerInventory.getPlayerStat(PlayerSkillsStats.DeadEyeDuration);
-        cooldownTime = playerInventory.getPlayerStat(PlayerSkillsStats.DeadEyeCoolDown);
-    }
+        Time.timeScale = slowMotionFactor;
 
-      private IEnumerator DeadeyeEffectCoroutine()
-    {
         yield return new WaitForSecondsRealtime(duration);
+
+        // Reset time scale when DeadEye ends
         Time.timeScale = 1f;
-        isUsingAbility = false; // ✅ Ensure it resets here
+        isUsingAbility = false;
         OnDeadeyeEffectEnded?.Invoke();
         Debug.Log("Deadeye effect ended.");
     }
@@ -130,29 +133,31 @@ public class DeadeyeSkill : MonoBehaviour
         if (markedTargets.Count >= targetsImages.Length)
             return;
 
-        GameObject tap = new();
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
-            tap.transform.position = hit.point;
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                GameObject tap = new GameObject("TargetMarker");
+                tap.transform.position = hit.point;
+                tap.transform.parent = hit.collider.transform;
+                markedTargets.Add(tap.transform);
+
+                GameObject tmpImage = new GameObject("TargetImage");
+                tmpImage.transform.position = hit.point;
+                tmpImage.transform.parent = hit.transform;
+            }
         }
         else
         {
+            // Optional: if you want to create a fallback marker in empty space
+            GameObject tap = new GameObject("TargetMarker");
             tap.transform.position = ray.origin + ray.direction * 100f;
         }
-
-        if (hit.collider.gameObject.CompareTag("Enemy"))
-        {
-            tap.transform.parent = hit.collider.transform;
-            markedTargets.Add(tap.transform);
-
-            GameObject tmpImage = new();
-            tmpImage.transform.position = hit.point;
-            tmpImage.transform.parent = hit.transform;
-        }
     }
+
 
     private void UpdateTargetsImages()
     {
@@ -172,14 +177,31 @@ public class DeadeyeSkill : MonoBehaviour
         }
     }
 
+    private void UpdateTargetsImagesforAfterDeadeye()
+    {
+
+        for (int i = 0; i < targetsImages.Length; i++)
+        {
+            if (i < markedTargets.Count && markedTargets[i] != null)
+            {
+                targetsImages[i].position = Camera.main.WorldToScreenPoint(markedTargets[i].position);
+            }
+        }
+    }
+
     private void TerminateEnemies()
     {
-        GameObject weaponGO = currentWeapon?.GetCurrentWeapon();
-        Weapon weapon = weaponGO.GetComponent<Weapon>();
-
-        if (weapon == null)
+        GameObject weaponGO = currentWeapon.GetCurrentWeapon();
+        if (weaponGO == null) // Add null check
         {
-            Debug.LogError("Current weapon does not have a Weapon-derived script attached!");
+            Debug.LogError("No current weapon found!");
+            return;
+        }
+
+        Weapon weapon = weaponGO.GetComponent<Weapon>();
+        if (weapon == null) // Add null check
+        {
+            Debug.LogError("Current weapon has no Weapon component!");
             return;
         }
 
@@ -189,29 +211,27 @@ public class DeadeyeSkill : MonoBehaviour
 
     private IEnumerator ShootEnemiesSequentially(Weapon weapon)
     {
-        for (int i = 0; i < markedTargets.Count; i++)
+        // Create a copy to avoid modification during iteration
+        //List<Transform> targetsToShoot = new List<Transform>(markedTargets);
+        int i = 0;
+        doneWithLastTargets = false;
+        foreach (Transform target in markedTargets)
         {
-            Transform target = markedTargets[i];
             if (target == null) continue;
+            Debug.Log("here for " + i);
+            i++;
+            // Use StartCoroutine and yield return to wait properly
+            yield return StartCoroutine(weapon.ShootForDeadEye(target.position));
 
-            weapon.Shoot(target.position);
-
-
-            if (i < markedTargets.Count && markedTargets[i] != null)
-            {
-                targetsImages[i].position = Camera.main.WorldToScreenPoint(markedTargets[i].position);
-            }
-
-            Debug.Log("Shooting at marked enemy " + i);
-            yield return new WaitForSeconds(weapon.GetFireRate());
-            
-            if (i < targetsImages.Length)
-            {
-                targetsImages[i].gameObject.SetActive(false);
-            }
+            // Optional: Update UI
+            UpdateTargetsImagesforAfterDeadeye();
         }
+        doneWithLastTargets = true;
+        Debug.Log("Deadeye Done");
 
+        // Clear only after all shots are done
         markedTargets.Clear();
         isExcutingTargets = false;
+
     }
 }

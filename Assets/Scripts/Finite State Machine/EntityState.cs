@@ -59,12 +59,10 @@ public abstract class EntityState
 
     public virtual void Enter()
     {
-        Debug.Log("I enter " + stateName);
     }
 
     public virtual void Update()
     {
-        Debug.Log("I am in " + stateName);
 
         //if (enemyData != null)
         //{
@@ -94,7 +92,6 @@ public abstract class EntityState
 
     public virtual void Exit()
     {
-        Debug.Log("I exit " + stateName);
     }
 
     public virtual void OnCollisionEnter(Collision collision) { }
