@@ -191,14 +191,7 @@ public class DeadeyeSkill : MonoBehaviour
 
     private void TerminateEnemies()
     {
-        GameObject weaponGO = currentWeapon.GetCurrentWeapon();
-        if (weaponGO == null) // Add null check
-        {
-            Debug.LogError("No current weapon found!");
-            return;
-        }
-
-        Weapon weapon = weaponGO.GetComponent<Weapon>();
+        Weapon weapon = currentWeapon.GetCurrentWeapon();
         if (weapon == null) // Add null check
         {
             Debug.LogError("Current weapon has no Weapon component!");
