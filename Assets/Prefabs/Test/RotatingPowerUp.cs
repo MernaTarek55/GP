@@ -43,6 +43,12 @@ public class RotatingPowerUp : MonoBehaviour
                     case PowerUpType.Pistol:
                         player.ActivatePistol();
                         break;
+                    case PowerUpType.DeadEye:
+                        player.ActivateDeadEye();
+                        break;
+                    case PowerUpType.BigDamage:
+                        player.IncreaseDamage();
+                        break;
                 }
                 Destroy(gameObject);
             }
@@ -54,4 +60,6 @@ public enum PowerUpType
 {
     Invisibility,
     Pistol,
+    DeadEye,
+    BigDamage
 }
