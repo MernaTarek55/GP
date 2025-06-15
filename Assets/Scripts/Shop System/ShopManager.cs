@@ -7,8 +7,7 @@ public class ShopManager : MonoBehaviour
     public static ShopManager Singelton { get; private set; }
     public PlayerInventory playerInventory { get; private set; }
 
-    private List<ShopItem> availableItems;
-
+    [SerializeField] private List<ShopItem> availableItems;
 
     private void Awake()
     {
@@ -18,7 +17,8 @@ public class ShopManager : MonoBehaviour
             return;
         }
         Singelton = this;
-        //availableItems = Resources.LoadAll<ShopItem>("ShopItems").ToList();
+        if(availableItems.Count < 1)
+            availableItems = Resources.LoadAll<ShopItem>("ShopItems").ToList();
 
         //TODO: remove this 
         //GameObject player = GameObject.FindWithTag("Player");
@@ -47,6 +47,47 @@ public class ShopManager : MonoBehaviour
         }
 
         playerInventory = holder.Inventory;
+        
+        if(!GameStartType.IsNewGame)
+        {
+            foreach (var item in availableItems)
+            {
+                if (item is WeaponUpgradeItem upgradeItem)
+                {
+                    if (playerInventory.GetUpgradeState(upgradeItem.weaponType).GetLevel(upgradeItem.statToUpgrade) >= upgradeItem.maxLvl)
+                    {
+                        upgradeItem.isOwned = true;
+                    }
+                    else
+                    {
+                        upgradeItem.isOwned = false;
+                    }
+                }
+                else if (item is WeaponItem weaponItem)
+                {
+                    if(playerInventory.HasWeapon(weaponItem.weaponType))
+                    {
+                        weaponItem.isOwned = true;
+                    }
+                    else
+                    {
+                        weaponItem.isOwned = false;
+                    }
+                }
+                else if(item is PlayerSkillItem playerSkillItem)
+                { 
+                    if (playerInventory.getPlayerStat(playerSkillItem.skill) <= playerSkillItem.maxVal)
+                    {
+                        playerSkillItem.isOwned = true;
+                    }
+                    else
+                    {
+                        playerSkillItem.isOwned = false;
+                    }
+                }
+                
+            }
+        }
     }
     public bool Buy(ShopItem item)
     {
@@ -54,6 +95,11 @@ public class ShopManager : MonoBehaviour
 
         if (item != null)
         {
+            if (item.isOwned)
+            {
+                Debug.LogWarning($"Item {item.name} is already owned, cannot be purchased again.");
+                return false;
+            }
             if (item is WeaponUpgradeItem upgradeItem)
             {
                 if (playerInventory != null)
@@ -88,4 +134,5 @@ public class ShopManager : MonoBehaviour
         }
         return false;
     }
+
 }

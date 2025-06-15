@@ -28,7 +28,10 @@ public class WeaponShowCase : MonoBehaviour
         {
             panel.SetActive(false);
         }
+
         statsPanels[currentIndex].SetActive(true);
+        if (weaponItems[currentIndex].IsFullyBought())
+            weaponCostText.text = "Owned";
     }
 
     private void updateData()
@@ -36,7 +39,7 @@ public class WeaponShowCase : MonoBehaviour
         weaponImage.sprite = weaponItems[currentIndex].icon;
         weaponNameText.text = weaponItems[currentIndex].GetItemName();
         if (weaponItems[currentIndex].IsFullyBought())
-            weaponCostText.text = "";
+            weaponCostText.text = "Owned";
         else
             weaponCostText.text = $"Cost: {weaponItems[currentIndex].GetItemCost()}";
     }
@@ -105,7 +108,7 @@ public class WeaponShowCase : MonoBehaviour
         weaponItems[currentIndex].OnBuyButtonClicked();
         if (weaponItems[currentIndex].IsFullyBought())
         {
-            weaponCostText.text = $"";
+            weaponCostText.text = $"Owned";
         }
     }
 }

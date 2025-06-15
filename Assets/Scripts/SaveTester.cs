@@ -13,8 +13,8 @@ public class SaveTester : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-            playerInventory = playerInventoryHolder.Inventory;
-            saveData = playerInventory.inventorySaveData;
+        playerInventory = playerInventoryHolder.Inventory;
+        saveData = playerInventory.inventorySaveData;
         if (!GameStartType.IsNewGame)
         {
             saveManager = new InventorySaveManager(saveData.ownedWeapons, saveData.weaponUpgrades, saveData.bulletsCount, saveData.playerStats, saveData.credits);
