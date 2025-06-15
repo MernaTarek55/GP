@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7194646444477233776}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: Control
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,8 @@ GameObject:
   - component: {fileID: 4780991443011914626}
   - component: {fileID: 7038059418010879064}
   - component: {fileID: 6269656648391765689}
-  m_Layer: 9
+  - component: {fileID: 522454861136068325}
+  m_Layer: 21
   m_Name: Random Lava Robot
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -83,7 +84,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2097152
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -149,6 +150,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &522454861136068325
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335010427751083250}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3848848684691651196
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 353730419413130335}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +217,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2815389244391004480}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3881788006025855109}
   - component: {fileID: 8853351470921752069}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: CurveController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -272,7 +300,7 @@ GameObject:
   - component: {fileID: 5210349634798538841}
   - component: {fileID: 6082758549442494074}
   - component: {fileID: 9117479031269400398}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +384,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1696262753396996423}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: ShootPos
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
@@ -429,6 +457,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bedb2cee71ffe344bb517ebf577e7b77, type: 3}
       propertyPath: m_Name
       value: lava boii
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bedb2cee71ffe344bb517ebf577e7b77, type: 3}
+      propertyPath: m_Layer
+      value: 21
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

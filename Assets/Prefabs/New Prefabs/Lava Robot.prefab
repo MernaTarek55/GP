@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3293150209947027568}
   - component: {fileID: 4859007395952255834}
   - component: {fileID: 3876881987822554017}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 5094790084820442039}
   - component: {fileID: 5944729463471478431}
   - component: {fileID: 3490545269128099831}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: Lava Robot
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2097152
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -213,7 +213,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5015860327804398774}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 527528509178990841}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2533545714980219552}
   - component: {fileID: 1130297009611387419}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: CurveController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +325,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8820818873656782624}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: Control
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +356,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8566181330731313115}
-  m_Layer: 9
+  m_Layer: 21
   m_Name: ShootPos
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
@@ -429,6 +429,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bedb2cee71ffe344bb517ebf577e7b77, type: 3}
       propertyPath: m_Name
       value: lava boii
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bedb2cee71ffe344bb517ebf577e7b77, type: 3}
+      propertyPath: m_Layer
+      value: 21
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

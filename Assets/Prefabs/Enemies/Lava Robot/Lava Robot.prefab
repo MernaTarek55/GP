@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: -1124280754691726229}
   - component: {fileID: 2662196925404066316}
   - component: {fileID: 6637215917416424694}
+  - component: {fileID: 1720189152555651017}
   m_Layer: 9
   m_Name: Lava Robot
   m_TagString: Enemy
@@ -149,6 +150,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &1720189152555651017
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850917478301423260}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2147523308040884472
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,6 +415,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 5819782264139901582}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b26c6fca07835744e84c140ac7487984, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b26c6fca07835744e84c140ac7487984, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b26c6fca07835744e84c140ac7487984, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b26c6fca07835744e84c140ac7487984, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -431,9 +471,13 @@ PrefabInstance:
       value: 'lava boii & M2S '
       objectReference: {fileID: 0}
     - target: {fileID: 8942196845031321969, guid: b26c6fca07835744e84c140ac7487984, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 982a80482b606c34a9e5a19d71ef50e5, type: 2}
+    - target: {fileID: 8942196845031321969, guid: b26c6fca07835744e84c140ac7487984, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 787cb25de3401c44b939f2599cda764c, type: 2}
+      objectReference: {fileID: 2100000, guid: df4af00624866d84bb80e67e2d53bc58, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
