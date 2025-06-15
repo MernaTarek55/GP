@@ -79,7 +79,7 @@ public class WeaponSwitch : MonoBehaviour
             }
         }
 
-        if (GetCurrentWeapon().WeaponType == WeaponType.GrenadeLauncher)
+        if (GetCurrentWeapon().WeaponType == WeaponType.GrenadeLauncher || ownedWeapons.Count == 0)
         {
             deadeyeButton.interactable = false;
         }

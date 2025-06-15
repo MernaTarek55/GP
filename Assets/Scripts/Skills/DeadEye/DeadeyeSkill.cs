@@ -196,9 +196,8 @@ public class DeadeyeSkill : MonoBehaviour
     private void TerminateEnemies()
     {
         Weapon weapon = currentWeapon.GetCurrentWeapon();
-        if (weapon == null) // Add null check
+        if (weapon == null) 
         {
-            Debug.LogError("Current weapon has no Weapon component!");
             return;
         }
 
@@ -208,24 +207,19 @@ public class DeadeyeSkill : MonoBehaviour
 
     private IEnumerator ShootEnemiesSequentially(Weapon weapon)
     {
-        // Create a copy to avoid modification during iteration
-        //List<Transform> targetsToShoot = new List<Transform>(markedTargets);
         doneWithLastTargets = false;
-        //foreach (Transform target in markedTargets)
+
         for (int i = 0; i < markedTargets.Count; i++) 
         {
             if (markedTargets[i] == null) continue;
-            // Use StartCoroutine and yield return to wait properly
+
             yield return StartCoroutine(weapon.ShootForDeadEye(markedTargets[i].position));
             targetsImages[i].gameObject.SetActive(false);
-            
-            // Optional: Update UI
-            //UpdateTargetsImagesforAfterDeadeye();
         }
+
         doneWithLastTargets = true;
         Debug.Log("Deadeye Done");
 
-        // Clear only after all shots are done
         markedTargets.Clear();
         UpdateTargetsImages();
         isExcutingTargets = false;
