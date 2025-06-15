@@ -115,8 +115,5 @@ public class Player : MonoBehaviour
         healthComponent.RenewHealth();
     }
 
-    public void IncreaseDamage()
-    {
-        //TODO: Increase damage of the weapon
-    }
+    
 }
