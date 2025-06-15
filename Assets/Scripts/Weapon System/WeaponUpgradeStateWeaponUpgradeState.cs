@@ -10,6 +10,7 @@ public class WeaponUpgradeState
     {
         return statLevels.TryGetValue(statType, out int level) ? level : 0;
     }
+    
     public int SetLevel(UpgradableStatType statType, int level)
     {
         if (level < 0)

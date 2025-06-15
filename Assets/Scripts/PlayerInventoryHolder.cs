@@ -1,11 +1,13 @@
 using System.Linq;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerInventoryHolder : MonoBehaviour
 {
     public static PlayerInventoryHolder instance;
     public PlayerInventory Inventory { get; private set; }
 
+    [SerializeField] List<WeaponData> allWeaponData;
     //PlayerInventoryHolder 
     private void Awake()
     {
@@ -17,15 +19,17 @@ public class PlayerInventoryHolder : MonoBehaviour
     private void Start()
     {
         //instance = this;
-
-        WeaponData[] allWeaponData = Resources.LoadAll<WeaponData>("WeaponData");
-        Inventory.InitializeWeaponUpgrades(allWeaponData.ToList());
+        if(allWeaponData.Count < 1)
+            Debug.LogWarning("No weapon data found, please assign weapon data in the inspector.");
+        Inventory.InitializeWeaponUpgrades(allWeaponData);
         Inventory.InitializePlayerStats();
         // Initialize skill defaults
-        Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityDuration, 5f); // 5 seconds default
-        Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityCoolDown, 10f); // 10 seconds default
+        Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityDuration, 5f); 
+        Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityCoolDown, 10f); 
+        Inventory.SetPlayerStat(PlayerSkillsStats.DeadEyeDuration, 5f); 
+        Inventory.SetPlayerStat(PlayerSkillsStats.DeadEyeCoolDown, 10f); 
         //Inventory.AddWeapon(WeaponType.Gun);
-        Inventory.PrintWeaponUpgrades();
+        //Inventory.PrintWeaponUpgrades();
     }
 
     //for testing purposes
