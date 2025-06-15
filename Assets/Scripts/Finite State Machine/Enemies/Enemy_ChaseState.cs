@@ -89,7 +89,7 @@ public class Enemy_ChaseState : EntityState
             if (entityGO.TryGetComponent(out Rigidbody enemyRB))
                 enemyRigidbody = enemyRB;
             else
-                Debug.LogWarning("enemyRigidbody not found");
+                Debug.LogWarning("enemyRigidbody not found entity name"+ entityGO.name);
         }
         
     }
