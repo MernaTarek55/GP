@@ -135,10 +135,4 @@ public class ShopManager : MonoBehaviour
         return false;
     }
 
-    private bool IsMaxed(,UpgradableStatType statType)
-    {
-        UpgradableStat statData = weaponData.upgradableStats.Find(s => s.statType == statToUpgrade);
-        if (statLevels.TryGetValue(statType, out int level) ? level : 0 > )
-            return false;
-    }
 }

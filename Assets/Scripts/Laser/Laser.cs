@@ -154,7 +154,6 @@ public class Laser : MonoBehaviour
 
     public void CastBeam(Vector3 origin, Vector3 direction)
     {
-        Debug.Log($"Casting beam from {origin} in direction {direction}");
         if (bouncePositions == null || bouncePositions.Count > maxBounces)
         {
             return;
