@@ -172,7 +172,7 @@ public class Enemy_ChaseState : EntityState
                     stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, enemyGO, playerGO));
                 }
             }
-            else if (distanceToPlayer < 1.3f)
+            else if (distanceToPlayer < .7f)
             {
                 Debug.LogWarning("Player too close");
                 stateMachine.ChangeState(new Enemy_AttackState(stateMachine, "Attack", enemyData, enemyGO, playerGO));

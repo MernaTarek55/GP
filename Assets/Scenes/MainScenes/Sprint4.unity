@@ -133,6 +133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 50428154}
+  - component: {fileID: 50428155}
   m_Layer: 0
   m_Name: ------------Shop---------------
   m_TagString: Untagged
@@ -156,6 +157,18 @@ Transform:
   - {fileID: 1403444395}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &50428155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50428153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 975c0aac7d7bb2749ad3ae1a64acd412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &57987386
 GameObject:
   m_ObjectHideFlags: 0
@@ -5431,15 +5444,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: df4af00624866d84bb80e67e2d53bc58, type: 2}
     - target: {fileID: 5585154188494411337, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_LocalScale.x
-      value: 7.625877
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5585154188494411337, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_LocalScale.y
-      value: 7.625877
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5585154188494411337, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_LocalScale.z
-      value: 7.625877
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5819782264139901582, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15009,7 +15022,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5100462511605706399, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.34
+      value: -3.03
       objectReference: {fileID: 0}
     - target: {fileID: 5100462511605706399, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18656,6 +18669,7 @@ MonoBehaviour:
   lastDeadEyeTime: -Infinity
   pistol: {fileID: 0}
   invisibilityBtn: {fileID: 0}
+  DeadEyeBtn: {fileID: 0}
 --- !u!136 &8486386432693121835
 CapsuleCollider:
   m_ObjectHideFlags: 0

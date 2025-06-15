@@ -7,6 +7,8 @@ public class WeaponUpgradeItem : ShopItem
     public UpgradableStatType statToUpgrade;
 
     public AnimationCurve costPerLevel;
+    public int maxLvl;
+
 
     public override void OnPurchase(PlayerInventory inventory)
     {

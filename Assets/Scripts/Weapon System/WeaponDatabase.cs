@@ -23,10 +23,10 @@ public static class WeaponDatabase
         {
             LoadAll();
         }
-        foreach (WeaponType key in weaponDataMap.Keys)
-        {
-            Debug.Log("Dectanory Key " + key);
-        }
+        //foreach (WeaponType key in weaponDataMap.Keys)
+        //{
+        //    Debug.Log("Dectanory Key " + key);
+        //}
         return weaponDataMap[type];
     }
 

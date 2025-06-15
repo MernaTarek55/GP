@@ -103,7 +103,7 @@ public class PlayerInventory
     {
         if (inventorySaveData.playerStats.TryGetValue(stat, out float value))
         {
-            Debug.Log($"Player stat {stat} value: {value}");
+            //Debug.Log($"Player stat {stat} value: {value}");
             return value;
         }
         Debug.LogWarning($"Player stat {stat} not found, returning 0.");

@@ -4,26 +4,14 @@ using UnityEngine;
 public class PlayerSkillItem : ShopItem
 {
     public PlayerSkillsStats skill;
-    public float amountToIncrease = 1f;
-    public float amountToDecrease = -1f;
+    [SerializeField] float amountToChange;
+    public float maxVal;
 
     public override void OnPurchase(PlayerInventory inventory)
     {
         float currentValue = inventory.getPlayerStat(skill);
 
-        // Determine the amount based on the skill
-        float amountToApply;
-
-        if (skill == PlayerSkillsStats.InvisibilityCoolDown || skill == PlayerSkillsStats.DeadEyeCoolDown)
-        {
-            amountToApply = amountToDecrease; // For cooldowns, we want to reduce the value
-        }
-        else
-        {
-            amountToApply = amountToIncrease; // For other stats, we increase
-        }
-
-        inventory.SetPlayerStat(skill, currentValue + amountToApply);
+        inventory.SetPlayerStat(skill, currentValue + amountToChange);
 
         // Find the player's InvisibilitySkill and update its stats
         var player = GameObject.FindWithTag("Player");
