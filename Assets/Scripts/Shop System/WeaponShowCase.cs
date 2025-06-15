@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
-using UnityEditor.Rendering.LookDev;
-using Unity.VisualScripting;
 
 public class WeaponShowCase : MonoBehaviour
 {
