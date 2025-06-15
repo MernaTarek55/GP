@@ -41,7 +41,6 @@ public class SaveTester : MonoBehaviour
                 saveData.playerStats,
                 saveData.credits
             );
-            Debug.Log("New game started, inventory initialized for saving.");
         }
     }
 

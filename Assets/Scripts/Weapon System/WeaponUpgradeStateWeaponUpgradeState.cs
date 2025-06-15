@@ -23,10 +23,10 @@ public class WeaponUpgradeState
     //for testing
     public void PrintLevels()
     {
-        foreach (KeyValuePair<UpgradableStatType, int> stat in statLevels)
-        {
-            Debug.Log($"Stat: {stat.Key}, Level: {stat.Value}");
-        }
+        //foreach (KeyValuePair<UpgradableStatType, int> stat in statLevels)
+        //{
+        //    Debug.Log($"Stat: {stat.Key}, Level: {stat.Value}");
+        //}
     }
 
     public void UpgradeLevel(UpgradableStatType statType)

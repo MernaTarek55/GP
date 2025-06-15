@@ -14,6 +14,12 @@ public class Laser : MonoBehaviour
     [SerializeField] private bool IsNotTurret = false;
     [SerializeField] private PoolType poolType = PoolType.Laser;
 
+    [Header("Tracking")]
+    [SerializeField] private bool trackPlayer = false;
+    [SerializeField] private float trackingSpeed = 5f;
+    private Transform targetTransform;
+
+
     private bool hasDoneDamage; // Nano: bool to check if the same laser causes damage twice
     private bool activated = false;
     private LineRenderer lineRenderer;
@@ -39,7 +45,14 @@ public class Laser : MonoBehaviour
             currentLifetime = lifetime;
         }
     }
+    private void UpdateLaserDirection()
+    {
+        if (!trackPlayer || targetTransform == null) return;
 
+        Vector3 targetDirection = (targetTransform.position - transform.position).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
+    }
     private void InitializeLineRenderer()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -93,7 +106,7 @@ public class Laser : MonoBehaviour
             ClearLaser();
             return;
         }
-
+        UpdateLaserDirection();
         UpdateLaserBeam();
     }
 
@@ -117,7 +130,11 @@ public class Laser : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    public void SetTarget(Transform target)
+    {
+        targetTransform = target;
+        trackPlayer = target != null;
+    }
     private void ClearLaser()
     {
         if (lineRenderer != null)
@@ -154,7 +171,6 @@ public class Laser : MonoBehaviour
 
     public void CastBeam(Vector3 origin, Vector3 direction)
     {
-        Debug.Log($"Casting beam from {origin} in direction {direction}");
         if (bouncePositions == null || bouncePositions.Count > maxBounces)
         {
             return;

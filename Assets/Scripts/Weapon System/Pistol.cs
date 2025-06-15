@@ -38,7 +38,7 @@ public class Pistol : Weapon
     //Dictionary
     private readonly Dictionary<int, bool> touchStartedOverUI = new();
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         player = GetComponentInParent<Player>();
@@ -49,7 +49,7 @@ public class Pistol : Weapon
             return;
         }
         currentAmmo = weaponData.maxAmmo;
-        Debug.Log($"Weapon Type: {WeaponType}");
+        //Debug.Log($"Weapon Type: {WeaponType}");
     }
 
     private void Update()

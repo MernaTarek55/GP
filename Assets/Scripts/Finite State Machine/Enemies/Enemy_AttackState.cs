@@ -132,7 +132,12 @@ public class Enemy_AttackState : EntityState
 
         if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
         {
-            enemyGO.GetComponentInChildren<LineRenderer>().enabled = false;
+            Laser laser = enemyGO.GetComponentInChildren<Laser>();
+            if (laser != null)
+            {
+                laser.SetTarget(null); // Stop tracking
+                laser.GetComponent<LineRenderer>().enabled = false;
+            }
         }
         if (enemyData.enemyType == EnemyData.EnemyType.Beyblade)
         {
@@ -358,19 +363,25 @@ public class Enemy_AttackState : EntityState
             if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
             {
                 Debug.Log("Shooting laser from turret");
-                enemyGO.GetComponentInChildren<LineRenderer>().enabled = true;
-                Debug.Log("anaaaaaaaaa henaaaaaaaaaaaaaaaa" + enemyData.damage);
-                enemyGO.GetComponentInChildren<Laser>().SetLaserDamage(enemyData.damage);
-                Debug.Log("Laser shot from turret");
+                LineRenderer lineRenderer = enemyGO.GetComponentInChildren<LineRenderer>();
+                lineRenderer.enabled = true;
+
+                Laser laser = enemyGO.GetComponentInChildren<Laser>();
+                laser.SetLaserDamage(enemyData.damage);
+
+                // Set the player as the target and enable tracking
+                laser.SetTarget(playerGO.transform);
+
+                // Initial direction
+                Vector3 targetDirection = (playerGO.transform.position - firePoint.transform.position).normalized;
+                laser.transform.rotation = Quaternion.LookRotation(targetDirection);
             }
             else
             {
-
-            GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
-            bullet.transform.position = firePoint.transform.position;
-            bullet.transform.rotation = firePoint.transform.rotation;
-            bullet.SetActive(true);
-            Debug.Log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
+                bullet.transform.position = firePoint.transform.position;
+                bullet.transform.rotation = firePoint.transform.rotation;
+                bullet.SetActive(true);
             }
         }
 
