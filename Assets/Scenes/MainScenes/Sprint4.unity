@@ -1146,7 +1146,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: -2001365350, guid: 33cb8b9bba5e0434998925a140748c55, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -18731,7 +18731,6 @@ MonoBehaviour:
   slowMotionFactor: 0.1
   ikHandler: {fileID: 1024126835845342425}
   currentWeapon: {fileID: 643028695}
-  canShoot: 1
   targetsImages:
   - {fileID: 1485745079}
   - {fileID: 421792207}
@@ -18744,8 +18743,8 @@ MonoBehaviour:
   - {fileID: 2019028121}
   - {fileID: 2136950006}
   deadEyeCooldownImage: {fileID: 1320362555}
-  targetImage: {fileID: 9114369375030210280, guid: cc7aa3871ea52d743ad80a3895820a9a, type: 3}
-  parentPanel: {fileID: 1247964233}
+  canShoot: 1
+  markedTargets: []
 --- !u!114 &8486386432693121839
 MonoBehaviour:
   m_ObjectHideFlags: 0

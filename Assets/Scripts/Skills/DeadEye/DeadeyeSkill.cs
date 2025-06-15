@@ -8,33 +8,32 @@ using UnityEngine.UI;
 
 public class DeadeyeSkill : MonoBehaviour
 {
+    [Header("Logic")]
     [SerializeField] private float slowMotionFactor = 0;
-
-    [SerializeField] private IKHandler ikHandler;
     [SerializeField] private WeaponSwitch currentWeapon;
+    [Header("UI")]
+    [SerializeField] public Transform[] targetsImages;
+    [SerializeField] private Image deadEyeCooldownImage;
 
+    // public variables
     public bool canShoot = true;
 
+    // private IMPORTANT vriables
+    private List<Transform> markedTargets = new List<Transform>();
+    private PlayerInventory playerInventory;
+    private bool isExcutingTargets;
+    private bool isUsingAbility;
+    private bool doneWithLastTargets;
+
+    // to be replaced with inventory values
     private float duration;
     private float timer;
     private float cooldownTime;
     private float lastUsedTime;
 
-    private List<Transform> markedTargets = new List<Transform>();
-    [SerializeField] private Transform[] targetsImages;
-
-    private bool isExcutingTargets;
-    private bool isUsingAbility;
-    private bool doneWithLastTargets = true;
-
-    [SerializeField] private Image deadEyeCooldownImage;
-    [SerializeField] private Image targetImage;
-    [SerializeField] private GameObject parentPanel;
-
-    private PlayerInventory playerInventory;
-
     public event Action OnDeadeyeEffectEnded;
-
+    
+    
     private void Start()
     {
         GameObject player = GameObject.FindWithTag("Player");
@@ -44,7 +43,9 @@ public class DeadeyeSkill : MonoBehaviour
         duration = 3f;
         lastUsedTime = Time.time - cooldownTime;
 
+        // initializers 
         canShoot = true;
+        doneWithLastTargets = true;
     }
 
     private void Update()
@@ -75,7 +76,11 @@ public class DeadeyeSkill : MonoBehaviour
             TerminateEnemies();
         }
 
-        if (!isExcutingTargets)
+        if (!isExcutingTargets && isUsingAbility)
+        {
+            UpdateTargetsImages();
+        }
+        else if (isExcutingTargets)
         {
             UpdateTargetsImages();
         }
@@ -179,7 +184,6 @@ public class DeadeyeSkill : MonoBehaviour
 
     private void UpdateTargetsImagesforAfterDeadeye()
     {
-
         for (int i = 0; i < targetsImages.Length; i++)
         {
             if (i < markedTargets.Count && markedTargets[i] != null)
@@ -206,25 +210,25 @@ public class DeadeyeSkill : MonoBehaviour
     {
         // Create a copy to avoid modification during iteration
         //List<Transform> targetsToShoot = new List<Transform>(markedTargets);
-        int i = 0;
         doneWithLastTargets = false;
-        foreach (Transform target in markedTargets)
+        //foreach (Transform target in markedTargets)
+        for (int i = 0; i < markedTargets.Count; i++) 
         {
-            if (target == null) continue;
-            Debug.Log("here for " + i);
-            i++;
+            if (markedTargets[i] == null) continue;
             // Use StartCoroutine and yield return to wait properly
-            yield return StartCoroutine(weapon.ShootForDeadEye(target.position));
-
+            yield return StartCoroutine(weapon.ShootForDeadEye(markedTargets[i].position));
+            targetsImages[i].gameObject.SetActive(false);
+            
             // Optional: Update UI
-            UpdateTargetsImagesforAfterDeadeye();
+            //UpdateTargetsImagesforAfterDeadeye();
         }
         doneWithLastTargets = true;
         Debug.Log("Deadeye Done");
 
         // Clear only after all shots are done
         markedTargets.Clear();
+        UpdateTargetsImages();
         isExcutingTargets = false;
 
     }
-}
+} 
