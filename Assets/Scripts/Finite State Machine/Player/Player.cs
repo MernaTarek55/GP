@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector]
     public Vector3 currentVelocity = Vector3.zero;
-
+    
     private void Awake()
     {
         animator = GetComponent<Animator>();

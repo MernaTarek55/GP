@@ -15,6 +15,7 @@ public class Player_JumpState : EntityState
             player.animator.SetTrigger("Jump");
             player.rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
             player.hasJumped = true;
+
         }
 
         // At jump, player is airborne, so IsFlying = true
