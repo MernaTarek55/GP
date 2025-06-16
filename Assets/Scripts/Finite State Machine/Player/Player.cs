@@ -19,7 +19,6 @@ public class Player : MonoBehaviour
     public Rigidbody rb { get; private set; }
     public PlayerHealthComponent healthComponent { get; private set; }
 
-
     public float WalkSpeed = 5f;
     public float RotateSpeed = 10f;
 
@@ -48,6 +47,15 @@ public class Player : MonoBehaviour
     [SerializeField]GameObject invisibilityBtn;
     [Header("DeadEye Settings")]
     [SerializeField] GameObject DeadEyeBtn;
+    [Header("Movement Settings")]
+    public float acceleration = 10f;
+    public float deceleration = 15f;
+    public float maxSpeed = 5f;
+    public AnimationCurve movementCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    [HideInInspector]
+    public Vector3 currentVelocity = Vector3.zero;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
