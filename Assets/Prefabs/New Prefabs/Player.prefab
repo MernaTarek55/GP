@@ -1025,7 +1025,7 @@ MonoBehaviour:
   DeadEyeBtn: {fileID: 0}
   acceleration: 10
   deceleration: 15
-  maxSpeed: 5
+  maxSpeed: 7
   movementCurve:
     serializedVersion: 2
     m_Curve:
@@ -1110,9 +1110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slowMotionFactor: 0.1
-  ikHandler: {fileID: 0}
   currentWeapon: {fileID: 0}
-  canShoot: 1
   targetsImages:
   - {fileID: 0}
   - {fileID: 0}
@@ -1125,8 +1123,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   deadEyeCooldownImage: {fileID: 0}
-  targetImage: {fileID: 9114369375030210280, guid: cc7aa3871ea52d743ad80a3895820a9a, type: 3}
-  parentPanel: {fileID: 0}
+  canShoot: 1
 --- !u!114 &3845636115347058878
 MonoBehaviour:
   m_ObjectHideFlags: 0
