@@ -1,10 +1,14 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponSwitch : MonoBehaviour
 {
     [SerializeField] private GameObject[] weapons;
     [SerializeField] private PlayerInventoryHolder inventoryHolder;
+
+    [SerializeField] private Button deadeyeButton;
 
     private List<WeaponType> ownedWeapons;
     private int currentWeaponIndex = 0; 
@@ -74,9 +78,18 @@ public class WeaponSwitch : MonoBehaviour
                 }
             }
         }
+
+        if (GetCurrentWeapon().WeaponType == WeaponType.GrenadeLauncher || ownedWeapons.Count == 0)
+        {
+            deadeyeButton.interactable = false;
+        }
+        else
+        {
+            deadeyeButton.interactable = true;   
+        }
     }
 
-    public GameObject GetCurrentWeapon()
+    public Weapon GetCurrentWeapon()
     {
         if (weapons == null || weapons.Length == 0)
         {
@@ -96,7 +109,7 @@ public class WeaponSwitch : MonoBehaviour
             return null;
         }
 
-        return weapons[currentWeaponIndex];
+        return weapons[currentWeaponIndex].GetComponent<Weapon>();
     }
 
 

@@ -178,7 +178,6 @@ public class Pistol : Weapon
         //    yield return null; // wait for next frame
         //}
 
-        Debug.Log("ANaaaaaaaaaaaaaaaaa henaaaaaaaaaaaaaaaa m3 nano");
         // moved these here - to get the final firePoint calculations after doing the ik
         shootDirection = (targetPoint - firePoint.position).normalized;
         firePoint.rotation = Quaternion.LookRotation(shootDirection);
@@ -233,7 +232,6 @@ public class Pistol : Weapon
             rb.angularVelocity = Vector3.zero;
 
             rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
-            Debug.Log("Shoting");
 
             Bullet bulletScript = bullet.GetComponent<Bullet>();
             if (bulletScript != null)
@@ -405,11 +403,10 @@ public class Pistol : Weapon
 
             // Proceed with shooting even if IK isn't perfectly aligned
             deadEyeBool = true;
-            Debug.Log("Ana hena");
             Shoot(targetPosition);
 
             // Small delay between shots (adjust as needed)
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(1f); // should be changed to the firerate of the weapon 
 
         }
     }
