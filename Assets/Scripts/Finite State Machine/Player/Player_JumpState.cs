@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class Player_JumpState : EntityState
 {
-    //private readonly bool hasJumped = false;
-
     public Player_JumpState(StateMachine stateMachine, string stateName, Player player) : base(stateMachine, stateName, player)
     {
     }
+
     public override void Enter()
     {
         base.Enter();
@@ -17,41 +16,42 @@ public class Player_JumpState : EntityState
             player.rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
             player.hasJumped = true;
         }
+
+        // At jump, player is airborne, so IsFlying = true
+        player.animator.SetBool("IsFlying", true);
+        player.animator.SetBool("Grounded", false);
     }
 
     public override void Update()
     {
         base.Update();
 
+        // Check if player is falling
+        if (!player.IsGrounded && player.rb.linearVelocity.y < 0)
+        {
+            player.animator.SetBool("IsFlying", true);
+        }
+
         if (player.IsGrounded && player.hasJumped)
         {
             player.hasJumped = false;
 
-            if (player.MoveInput.sqrMagnitude > 0.01f)
-            {
-                stateMachine.ChangeState(new Player_MoveState(stateMachine, "Walk", player));
-            }
-            else if (player.DeadEyePressed)
-            {
-                stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
-            }
-            else if (player.healthComponent.IsDead())
-            {
-                stateMachine.ChangeState(player.playerDeath);
-            }
-            else
-            {
-                stateMachine.ChangeState(new Player_IdleState(stateMachine, "Idle", player));
-            }
+            stateMachine.ChangeState(
+                player.healthComponent.IsDead() ? player.playerDeath :
+                player.DeadEyePressed ? new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player) :
+                player.MoveInput.sqrMagnitude > 0.01f ? new Player_MoveState(stateMachine, "Walk", player) :
+                new Player_IdleState(stateMachine, "Idle", player)
+            );
         }
     }
+
     public override void Exit()
     {
         base.Exit();
 
-        // player.verticalVelocity = Mathf.Sqrt(player.jumpHeight * -2f * player.gravity);
-        //player.animator.SetBool("Jump" , false);
-        ////player.Animator.SetTrigger("Grounded");
-        //player.animator.SetBool("Grounded" , true);
+        // Reset animation parameters
+        player.animator.SetBool("IsFlying", false);
+        player.animator.SetBool("Grounded", true);
+        player.animator.ResetTrigger("Jump");
     }
 }
