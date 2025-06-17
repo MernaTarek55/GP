@@ -2734,7 +2734,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &287065492
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2752,7 +2752,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -262, y: 179}
+  m_AnchoredPosition: {x: -291.5, y: 188.4}
   m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &287065493
@@ -2799,7 +2799,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 575184197}
         m_TargetAssemblyTypeName: DeadeyeSkill, Assembly-CSharp
         m_MethodName: UseDeadeye
         m_Mode: 1
@@ -2832,7 +2832,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: -2001365350, guid: 33cb8b9bba5e0434998925a140748c55, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -6298,6 +6298,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75cbcb1ad34069a409b3f9796f8e0c2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &575184197 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6240626486430549991, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
+  m_PrefabInstance: {fileID: 876880794}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575184180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7050a6a9a959d084bab973782e1f1a61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &580960298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9217,6 +9228,10 @@ PrefabInstance:
       propertyPath: InvisibleButton
       value: 
       objectReference: {fileID: 576771497087676969}
+    - target: {fileID: 6240626486430549991, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
+      propertyPath: currentWeapon
+      value: 
+      objectReference: {fileID: 643028695}
     - target: {fileID: 6240626486430549991, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
       propertyPath: deadEyeCooldownImage
       value: 
@@ -23915,7 +23930,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 6629295386348447355}
   m_OnClick:
     m_PersistentCalls:
@@ -24712,7 +24727,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &7440919921720413144
 MonoBehaviour:
   m_ObjectHideFlags: 0
