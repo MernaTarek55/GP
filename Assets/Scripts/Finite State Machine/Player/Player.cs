@@ -52,6 +52,8 @@ public class Player : MonoBehaviour
     public float deceleration = 15f;
     public float maxSpeed = 5f;
     public AnimationCurve movementCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    public float walkSpeed = 2f;
+    public float runSpeed = 5f;
 
     [HideInInspector]
     public Vector3 currentVelocity = Vector3.zero;

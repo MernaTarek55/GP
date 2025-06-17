@@ -88,6 +88,15 @@ public class ShopManager : MonoBehaviour
                 
             }
         }
+        else
+        {
+            Debug.LogWarning("Initializing shop for new game...");
+            // For new game, ensure all items are not owned
+            foreach (var item in availableItems)
+            {
+                item.isOwned = false;
+            }
+        }
     }
     public bool Buy(ShopItem item)
     {

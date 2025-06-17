@@ -1,8 +1,12 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player_MoveState : EntityState
 {
-    public Player_MoveState(StateMachine stateMachine, string stateName, Player player) : base(stateMachine, stateName, player)
+    private float walkTimer = 0f;
+    private float timeToRun = 2f; // Time in seconds to start running
+
+    public Player_MoveState(StateMachine stateMachine, string stateName, Player player)
+        : base(stateMachine, stateName, player)
     {
     }
 
@@ -10,72 +14,62 @@ public class Player_MoveState : EntityState
     {
         base.Update();
 
+        // Stop moving → go idle
         if (player.MoveInput.sqrMagnitude < 0.01f)
         {
+            walkTimer = 0f; // reset walk timer
             stateMachine.ChangeState(new Player_IdleState(stateMachine, "Idle", player));
             return;
         }
 
+        // Jump
         if (player.JumpPressed)
         {
             stateMachine.ChangeState(new Player_JumpState(stateMachine, "Jump", player));
             return;
         }
 
+        // Dead
         if (player.healthComponent.IsDead())
         {
             stateMachine.ChangeState(player.playerDeath);
+            return;
         }
 
+        // Dead Eye Mode
         if (player.DeadEyePressed)
         {
             stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
             return;
         }
 
+        // Update walk timer
+        if (player.MoveInput.sqrMagnitude > 0.01f)
+        {
+            walkTimer += Time.deltaTime;
+        }
+        else
+        {
+            walkTimer = 0f;
+        }
 
-        //Vector3 camForward = player.mainCamera.transform.forward;
-        //Vector3 camRight = player.mainCamera.transform.right;
-        ////camForward.y = 0; 
-        //camRight.y = 0;
-        ////camForward.Normalize(); 
-        //camRight.Normalize();
+        // Determine if player should run
+        bool isRunning = walkTimer >= timeToRun;
+        float currentMaxSpeed = isRunning ? player.runSpeed : player.walkSpeed;
 
-        ////Vector3 moveDirection = (camForward * player.MoveInput.y) + (camRight * player.MoveInput.x);
-        //Vector3 moveDirection = camRight * player.MoveInput.x;
-
-        ////player.animator.SetFloat("Speed", player.MoveInput.magnitude);
-        //player.animator.SetFloat("Speed", Mathf.Abs(player.MoveInput.x));
-        ////player.rb.MovePosition(player.rb.position + (moveDirection * player.WalkSpeed * Time.deltaTime));
-        //float inputMagnitude = Mathf.Clamp01(player.MoveInput.magnitude);
-        //float curveValue = player.movementCurve.Evaluate(inputMagnitude);
-        //float curvedSpeed = player.WalkSpeed * curveValue;
-
-        //player.rb.MovePosition(player.rb.position + (moveDirection * curvedSpeed * Time.deltaTime));
-
-
-        //if (!player.IsShooting && moveDirection.sqrMagnitude > 0.01f)
-        //{
-        //    float rotationCurve = player.movementCurve.Evaluate(inputMagnitude);
-        //    Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-        //    player.rb.MoveRotation(Quaternion.Slerp(player.rb.rotation, targetRotation, rotationCurve * player.RotateSpeed * Time.deltaTime));
-
-        //    //player.rb.MoveRotation(Quaternion.Slerp(player.rb.rotation, targetRotation, player.RotateSpeed * Time.deltaTime));
-        //}
-
-        // Input and directions
+        // Calculate direction
         Vector3 camRight = player.mainCamera.transform.right;
         camRight.y = 0;
         camRight.Normalize();
 
         Vector3 moveDirection = camRight * player.MoveInput.x;
 
-        // Target velocity based on curve
+        // Target velocity
         float inputMagnitude = Mathf.Clamp01(player.MoveInput.magnitude);
-        float curvedSpeed = player.maxSpeed * player.movementCurve.Evaluate(inputMagnitude);
+        float curvedSpeed = currentMaxSpeed * player.movementCurve.Evaluate(inputMagnitude);
         Vector3 targetVelocity = moveDirection.normalized * curvedSpeed;
 
-        // Accelerate or decelerate smoothly
+        // Accelerate/decelerate
         player.currentVelocity = Vector3.MoveTowards(
             player.currentVelocity,
             targetVelocity,
@@ -85,16 +79,16 @@ public class Player_MoveState : EntityState
         // Apply movement
         player.rb.MovePosition(player.rb.position + player.currentVelocity * Time.deltaTime);
 
-        // Smooth rotation if moving
+        // Rotate if moving
         if (!player.IsShooting && player.currentVelocity.sqrMagnitude > 0.01f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(player.currentVelocity);
             player.rb.MoveRotation(Quaternion.Slerp(player.rb.rotation, targetRotation, player.RotateSpeed * Time.deltaTime));
         }
 
-        // Animate
-        float speedRatio = player.currentVelocity.magnitude / player.maxSpeed;
-        player.animator.SetFloat("Speed", speedRatio * 1.5f); // 1.5 = speed multiplier
-
+        // Animate with Blend Tree
+        float speedRatio = player.currentVelocity.magnitude / player.runSpeed;
+        float signedSpeed = Mathf.Sign(player.MoveInput.x) * speedRatio * 2f; // -2 to 2 range
+        player.animator.SetFloat("Speed", signedSpeed);
     }
 }

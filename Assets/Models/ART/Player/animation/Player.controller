@@ -36,6 +36,14 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: d31f68ede18c3af4b87a1b529837dc2a, type: 2}
+    m_Threshold: -2
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: -2
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Speed
+    m_Mirror: 0
+  - serializedVersion: 2
     m_Motion: {fileID: -2901233246522174405, guid: d970d84ee1b5ee149a53c89391d28526, type: 3}
     m_Threshold: -1
     m_Position: {x: 0, y: 0}
@@ -59,10 +67,18 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Blend
     m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: d31f68ede18c3af4b87a1b529837dc2a, type: 2}
+    m_Threshold: 2
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Speed
+    m_Mirror: 0
   m_BlendParameter: Speed
   m_BlendParameterY: Blend
-  m_MinThreshold: -1
-  m_MaxThreshold: 1
+  m_MinThreshold: -2
+  m_MaxThreshold: 2
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
   m_BlendType: 0
@@ -179,19 +195,19 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -4866886478998523872}
-    m_Position: {x: 390, y: -220, z: 0}
+    m_Position: {x: 360, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 228539218664323584}
-    m_Position: {x: 330, y: -390, z: 0}
+    m_Position: {x: 300, y: -170, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7852157685003907993}
-    m_Position: {x: 590, y: -370, z: 0}
+    m_Position: {x: 560, y: -150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2582792645167541659}
-    m_Position: {x: 820, y: -280, z: 0}
+    m_Position: {x: 790, y: -60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7542812677532120258}
-    m_Position: {x: 910, y: -370, z: 0}
+    m_Position: {x: 100, y: -220, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -4930126804467753128}
@@ -357,7 +373,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shoot
+  m_Name: Run
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -370,7 +386,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 832dc2a71d432be45b0d79c639212a70, type: 2}
+  m_Motion: {fileID: 7400000, guid: d31f68ede18c3af4b87a1b529837dc2a, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
