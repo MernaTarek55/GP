@@ -371,7 +371,7 @@ public class Enemy_AttackState : EntityState
                 // FIXED: Create a proper head position without modifying the player's actual transform
                 Vector3 playerHeadPosition = new Vector3(
                     playerGO.transform.position.x,
-                    playerGO.transform.position.y + 1.5f,
+                    playerGO.transform.position.y + 1.2f,
                     playerGO.transform.position.z
                 );
 
