@@ -117,11 +117,12 @@ public class LavaProjectile : MonoBehaviour
         // Generate random offset for random projectile type
         randomizer.x = Random.Range(randomRange.minX, randomRange.maxX);
         randomizer.y = Random.Range(randomRange.minZ, randomRange.maxZ);
+        
 
         switch (projectileType)
         {
             case ProjectileEnemyType.Random:
-                initialB = new Vector3(randomizer.x, curve.B.position.y, randomizer.y);
+                initialB = new Vector3(randomizer.x+ curve.B.position.x, curve.B.position.y, randomizer.y + curve.B.position.z);
                 break;
             case ProjectileEnemyType.Target:
                 initialB = curve.B.position;
