@@ -1,10 +1,15 @@
 using UnityEngine;
+using System;
 
 public class HealthComponent : MonoBehaviour, IDamageable
 {
     private float currentHealth;
     private float maxHealth;
+    public Enemy enemy;
     private bool isDead;
+
+    // Delegate for death event
+    public event Action OnDeath;
 
     private void Awake()
     {
@@ -13,26 +18,40 @@ public class HealthComponent : MonoBehaviour, IDamageable
         currentHealth = maxHealth;
     }
 
+    void Update()
+    {
+        currentHealth -= Time.deltaTime * 20f;
+
+        Debug.LogWarning("currentHealth " + currentHealth);
+
+        // Check if health has reached zero or below
+        if (currentHealth <= 0 && !isDead)
+        {
+            Die();
+        }
+    }
+
     public void RenewHealth()
     {
         isDead = false;
         currentHealth = maxHealth;
     }
+
     public void setMaxHealth(float maxHealth)
     {
         this.maxHealth = maxHealth;
     }
+
     public void TakeDamage(float damage)
     {
         if (isDead) return;
-        if (currentHealth <= 0)
-        {
-            Die();
-            return;
-        }
 
         currentHealth -= damage;
 
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     public bool IsDead()
@@ -42,6 +61,16 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        if (isDead) return; // Prevent multiple death calls
+
         isDead = true;
+
+        if(OnDeath != null)OnDeath();
+
+        // Fallback to direct enemy reference if delegate is not subscribed
+        if (OnDeath == null && enemy != null)
+        {
+            enemy.enemyStateMachine.ChangeState(enemy.enemyDeath);
+        }
     }
 }

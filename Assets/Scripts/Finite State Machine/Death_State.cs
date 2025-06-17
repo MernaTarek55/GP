@@ -4,9 +4,11 @@ using static EnemyData;
 public class Death_State : EntityState
 {
     private GameObject entityGO;
-    //private Animator animator;
-    //private string animationTrigger = "Die";
+    private Animator animator;
+    private string animationTrigger = "Die";
     private float destroyDelay = 2f; // Adjust based on animation length
+    private HealthComponent healthComponent;
+
     //private Vector3[] dropForce;
     //private GameObject drop;
     //private float dropChance;
@@ -39,10 +41,10 @@ public class Death_State : EntityState
     {
         base.Enter();
 
-        //if (animator != null)
-        //{
-        //    animator.SetTrigger(animationTrigger);
-        //}
+        if (animator != null)
+        {
+            animator.SetTrigger(animationTrigger);
+        }
         SpawnDrops();
         if (entityGO.CompareTag("Player"))
         {
@@ -93,7 +95,7 @@ public class Death_State : EntityState
         if (enemy.drop == null)
              return; 
 
-
+        
         if (Random.value > enemy.dropChance)
             return;
 
@@ -101,8 +103,10 @@ public class Death_State : EntityState
 
         for (int i = 0; i < amount; i++)
         {
-
-            SpawnSingleDrop(enemy.drop);
+            if (enemy.drop != null || enemy != null)
+            {
+                SpawnSingleDrop(enemy.drop);
+            }
         }
     }
 
@@ -119,6 +123,11 @@ public class Death_State : EntityState
             if (entityGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
             else Debug.LogWarning("enemy not found");
         }
+
+        if (entityGO.TryGetComponent(out HealthComponent healthComponent)) this.healthComponent = healthComponent;
+        else Debug.LogWarning("healthComponent not found");
+
+        animator = entityGO.GetComponentInChildren<Animator>();
 
 
     }
