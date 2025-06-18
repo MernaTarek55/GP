@@ -127,7 +127,6 @@ public class Enemy_AttackState : EntityState
 
     public override void Exit()
     {
-
         base.Exit();
 
         if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
@@ -135,7 +134,7 @@ public class Enemy_AttackState : EntityState
             Laser laser = enemyGO.GetComponentInChildren<Laser>();
             if (laser != null)
             {
-                laser.SetTarget(null); // Stop tracking
+                laser.ClearTarget(); 
                 laser.GetComponent<LineRenderer>().enabled = false;
             }
         }
@@ -369,11 +368,29 @@ public class Enemy_AttackState : EntityState
                 Laser laser = enemyGO.GetComponentInChildren<Laser>();
                 laser.SetLaserDamage(enemyData.damage);
 
-                // Set the player as the target and enable tracking
-                laser.SetTarget(playerGO.transform);
+                // FIXED: Create a proper head position without modifying the player's actual transform
+                Vector3 playerHeadPosition = new Vector3(
+                    playerGO.transform.position.x,
+                    playerGO.transform.position.y + 1.2f,
+                    playerGO.transform.position.z
+                );
 
-                // Initial direction
-                Vector3 targetDirection = (playerGO.transform.position - firePoint.transform.position).normalized;
+                // Create a temporary transform or use the position directly
+                // If your Laser.SetTarget() method accepts Vector3, use that instead
+                // Otherwise, you might need to create a dummy GameObject for the head position
+
+                // Option 1: If SetTarget accepts Vector3 (recommended - modify your Laser script)
+                // laser.SetTargetPosition(playerHeadPosition);
+
+                // Option 2: If you must use Transform, create a temporary object
+                GameObject tempHeadTarget = new GameObject("TempHeadTarget");
+                tempHeadTarget.transform.position = playerHeadPosition;
+                laser.SetTarget(tempHeadTarget.transform);
+
+                // Remember to clean up the temporary object later in Exit() or when switching targets
+
+                // Initial direction to head
+                Vector3 targetDirection = (playerHeadPosition - firePoint.transform.position).normalized;
                 laser.transform.rotation = Quaternion.LookRotation(targetDirection);
             }
             else
@@ -387,7 +404,6 @@ public class Enemy_AttackState : EntityState
 
         _lastShootTime = Time.time;
     }
-
     private void BeybladeAttack()
     {
 

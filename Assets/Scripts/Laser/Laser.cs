@@ -17,8 +17,8 @@ public class Laser : MonoBehaviour
     [Header("Tracking")]
     [SerializeField] private bool trackPlayer = false;
     [SerializeField] private float trackingSpeed = 5f;
-    private Transform targetTransform;
-
+    private Vector3 targetPosition;
+    private bool hasTarget = false;
 
     private bool hasDoneDamage; // Nano: bool to check if the same laser causes damage twice
     private bool activated = false;
@@ -28,7 +28,6 @@ public class Laser : MonoBehaviour
     private LaserSensor prevStruckSensor = null;
     private IInput input;
     private float currentLifetime;
-
 
     private float laserDamage = 20; // Nano: to set the damage of the laser
 
@@ -45,14 +44,16 @@ public class Laser : MonoBehaviour
             currentLifetime = lifetime;
         }
     }
+
     private void UpdateLaserDirection()
     {
-        if (!trackPlayer || targetTransform == null) return;
+        if (!trackPlayer || !hasTarget) return;
 
-        Vector3 targetDirection = (targetTransform.position - transform.position).normalized;
+        Vector3 targetDirection = (targetPosition - transform.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
     }
+
     private void InitializeLineRenderer()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -130,11 +131,34 @@ public class Laser : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    // Updated methods for Vector3 targeting
+    public void SetTargetPosition(Vector3 position)
+    {
+        targetPosition = position;
+        hasTarget = true;
+        trackPlayer = true;
+    }
+
+    // Legacy method for Transform - converts to Vector3
     public void SetTarget(Transform target)
     {
-        targetTransform = target;
-        trackPlayer = target != null;
+        if (target != null)
+        {
+            SetTargetPosition(target.position);
+        }
+        else
+        {
+            ClearTarget();
+        }
     }
+
+    public void ClearTarget()
+    {
+        hasTarget = false;
+        trackPlayer = false;
+    }
+
     private void ClearLaser()
     {
         if (lineRenderer != null)
@@ -224,7 +248,7 @@ public class Laser : MonoBehaviour
                 }
             }
         }
-    }   
+    }
 
     private void UpdateSensorState(LaserSensor currentSensor)
     {
@@ -281,7 +305,7 @@ public class Laser : MonoBehaviour
         transform.rotation = rotation;
         gameObject.SetActive(true);
         currentLifetime = lifetime;
-        
+
         // Reset any previous state
         ClearLaser();
     }
