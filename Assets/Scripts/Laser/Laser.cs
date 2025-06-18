@@ -1,405 +1,673 @@
 using System.Collections.Generic;
+
 using UnityEngine;
 
+
+
 public class Laser : MonoBehaviour
+
 {
+
     [Header("Configuration")]
+
     [SerializeField] private LaserRendererSettings laserRendererSettings;
+
     [SerializeField] private GameObject inputGO;
+
     [SerializeField][Range(1, 3)] private int maxBounces = 3;
+
     [SerializeField] private float lifetime = 0.05f; // Only used when IsNotTurret is true
 
+
+
     [Header("Debug")]
+
     [SerializeField] private bool drawDebugRays = false;
+
     [SerializeField] private bool IsNotTurret = false;
+
     [SerializeField] private PoolType poolType = PoolType.Laser;
 
-    [Header("Tracking")]
-    [SerializeField] private bool trackPlayer = false;
-    [SerializeField] private float trackingSpeed = 5f;
-    private Vector3 targetPosition;
-    private bool hasTarget = false;
 
-    [Header("Position Lerping")]
-    [SerializeField] private bool enablePositionLerp = true;
-    [SerializeField] private float positionLerpSpeed = 10f;
-    private Vector3 targetWorldPosition;
-    private bool hasPositionTarget = false;
+
+    [Header("Tracking")]
+
+    [SerializeField] private bool trackPlayer = false;
+
+    [SerializeField] private float trackingSpeed = 5f;
+
+    [SerializeField] private float targetYOffset = 1.5f; // Y offset for targeting
+
+    [SerializeField] private float aimTolerance = 0.1f; // Tolerance for considering target "acquired"
+
+    private Transform targetTransform;
+
+    private bool isOnTarget = false;
+
+
+
+
 
     private bool hasDoneDamage; // Nano: bool to check if the same laser causes damage twice
+
     private bool activated = false;
+
     private LineRenderer lineRenderer;
+
     private const float farDistance = 1000f;
+
     private List<Vector3> bouncePositions;
+
     private LaserSensor prevStruckSensor = null;
+
     private IInput input;
+
     private float currentLifetime;
+
+
+
+
 
     private float laserDamage = 20; // Nano: to set the damage of the laser
 
+
+
     void Awake()
+
     {
+
         InitializeLineRenderer();
+
         InitializeInputSystem();
+
         activated = inputGO == null; // Activate if no input is assigned
 
+
+
         hasDoneDamage = false;
 
+
+
         if (IsNotTurret)
+
         {
+
             currentLifetime = lifetime;
+
         }
+
     }
+
+
 
     private void UpdateLaserDirection()
+
     {
-        if (!trackPlayer || !hasTarget) return;
+
+        if (!trackPlayer || targetTransform == null) return;
+
+
+
+        // Calculate target position with Y offset
+
+        Vector3 targetPosition = targetTransform.position + Vector3.up * targetYOffset;
 
         Vector3 targetDirection = (targetPosition - transform.position).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
-    }
 
-    private void UpdateLaserPosition()
-    {
-        if (!enablePositionLerp || !hasPositionTarget) return;
+        Vector3 currentDirection = transform.forward;
 
-        transform.position = Vector3.Lerp(transform.position, targetWorldPosition, positionLerpSpeed * Time.deltaTime);
 
-        // Optional: Stop lerping when close enough to target
-        if (Vector3.Distance(transform.position, targetWorldPosition) < 0.01f)
+
+        // Check if we're already close to the target direction
+
+        float dotProduct = Vector3.Dot(currentDirection, targetDirection);
+
+        float angle = Mathf.Acos(Mathf.Clamp(dotProduct, -1f, 1f)) * Mathf.Rad2Deg;
+
+
+
+        if (angle <= aimTolerance)
+
         {
-            transform.position = targetWorldPosition;
-            hasPositionTarget = false;
+
+            isOnTarget = true;
+
+            return; // Don't adjust if we're already on target
+
         }
+
+
+
+        isOnTarget = false;
+
+
+
+        // Smoothly rotate towards target
+
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
+
     }
+
+
 
     private void InitializeLineRenderer()
+
     {
+
         lineRenderer = gameObject.AddComponent<LineRenderer>();
+
         lineRenderer.enabled = IsNotTurret;
+
         lineRenderer.positionCount = 2;
+
         //lineRenderer.SetPosition(0, new Vector3(0, 0, 0));
+
         //lineRenderer.SetPosition(1, new Vector3(0, 0, 0.1f));
+
         if (laserRendererSettings == null)
+
         {
+
             Debug.LogError("LaserRendererSettings is not assigned!", this);
+
             enabled = false;
+
             return;
+
         }
+
+
 
         laserRendererSettings.Apply(lineRenderer);
+
     }
+
+
 
     private void InitializeInputSystem()
+
     {
+
         if (inputGO == null) return;
 
+
+
         input = inputGO.GetComponent<IInput>();
+
         if (input == null)
+
         {
+
             Debug.LogWarning($"No IInput component found on {inputGO.name}", inputGO);
+
             return;
+
         }
+
+
 
         RegisterToInput(input);
+
     }
+
+
 
     void OnEnable()
+
     {
+
         if (IsNotTurret)
+
         {
+
             currentLifetime = lifetime;
+
             activated = true;
+
             ClearLaser(); // Reset laser state when re-enabled
+
         }
+
     }
+
+
 
     void FixedUpdate()
+
     {
+
         if (IsNotTurret)
+
         {
+
             UpdateLifetime();
+
         }
+
+
 
         if (!activated)
+
         {
+
             ClearLaser();
+
             return;
+
         }
 
-        UpdateLaserPosition(); // Add position lerping update
         UpdateLaserDirection();
+
         UpdateLaserBeam();
+
     }
+
+
 
     private void UpdateLifetime()
+
     {
+
         currentLifetime -= Time.fixedDeltaTime;
+
         if (currentLifetime <= 0f)
+
         {
+
             ReturnToPool();
+
         }
+
     }
+
+
 
     private void ReturnToPool()
+
     {
+
         if (PoolManager.Instance != null)
+
         {
+
             PoolManager.Instance.ReturnToPool(poolType, gameObject);
+
         }
+
         else
+
         {
+
             Destroy(gameObject);
+
         }
+
     }
 
-    // Updated methods for Vector3 targeting
-    public void SetTargetPosition(Vector3 position)
-    {
-        targetPosition = position;
-        hasTarget = true;
-        trackPlayer = true;
-    }
 
-    // New method to set target position for lerping
-    public void SetTargetWorldPosition(Vector3 position, bool enableLerp = true)
-    {
-        targetWorldPosition = position;
-        hasPositionTarget = enableLerp && enablePositionLerp;
 
-        if (!enableLerp || !enablePositionLerp)
-        {
-            transform.position = position;
-        }
-    }
-
-    // Method to instantly move to position without lerping
-    public void SetPositionImmediate(Vector3 position)
-    {
-        transform.position = position;
-        hasPositionTarget = false;
-    }
-
-    // Legacy method for Transform - converts to Vector3
     public void SetTarget(Transform target)
+
     {
-        if (target != null)
-        {
-            SetTargetPosition(target.position);
-        }
-        else
-        {
-            ClearTarget();
-        }
+
+        targetTransform = target;
+
+        trackPlayer = target != null;
+
     }
 
-    public void ClearTarget()
+
+
+    // Method to set custom Y offset if needed
+
+    public void SetTargetYOffset(float yOffset)
+
     {
-        hasTarget = false;
-        trackPlayer = false;
+
+        targetYOffset = yOffset;
+
+        isOnTarget = false; // Reset target status when offset changes
+
     }
 
-    public void ClearPositionTarget()
+
+
+    // Method to set aim tolerance
+
+    public void SetAimTolerance(float tolerance)
+
     {
-        hasPositionTarget = false;
+
+        aimTolerance = tolerance;
+
     }
+
+
+
+    // Check if turret is currently on target
+
+    public bool IsOnTarget()
+
+    {
+
+        return isOnTarget;
+
+    }
+
+
 
     private void ClearLaser()
+
     {
+
         if (lineRenderer != null)
+
         {
+
             lineRenderer.positionCount = 0;
+
         }
+
+
 
         if (prevStruckSensor != null)
+
         {
+
             LaserSensor.HandleLaser(this, prevStruckSensor, null);
+
             prevStruckSensor = null;
+
         }
 
+
+
         hasDoneDamage = false;
+
     }
 
+
+
     private void UpdateLaserBeam()
+
     {
+
         if (lineRenderer == null) return;
 
+
+
         bouncePositions = new List<Vector3>
+
         {
+
             transform.position + transform.forward * 0.2501f
+
         };
+
+
 
         CastBeam(bouncePositions[0], transform.forward);
 
+
+
         if (bouncePositions.Count > 0)
+
         {
+
             lineRenderer.positionCount = bouncePositions.Count;
+
             lineRenderer.SetPositions(bouncePositions.ToArray());
+
         }
+
     }
+
+
 
     public void CastBeam(Vector3 origin, Vector3 direction)
+
     {
+
         if (bouncePositions == null || bouncePositions.Count > maxBounces)
+
         {
+
             return;
+
         }
+
+
 
         if (drawDebugRays)
+
         {
+
             Debug.DrawRay(origin, direction * 100, Color.red, 0.1f);
+
         }
+
+
 
         var ray = new Ray(origin, direction);
+
         if (!Physics.Raycast(ray, out RaycastHit hitInfo, farDistance))
+
         {
+
             HandleMissedRaycast(origin, direction);
+
             return;
+
         }
+
+
 
         bouncePositions.Add(hitInfo.point);
+
         HandleRaycastHit(ray, hitInfo);
+
     }
+
+
 
     private void HandleMissedRaycast(Vector3 origin, Vector3 direction)
+
     {
+
         bouncePositions.Add(origin + direction * farDistance);
+
         UpdateSensorState(null);
+
     }
+
+
 
     private void HandleRaycastHit(Ray ray, RaycastHit hitInfo)
+
     {
+
         var reflectiveObject = hitInfo.collider.GetComponent<ILaserReflective>();
+
         if (reflectiveObject != null)
+
         {
+
             reflectiveObject.Reflect(this, ray, hitInfo);
+
         }
+
         else
+
         {
+
             var currentSensor = hitInfo.collider.GetComponent<LaserSensor>();
+
             UpdateSensorState(currentSensor);
 
+
+
             // For bullet-like behavior, check if we hit something that should stop the laser
+
             IDamageable damagable = hitInfo.collider.GetComponent<IDamageable>();
+
             if (damagable != null)
+
             {
+
                 if (!IsNotTurret || (IsNotTurret && !hasDoneDamage))
+
                 {
+
                     damagable.TakeDamage(laserDamage);
+
                     currentLifetime = 0;
 
+
+
                     if (IsNotTurret)
+
                         hasDoneDamage = true;
+
                 }
+
             }
+
         }
+
     }
+
+
 
     private void UpdateSensorState(LaserSensor currentSensor)
+
     {
+
         if (currentSensor != prevStruckSensor)
+
         {
+
             LaserSensor.HandleLaser(this, prevStruckSensor, currentSensor);
+
             prevStruckSensor = currentSensor;
+
         }
+
     }
+
+
 
     private void RegisterToInput(IInput input)
+
     {
+
         if (this.input != null)
+
         {
+
             this.input.onTriggered -= OnInputTriggered;
+
             this.input.onUntriggered -= OnInputUntriggered;
+
         }
+
+
 
         this.input = input;
+
         if (input != null)
+
         {
+
             input.onTriggered += OnInputTriggered;
+
             input.onUntriggered += OnInputUntriggered;
+
             activated = input.IsTriggered;
+
         }
+
     }
+
+
 
     private void OnInputTriggered(IInput source) => activated = true;
+
     private void OnInputUntriggered(IInput source) => activated = false;
 
+
+
     void OnDestroy()
+
     {
+
         if (input != null)
+
         {
+
             input.onTriggered -= OnInputTriggered;
+
             input.onUntriggered -= OnInputUntriggered;
+
         }
+
     }
+
+
 
     public void SetActive(bool active)
+
     {
+
         activated = active;
+
         if (!active && prevStruckSensor != null)
+
         {
+
             LaserSensor.HandleLaser(this, prevStruckSensor, null);
+
             prevStruckSensor = null;
+
         }
+
     }
+
+
 
     // Call this when spawning the laser to initialize it
+
     public void InitializeLaser(Vector3 position, Quaternion rotation, bool isFromPool = true)
+
     {
+
         transform.position = position;
-        transform.rotation = rotation;
-        gameObject.SetActive(true);
-        currentLifetime = lifetime;
-
-        // Reset any previous state
-        ClearLaser();
-        hasPositionTarget = false; // Clear position lerping target
-    }
-
-    // Enhanced version with position lerping option
-    public void InitializeLaser(Vector3 position, Quaternion rotation, bool isFromPool = true, bool lerpToPosition = false)
-    {
-        if (lerpToPosition && enablePositionLerp)
-        {
-            SetTargetWorldPosition(position, true);
-        }
-        else
-        {
-            transform.position = position;
-        }
 
         transform.rotation = rotation;
+
         gameObject.SetActive(true);
+
         currentLifetime = lifetime;
 
+
+
         // Reset any previous state
+
         ClearLaser();
+
     }
+
+
 
     // Nano: call this function to set damage
+
     public void SetLaserDamage(float damage)
+
     {
+
         laserDamage = damage;
+
     }
 
-    // Utility methods for position lerping control
-    public void SetPositionLerpSpeed(float speed)
-    {
-        positionLerpSpeed = speed;
-    }
-
-    public void EnablePositionLerp(bool enable)
-    {
-        enablePositionLerp = enable;
-        if (!enable)
-        {
-            hasPositionTarget = false;
-        }
-    }
-
-    public bool IsLerpingPosition()
-    {
-        return hasPositionTarget && enablePositionLerp;
-    }
 }
