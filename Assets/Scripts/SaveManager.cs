@@ -1,14 +1,26 @@
-using System.Collections.Generic;
-using System.Linq;
-using DG.Tweening.Core.Easing;
+
 using UnityEngine;
 
-public class SaveTester : MonoBehaviour
+public class SaveManager : MonoBehaviour
 {
+    public static SaveManager Singleton;
     PlayerInventory playerInventory;
     InventorySaveManager saveManager;
     InventorySaveData saveData;
     [SerializeField] PlayerInventoryHolder playerInventoryHolder;
+
+    private void Awake()
+    {
+        if (Singleton == null)
+        {
+            Singleton = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,17 +31,17 @@ public class SaveTester : MonoBehaviour
         {
             saveManager = new InventorySaveManager(saveData.ownedWeapons, saveData.weaponUpgrades, saveData.bulletsCount, saveData.playerStats, saveData.credits);
 
-            InventorySaveData data = saveManager.Load();
-            if (data != null) data.printData();
-            else Debug.Log("No save data found, initializing new inventory.");
-            if (data != null)
+            LoadGame();
+            if (saveData == null)
+                Debug.Log("No save data found, initializing new inventory.");
+            else
             {
-                playerInventory.Credits = data.credits;
-                saveData.ownedWeapons.Clear();
-                foreach (var w in data.ownedWeapons) saveData.ownedWeapons.Add(w);
-                foreach (var kv in data.weaponUpgrades) saveData.weaponUpgrades[kv.Key] = kv.Value;
-                foreach (var kv in data.bulletsCount) saveData.bulletsCount[kv.Key] = kv.Value;
-                foreach (var kv in data.playerStats) saveData.playerStats[kv.Key] = kv.Value;
+                playerInventory.Credits = saveData.credits;
+                //saveData.ownedWeapons.Clear();
+                //foreach (var w in data.ownedWeapons) saveData.ownedWeapons.Add(w);
+                //foreach (var kv in data.weaponUpgrades) saveData.weaponUpgrades[kv.Key] = kv.Value;
+                //foreach (var kv in data.bulletsCount) saveData.bulletsCount[kv.Key] = kv.Value;
+                //foreach (var kv in data.playerStats) saveData.playerStats[kv.Key] = kv.Value;
             }
         }
         else
@@ -54,5 +66,9 @@ public class SaveTester : MonoBehaviour
     {
         saveManager = new InventorySaveManager(saveData.ownedWeapons, saveData.weaponUpgrades, saveData.bulletsCount, saveData.playerStats, saveData.credits);
         saveManager.Save();
+    }
+    public void LoadGame()
+    {
+        saveData = saveManager.Load();
     }
 }

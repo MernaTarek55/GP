@@ -902,9 +902,6 @@ PrefabInstance:
       addedObject: {fileID: 3095604292204622511}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d970d84ee1b5ee149a53c89391d28526, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8107119824134737280}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d970d84ee1b5ee149a53c89391d28526, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5888716831640776400}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d970d84ee1b5ee149a53c89391d28526, type: 3}
       insertIndex: -1
@@ -1059,20 +1056,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  walkSpeed: 2
+  runSpeed: 5
   currentVelocity: {x: 0, y: 0, z: 0}
---- !u!114 &8107119824134737280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1249173854875511594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aab648e989f81d648993f41fc0923af8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allWeaponData: []
 --- !u!114 &5888716831640776400
 MonoBehaviour:
   m_ObjectHideFlags: 0

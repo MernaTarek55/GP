@@ -4957,7 +4957,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a130a5857d537f428a444a3be7fdac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInventoryHolder: {fileID: 575184185}
+  playerInventoryHolder: {fileID: 0}
   fillImage: {fileID: 301126695}
   healthText: {fileID: 1528184952}
 --- !u!1 &458024330
@@ -6197,17 +6197,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1249173854875511594, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
   m_PrefabInstance: {fileID: 876880794}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &575184185 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8107119824134737280, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
-  m_PrefabInstance: {fileID: 876880794}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575184180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aab648e989f81d648993f41fc0923af8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &575184190 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1881983115761496464, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
@@ -6869,7 +6858,7 @@ MonoBehaviour:
   - {fileID: 1844105919}
   - {fileID: 1759454731}
   - {fileID: 343627673}
-  inventoryHolder: {fileID: 575184185}
+  inventoryHolder: {fileID: 0}
   deadeyeButton: {fileID: 287065493}
 --- !u!1001 &674410026
 PrefabInstance:
@@ -7181,7 +7170,6 @@ Transform:
   - {fileID: 826977871}
   - {fileID: 1302479755}
   - {fileID: 886434589}
-  - {fileID: 1198512008}
   - {fileID: 1771764022}
   - {fileID: 1218164614}
   m_Father: {fileID: 0}
@@ -9233,6 +9221,10 @@ PrefabInstance:
       propertyPath: invisibilityBtn
       value: 
       objectReference: {fileID: 7374696168618811152}
+    - target: {fileID: 3095604292204622511, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3095604292204622511, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
       propertyPath: jumpCurve.m_Curve.Array.size
       value: 3
@@ -13670,51 +13662,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9709eea6c2a3187439ad00f000699678, type: 3}
---- !u!1 &1198512006
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1198512008}
-  - component: {fileID: 1198512007}
-  m_Layer: 0
-  m_Name: tester
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1198512007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1198512006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e1a19cac148e3c4aaa4324c50d725c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerInventoryHolder: {fileID: 575184185}
---- !u!4 &1198512008
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1198512006}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 71.12404, y: 401.95013, z: -26.840837}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 724042198}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1201859786 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2566305758332795254, guid: f882db38e74a2fc4f938c6b921f015b8, type: 3}

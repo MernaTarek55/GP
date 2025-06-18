@@ -21,6 +21,9 @@ public class MenuManager : MonoBehaviour
     {
         GameStartType.IsNewGame = false;
         sceneLoader.LoadScene(gameSceneName);
+
+        //added to test shop saving bug
+        SaveManager.Singleton.LoadGame();
     }
 
     public void QuitGame()
