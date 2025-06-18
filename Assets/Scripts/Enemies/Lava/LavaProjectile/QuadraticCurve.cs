@@ -32,12 +32,12 @@ public class QuadraticCurve : MonoBehaviour
         for (int i = 0; i <= 20; i++)
         {
             float t = i / 20f;
-            Gizmos.DrawSphere(evaluate(t), 0.05f);
+            //Gizmos.DrawSphere(evaluate(t), 0.05f);
         }
 
         // Draw control lines
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(A.position, Control.position);
-        Gizmos.DrawLine(Control.position, B.position);
+        //Gizmos.color = Color.yellow;
+        //Gizmos.DrawLine(A.position, Control.position);
+        //Gizmos.DrawLine(Control.position, B.position);
     }
 }

@@ -23,6 +23,7 @@ public class Enemy_AttackState : EntityState
 
     public Rigidbody enemyRigidbody { get; private set; }
     public Rigidbody playerRigidbody { get; private set; }
+
     private Animator animator;
     public Enemy_AttackState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
@@ -134,7 +135,8 @@ public class Enemy_AttackState : EntityState
             Laser laser = enemyGO.GetComponentInChildren<Laser>();
             if (laser != null)
             {
-                laser.ClearTarget(); 
+                laser.ClearTarget();        
+                laser.ClearPositionTarget();      
                 laser.GetComponent<LineRenderer>().enabled = false;
             }
         }
@@ -176,35 +178,7 @@ public class Enemy_AttackState : EntityState
 
     }
 
-    //protected override void UpdateTurret()
-    //{
-    //    Debug.Log("Turret Attack");
-    //    if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
-    //    {
-    //        Debug.Log("Player is invisible");
-    //        stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, entityGO));
-    //        return;
-    //    }
-
-    //    RotateTowardPlayer();
-    //    Shoot();
-    //}
-
-    //protected override void UpdateBallDroid()
-    //{
-    //    Debug.Log("BallDroid Attack");
-    //    Debug.Log(playerGO.GetComponent<InvisibilitySkill>().isInvisible);
-    //    if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
-    //    {
-    //        Debug.Log("Player is invisible, ball droid does nothing.");
-    //        return;
-    //    }
-    //    if (!hasExploded)
-    //    {
-    //        ExplodingBall();
-    //    }
-
-    //}
+  
 
     private void ExplodingBall()
     {
@@ -220,18 +194,7 @@ public class Enemy_AttackState : EntityState
         playerHealth.TakeDamage(10f);
     }
 
-    //protected override void UpdateHumanoid()
-    //{
-    //    Debug.Log("Humanoid Attack");
-    //    // Humanoid-specific attack logic
-    //}
-
-    //protected override void UpdateLavaRobot()
-    //{
-    //    Debug.Log("LavaRobot Attack");
-
-    //    ShootLava();
-    //}
+  
 
     private void ShootLava()
     {
@@ -383,9 +346,9 @@ public class Enemy_AttackState : EntityState
                 // laser.SetTargetPosition(playerHeadPosition);
 
                 // Option 2: If you must use Transform, create a temporary object
-                GameObject tempHeadTarget = new GameObject("TempHeadTarget");
-                tempHeadTarget.transform.position = playerHeadPosition;
-                laser.SetTarget(tempHeadTarget.transform);
+                
+                player.playerHead.transform.position = playerHeadPosition;
+                laser.SetTarget(player.playerHead.transform);
 
                 // Remember to clean up the temporary object later in Exit() or when switching targets
 

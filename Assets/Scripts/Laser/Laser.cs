@@ -20,6 +20,12 @@ public class Laser : MonoBehaviour
     private Vector3 targetPosition;
     private bool hasTarget = false;
 
+    [Header("Position Lerping")]
+    [SerializeField] private bool enablePositionLerp = true;
+    [SerializeField] private float positionLerpSpeed = 10f;
+    private Vector3 targetWorldPosition;
+    private bool hasPositionTarget = false;
+
     private bool hasDoneDamage; // Nano: bool to check if the same laser causes damage twice
     private bool activated = false;
     private LineRenderer lineRenderer;
@@ -52,6 +58,20 @@ public class Laser : MonoBehaviour
         Vector3 targetDirection = (targetPosition - transform.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
+    }
+
+    private void UpdateLaserPosition()
+    {
+        if (!enablePositionLerp || !hasPositionTarget) return;
+
+        transform.position = Vector3.Lerp(transform.position, targetWorldPosition, positionLerpSpeed * Time.deltaTime);
+
+        // Optional: Stop lerping when close enough to target
+        if (Vector3.Distance(transform.position, targetWorldPosition) < 0.01f)
+        {
+            transform.position = targetWorldPosition;
+            hasPositionTarget = false;
+        }
     }
 
     private void InitializeLineRenderer()
@@ -107,6 +127,8 @@ public class Laser : MonoBehaviour
             ClearLaser();
             return;
         }
+
+        UpdateLaserPosition(); // Add position lerping update
         UpdateLaserDirection();
         UpdateLaserBeam();
     }
@@ -140,6 +162,25 @@ public class Laser : MonoBehaviour
         trackPlayer = true;
     }
 
+    // New method to set target position for lerping
+    public void SetTargetWorldPosition(Vector3 position, bool enableLerp = true)
+    {
+        targetWorldPosition = position;
+        hasPositionTarget = enableLerp && enablePositionLerp;
+
+        if (!enableLerp || !enablePositionLerp)
+        {
+            transform.position = position;
+        }
+    }
+
+    // Method to instantly move to position without lerping
+    public void SetPositionImmediate(Vector3 position)
+    {
+        transform.position = position;
+        hasPositionTarget = false;
+    }
+
     // Legacy method for Transform - converts to Vector3
     public void SetTarget(Transform target)
     {
@@ -157,6 +198,11 @@ public class Laser : MonoBehaviour
     {
         hasTarget = false;
         trackPlayer = false;
+    }
+
+    public void ClearPositionTarget()
+    {
+        hasPositionTarget = false;
     }
 
     private void ClearLaser()
@@ -308,11 +354,52 @@ public class Laser : MonoBehaviour
 
         // Reset any previous state
         ClearLaser();
+        hasPositionTarget = false; // Clear position lerping target
+    }
+
+    // Enhanced version with position lerping option
+    public void InitializeLaser(Vector3 position, Quaternion rotation, bool isFromPool = true, bool lerpToPosition = false)
+    {
+        if (lerpToPosition && enablePositionLerp)
+        {
+            SetTargetWorldPosition(position, true);
+        }
+        else
+        {
+            transform.position = position;
+        }
+
+        transform.rotation = rotation;
+        gameObject.SetActive(true);
+        currentLifetime = lifetime;
+
+        // Reset any previous state
+        ClearLaser();
     }
 
     // Nano: call this function to set damage
     public void SetLaserDamage(float damage)
     {
         laserDamage = damage;
+    }
+
+    // Utility methods for position lerping control
+    public void SetPositionLerpSpeed(float speed)
+    {
+        positionLerpSpeed = speed;
+    }
+
+    public void EnablePositionLerp(bool enable)
+    {
+        enablePositionLerp = enable;
+        if (!enable)
+        {
+            hasPositionTarget = false;
+        }
+    }
+
+    public bool IsLerpingPosition()
+    {
+        return hasPositionTarget && enablePositionLerp;
     }
 }
