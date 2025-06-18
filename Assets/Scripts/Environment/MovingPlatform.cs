@@ -5,10 +5,12 @@ public class MovingPlatform : MonoBehaviour
     public enum Direction { Horizontal, Vertical, Custom }
 
     [Header("Movement Settings")]
-    public Direction moveDirection = Direction.Horizontal;
-    public Vector3 customDirection = Vector3.right;
-    public float distance = 5f;
-    public float speed = 2f;
+    [SerializeField] Direction moveDirection = Direction.Horizontal;
+    [SerializeField] Vector3 customDirection = Vector3.right;
+    [SerializeField] float distance = 5f;
+    [SerializeField] float speed = 2f;
+
+    [SerializeField] Transform playerParent;
 
     private Vector3 startPos;
     private Vector3 targetPos;
@@ -59,7 +61,7 @@ public class MovingPlatform : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         //TODO : what is player real parent?
-            collision.transform.SetParent(null);
+            collision.transform.SetParent(playerParent);
     }
 
 }
