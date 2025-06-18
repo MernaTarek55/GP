@@ -1,8 +1,10 @@
+
 using UnityEngine;
 
 public class Player_JumpState : EntityState
 {
-    public Player_JumpState(StateMachine stateMachine, string stateName, Player player) : base(stateMachine, stateName, player)
+    public Player_JumpState(StateMachine stateMachine, string stateName, Player player)
+        : base(stateMachine, stateName, player)
     {
     }
 
@@ -15,10 +17,8 @@ public class Player_JumpState : EntityState
             player.animator.SetTrigger("Jump");
             player.rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
             player.hasJumped = true;
-
         }
 
-        // At jump, player is airborne, so IsFlying = true
         player.animator.SetBool("IsFlying", true);
         player.animator.SetBool("Grounded", false);
     }
@@ -27,7 +27,6 @@ public class Player_JumpState : EntityState
     {
         base.Update();
 
-        // Check if player is falling
         if (!player.IsGrounded && player.rb.linearVelocity.y < 0)
         {
             player.animator.SetBool("IsFlying", true);
@@ -37,20 +36,31 @@ public class Player_JumpState : EntityState
         {
             player.hasJumped = false;
 
-            stateMachine.ChangeState(
-                player.healthComponent.IsDead() ? player.playerDeath :
-                player.DeadEyePressed ? new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player) :
-                player.MoveInput.sqrMagnitude > 0.01f ? new Player_MoveState(stateMachine, "Walk", player) :
-                new Player_IdleState(stateMachine, "Idle", player)
-            );
+            if (player.healthComponent.IsDead())
+            {
+                stateMachine.ChangeState(player.playerDeath);
+            }
+            else if (player.DeadEyePressed)
+            {
+                stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
+            }
+            else if (player.MoveInput.sqrMagnitude > 0.01f)
+            {
+                var moveState = new Player_MoveState(stateMachine, "Move", player);
+                if (player.WasRunningBeforeJump)
+                    moveState.ForceRun();
+                stateMachine.ChangeState(moveState);
+            }
+            else
+            {
+                stateMachine.ChangeState(new Player_IdleState(stateMachine, "Idle", player));
+            }
         }
     }
 
     public override void Exit()
     {
         base.Exit();
-
-        // Reset animation parameters
         player.animator.SetBool("IsFlying", false);
         player.animator.SetBool("Grounded", true);
         player.animator.ResetTrigger("Jump");
