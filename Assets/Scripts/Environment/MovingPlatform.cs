@@ -54,14 +54,18 @@ public class MovingPlatform : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
-            collision.transform.SetParent(transform);
+        {
+            collision.transform.parent.SetParent(transform, true);
+        }
     }
 
     void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
-        //TODO : what is player real parent?
-            collision.transform.SetParent(playerParent);
+        {
+            //TODO : what is player real parent?
+            collision.transform.parent.SetParent(null);
+        }
     }
 
 }
