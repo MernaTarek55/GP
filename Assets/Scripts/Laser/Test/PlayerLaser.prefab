@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1142589890155500219}
   - component: {fileID: 7200304114628244394}
   - component: {fileID: 1665226255978486240}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayerLaser
   m_TagString: Laser
   m_Icon: {fileID: 0}
@@ -52,6 +52,8 @@ MonoBehaviour:
   drawDebugRays: 0
   IsNotTurret: 1
   poolType: 1
+  trackPlayer: 0
+  trackingSpeed: 5
 --- !u!54 &1665226255978486240
 Rigidbody:
   m_ObjectHideFlags: 0
