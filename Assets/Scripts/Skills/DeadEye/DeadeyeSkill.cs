@@ -143,8 +143,8 @@ public class DeadeyeSkill : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.collider.CompareTag("Enemy"))
-            {
+            //if (hit.collider.CompareTag("Enemy"))
+            //{
                 GameObject tap = new GameObject("TargetMarker");
                 tap.transform.position = hit.point;
                 tap.transform.parent = hit.collider.transform;
@@ -153,7 +153,7 @@ public class DeadeyeSkill : MonoBehaviour
                 GameObject tmpImage = new GameObject("TargetImage");
                 tmpImage.transform.position = hit.point;
                 tmpImage.transform.parent = hit.transform;
-            }
+            //}
         }
         else
         {
