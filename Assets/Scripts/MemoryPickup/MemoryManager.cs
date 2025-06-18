@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 
 public class MemoryManager : MonoBehaviour
@@ -6,6 +7,9 @@ public class MemoryManager : MonoBehaviour
     public static MemoryManager Instance;
     [SerializeField] private GameObject[] memoriesArray;
     private int Currentindex = 0;
+    private bool hasStartedLoading = false;
+    [SerializeField] private SceneLoader sceneLoader;
+    [SerializeField] private string gameSceneName = "Real Level 2";
     [SerializeField] private GameObject endGamePanel;
     private void Awake()
     {
@@ -43,6 +47,16 @@ public class MemoryManager : MonoBehaviour
     {
         Debug.Log("All memories are picked");
         endGamePanel.SetActive(true);
-        Time.timeScale = 0;
+        hasStartedLoading = true;
+        StartCoroutine(WaitAndLoadScene());
+        Time.timeScale = 0; 
     }
+
+    IEnumerator WaitAndLoadScene()
+    {
+        yield return new WaitForSecondsRealtime(15f); 
+        Time.timeScale = 1; 
+        sceneLoader.LoadScene(gameSceneName);
+    }
+
 }
