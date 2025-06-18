@@ -50,10 +50,10 @@ public class InventorySaveManager
     {
         if (!File.Exists(savePath))
         {
-            Debug.LogWarning("Save file not found, creating new save.");
+            Debug.LogWarning("Inventory Save file not found, creating new save.");
             return null;
         }
-
+        Debug.Log("Loading Inventory");
         string json = File.ReadAllText(savePath);
         InventorySaveData data = JsonConvert.DeserializeObject<InventorySaveData>(json);
         return data;

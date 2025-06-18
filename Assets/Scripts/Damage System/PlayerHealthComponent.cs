@@ -1,12 +1,13 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerHealthComponent : MonoBehaviour, IDamageable
 {
     private PlayerInventoryHolder inventoryHolder;
 
-    private void Awake()
+    private void Start()
     {
-        inventoryHolder = GetComponent<PlayerInventoryHolder>();
+        inventoryHolder = SaveManager.Singleton.GetComponent<PlayerInventoryHolder>();
        
     }
 
