@@ -5,10 +5,8 @@ public class HealthComponent : MonoBehaviour, IDamageable
 {
     private float currentHealth;
     private float maxHealth;
-    public Enemy enemy;
     private bool isDead;
 
-    // Delegate for death event
     public event Action OnDeath;
 
     private void Awake()
@@ -64,10 +62,5 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
         if(OnDeath != null)OnDeath();
 
-        // Fallback to direct enemy reference if delegate is not subscribed
-        if (OnDeath == null && enemy != null)
-        {
-            enemy.enemyStateMachine.ChangeState(enemy.enemyDeath);
-        }
     }
 }
