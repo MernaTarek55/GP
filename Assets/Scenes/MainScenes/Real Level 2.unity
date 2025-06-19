@@ -745,7 +745,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2097152
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -18380,76 +18380,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: beyblade (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 6211728603963152652, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2792134236384401833, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
-    - {fileID: 7220050137989892262, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6211728603963152652, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1536420431}
-    - targetCorrespondingSourceObject: {fileID: 6211728603963152652, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1536420430}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
 --- !u!4 &1536420428 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1455663099184684301, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
   m_PrefabInstance: {fileID: 1536420427}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1536420429 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6211728603963152652, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
-  m_PrefabInstance: {fileID: 1536420427}
-  m_PrefabAsset: {fileID: 0}
---- !u!195 &1536420430
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536420429}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
---- !u!135 &1536420431
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536420429}
-  m_Material: {fileID: 13400000, guid: 308d013678b07924f9ca07b64344c403, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0.42, z: 0}
 --- !u!1001 &1548666351
 PrefabInstance:
   m_ObjectHideFlags: 0
