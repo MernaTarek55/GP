@@ -9,8 +9,6 @@ public class InvisibilitySkill : MonoBehaviour
     public MeshRenderer[] Weaponrenderers;
     private Material[] materials;
     //need refactor
-    private readonly float duration;
-    private float cooldownTime;
     public float invisibilityDuration = 30f;
     public float cooldownDuration = 10f;
     //private float lastUsedTime;
@@ -60,7 +58,7 @@ public class InvisibilitySkill : MonoBehaviour
         if (!isInvisible && !isOnCooldown)
         {
             InvisibleButton.interactable = false;
-            _ = StartCoroutine(BecomeInvisible());
+            StartCoroutine(BecomeInvisible());
         }
     }
     //private void UpdateStats()
@@ -76,7 +74,7 @@ public class InvisibilitySkill : MonoBehaviour
         yield return Fade(1f, 0f);
 
         isInvisible = false;
-        _ = StartCoroutine(Cooldown());
+        StartCoroutine(Cooldown());
     }
     private IEnumerator Fade(float from, float to)
     {
