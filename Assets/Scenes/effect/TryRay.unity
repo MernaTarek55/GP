@@ -9392,7 +9392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1a19cac148e3c4aaa4324c50d725c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInventoryHolder: {fileID: 2008487102}
+  playerInventoryHolder: {fileID: 0}
 --- !u!1 &445510817
 GameObject:
   m_ObjectHideFlags: 0
@@ -10052,7 +10052,7 @@ MonoBehaviour:
   - {fileID: 139859818}
   - {fileID: 1492027058}
   - {fileID: 1610615756}
-  inventoryHolder: {fileID: 2008487102}
+  inventoryHolder: {fileID: 0}
   deadeyeButton: {fileID: 1023438686}
 --- !u!4 &490640931 stripped
 Transform:
@@ -31802,7 +31802,8 @@ PrefabInstance:
       propertyPath: affectedLayers.m_Bits
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8107119824134737280, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1881983115761496464, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
@@ -31820,17 +31821,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2308992718829276241, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
   m_PrefabInstance: {fileID: 2008487096}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2008487102 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8107119824134737280, guid: f451e26bf5921234b9b94ebeffe695b4, type: 3}
-  m_PrefabInstance: {fileID: 2008487096}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 908907410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aab648e989f81d648993f41fc0923af8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2027791272
 PrefabInstance:
   m_ObjectHideFlags: 0
