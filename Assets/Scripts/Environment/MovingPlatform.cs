@@ -10,13 +10,12 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] float distance = 5f;
     [SerializeField] float speed = 2f;
 
-    [SerializeField] Transform playerParent;
 
     private Vector3 startPos;
     private Vector3 targetPos;
     private bool movingToTarget = true;
-    //TODO : if the moving platform aint too much in the scene reconsider this
-    private bool isVisible = false;
+    //TODO : if the moving platform too much in the scene consider this
+    //private bool isVisible = false;
 
     void Start()
     {
@@ -38,7 +37,7 @@ public class MovingPlatform : MonoBehaviour
 
     void Update()
     {
-        if (!isVisible) return;
+        //if (!isVisible) return;
 
         Vector3 destination = movingToTarget ? targetPos : startPos;
         transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
@@ -47,9 +46,9 @@ public class MovingPlatform : MonoBehaviour
             movingToTarget = !movingToTarget;
     }
 
-    void OnBecameVisible() => isVisible = true;
+    //void OnBecameVisible() => isVisible = true;
 
-    void OnBecameInvisible() => isVisible = false;
+    //void OnBecameInvisible() => isVisible = false;
 
     void OnCollisionEnter(Collision collision)
     {
@@ -63,8 +62,7 @@ public class MovingPlatform : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //TODO : what is player real parent?
-            collision.transform.parent.SetParent(null);
+            collision.transform.parent.SetParent(null,true);
         }
     }
 
