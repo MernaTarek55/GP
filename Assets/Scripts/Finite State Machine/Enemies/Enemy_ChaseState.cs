@@ -79,6 +79,7 @@ public class Enemy_ChaseState : EntityState
                 Debug.LogWarning("playerRigidbody not found");
             if (entityGO.TryGetComponent(out InvisibilitySkill invisibilitySkill)) this.invisibilitySkill = invisibilitySkill;
             else Debug.LogWarning("invisibilitySkill not found");
+           
         }
         else
         {

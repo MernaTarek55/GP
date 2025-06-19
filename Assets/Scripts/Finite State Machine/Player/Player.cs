@@ -55,6 +55,9 @@ public class Player : MonoBehaviour
     public float walkSpeed = 2f;
     public float runSpeed = 5f;
 
+
+    public Transform playerHead;
+
     [HideInInspector]
     public Vector3 currentVelocity = Vector3.zero;
     

@@ -16,10 +16,9 @@ public class Enemy_IdleState : EntityState
         TryGetComponents(playerGO);
         _currentTween = new Tween[2];
     }
-
-    public override void Update()
+    public override void Enter()
     {
-        base.Update();
+        base.Enter();
         switch (enemyData.enemyType)
         {
             case EnemyData.EnemyType.Turret:
@@ -28,17 +27,23 @@ public class Enemy_IdleState : EntityState
                     Debug.LogWarning("Turret Idle");
                     RotateWithTween(new Vector3(0, 90, 0), new Vector3(0, 0, 0), 4f, 4f, RotateMode.Fast);
                 }
-                break; 
+                break;
 
-            case EnemyData.EnemyType.ballDroid: 
+            case EnemyData.EnemyType.ballDroid:
                 RotateOnSelf(new Vector3(360, 0, 0), 1f, RotateMode.WorldAxisAdd);
-                break; 
+                break;
             case EnemyData.EnemyType.Beyblade:
                 RotateOnSelf(new Vector3(0, 360, 0), 1f, RotateMode.WorldAxisAdd);
                 break;
             default:
                 break;
         }
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        
     }
 
     public override void Exit()
