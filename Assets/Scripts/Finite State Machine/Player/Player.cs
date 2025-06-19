@@ -1,3 +1,4 @@
+
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,7 +14,7 @@ public class Player : MonoBehaviour
     public Player_IdleState playerIdle { get; private set; }
     public Player_MoveState playerMove { get; private set; }
     public Player_JumpState playerJump { get; private set; }
-    public Player_DeadEyeStateTest1 playerDeadEye { get; private set; }
+    //public Player_DeadEyeStateTest1 playerDeadEye { get; private set; }
     public Death_State playerDeath { get; private set; }
     public Animator animator { get; private set; }
     public Rigidbody rb { get; private set; }
@@ -38,13 +39,17 @@ public class Player : MonoBehaviour
     public bool DeadEyePressed { get; private set; }
     public bool IsShooting { get; private set; }
 
+    public bool WasRunningBeforeJump { get; set; }
+    public float WalkTimer { get; set; }
+
     public float deadEyeDuration = 10f;
-    public float deadEyeCooldown = 30f;//inventory.getPlayerStat(PlayerSkillsStats.DeadEyeCoolDown);
+    public float deadEyeCooldown = 30f;
     public float lastDeadEyeTime = -Mathf.Infinity;
     public bool CanUseDeadEye => Time.time >= lastDeadEyeTime + deadEyeCooldown;
-    [SerializeField]GameObject pistol;
+
+    [SerializeField] GameObject pistol;
     [Header("Invisibility Settings")]
-    [SerializeField]GameObject invisibilityBtn;
+    [SerializeField] GameObject invisibilityBtn;
     [Header("DeadEye Settings")]
     [SerializeField] GameObject DeadEyeBtn;
     [Header("Movement Settings")]
@@ -60,25 +65,20 @@ public class Player : MonoBehaviour
 
     [HideInInspector]
     public Vector3 currentVelocity = Vector3.zero;
-    
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        healthComponent = gameObject.GetComponent<PlayerHealthComponent>();
-        //healthComponent.setMaxHealth(inventory.getPlayerStat(PlayerSkillsStats.MaxHealth));
+        healthComponent = GetComponent<PlayerHealthComponent>();
         moveAction = InputActions.FindActionMap("Player").FindAction("Move");
         jumpAction = InputActions.FindActionMap("Player").FindAction("Jump");
-        //deadEyeAction = InputActions.FindActionMap("Player").FindAction("DeadEye");
 
         stateMachine = new StateMachine();
         playerIdle = new Player_IdleState(stateMachine, "Idle", this);
         playerMove = new Player_MoveState(stateMachine, "Move", this);
         playerJump = new Player_JumpState(stateMachine, "Jump", this);
-       // playerDeadEye = new Player_DeadEyeStateTest1(stateMachine, "DeadEye", this);
         playerDeath = new Death_State(stateMachine, "Death", this);
-        //playerDeadEye = new Player_DeadEyeStateTest1(stateMachine, "DeadEye", this);
-        //Hello
     }
 
     private void OnEnable()
@@ -99,25 +99,26 @@ public class Player : MonoBehaviour
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
-        //DeadEyePressed = deadEyeAction.WasPressedThisFrame() && CanUseDeadEye;
         JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
         stateMachine.UpdateActiveState();
     }
-    //TODO: Put it invisibility 
+
     public void ActivateInvisibility()
     {
-        GetComponent<InvisibilitySkill>().enabled = true; 
-        invisibilityBtn.SetActive(true); 
+        GetComponent<InvisibilitySkill>().enabled = true;
+        invisibilityBtn.SetActive(true);
     }
 
     public void ActivateDeadEye()
     {
         DeadEyeBtn.SetActive(true);
     }
+
     public void ActivatePistol()
     {
         pistol.SetActive(true);
     }
+
     public void SetShooting(bool isShooting)
     {
         IsShooting = isShooting;
@@ -127,6 +128,4 @@ public class Player : MonoBehaviour
     {
         healthComponent.RenewHealth();
     }
-
-    
 }
