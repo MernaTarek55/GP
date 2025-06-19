@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public Player_IdleState playerIdle { get; private set; }
     public Player_MoveState playerMove { get; private set; }
     public Player_JumpState playerJump { get; private set; }
-    public Player_DeadEyeStateTest1 playerDeadEye { get; private set; }
+    //public Player_DeadEyeStateTest1 playerDeadEye { get; private set; }
     public Death_State playerDeath { get; private set; }
     public Animator animator { get; private set; }
     public Rigidbody rb { get; private set; }

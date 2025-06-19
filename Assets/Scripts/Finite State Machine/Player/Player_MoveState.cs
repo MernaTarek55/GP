@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Player_MoveState : EntityState
 {
-    private float timeToRun = 2f;
+    private float timeToRun = .5f;
     private bool forceRun = false;
 
     public Player_MoveState(StateMachine stateMachine, string stateName, Player player)
@@ -35,11 +35,11 @@ public class Player_MoveState : EntityState
             return;
         }
 
-        if (player.DeadEyePressed)
-        {
-            stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
-            return;
-        }
+        //if (player.DeadEyePressed)
+        //{
+        //    stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
+        //    return;
+        //}
 
         if (!forceRun)
         {
@@ -61,10 +61,14 @@ public class Player_MoveState : EntityState
         float curvedSpeed = currentMaxSpeed * player.movementCurve.Evaluate(inputMagnitude);
         Vector3 targetVelocity = moveDirection.normalized * curvedSpeed;
 
-        player.currentVelocity = Vector3.MoveTowards(
+        // EaseInOut curve value based on input magnitude (0 to 1)
+        float easeValue = player.movementCurve.Evaluate(inputMagnitude); // e.g. EaseInOut(0,0)-(1,1)
+
+        // Smooth using Lerp
+        player.currentVelocity = Vector3.Lerp(
             player.currentVelocity,
             targetVelocity,
-            (targetVelocity.magnitude > 0 ? player.acceleration : player.deceleration) * Time.deltaTime
+            easeValue * Time.deltaTime * player.acceleration
         );
 
         player.rb.MovePosition(player.rb.position + player.currentVelocity * Time.deltaTime);
@@ -75,9 +79,16 @@ public class Player_MoveState : EntityState
             player.rb.MoveRotation(Quaternion.Slerp(player.rb.rotation, targetRotation, player.RotateSpeed * Time.deltaTime));
         }
 
-        float speedRatio = player.currentVelocity.magnitude / player.runSpeed;
-        float signedSpeed = Mathf.Sign(player.MoveInput.x) * speedRatio * 2f;
-        player.animator.SetFloat("Speed", signedSpeed);
+        if (player.IsGrounded)
+        {
+            float speedRatio = player.currentVelocity.magnitude / player.runSpeed;
+            float signedSpeed = Mathf.Sign(player.MoveInput.x) * speedRatio * 2f;
+            player.animator.SetFloat("Speed", signedSpeed);
+        }
+        else
+        {
+            player.animator.SetFloat("Speed", 0f);
+        }
     }
 
     public void ForceRun()

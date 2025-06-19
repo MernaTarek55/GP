@@ -14,7 +14,9 @@ public class Player_JumpState : EntityState
 
         if (player.IsGrounded && !player.hasJumped)
         {
-            player.animator.SetTrigger("Jump");
+            player.animator.Update(0f);
+            int rocketFlyHash = Animator.StringToHash("RocketFly");
+            player.animator.Play(rocketFlyHash);
             player.rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
             player.hasJumped = true;
         }
@@ -35,15 +37,14 @@ public class Player_JumpState : EntityState
         if (player.IsGrounded && player.hasJumped)
         {
             player.hasJumped = false;
-
             if (player.healthComponent.IsDead())
             {
                 stateMachine.ChangeState(player.playerDeath);
             }
-            else if (player.DeadEyePressed)
-            {
-                stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
-            }
+            //else if (player.DeadEyePressed)
+            //{
+            //    stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
+            //}
             else if (player.MoveInput.sqrMagnitude > 0.01f)
             {
                 var moveState = new Player_MoveState(stateMachine, "Move", player);
@@ -63,6 +64,6 @@ public class Player_JumpState : EntityState
         base.Exit();
         player.animator.SetBool("IsFlying", false);
         player.animator.SetBool("Grounded", true);
-        player.animator.ResetTrigger("Jump");
+        //player.animator.ResetTrigger("Jump");
     }
 }
