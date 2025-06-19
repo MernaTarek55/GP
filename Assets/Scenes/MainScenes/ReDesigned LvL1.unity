@@ -4942,7 +4942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
+  m_ReferencePixelsPerUnit: 150
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
@@ -8872,13 +8872,13 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 571064725, guid: 34e32850b497a524e8a6097be2e8bbc2, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
-  m_UseSpriteMesh: 0
+  m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
 --- !u!222 &994636880
 CanvasRenderer:
@@ -21087,6 +21087,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1924718397}
     m_Modifications:
+    - target: {fileID: 182520510584042995, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 292070714777163095, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: currentWeapon
       value: 
@@ -21159,6 +21163,18 @@ PrefabInstance:
       propertyPath: 'uiRaycasters.Array.data[3]'
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3135244840860575359, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3884812087887228200, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920425573576535612, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5990697834793516822, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -21202,6 +21218,14 @@ PrefabInstance:
     - target: {fileID: 7734080779893281548, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893165804973498826, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772243206368400471, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9051190404028234942, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: 'uiRaycasters.Array.data[1]'

@@ -33,7 +33,7 @@ public class MenuManager : MonoBehaviour
 
     public void OpenSettings()
     {
-        menuPanel.SetActive(false);
+        //menuPanel.SetActive(false);
         settingsMenu.Open(SettingsShared.MainMenu);
     }
 }
