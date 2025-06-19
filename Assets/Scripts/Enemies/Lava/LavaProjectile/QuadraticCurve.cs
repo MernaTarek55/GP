@@ -21,23 +21,23 @@ public class QuadraticCurve : MonoBehaviour
         return Vector3.Lerp(ac, cb, t);
     }
 
-    private void OnDrawGizmos()
-    {
-        if (A == null || B == null || Control == null)
-        {
-            return;
-        }
+    //private void OnDrawGizmos()
+    //{
+    //    if (A == null || B == null || Control == null)
+    //    {
+    //        return;
+    //    }
 
-        Gizmos.color = Color.red;
-        for (int i = 0; i <= 20; i++)
-        {
-            float t = i / 20f;
-            //Gizmos.DrawSphere(evaluate(t), 0.05f);
-        }
+    //    //Gizmos.color = Color.red;
+    //    for (int i = 0; i <= 20; i++)
+    //    {
+    //        float t = i / 20f;
+    //        //Gizmos.DrawSphere(evaluate(t), 0.05f);
+    //    }
 
-        // Draw control lines
-        //Gizmos.color = Color.yellow;
-        //Gizmos.DrawLine(A.position, Control.position);
-        //Gizmos.DrawLine(Control.position, B.position);
-    }
+    //    // Draw control lines
+    //    //Gizmos.color = Color.yellow;
+    //    //Gizmos.DrawLine(A.position, Control.position);
+    //    //Gizmos.DrawLine(Control.position, B.position);
+    //}
 }
