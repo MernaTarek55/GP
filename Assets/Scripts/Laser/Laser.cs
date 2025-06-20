@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Laser : MonoBehaviour
@@ -16,7 +16,7 @@ public class Laser : MonoBehaviour
 
     [Header("Tracking")]
     [SerializeField] private bool trackPlayer = false;
-    [SerializeField] private float trackingSpeed = 5f;
+    [SerializeField] private float trackingSpeed = 10f;
     private Vector3 targetPosition;
     private bool hasTarget = false;
 
@@ -30,6 +30,8 @@ public class Laser : MonoBehaviour
     private float currentLifetime;
 
     private float laserDamage = 20; // Nano: to set the damage of the laser
+    private Vector3 currentLaserDirection;
+
 
     void Awake()
     {
@@ -43,6 +45,9 @@ public class Laser : MonoBehaviour
         {
             currentLifetime = lifetime;
         }
+
+        currentLaserDirection = transform.forward;
+
     }
 
     private void UpdateLaserDirection()
@@ -50,8 +55,12 @@ public class Laser : MonoBehaviour
         if (!trackPlayer || !hasTarget) return;
 
         Vector3 targetDirection = (targetPosition - transform.position).normalized;
+
+        // Lerp the actual beam direction
+        currentLaserDirection = Vector3.Lerp(currentLaserDirection, targetDirection, trackingSpeed * Time.deltaTime);
+
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
     }
 
     private void InitializeLineRenderer()
@@ -95,7 +104,8 @@ public class Laser : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    //void FixedUpdate()
+    void Update()
     {
         if (IsNotTurret)
         {
@@ -184,7 +194,8 @@ public class Laser : MonoBehaviour
             transform.position + transform.forward * 0.2501f
         };
 
-        CastBeam(bouncePositions[0], transform.forward);
+        CastBeam(bouncePositions[0], currentLaserDirection);
+        //CastBeam(bouncePositions[0], transform.forward);
 
         if (bouncePositions.Count > 0)
         {
@@ -238,7 +249,9 @@ public class Laser : MonoBehaviour
             IDamageable damagable = hitInfo.collider.GetComponent<IDamageable>();
             if (damagable != null)
             {
-                if (!IsNotTurret || (IsNotTurret && !hasDoneDamage))
+                // check 1 if the laser is comming out from the turret and make sure that it doesn't damage itself
+                // check 2 if the player has done damage once
+                if ((!IsNotTurret && hitInfo.collider.gameObject.CompareTag("Enemy")) || (IsNotTurret && !hasDoneDamage))
                 {
                     damagable.TakeDamage(laserDamage);
                     currentLifetime = 0;
