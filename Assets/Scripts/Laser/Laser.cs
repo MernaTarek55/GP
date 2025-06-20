@@ -247,19 +247,28 @@ public class Laser : MonoBehaviour
 
             // For bullet-like behavior, check if we hit something that should stop the laser
             IDamageable damagable = hitInfo.collider.GetComponent<IDamageable>();
+
             if (damagable != null)
             {
-                // check 1 if the laser is comming out from the turret and make sure that it doesn't damage itself
-                // check 2 if the player has done damage once
-                if ((!IsNotTurret && hitInfo.collider.gameObject.CompareTag("Enemy")) || (IsNotTurret && !hasDoneDamage))
+                bool isHittingSelf = hitInfo.collider.gameObject.tag == gameObject.tag;
+
+                if (!IsNotTurret && !isHittingSelf)
                 {
+                    // It's NOT a turret laser, damage any target except itself
                     damagable.TakeDamage(laserDamage);
                     currentLifetime = 0;
 
-                    if (IsNotTurret)
-                        hasDoneDamage = true;
+                }
+                else if (IsNotTurret && !hasDoneDamage && !isHittingSelf)
+                {
+                    // It's a turret laser, damage any target except itself (and only once)
+                    damagable.TakeDamage(laserDamage);
+                    currentLifetime = 0;
+
+                    hasDoneDamage = true;
                 }
             }
+
         }
     }
 
