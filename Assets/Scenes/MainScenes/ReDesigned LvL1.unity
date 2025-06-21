@@ -3860,7 +3860,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8184216194598958772, guid: c5d11a1bce9d82e4a9bec439434d158a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7584,7 +7584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8184216194598958772, guid: c5d11a1bce9d82e4a9bec439434d158a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21089,7 +21089,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8184216194598958772, guid: c5d11a1bce9d82e4a9bec439434d158a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21137,6 +21137,10 @@ PrefabInstance:
       propertyPath: 'uiRaycasters.Array.data[2]'
       value: 
       objectReference: {fileID: 1154708342}
+    - target: {fileID: 4691776738279339158, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 5314307668649558388, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: 'uiRaycasters.Array.data[0]'
       value: 
@@ -21160,6 +21164,10 @@ PrefabInstance:
     - target: {fileID: 6528768532773288235, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: UseInvisibility
+      objectReference: {fileID: 0}
+    - target: {fileID: 6663243248047982759, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: affectedLayers.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 7252776371748360924, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: m_Name
