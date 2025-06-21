@@ -55,12 +55,19 @@ public class Laser : MonoBehaviour
         if (!trackPlayer || !hasTarget) return;
 
         Vector3 targetDirection = (targetPosition - transform.position).normalized;
-
-        // Lerp the actual beam direction
-        currentLaserDirection = Vector3.Lerp(currentLaserDirection, targetDirection, trackingSpeed * Time.deltaTime);
-
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
+
+        if (IsNotTurret)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
+
+        }
+        else
+        {
+            // Lerp the actual beam direction
+            currentLaserDirection = Vector3.Lerp(currentLaserDirection, targetDirection, trackingSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
+        }
     }
 
     private void InitializeLineRenderer()
@@ -194,8 +201,14 @@ public class Laser : MonoBehaviour
             transform.position + transform.forward * 0.2501f
         };
 
-        CastBeam(bouncePositions[0], currentLaserDirection);
-        //CastBeam(bouncePositions[0], transform.forward);
+        if (IsNotTurret)
+        {
+            CastBeam(bouncePositions[0], transform.forward);
+        }
+        else
+        {
+            CastBeam(bouncePositions[0], currentLaserDirection);
+        }
 
         if (bouncePositions.Count > 0)
         {
