@@ -27,7 +27,9 @@ public class Enemy_PatrolState : EntityState
     {
         base.Enter();
         if (enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
+        {
             enemyAgent.SetDestination(enemy.NavTargets[counter].position);
+        }
         if (enemyData.enemyType != EnemyData.EnemyType.Turret && enemyData.enemyGroup == EnemyData.EnemyGroup.Shooter)
             enemyAgent.isStopped = false;
     }
@@ -35,13 +37,12 @@ public class Enemy_PatrolState : EntityState
     public override void Update()
     {
         base.Update();
-        if (enemyData.enemyType != EnemyData.EnemyType.Turret)
-        {
-            if (enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
-                SetTargetsDestination();
-            else
-                SetRandomDestination();
-        }
+        if (enemyData.enemyType == EnemyData.EnemyType.Turret)
+            return;
+        else if (enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
+            SetTargetsDestination();
+        else
+            SetRandomDestination();
 
     }
 
@@ -103,9 +104,9 @@ public class Enemy_PatrolState : EntityState
     }
     void SetTargetsDestination()
     {
-
         if (enemyAgent.remainingDistance < enemyAgent.stoppingDistance)
         {
+            Debug.Log("Setting targets destination" + enemy.NavTargets.Length + " " + counter);
             if (counter >= enemy.NavTargets.Length)
             {
                 counter = 0;
@@ -142,5 +143,3 @@ public class Enemy_PatrolState : EntityState
         }
     }
 }
-
-

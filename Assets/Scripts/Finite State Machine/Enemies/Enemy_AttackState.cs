@@ -1,31 +1,14 @@
-using System;
 
 using System.Collections;
-
-using System.Collections.Generic;
-
-using System.Security.Cryptography;
-
 using DG.Tweening;
-
-using Unity.VisualScripting;
-
 using UnityEngine;
-
 using UnityEngine.AI;
 
-
-
 public class Enemy_AttackState : EntityState
-
 {
-
     private GameObject playerGO;
-
     private GameObject firePoint;
-
     private ParticleSystem enemyPS;  // particle system for enemy ball explosion
-
     private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
 
     private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
@@ -62,15 +45,7 @@ public class Enemy_AttackState : EntityState
 
         TryGetComponents(playerGO);
 
-
-
-
-
-
-
     }
-
-
 
     public override void Enter()
 
@@ -88,18 +63,8 @@ public class Enemy_AttackState : EntityState
 
         }
 
-
-
-
-
-
-
     }
-
-
-
     public override void Update()
-
     {
 
         base.Update();
@@ -108,7 +73,7 @@ public class Enemy_AttackState : EntityState
 
         {
 
-            if (invisibilitySkill.isInvisible)
+            //if (invisibilitySkill.isInvisible)
 
             {
 
@@ -117,9 +82,6 @@ public class Enemy_AttackState : EntityState
                 return;
 
             }
-
-
-
             RotateTowardPlayer();
 
             if (enemyData.enemyType == EnemyData.EnemyType.OneArmedRobot)
@@ -131,10 +93,6 @@ public class Enemy_AttackState : EntityState
                 Shoot();
 
         }
-
-
-
-
 
         else if (enemyData.enemyGroup == EnemyData.EnemyGroup.Chaser)
 
@@ -163,23 +121,12 @@ public class Enemy_AttackState : EntityState
                 PushBackPlayer();
 
             }
-
-
-
         }
 
-        else if (enemyData.enemyType == EnemyData.EnemyType.
-
-            LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
+        else if (enemyData.enemyType == EnemyData.EnemyType.LavaRobot || enemyData.enemyType == EnemyData.EnemyType.LavaRobotTypeB)
 
         {
-
-
-
             animator.SetBool("IsIdle", true);
-
-
-
             ShootLava();
 
         }
@@ -194,13 +141,9 @@ public class Enemy_AttackState : EntityState
 
         float impactForce = 0.2f;
 
-
-
         // Calculate the push-back force (tweak multiplier as needed)
 
         Debug.LogWarning("pushBackForce: " + impactForce);
-
-
 
         // Determine relative X position
 
@@ -213,8 +156,6 @@ public class Enemy_AttackState : EntityState
         // Create push direction only on the X-axis
 
         Vector3 pushVector = new Vector3(Mathf.Sign(pushDirection), 0f, 0f);
-
-
 
         // Apply push force to both enemy and player
 
@@ -246,22 +187,11 @@ public class Enemy_AttackState : EntityState
 
         enemyAgent.isStopped = false;
 
-
-
     }
-
-
-
     public override void Exit()
 
     {
-
-
-
         base.Exit();
-
-
-
         if (enemyData.bulletPrefab.gameObject.CompareTag("Laser"))
 
         {
@@ -347,11 +277,6 @@ public class Enemy_AttackState : EntityState
             animator = enemyGO.gameObject.GetComponentInChildren<Animator>();
 
         }
-
-
-
-
-
     }
 
 
@@ -413,8 +338,6 @@ public class Enemy_AttackState : EntityState
 
 
     //}
-
-
 
     private void ExplodingBall()
 
@@ -792,12 +715,6 @@ public class Enemy_AttackState : EntityState
 
     }
 
-
-
-
-
-
-
     private void RotateOnSelf(Vector3 rotation, float duration, RotateMode rotateMode)
 
     {
@@ -815,20 +732,7 @@ public class Enemy_AttackState : EntityState
     public void initProjectileType(LavaProjectile lavaProjectile)
 
     {
-
-
-
-
-
-
-
         QuadraticCurve quadraticCurve = enemyGO.GetComponentInChildren<QuadraticCurve>();
-
-
-
-
-
-
 
         lavaProjectile.SetQuadraticCurve(quadraticCurve);
 
@@ -837,13 +741,6 @@ public class Enemy_AttackState : EntityState
         switch (enemyData.enemyType)
 
         {
-
-
-
-
-
-
-
             case EnemyData.EnemyType.LavaRobot:
 
                 lavaProjectile.projectileType = LavaProjectile.ProjectileEnemyType.Target;  //Target shooting:
@@ -859,13 +756,6 @@ public class Enemy_AttackState : EntityState
                 break;
 
         }
-
-
-
-
-
-
-
     }
 
 
@@ -873,9 +763,6 @@ public class Enemy_AttackState : EntityState
     public override void CheckStateTransitions(float distanceToPlayer)
 
     {
-
-
-
         if (!invisibilitySkill.isInvisible)
 
         {
