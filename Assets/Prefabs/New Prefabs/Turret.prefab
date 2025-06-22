@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3575640513757266104}
   m_Layer: 0
   m_Name: head
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
 --- !u!65 &3575640513757266104
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -159,7 +160,7 @@ GameObject:
   - component: {fileID: 4111964401481117580}
   m_Layer: 0
   m_Name: handle
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,7 +248,7 @@ GameObject:
   - component: {fileID: 3735515501217648458}
   m_Layer: 0
   m_Name: LaserEmitter
-  m_TagString: Laser
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -261,7 +262,7 @@ Transform:
   m_GameObject: {fileID: 6254754056730510968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0106, y: 0.3636, z: 0.537}
+  m_LocalPosition: {x: 0.0106, y: 0.3636, z: 0.506}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -287,15 +288,7 @@ MonoBehaviour:
   IsNotTurret: 0
   poolType: 1
   trackPlayer: 0
-  trackingSpeed: 5
-  targetYOffset: 1.4
-  aimTolerance: 0.1
-  deadZoneAngle: 0.5
-  rotationSmoothingFactor: 0.1
-  yOffsetTransitionSpeed: 3
-  currentYOffset: 0
-  targetYOffsetValue: 1.4
-  drawDebugLines: 1
+  trackingSpeed: 15
 --- !u!1 &7136437484885854564
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,7 +300,7 @@ GameObject:
   - component: {fileID: 5251457305117626300}
   m_Layer: 0
   m_Name: 'ShootPos '
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -321,7 +314,7 @@ Transform:
   m_GameObject: {fileID: 7136437484885854564}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0106, y: 0.3636, z: 0.537}
+  m_LocalPosition: {x: 0.0106, y: 0.3636, z: 0.483}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -338,7 +331,7 @@ GameObject:
   - component: {fileID: 5100462511605706399}
   m_Layer: 0
   m_Name: Turret
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -353,7 +346,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 24.199345, y: -4.34, z: -96.233955}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2076236667801420716}
