@@ -745,7 +745,7 @@ public class Enemy_AttackState : EntityState
 
                 // Set the player as the target and enable tracking
 
-                laser.SetTarget(playerGO.transform);
+                laser.SetTarget(playerGO.GetComponent<Player>().playerHead);
 
 
 
