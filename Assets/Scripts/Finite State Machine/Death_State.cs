@@ -46,6 +46,11 @@ public class Death_State : EntityState
             animator.SetTrigger(animationTrigger);
         }
         SpawnDrops();
+
+        // Nano: play effect for enemy death
+        enemy?.PlayDeathEffect();
+
+
         if (entityGO.CompareTag("Player"))
         {
             player.GetComponent<PlayerRespawn>().Respawn();

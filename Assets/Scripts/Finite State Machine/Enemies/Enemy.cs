@@ -120,4 +120,13 @@ public class Enemy : MonoBehaviour
 
         Debug.LogError(drop + " " + dropChance + " " + minDrops + " " + maxDrops + " " + dropForce);
     }
+
+    // Nano: function to play death effect sob7an allah 
+    public void PlayDeathEffect()
+    {
+        if (particleEffect != null)
+        {
+            particleEffect.Play();
+        }
+    }
 }
