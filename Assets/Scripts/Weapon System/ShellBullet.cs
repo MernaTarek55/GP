@@ -3,6 +3,7 @@ using UnityEngine;
 public class ShellBullet : Projectile
 {
     [SerializeField] private float lifetime = 3f;
+    [SerializeField] private ParticleSystem explosionEffect;
 
     private void Start()
     {
@@ -20,6 +21,7 @@ public class ShellBullet : Projectile
             HealthComponent enemyHealth = other.GetComponent<HealthComponent>();
             if (enemyHealth != null)
             {
+                explosionEffect.Play();
                 enemyHealth.TakeDamage(damage);
                 Destroy(gameObject);
             }
