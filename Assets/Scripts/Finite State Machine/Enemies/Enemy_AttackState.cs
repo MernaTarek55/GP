@@ -127,8 +127,11 @@ public class Enemy_AttackState : EntityState
                 ShootRobot();
 
             else
-
+            {
+                enemyGO.transform.LookAt(playerGO.transform);
                 Shoot();
+            }
+
 
         }
 
@@ -710,11 +713,11 @@ public class Enemy_AttackState : EntityState
 
         directionToPlayer.y = 0;
 
-        float angle = Vector3.Angle(enemyGO.transform.forward, directionToPlayer);
+        //float angle = Vector3.Angle(enemyGO.transform.forward, directionToPlayer);
 
 
 
-        if (angle > 10f) return;
+        //if (angle > 10f) return;
 
 
 
@@ -726,8 +729,8 @@ public class Enemy_AttackState : EntityState
 
             {
 
-                Debug.Log("Shooting laser from turret");
-
+                Debug.LogWarning("Shooting laser from turret");
+                
                 LineRenderer lineRenderer = enemyGO.GetComponentInChildren<LineRenderer>();
 
                 lineRenderer.enabled = true;
