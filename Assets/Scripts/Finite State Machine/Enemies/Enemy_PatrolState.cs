@@ -12,8 +12,6 @@ public class Enemy_PatrolState : EntityState
 
     //private int counter = 0;
 
-
-
     public Enemy_PatrolState(StateMachine stateMachine, string stateName, EnemyData enemyData, GameObject enemyGO, GameObject playerGO)
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
