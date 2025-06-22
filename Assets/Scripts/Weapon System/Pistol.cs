@@ -145,9 +145,10 @@ public class Pistol : Weapon
         //{
         //    ikHandler.TriggerShootIK();
         //}
-
+        player.gameObject.GetComponent<Animator>().SetTrigger("Shoot");
         StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         deadEyeBool = false;
+        //player.gameObject.GetComponent<Animator>().ResetTrigger("Shoot");
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
         //    return;
 
