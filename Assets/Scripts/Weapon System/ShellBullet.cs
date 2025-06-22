@@ -21,11 +21,11 @@ public class ShellBullet : Projectile
             HealthComponent enemyHealth = other.GetComponent<HealthComponent>();
             if (enemyHealth != null)
             {
-                explosionEffect.Play();
                 enemyHealth.TakeDamage(damage);
                 Destroy(gameObject);
             }
         }
+        explosionEffect.Play();
         // Add hit effects, particles, sound etc. here
 
         //Destroy(gameObject);
