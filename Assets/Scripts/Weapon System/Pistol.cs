@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -20,7 +21,9 @@ public class Pistol : Weapon
     [SerializeField] private AudioClip shootSound;
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private AudioSource audioSource;
-
+    [Header("Rig")]
+    [SerializeField] private Transform Spher;
+    [SerializeField] private Rig rig;
 
     private float reloadTimer;
     private float fireCooldown;
@@ -112,15 +115,18 @@ public class Pistol : Weapon
         {
             return;
         }
-
+       
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
         Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
+        Spher.position = targetPoint;
+        //rig.weight = 1;
         Vector3 lookDirection = targetPoint - playerBody.position;
         lookDirection.y = 0f; // Keep only horizontal rotation
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
         playerBody.rotation = targetRotation;
         Shoot(targetPoint);
+       // rig.weight = 0;
     }
     private bool IsTouchOverUI(Vector2 screenPosition)
     {
@@ -254,7 +260,7 @@ public class Pistol : Weapon
         {
             audioSource.PlayOneShot(shootSound);
         }
-
+        //rig.weight = 0;
     }
 
 
