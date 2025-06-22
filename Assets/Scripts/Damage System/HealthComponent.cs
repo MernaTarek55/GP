@@ -7,6 +7,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
     private float maxHealth;
     private bool isDead;
 
+    [SerializeField] private ParticleSystem HitEffect;
     public event Action OnDeath;
 
     private void Awake()
@@ -18,12 +19,6 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     void Update()
     {
-
-        // Check if health has reached zero or below
-        if (currentHealth <= 0 && !isDead)
-        {
-            Die();
-        }
     }
 
     public void RenewHealth()
@@ -39,6 +34,8 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
+        HitEffect.Play();
+
         if (isDead) return;
 
         currentHealth -= damage;
