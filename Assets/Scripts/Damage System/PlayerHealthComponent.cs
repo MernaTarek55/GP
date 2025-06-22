@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerHealthComponent : MonoBehaviour, IDamageable
 {
     private PlayerInventoryHolder inventoryHolder;
-
+    [SerializeField] private ParticleSystem HitEffect;
     private void Start()
     {
         inventoryHolder = SaveManager.Singleton.GetComponent<PlayerInventoryHolder>();
@@ -14,6 +14,7 @@ public class PlayerHealthComponent : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         if (IsDead()) return;
+        HitEffect.Play();
 
         inventoryHolder.Inventory.CurrentHealth -= damage;
         Debug.Log($"Player took {damage} damage. Health: {inventoryHolder.Inventory.CurrentHealth}");
