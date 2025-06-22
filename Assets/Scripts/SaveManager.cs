@@ -14,6 +14,7 @@ public class SaveManager : MonoBehaviour
         if (Singleton == null)
         {
             Singleton = this;
+            Application.targetFrameRate = 30;
             DontDestroyOnLoad(gameObject);
         }
         else

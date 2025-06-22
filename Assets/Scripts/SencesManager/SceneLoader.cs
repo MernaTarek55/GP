@@ -10,8 +10,8 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private Image rotatingImage; 
     [SerializeField] private TextMeshProUGUI loadingText;
 
-    [SerializeField] private float rotationSpeed = 200f; 
-
+    [SerializeField] private float rotationSpeed = 200f;
+    
     public void LoadScene(string sceneName)
     {
         StartCoroutine(LoadAsync(sceneName));
