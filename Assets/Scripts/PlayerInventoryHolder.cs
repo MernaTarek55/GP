@@ -24,7 +24,7 @@ public class PlayerInventoryHolder : MonoBehaviour
         Inventory.InitializeWeaponUpgrades(allWeaponData);
         Inventory.InitializePlayerStats();
         // Initialize skill defaults
-        Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityDuration, 5f); 
+        Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityDuration, 20f); 
         Inventory.SetPlayerStat(PlayerSkillsStats.InvisibilityCoolDown, 10f); 
         Inventory.SetPlayerStat(PlayerSkillsStats.DeadEyeDuration, 5f); 
         Inventory.SetPlayerStat(PlayerSkillsStats.DeadEyeCoolDown, 10f); 

@@ -24,6 +24,7 @@ public class MagneticField : MonoBehaviour
             direction /= distance; 
 
             float falloff = 1f - (distance / magnetRange);
+            rb.constraints &= ~RigidbodyConstraints.FreezePositionZ;
             rb.AddForce(direction * forceStrength * falloff, ForceMode.Force);
         }
     }
