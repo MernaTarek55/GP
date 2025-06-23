@@ -6,7 +6,8 @@ using UnityEngine.UIElements;
 
 public class Presentation : MonoBehaviour
 {
-    [SerializeField] private Transform[] cameraPoints;
+    [SerializeField] private Transform PresentationPoints;
+    private Transform[] cameraPoints;
     [SerializeField] private int pointsIndex = 0;
     [SerializeField] private float duration = 2f;
 
@@ -14,7 +15,12 @@ public class Presentation : MonoBehaviour
 
     private void Start()
     {
-        camera.position = cameraPoints[pointsIndex].position;   
+        PresentationPoints = PresentationPoints ?? GameObject.Find("PresentationPoints").transform;
+        camera.position = cameraPoints[pointsIndex].position;
+        foreach (var point in cameraPoints)
+        {
+            point.gameObject.SetActive(false);
+        }
     }
 
 
