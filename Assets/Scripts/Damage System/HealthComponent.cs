@@ -1,11 +1,14 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthComponent : MonoBehaviour, IDamageable
 {
     private float currentHealth;
     private float maxHealth;
     private bool isDead;
-
+    //textmeshpro
+    public TextMeshProUGUI hp;
     private void Awake()
     {
         isDead = false;
@@ -31,7 +34,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
         currentHealth -= damage;
 
-        Debug.Log("Take Damageeeeeeeeeeeeeeee, health: " + currentHealth);
+        hp.text = "health: " + currentHealth;
     }
 
     public bool IsDead() 
