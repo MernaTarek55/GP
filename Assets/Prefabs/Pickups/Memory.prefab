@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 2164477190414510678}
   - component: {fileID: 7468062804026831248}
   - component: {fileID: 5921671517896000982}
-  m_Layer: 6
+  - component: {fileID: 7866462064721259505}
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,6 +103,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7866462064721259505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936703671325935128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7ffeee45352e4843b7e1df525780522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationEntrancePresets: {fileID: 11400000, guid: 0f6eb9ad1f89b56488ebd48acdfc8aee, type: 2}
+  animationExitPresets: {fileID: 11400000, guid: 0f6eb9ad1f89b56488ebd48acdfc8aee, type: 2}
 --- !u!1 &4559003115922606091
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,7 +130,7 @@ GameObject:
   - component: {fileID: 6969836146948755565}
   - component: {fileID: 8396128842315507403}
   - component: {fileID: 2840357549473934086}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Memory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,8 +188,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f16ade56d700af4ebae7492fd3b2814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WrongMemoryMessage: {fileID: 8969606159291551849}
-  messageDuration: 3
+  comicPanel: {fileID: 0}
+  showDuration: 2
+  comicAnimationPreset: {fileID: 11400000, guid: 0f6eb9ad1f89b56488ebd48acdfc8aee, type: 2}
 --- !u!54 &8396128842315507403
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -215,7 +231,7 @@ BoxCollider:
     m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -235,7 +251,7 @@ GameObject:
   - component: {fileID: 5968378694416818984}
   - component: {fileID: 4539415581938032093}
   - component: {fileID: 5907321227367284890}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: uploads_files_5461622_Biochip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,8 +349,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f16ade56d700af4ebae7492fd3b2814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WrongMemoryMessage: {fileID: 8969606159291551849}
-  messageDuration: 3
+  comicPanel: {fileID: 0}
+  showDuration: 2
+  comicAnimationPreset: {fileID: 0}
 --- !u!1 &8969606159291551849
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +363,7 @@ GameObject:
   - component: {fileID: 4697338219837862460}
   - component: {fileID: 5223621762776936}
   - component: {fileID: 8398839635141504089}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -543,35 +560,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: memory uv
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 41074d7a1b95e334aa7e95e2e80c820b, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 41074d7a1b95e334aa7e95e2e80c820b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3139450553010162925}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41074d7a1b95e334aa7e95e2e80c820b, type: 3}
 --- !u!4 &3638523281653173576 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 41074d7a1b95e334aa7e95e2e80c820b, type: 3}
   m_PrefabInstance: {fileID: 3887759698133281443}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4122325317519759346 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 41074d7a1b95e334aa7e95e2e80c820b, type: 3}
-  m_PrefabInstance: {fileID: 3887759698133281443}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3139450553010162925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4122325317519759346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f16ade56d700af4ebae7492fd3b2814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WrongMemoryMessage: {fileID: 8969606159291551849}
-  messageDuration: 3
