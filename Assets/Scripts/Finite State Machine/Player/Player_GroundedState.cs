@@ -9,8 +9,8 @@ public abstract class Player_GroundedState : EntityState
     {
         if (player.JumpPressed && player.IsGrounded && !player.hasJumped)
         {
-            player.rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
-            player.animator.Play("Jump");
+            player.rb.AddForce(Vector3.up * 6f, ForceMode.Impulse);
+            //player.animator.Play("Jump");
             player.hasJumped = true;
         }
     }
@@ -21,10 +21,10 @@ public abstract class Player_GroundedState : EntityState
 
         HandleJump();
 
-        if (!player.IsGrounded && player.hasJumped)
-        {
-            player.animator.Play("Fall");
-        }
+        //if (!player.IsGrounded && player.hasJumped)
+        //{
+        //    player.animator.Play("Fall");
+        //}
 
         if (player.IsGrounded && player.hasJumped)
         {

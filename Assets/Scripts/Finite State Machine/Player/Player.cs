@@ -100,11 +100,6 @@ public class Player : MonoBehaviour
     {
         moveInput = moveAction.ReadValue<Vector2>();
         JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
-        float verticalVelocity = rb.linearVelocity.y;
-        if (IsGrounded && verticalVelocity < 0)
-            verticalVelocity = 0;
-
-        animator.SetFloat("VerticalVelocity", verticalVelocity);
 
         stateMachine.UpdateActiveState();
     }
