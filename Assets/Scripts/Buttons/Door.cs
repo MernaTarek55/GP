@@ -8,7 +8,7 @@ public class Door : MonoBehaviour
     [SerializeField] private SlideDoorManager slideDoorManager;
 
     private List<PressureSwitch> currentSwitchesOpen = new();
-    [SerializeField]GameObject Switch ;
+    //[SerializeField]GameObject Switch ;
     public int CurrentSwitchesOpen => currentSwitchesOpen.Count;
     bool open = false;
     public void AddPressureSwitch(PressureSwitch currentSwitch)
@@ -37,16 +37,23 @@ public class Door : MonoBehaviour
                 pressureSwitch.backtoup = false;
                 pressureSwitch.SetButtonDown();
             }
-            Switch.SetActive(true);
-            open = true;
+
+            if (!IsDoorOpen) // prevent reopening
+            {
+                OpenDoor();
+            }
         }
-        else if (CurrentSwitchesOpen < requiredSwitchesToOpen && !open)
+        else
         {
             foreach (var pressureSwitch in currentSwitchesOpen)
             {
                 pressureSwitch.backtoup = true;
             }
-            CloseDoor();
+
+            if (IsDoorOpen)
+            {
+                CloseDoor();
+            }
         }
     }
 
