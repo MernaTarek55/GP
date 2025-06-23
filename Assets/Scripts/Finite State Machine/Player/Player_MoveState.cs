@@ -1,19 +1,22 @@
-
 using UnityEngine;
 
-public class Player_MoveState : EntityState
+public class Player_MoveState : Player_GroundedState
 {
-    private float timeToRun = .5f;
+    private float timeToRun = 0.5f;
     private bool forceRun = false;
 
     public Player_MoveState(StateMachine stateMachine, string stateName, Player player)
-        : base(stateMachine, stateName, player)
-    {
-    }
+        : base(stateMachine, stateName, player) { }
 
     public override void Update()
     {
         base.Update();
+
+        if (player.healthComponent.IsDead())
+        {
+            stateMachine.ChangeState(player.playerDeath);
+            return;
+        }
 
         if (player.MoveInput.sqrMagnitude < 0.01f)
         {
@@ -22,31 +25,9 @@ public class Player_MoveState : EntityState
             return;
         }
 
-        if (player.JumpPressed)
-        {
-            player.WasRunningBeforeJump = player.WalkTimer >= timeToRun;
-            stateMachine.ChangeState(new Player_JumpState(stateMachine, "Jump", player));
-            return;
-        }
-
-        if (player.healthComponent.IsDead())
-        {
-            stateMachine.ChangeState(player.playerDeath);
-            return;
-        }
-
-        //if (player.DeadEyePressed)
-        //{
-        //    stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
-        //    return;
-        //}
-
         if (!forceRun)
         {
-            if (player.MoveInput.sqrMagnitude > 0.01f)
-                player.WalkTimer += Time.deltaTime;
-            else
-                player.WalkTimer = 0f;
+            player.WalkTimer += Time.deltaTime;
         }
 
         bool isRunning = forceRun || player.WalkTimer >= timeToRun;
@@ -61,14 +42,10 @@ public class Player_MoveState : EntityState
         float curvedSpeed = currentMaxSpeed * player.movementCurve.Evaluate(inputMagnitude);
         Vector3 targetVelocity = moveDirection.normalized * curvedSpeed;
 
-        // EaseInOut curve value based on input magnitude (0 to 1)
-        float easeValue = player.movementCurve.Evaluate(inputMagnitude); // e.g. EaseInOut(0,0)-(1,1)
-
-        // Smooth using Lerp
         player.currentVelocity = Vector3.Lerp(
             player.currentVelocity,
             targetVelocity,
-            easeValue * Time.deltaTime * player.acceleration
+            player.movementCurve.Evaluate(inputMagnitude) * Time.deltaTime * player.acceleration
         );
 
         player.rb.MovePosition(player.rb.position + player.currentVelocity * Time.deltaTime);

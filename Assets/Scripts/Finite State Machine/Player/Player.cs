@@ -100,6 +100,7 @@ public class Player : MonoBehaviour
     {
         moveInput = moveAction.ReadValue<Vector2>();
         JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
+
         stateMachine.UpdateActiveState();
     }
 
