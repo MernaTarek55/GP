@@ -1,43 +1,67 @@
-
 using System.Collections;
 using UnityEngine;
 
 public class MemoryPick : PickupBase
 {
-    [SerializeField] private GameObject WrongMemoryMessage;
-    [SerializeField] private float messageDuration = 3.0f;
+    [Header("Comic Settings")]
+    [SerializeField] private GameObject comicPanel; // Assign your ComicPanel here
+    [SerializeField] private float showDuration = 2f;
+    [SerializeField] private SOAnimationPresets comicAnimationPreset; // Assign your ComicPopupPreset
+
+    private UIAutoAnimation comicAnimator;
+
+    private void Awake()
+    {
+        if (comicPanel != null)
+        {
+            comicAnimator = comicPanel.GetComponent<UIAutoAnimation>();
+            comicPanel.SetActive(false); // Start hidden
+        }
+    }
+
     public override void Pickup(GameObject player)
     {
         if (MemoryManager.Instance != null)
         {
             if (MemoryManager.Instance.PickingUpMemory(gameObject))
             {
-                Debug.Log($"Correct memory picked: {name}");
-                Destroy(gameObject);
-            }
-            else
-            {
-                Debug.LogWarning($"Wrong memory: {name}. Pick the right one.");
-                ShowWrongMemoryMessage();
+                ShowComic();
+                gameObject.GetComponent<Rigidbody>().useGravity = false; // Disable gravity for the memory object
+                gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+                gameObject.GetComponent<Collider>().isTrigger = true; // Disable collider to prevent further interactions
             }
         }
     }
 
-    private void ShowWrongMemoryMessage()
+    private void ShowComic()
     {
-        if (WrongMemoryMessage != null)
+        if (comicPanel != null && comicAnimator != null)
         {
-            WrongMemoryMessage.SetActive(true);
-            _ = StartCoroutine(HideMessageAfterDelay());
+            // Apply the animation preset
+            comicAnimator.animationEntrancePresets = comicAnimationPreset;
+            comicAnimator.animationExitPresets = comicAnimationPreset;
+
+            // Show and animate the panel
+            comicPanel.SetActive(true);
+            comicAnimator.EntranceAnimation();
+
+            // Hide after duration
+            StartCoroutine(HideComicAfterDelay());
         }
     }
 
-    private IEnumerator HideMessageAfterDelay()
+    private IEnumerator HideComicAfterDelay()
     {
-        yield return new WaitForSeconds(messageDuration);
-        if (WrongMemoryMessage != null)
+        yield return new WaitForSeconds(showDuration);
+
+        if (comicPanel != null && comicAnimator != null)
         {
-            WrongMemoryMessage.SetActive(false);
+            comicAnimator.ExitAnimation();
+
+            // Wait for exit animation to finish before hiding
+            yield return new WaitForSeconds(comicAnimationPreset.alphaDuration);
+            comicPanel.SetActive(false);
         }
+        Destroy(gameObject); // Remove the memory after collection
     }
 }

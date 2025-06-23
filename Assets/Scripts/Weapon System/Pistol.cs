@@ -24,6 +24,8 @@ public class Pistol : Weapon
     [Header("Rig")]
     [SerializeField] private Transform Spher;
     [SerializeField] private Rig rig;
+    [SerializeField] private float littleTimer = 0.0f;
+    [SerializeField] private float littleTimerMax = 1.0f;
 
     private float reloadTimer;
     private float fireCooldown;
@@ -53,6 +55,8 @@ public class Pistol : Weapon
         }
         currentAmmo = weaponData.maxAmmo;
         //Debug.Log($"Weapon Type: {WeaponType}");
+
+        littleTimer = littleTimerMax;
     }
 
     private void Update()
@@ -107,6 +111,14 @@ public class Pistol : Weapon
                 player?.SetShooting(false); // ✅ END shooting flag
             }
         }
+
+        if (littleTimer > 0)
+        {
+            littleTimer -= Time.deltaTime;
+        } else
+        {
+            rig.weight = 0;
+        }
     }
 
     private void ShootAtTouch(Vector2 screenPosition)
@@ -120,7 +132,8 @@ public class Pistol : Weapon
 
         Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
         Spher.position = targetPoint;
-        //rig.weight = 1;
+        rig.weight = 1;
+        littleTimer = littleTimerMax;
         Vector3 lookDirection = targetPoint - playerBody.position;
         lookDirection.y = 0f; // Keep only horizontal rotation
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
@@ -128,6 +141,7 @@ public class Pistol : Weapon
         Shoot(targetPoint);
        // rig.weight = 0;
     }
+    Vector3 targetForAnimations;
     private bool IsTouchOverUI(Vector2 screenPosition)
     {
         PointerEventData eventData = new PointerEventData(eventSystem);
@@ -145,14 +159,22 @@ public class Pistol : Weapon
 
         return false;
     }
+    public override void ShootFromAnimation()
+    {
+        if (currentAmmo <= 0 || isReloading) return;
+
+        StartCoroutine(WaitAndShootWhenIKReady(targetForAnimations));
+    }
     public override void Shoot(Vector3 targetPoint) // add parameter the target you want to shoot
     {
         //if (ikHandler != null)
         //{
         //    ikHandler.TriggerShootIK();
         //}
+        targetForAnimations = targetPoint;
         player.gameObject.GetComponent<Animator>().SetTrigger("Shoot");
-        StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
+        
+        //StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         deadEyeBool = false;
         //player.gameObject.GetComponent<Animator>().ResetTrigger("Shoot");
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
@@ -417,4 +439,5 @@ public class Pistol : Weapon
 
         }
     }
+    
 }

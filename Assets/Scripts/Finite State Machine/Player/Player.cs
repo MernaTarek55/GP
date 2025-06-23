@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
     public AnimationCurve movementCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     public float walkSpeed = 2f;
     public float runSpeed = 5f;
-
+    [SerializeField] private WeaponSwitch weaponSwitch;
 
     public Transform playerHead;
 
@@ -100,6 +100,7 @@ public class Player : MonoBehaviour
     {
         moveInput = moveAction.ReadValue<Vector2>();
         JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
+
         stateMachine.UpdateActiveState();
     }
 
@@ -123,6 +124,11 @@ public class Player : MonoBehaviour
     {
         IsShooting = isShooting;
     }
+    public void FireWeaponFromAnimation()
+    {
+        weaponSwitch?.FireBulletFromEvent();
+    }
+
 
     public void ResetHealth()
     {
