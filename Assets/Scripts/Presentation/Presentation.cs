@@ -38,12 +38,18 @@ public class Presentation : MonoBehaviour
 
     private void MoveToNextSlide()
     {
-        StartLerp(cameraPoints[++pointsIndex]);
+        if(pointsIndex >= cameraPoints.Length - 1) return;
+        cameraPoints[pointsIndex].gameObject.SetActive(false);
+        cameraPoints[++pointsIndex].gameObject.SetActive(true);
+        StartLerp(cameraPoints[pointsIndex]);
     }
 
     private void MoveToPreviousSlide()
     {
-        StartLerp(cameraPoints[--pointsIndex]);
+        if (pointsIndex <= 0) return;
+        cameraPoints[pointsIndex].gameObject.SetActive(false);
+        cameraPoints[--pointsIndex].gameObject.SetActive(true);
+        StartLerp(cameraPoints[pointsIndex]);
     }
 
     public void StartLerp(Transform destination)
