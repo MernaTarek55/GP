@@ -15,12 +15,18 @@ public class Presentation : MonoBehaviour
 
     private void Start()
     {
-        PresentationPoints = PresentationPoints ?? GameObject.Find("PresentationPoints").transform;
+        cameraPoints = new Transform[PresentationPoints.childCount];
+        for (int i = 0; i < PresentationPoints.childCount; i++)
+        {
+            cameraPoints[i] = PresentationPoints.GetChild(i);
+            cameraPoints[i].gameObject.SetActive(false);
+        }
         camera.position = cameraPoints[pointsIndex].position;
         foreach (var point in cameraPoints)
         {
             point.gameObject.SetActive(false);
         }
+        cameraPoints[pointsIndex].gameObject.SetActive(true);
     }
 
 
