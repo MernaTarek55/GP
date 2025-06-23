@@ -34,7 +34,8 @@ public class Player_MoveState : Player_GroundedState
         float currentMaxSpeed = isRunning ? player.runSpeed : player.walkSpeed;
 
         Vector3 camRight = player.mainCamera.transform.right;
-        camRight.y = 0;
+        camRight.y = 0f;
+        camRight.z = 0f;
         camRight.Normalize();
 
         Vector3 moveDirection = camRight * player.MoveInput.x;
@@ -48,7 +49,10 @@ public class Player_MoveState : Player_GroundedState
             player.movementCurve.Evaluate(inputMagnitude) * Time.deltaTime * player.acceleration
         );
 
-        player.rb.MovePosition(player.rb.position + player.currentVelocity * Time.deltaTime);
+        Vector3 nextPosition = player.rb.position + player.currentVelocity * Time.deltaTime;
+        nextPosition.z = 0f; // Enforce flat movement
+        player.rb.MovePosition(nextPosition);
+        //player.rb.MovePosition(player.rb.position + player.currentVelocity * Time.deltaTime);
 
         if (!player.IsShooting && player.currentVelocity.sqrMagnitude > 0.01f)
         {
