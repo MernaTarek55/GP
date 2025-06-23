@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     [Header("Enemy Components")]
     [SerializeField] private GameObject firePos;
     public ParticleSystem particleEffect;
+    public Material dissolveMaterial;
 
     #region Enemy Drops
     [Header("Drops")]
@@ -119,5 +120,25 @@ public class Enemy : MonoBehaviour
         dropForce = this.dropForce;
 
         Debug.LogError(drop + " " + dropChance + " " + minDrops + " " + maxDrops + " " + dropForce);
+    }
+    
+    public void PlayDeathEffect()
+    {
+        if (particleEffect != null)
+        {
+            Instantiate(particleEffect, this.transform.position, Quaternion.identity);
+        }
+    }
+    
+    public void ChangeEnemyMaterial()
+    {
+        this.GetComponent<Renderer>().material = dissolveMaterial;
+        EnemyDissolve();
+    }
+
+    public void EnemyDissolve()
+    {
+        // increase the dissolve of the material to make it fade
+        //this.GetComponent<Renderer>().material;
     }
 }

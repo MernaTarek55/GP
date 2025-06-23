@@ -1,11 +1,18 @@
 
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class MemoryPick : PickupBase
 {
     [SerializeField] private GameObject WrongMemoryMessage;
     [SerializeField] private float messageDuration = 3.0f;
+    public ParticleSystem particleEffect;
+
+    private void Start()
+    {
+        PlayEffect();
+    }
     public override void Pickup(GameObject player)
     {
         if (MemoryManager.Instance != null)
@@ -38,6 +45,14 @@ public class MemoryPick : PickupBase
         if (WrongMemoryMessage != null)
         {
             WrongMemoryMessage.SetActive(false);
+        }
+    }
+
+    public void PlayEffect()
+    {
+        if (particleEffect != null)
+        {
+            Instantiate(particleEffect, this.transform.position, Quaternion.identity);
         }
     }
 }
