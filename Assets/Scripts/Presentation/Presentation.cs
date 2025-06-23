@@ -10,11 +10,11 @@ public class Presentation : MonoBehaviour
     [SerializeField] private int pointsIndex = 0;
     [SerializeField] private float duration = 2f;
 
-    [SerializeField] private Camera camera;
+    [SerializeField] private Transform camera;
 
     private void Start()
     {
-        camera.transform.position = cameraPoints[pointsIndex].position;   
+        camera.position = cameraPoints[pointsIndex].position;   
     }
 
 
@@ -53,16 +53,16 @@ public class Presentation : MonoBehaviour
 
     private IEnumerator LerpToPosition(Vector3 end, float time)
     {
-        Vector3 start = transform.position;
+        Vector3 start = camera.position;
         float elapsed = 0f;
 
         while (elapsed < time)
         {
-            transform.position = Vector3.Lerp(start, end, elapsed / time);
+            camera.position = Vector3.Lerp(start, end, elapsed / time);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        transform.position = end;
+        camera.position = end;
     }
 }
