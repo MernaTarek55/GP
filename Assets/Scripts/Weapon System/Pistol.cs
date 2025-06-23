@@ -22,7 +22,7 @@ public class Pistol : Weapon
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private AudioSource audioSource;
     [Header("Rig")]
-    [SerializeField] private Transform Spher;
+    //[SerializeField] private Transform Spher;
     [SerializeField] private Rig rig;
 
     private float reloadTimer;
@@ -119,7 +119,7 @@ public class Pistol : Weapon
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
         Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
-        Spher.position = targetPoint;
+        //Spher.position = targetPoint;
         //rig.weight = 1;
         Vector3 lookDirection = targetPoint - playerBody.position;
         lookDirection.y = 0f; // Keep only horizontal rotation
@@ -128,6 +128,7 @@ public class Pistol : Weapon
         Shoot(targetPoint);
        // rig.weight = 0;
     }
+    Vector3 targetForAnimations;
     private bool IsTouchOverUI(Vector2 screenPosition)
     {
         PointerEventData eventData = new PointerEventData(eventSystem);
@@ -145,14 +146,22 @@ public class Pistol : Weapon
 
         return false;
     }
+    public override void ShootFromAnimation()
+    {
+        if (currentAmmo <= 0 || isReloading) return;
+
+        StartCoroutine(WaitAndShootWhenIKReady(targetForAnimations));
+    }
     public override void Shoot(Vector3 targetPoint) // add parameter the target you want to shoot
     {
         //if (ikHandler != null)
         //{
         //    ikHandler.TriggerShootIK();
         //}
+        targetForAnimations = targetPoint;
         player.gameObject.GetComponent<Animator>().SetTrigger("Shoot");
-        StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
+        
+        //StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         deadEyeBool = false;
         //player.gameObject.GetComponent<Animator>().ResetTrigger("Shoot");
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
@@ -417,4 +426,5 @@ public class Pistol : Weapon
 
         }
     }
+    
 }

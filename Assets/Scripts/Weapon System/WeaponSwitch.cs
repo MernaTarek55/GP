@@ -9,7 +9,7 @@ public class WeaponSwitch : MonoBehaviour
     [SerializeField] private PlayerInventoryHolder inventoryHolder;
 
     [SerializeField] private Button deadeyeButton;
-
+    [SerializeField] private GameObject SwitchBTN;
     private List<WeaponType> ownedWeapons;
     private int currentWeaponIndex = 0; 
     private void Start()
@@ -112,12 +112,22 @@ public class WeaponSwitch : MonoBehaviour
         return weapons[currentWeaponIndex].GetComponent<Weapon>();
     }
 
+    public void FireBulletFromEvent()
+    {
+        Weapon currentWeapon = GetCurrentWeapon();
+        if (currentWeapon == null) return;
 
+        // Call a generic Shoot method implemented in each weapon type
+        currentWeapon.ShootFromAnimation();
+    }
     public void OnWeaponPurchased(WeaponType weaponType)
     {
         // Refresh owned weapons list
         ownedWeapons = inventoryHolder.Inventory.inventorySaveData.ownedWeapons;
-
+        if(ownedWeapons.Count >= 2)
+        {
+            SwitchBTN.SetActive(true);
+        }
         // If this was the first weapon purchased, activate it
         if (ownedWeapons.Count == 1)
         {
