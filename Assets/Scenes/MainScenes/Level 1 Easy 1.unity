@@ -7035,6 +7035,7 @@ MonoBehaviour:
   - {fileID: 1878950330}
   inventoryHolder: {fileID: 0}
   deadeyeButton: {fileID: 604926669}
+  SwitchBTN: {fileID: 0}
 --- !u!1 &666670263
 GameObject:
   m_ObjectHideFlags: 0
@@ -8960,7 +8961,11 @@ PrefabInstance:
       objectReference: {fileID: 154856481}
     - target: {fileID: 4691776738279339158, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: groundLayer.m_Bits
-      value: 256
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455424168188075098, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_Constraints
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 7252776371748360924, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: m_Name

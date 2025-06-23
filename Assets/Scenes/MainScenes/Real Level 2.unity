@@ -171,6 +171,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8184216194598958772, guid: c5d11a1bce9d82e4a9bec439434d158a, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10293,6 +10297,11 @@ Transform:
   - {fileID: 812445474}
   m_Father: {fileID: 1334092053}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &978430510 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3917674638984152438, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 1323977807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &983638801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13445,7 +13454,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1283488131}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Elevator Waypoint 2
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
@@ -13967,9 +13976,25 @@ PrefabInstance:
       value: NestedPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 4691776738279339158, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: DeadEyeBtn
+      value: 
+      objectReference: {fileID: 978430510}
+    - target: {fileID: 4691776738279339158, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: weaponSwitch
+      value: 
+      objectReference: {fileID: 484243983}
+    - target: {fileID: 4691776738279339158, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: groundLayer.m_Bits
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 4691776738279339158, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: deadEyeCooldownImage
+      value: 
+      objectReference: {fileID: 2088248589}
+    - target: {fileID: 4691776738279339158, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: InvisibilityCooldownImage
+      value: 
+      objectReference: {fileID: 1650372906}
     - target: {fileID: 7734080779893281548, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -18175,6 +18200,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.7751031, y: 0.26791808, z: 0.61128354}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1650372906 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8772243206368400471, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 1323977807}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1650666338
 GameObject:
   m_ObjectHideFlags: 0
@@ -25812,7 +25848,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2004926466}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Elevator Waypoint 1
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
@@ -26863,6 +26899,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 8184216194598958772, guid: c5d11a1bce9d82e4a9bec439434d158a, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26944,10 +26984,21 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4466593539436332948, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
   m_PrefabInstance: {fileID: 1323977807}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 978430510}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2088248589 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3884812087887228200, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 1323977807}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978430510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &2093123666 stripped
@@ -27539,6 +27590,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Elevator
       objectReference: {fileID: 0}
+    - target: {fileID: 2873893904474013206, guid: da9d32e3acf904d4fb7183e2dcac923d, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5003003054808311895, guid: da9d32e3acf904d4fb7183e2dcac923d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 85.9
@@ -27578,6 +27633,10 @@ PrefabInstance:
     - target: {fileID: 5003003054808311895, guid: da9d32e3acf904d4fb7183e2dcac923d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6606116915741508597, guid: da9d32e3acf904d4fb7183e2dcac923d, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
