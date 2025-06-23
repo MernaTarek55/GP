@@ -22,8 +22,10 @@ public class Pistol : Weapon
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private AudioSource audioSource;
     [Header("Rig")]
-    //[SerializeField] private Transform Spher;
+    [SerializeField] private Transform Spher;
     [SerializeField] private Rig rig;
+    [SerializeField] private float littleTimer = 0.0f;
+    [SerializeField] private float littleTimerMax = 1.0f;
 
     private float reloadTimer;
     private float fireCooldown;
@@ -53,6 +55,8 @@ public class Pistol : Weapon
         }
         currentAmmo = weaponData.maxAmmo;
         //Debug.Log($"Weapon Type: {WeaponType}");
+
+        littleTimer = littleTimerMax;
     }
 
     private void Update()
@@ -107,6 +111,14 @@ public class Pistol : Weapon
                 player?.SetShooting(false); // ✅ END shooting flag
             }
         }
+
+        if (littleTimer > 0)
+        {
+            littleTimer -= Time.deltaTime;
+        } else
+        {
+            rig.weight = 0;
+        }
     }
 
     private void ShootAtTouch(Vector2 screenPosition)
@@ -119,8 +131,9 @@ public class Pistol : Weapon
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
         Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
-        //Spher.position = targetPoint;
-        //rig.weight = 1;
+        Spher.position = targetPoint;
+        rig.weight = 1;
+        littleTimer = littleTimerMax;
         Vector3 lookDirection = targetPoint - playerBody.position;
         lookDirection.y = 0f; // Keep only horizontal rotation
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
