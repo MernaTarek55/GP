@@ -26,6 +26,7 @@ public class MoneyCount : MonoBehaviour
 
     private void UpdateCreditsUI(int credits)
     {
+        Debug.LogWarning(credits);
         if (scoreText != null)
             scoreText.text = credits.ToString();
     }
