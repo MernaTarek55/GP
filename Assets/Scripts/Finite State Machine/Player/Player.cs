@@ -1,7 +1,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -54,6 +57,10 @@ public class Player : MonoBehaviour
     public AnimationCurve movementCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     public float walkSpeed = 2f;
     public float runSpeed = 5f;
+
+    [SerializeField] private SkinnedMeshRenderer renderer;
+    [SerializeField] private Material dissolveMaterial;
+    [SerializeField] private float dissolveSpeed = 0.5f;
 
     [HideInInspector]
     public Vector3 currentVelocity = Vector3.zero;
@@ -125,5 +132,26 @@ public class Player : MonoBehaviour
         healthComponent.RenewHealth();
     }
 
-    
+    public void ChangeMaterial()
+    {
+        if (renderer == null) return;
+
+        renderer.material = dissolveMaterial;
+
+        StartCoroutine(EnemyDissolve());
+    }
+
+    public IEnumerator EnemyDissolve()
+    {
+        float dissolve = 0f;
+        dissolveMaterial.SetFloat("_Dissolve", dissolve);
+
+        while (dissolve < 100f)
+        {
+            dissolve += Time.deltaTime * dissolveSpeed;
+            dissolveMaterial.SetFloat("_Dissolve", dissolve);
+            yield return null; // wait for the next frame
+        }
+        dissolveMaterial.SetFloat("_Dissolve", 0f);
+    }
 }
