@@ -69,6 +69,16 @@ public class Player : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer renderer;
     [SerializeField] private Material dissolveMaterial;
     [SerializeField] private float dissolveSpeed = 0.5f;
+
+    [Header("Smooth Rotation")]
+    public AnimationCurve rotationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    public float rotateDuration = 0.3f;
+
+    [HideInInspector] public float rotateTimer = 0f;
+    [HideInInspector] public Quaternion startRot;
+    [HideInInspector] public Quaternion targetRot;
+    [HideInInspector] public bool rotating = false;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
