@@ -182,7 +182,7 @@ public class Enemy_AttackState : EntityState
             animator.SetBool("IsIdle", true);
 
 
-
+            enemyGO.transform.LookAt(playerGO.transform);
             ShootLava();
 
         }
@@ -359,63 +359,7 @@ public class Enemy_AttackState : EntityState
 
 
 
-    //protected override void UpdateTurret()
 
-    //{
-
-    //    Debug.Log("Turret Attack");
-
-    //    if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
-
-    //    {
-
-    //        Debug.Log("Player is invisible");
-
-    //        stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, entityGO));
-
-    //        return;
-
-    //    }
-
-
-
-    //    RotateTowardPlayer();
-
-    //    Shoot();
-
-    //}
-
-
-
-    //protected override void UpdateBallDroid()
-
-    //{
-
-    //    Debug.Log("BallDroid Attack");
-
-    //    Debug.Log(playerGO.GetComponent<InvisibilitySkill>().isInvisible);
-
-    //    if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
-
-    //    {
-
-    //        Debug.Log("Player is invisible, ball droid does nothing.");
-
-    //        return;
-
-    //    }
-
-    //    if (!hasExploded)
-
-    //    {
-
-    //        ExplodingBall();
-
-    //    }
-
-
-
-    //}
 
 
 

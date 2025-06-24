@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private MeshRenderer renderer;
     [SerializeField] private MeshRenderer[] rendererList;
     [SerializeField] private SkinnedMeshRenderer skinRenderer;
-
+    ParticleSystem particleSystemComponent;
 
 
 
@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         healthComponent = GetComponent<HealthComponent>();
-
+        particleSystemComponent = GetComponent<ParticleSystem>();
         enemyStateMachine = new StateMachine();
         enemyIdleState = new Enemy_IdleState(enemyStateMachine, "Enemy Idle", enemyData, gameObject, playerGO);
         enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject, playerGO);
@@ -134,9 +134,13 @@ public class Enemy : MonoBehaviour
 
     public void PlayDeathEffect()
     {
-        if (particleEffect != null)
+        if (particleSystemComponent == null)
         {
-            Instantiate(particleEffect, this.transform.position, Quaternion.identity);
+            if (particleEffect != null)
+            {
+
+                Instantiate(particleEffect, this.transform.position, Quaternion.identity);
+            }
         }
     }
 
