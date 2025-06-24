@@ -4900,11 +4900,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1455663099184684301}
-  - component: {fileID: 2792134236384401833}
-  - component: {fileID: 7220050137989892262}
   - component: {fileID: 917512761478267793}
   - component: {fileID: 2496899464065648863}
   - component: {fileID: 779869401585565078}
+  - component: {fileID: 1571619037449809116}
+  - component: {fileID: 4512759975842257775}
   m_Layer: 21
   m_Name: beyblade
   m_TagString: Untagged
@@ -4929,49 +4929,6 @@ Transform:
   - {fileID: 3566035638280242499}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &2792134236384401833
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6211728603963152652}
-  m_Material: {fileID: 13400000, guid: 308d013678b07924f9ca07b64344c403, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 2097160
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.084198914
-  m_Center: {x: 0, y: 0.075765595, z: -0.004913075}
---- !u!195 &7220050137989892262
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6211728603963152652}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.1
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 0.1
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!114 &917512761478267793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4989,6 +4946,9 @@ MonoBehaviour:
   NavTargets: []
   firePos: {fileID: 6211728603963152652}
   particleEffect: {fileID: 0}
+  dissolveMaterial: {fileID: 2100000, guid: 54066c250f5d17945835e9175d30b81d, type: 2}
+  dissolveSpeed: 0.5
+  renderer: {fileID: 1080903586266979377}
   drop: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
   dropChance: 1
   minDrops: 1
@@ -5035,6 +4995,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
+--- !u!135 &1571619037449809116
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6211728603963152652}
+  m_Material: {fileID: 13400000, guid: 308d013678b07924f9ca07b64344c403, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0.42, z: 0}
+--- !u!195 &4512759975842257775
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6211728603963152652}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &6720672610018288846
 GameObject:
   m_ObjectHideFlags: 0
@@ -5147,5 +5151,10 @@ PrefabInstance:
 --- !u!4 &21271414207893380 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ec4fad19e51428740a32129d1eb4fdd5, type: 3}
+  m_PrefabInstance: {fileID: 558775384544782447}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1080903586266979377 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 630802283892159582, guid: ec4fad19e51428740a32129d1eb4fdd5, type: 3}
   m_PrefabInstance: {fileID: 558775384544782447}
   m_PrefabAsset: {fileID: 0}

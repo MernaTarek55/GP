@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
@@ -15,6 +16,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject firePos;
     public ParticleSystem particleEffect;
     public Material dissolveMaterial;
+    [SerializeField] private float dissolveSpeed = 0.5f;
+    [SerializeField] private MeshRenderer renderer;
+    [SerializeField] private MeshRenderer[] rendererList;
+    [SerializeField] private SkinnedMeshRenderer skinRenderer;
+
+
+
+
 
     #region Enemy Drops
     [Header("Drops")]
@@ -71,6 +80,7 @@ public class Enemy : MonoBehaviour
 
         enemyStateMachine.currentState.Update();
         enemyStateMachine.currentState.CheckStateTransitions(distance);
+
     }
 
     private void HandleDeath()
@@ -132,13 +142,31 @@ public class Enemy : MonoBehaviour
     
     public void ChangeEnemyMaterial()
     {
-        this.GetComponent<Renderer>().material = dissolveMaterial;
-        EnemyDissolve();
+        if (skinRenderer != null)
+            skinRenderer.material = dissolveMaterial;
+        else if (renderer != null)
+            renderer.material = dissolveMaterial;
+        else if (rendererList.Length > 0)
+        {
+            foreach(MeshRenderer render in rendererList)
+            {
+                render.material = dissolveMaterial; 
+            }    
+        }
+            StartCoroutine(EnemyDissolve());
     }
 
-    public void EnemyDissolve()
+    public IEnumerator EnemyDissolve()
     {
-        // increase the dissolve of the material to make it fade
-        //this.GetComponent<Renderer>().material;
+        float dissolve = 0f;
+        dissolveMaterial.SetFloat("_Dissolve", dissolve);
+
+        while (dissolve < 100f)
+        {
+            dissolve += Time.deltaTime * dissolveSpeed;
+            dissolveMaterial.SetFloat("_Dissolve", dissolve);
+            yield return null; // wait for the next frame
+        }
+        dissolveMaterial.SetFloat("_Dissolve", 0f);
     }
 }

@@ -1854,7 +1854,11 @@ MonoBehaviour:
   playerGO: {fileID: 0}
   NavTargets: []
   firePos: {fileID: 1297427145681741176}
-  particleEffect: {fileID: 0}
+  particleEffect: {fileID: 1141330259687333425, guid: 63c0334938347484389ef5c338f37c4b, type: 3}
+  dissolveMaterial: {fileID: 2100000, guid: 54066c250f5d17945835e9175d30b81d, type: 2}
+  dissolveSpeed: 0.5
+  renderer: {fileID: 0}
+  skinRenderer: {fileID: 8270971783044922554}
   drop: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
   dropChance: 1
   minDrops: 2
@@ -1896,6 +1900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
 --- !u!54 &4713705732354711441
 Rigidbody:
   m_ObjectHideFlags: 0
