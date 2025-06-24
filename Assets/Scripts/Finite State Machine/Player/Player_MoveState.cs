@@ -60,15 +60,18 @@ public class Player_MoveState : Player_GroundedState
             player.rb.MoveRotation(Quaternion.Slerp(player.rb.rotation, targetRotation, player.RotateSpeed * Time.deltaTime));
         }
 
-        if (player.IsGrounded)
+        if (!player.hasJumped)
         {
             float speedRatio = player.currentVelocity.magnitude / player.runSpeed;
             float signedSpeed = Mathf.Sign(player.MoveInput.x) * speedRatio * 2f;
             player.animator.SetFloat("Speed", signedSpeed);
         }
-        else
+
+        if (player.IsGrounded)
         {
-            player.animator.SetFloat("Speed", 0f);
+            float speedRatio = player.currentVelocity.magnitude / player.runSpeed;
+            float signedSpeed = Mathf.Sign(player.MoveInput.x) * speedRatio * 2f;
+            player.animator.SetFloat("Speed", signedSpeed);
         }
     }
 

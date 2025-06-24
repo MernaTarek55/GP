@@ -8,7 +8,8 @@ public class Player_IdleState : Player_GroundedState
     {
         base.Enter();
         player.WalkTimer = 0f;
-        player.animator.SetFloat("Speed", 0f);
+        if(player.IsGrounded)
+            player.animator.SetFloat("Speed", 0f);
     }
 
     public override void Update()
