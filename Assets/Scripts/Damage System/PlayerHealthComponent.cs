@@ -10,7 +10,10 @@ public class PlayerHealthComponent : MonoBehaviour, IDamageable
         inventoryHolder = SaveManager.Singleton.GetComponent<PlayerInventoryHolder>();
        
     }
-
+    private void Update()
+    {
+        //TakeDamage(10);
+    }
     public void TakeDamage(float damage)
     {
         if (IsDead()) return;

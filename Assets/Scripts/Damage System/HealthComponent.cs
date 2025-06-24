@@ -18,7 +18,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     void Update()
     {
-
+        
         // Check if health has reached zero or below
         if (currentHealth <= 0 && !isDead)
         {

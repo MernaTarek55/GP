@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -65,7 +66,9 @@ public class Player : MonoBehaviour
 
     [HideInInspector]
     public Vector3 currentVelocity = Vector3.zero;
-
+    [SerializeField] private SkinnedMeshRenderer renderer;
+    [SerializeField] private Material dissolveMaterial;
+    [SerializeField] private float dissolveSpeed = 0.5f;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -129,7 +132,31 @@ public class Player : MonoBehaviour
         weaponSwitch?.FireBulletFromEvent();
     }
 
+    public void ChangeMaterial()
+    {
+        if (renderer == null) return;
 
+        renderer.material = dissolveMaterial;
+        Debug.Log("aNAAAAAAAAAAAAAAAAAA hENSSSSSSSSSSSSSSSSS");
+        StartCoroutine(PlayerDissolve());
+        Debug.Log("aNAAAAAAAAAAAAAAAAAA hENSSSSSSSSSSSSSSSSS2");
+    }
+
+
+
+    public IEnumerator PlayerDissolve()
+    {
+        float dissolve = 0f;
+        dissolveMaterial.SetFloat("_Dissolve", dissolve);
+
+        while (dissolve < 100f)
+        {
+            dissolve += Time.deltaTime * dissolveSpeed;
+            dissolveMaterial.SetFloat("_Dissolve", dissolve);
+            yield return null; // wait for the next frame
+        }
+        dissolveMaterial.SetFloat("_Dissolve", 0f);
+    }
     public void ResetHealth()
     {
         healthComponent.RenewHealth();
