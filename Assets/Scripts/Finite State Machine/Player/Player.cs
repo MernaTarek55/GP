@@ -108,6 +108,13 @@ public class Player : MonoBehaviour
             JumpPressed = false;
         }
         animator.SetBool("IsGrounded", IsGrounded);
+
+        if (!healthComponent.IsDead() && transform.position.y <= -35f)
+        {
+            stateMachine.ChangeState(playerDeath);
+            return;
+        }
+
         stateMachine.UpdateActiveState();
     }
 

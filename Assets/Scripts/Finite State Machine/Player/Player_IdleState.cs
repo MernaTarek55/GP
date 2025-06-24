@@ -18,7 +18,7 @@ public class Player_IdleState : Player_GroundedState
         // Keep ensuring Speed stays 0 in Idle
         player.animator.SetFloat("Speed", 0f);
 
-        if (player.healthComponent.IsDead())
+        if (player.healthComponent.IsDead() || player.transform.position.y <= -35f)
             stateMachine.ChangeState(player.playerDeath);
         else if (player.MoveInput.sqrMagnitude > 0.01f)
             stateMachine.ChangeState(new Player_MoveState(stateMachine, "Move", player));
