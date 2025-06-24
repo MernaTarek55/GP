@@ -269,6 +269,7 @@ public class Laser : MonoBehaviour
                 {
                     // It's NOT a turret laser, damage any target except itself
                     damagable.TakeDamage(laserDamage);
+                    Debug.Log("Lase");
                     currentLifetime = 0;
 
                 }
