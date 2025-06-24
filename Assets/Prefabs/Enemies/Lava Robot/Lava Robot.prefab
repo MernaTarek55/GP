@@ -62,8 +62,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.01, z: -5.33}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 667028857303640402}
   - {fileID: 5585154188494411337}
@@ -110,6 +110,11 @@ MonoBehaviour:
   NavTargets: []
   firePos: {fileID: 5145247578527658450}
   particleEffect: {fileID: 0}
+  dissolveMaterial: {fileID: 0}
+  dissolveSpeed: 0.5
+  renderer: {fileID: 0}
+  rendererList: []
+  skinRenderer: {fileID: 0}
   drop: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
   dropChance: 1
   minDrops: 2
