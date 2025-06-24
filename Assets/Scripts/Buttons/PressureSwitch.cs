@@ -30,10 +30,11 @@ public class PressureSwitch : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        animator.SetBool("Down", true);
+        Debug.Log("ana hena");
         if (buttonType == ButtonType.PressOnce && !isPressed)
         {
             //currentDoor.AddPressureSwitch(this);
-            animator.SetBool("Down", true);
             isPressed = true;
             ActivateTarget();
         }
