@@ -3010,7 +3010,6 @@ MonoBehaviour:
   - {fileID: 538105486}
   sceneLoader: {fileID: 1302479757}
   gameSceneName: Real Level 2
-  endGamePanel: {fileID: 1513658966}
 --- !u!4 &340308962
 Transform:
   m_ObjectHideFlags: 0
@@ -6484,6 +6483,7 @@ MonoBehaviour:
   - {fileID: 0}
   inventoryHolder: {fileID: 0}
   deadeyeButton: {fileID: 1112253349}
+  SwitchBTN: {fileID: 0}
 --- !u!1 &646927932
 GameObject:
   m_ObjectHideFlags: 0
@@ -6531,9 +6531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a110441371c74844afc7941d25b5224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveAmount: 2
   duration: 1
-  endPos: {x: 0, y: 0, z: 1}
 --- !u!23 &646927936
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8094,9 +8092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a110441371c74844afc7941d25b5224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveAmount: 2
   duration: 1
-  endPos: {x: 0, y: 0, z: 1}
 --- !u!23 &839291358
 MeshRenderer:
   m_ObjectHideFlags: 0
