@@ -22,7 +22,7 @@ public class Laser : MonoBehaviour
 
     private bool hasDoneDamage; // Nano: bool to check if the same laser causes damage twice
     private bool activated = false;
-    [SerializeField]private LineRenderer lineRenderer;
+    [SerializeField] private LineRenderer lineRenderer;
     private const float farDistance = 1000f;
     private List<Vector3> bouncePositions;
     private LaserSensor prevStruckSensor = null;
