@@ -7205,7 +7205,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 13.349915, y: 25.000061}
+  m_AnchoredPosition: {x: 13.3497925, y: 25.000061}
   m_SizeDelta: {x: 196.70001, y: 56.688904}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &498510462
@@ -11020,6 +11020,10 @@ PrefabInstance:
     - target: {fileID: 3735515501217648458, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: lineRenderer
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3735515501217648458, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
+      propertyPath: trailRenderer
+      value: 
       objectReference: {fileID: 874190429}
     - target: {fileID: 5100462511605706399, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12461,9 +12465,6 @@ MonoBehaviour:
   - type: 2
     prefab: {fileID: 4876149916586524456, guid: 8d4e9e2f44902a248b127887f8f206b9, type: 3}
     size: 5
-  - type: 1
-    prefab: {fileID: 8344829288771224763, guid: 5b84705e535ce6c4aa2e4eb126f35e54, type: 3}
-    size: 10
 --- !u!1001 &832175799
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13262,9 +13263,9 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6254754056730510968, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
   m_PrefabInstance: {fileID: 775885283}
   m_PrefabAsset: {fileID: 0}
---- !u!120 &874190429
-LineRenderer:
-  serializedVersion: 2
+--- !u!96 &874190429
+TrailRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -13307,9 +13308,8 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  m_Time: 5
+  m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -13365,9 +13365,10 @@ LineRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MinVertexDistance: 0.1
   m_MaskInteraction: 0
-  m_UseWorldSpace: 1
-  m_Loop: 0
+  m_Autodestruct: 0
+  m_Emitting: 1
   m_ApplyActiveColorSpace: 1
 --- !u!1001 &876743850
 PrefabInstance:

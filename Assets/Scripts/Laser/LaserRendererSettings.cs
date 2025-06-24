@@ -7,7 +7,7 @@ public class LaserRendererSettings : ScriptableObject
     [SerializeField] public float width;
     [SerializeField][Range(1f , 200f)] public float emissionAmount;
 
-    public void Apply(LineRenderer lineRenderer)
+    public void Apply(TrailRenderer lineRenderer)
     {
         if (lineRenderer == null) return;
         lineRenderer.material = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));

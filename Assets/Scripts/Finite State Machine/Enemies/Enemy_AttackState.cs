@@ -731,7 +731,7 @@ public class Enemy_AttackState : EntityState
 
                 Debug.LogWarning("Shooting laser from turret");
                 
-                LineRenderer lineRenderer = enemyGO.GetComponentInChildren<LineRenderer>();
+                TrailRenderer lineRenderer = enemyGO.GetComponentInChildren<TrailRenderer>();
 
                 lineRenderer.enabled = true;
 
