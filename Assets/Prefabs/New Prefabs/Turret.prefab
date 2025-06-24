@@ -108,6 +108,11 @@ MonoBehaviour:
   NavTargets: []
   firePos: {fileID: 7136437484885854564}
   particleEffect: {fileID: 0}
+  dissolveMaterial: {fileID: 0}
+  dissolveSpeed: 0.5
+  renderer: {fileID: 0}
+  rendererList: []
+  skinRenderer: {fileID: 0}
   drop: {fileID: 0}
   dropChance: 1
   minDrops: 1
@@ -298,7 +303,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6254754056730510968}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
