@@ -2,29 +2,25 @@ using DG.Tweening;
 using UnityEngine;
 public class SlideDoor : MonoBehaviour
 {
-    //[SerializeField] private float moveAmount = 2;
-    [SerializeField] private Vector3 rotationAmount = new Vector3(0,90,0);
     [SerializeField] private float duration = 1;
-    //[SerializeField] private Vector3 endPos;
-    private Vector3 startRotation;
-    //private Vector3 startPos;
+    [SerializeField] private Vector3 endPos;
+    private Vector3 closedRotation;
     private void Awake()
     {
-        startRotation = transform.localEulerAngles;
+        closedRotation = transform.localEulerAngles;
     }
 
     [ContextMenu("Open")]
     public void Open()
     {
-        //transform.DOLocalMove(transform.localPosition + endPos, duration);
-        transform.DOLocalRotate(startRotation + rotationAmount, duration);
+        Vector3 targetRotation = new Vector3(closedRotation.x, closedRotation.y, closedRotation.z);
+        transform.DOLocalRotate(targetRotation + endPos, duration);
     }
 
     [ContextMenu("Close")]
     public void Close()
     {
-        //transform.DOLocalMove(startPos, duration);
-        transform.DOLocalRotate(startRotation, duration);
+        transform.DOLocalRotate(closedRotation, duration);
 
     }
 }
