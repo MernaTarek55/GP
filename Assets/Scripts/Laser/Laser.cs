@@ -22,7 +22,7 @@ public class Laser : MonoBehaviour
 
     private bool hasDoneDamage; // Nano: bool to check if the same laser causes damage twice
     private bool activated = false;
-    private LineRenderer lineRenderer;
+    [SerializeField]private LineRenderer lineRenderer;
     private const float farDistance = 1000f;
     private List<Vector3> bouncePositions;
     private LaserSensor prevStruckSensor = null;
@@ -45,7 +45,7 @@ public class Laser : MonoBehaviour
         {
             currentLifetime = lifetime;
         }
-
+        //lineRenderer.GetComponent<LineRenderer>();
         currentLaserDirection = transform.forward;
 
     }
@@ -72,7 +72,7 @@ public class Laser : MonoBehaviour
 
     private void InitializeLineRenderer()
     {
-        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        //lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.enabled = IsNotTurret;
         lineRenderer.positionCount = 2;
         //lineRenderer.SetPosition(0, new Vector3(0, 0, 0));
