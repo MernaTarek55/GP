@@ -8,12 +8,15 @@ public class Player_IdleState : Player_GroundedState
     {
         base.Enter();
         player.WalkTimer = 0f;
-        player.animator.SetFloat("Speed", 0f);
+        player.animator.SetFloat("Speed", 0f); // Always reset to 0 when entering Idle
     }
 
     public override void Update()
     {
         base.Update();
+
+        // Keep ensuring Speed stays 0 in Idle
+        player.animator.SetFloat("Speed", 0f);
 
         if (player.healthComponent.IsDead())
             stateMachine.ChangeState(player.playerDeath);

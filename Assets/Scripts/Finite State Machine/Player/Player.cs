@@ -102,8 +102,15 @@ public class Player : MonoBehaviour
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
-        JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
-
+        if (jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped)
+        {
+            JumpPressed = true;
+        }
+        else
+        {
+            JumpPressed = false;
+        }
+        animator.SetBool("IsGrounded", IsGrounded);
         stateMachine.UpdateActiveState();
     }
 
