@@ -61,6 +61,7 @@ public class Player : MonoBehaviour
     public float walkSpeed = 2f;
     public float runSpeed = 5f;
     [SerializeField] private WeaponSwitch weaponSwitch;
+    [SerializeField] public float jumpForce = 6.0f;
 
     public Transform playerHead;
 
