@@ -5,25 +5,27 @@ public class MoneyCount : MonoBehaviour
 {
     public TMP_Text scoreText;
     private PlayerInventory playerInventory;
+    public GameObject cube;
+    public Transform transforrm;
 
     private void Start()
     {
         // Get the reference
-        playerInventory = PlayerInventoryHolder.instance.Inventory;
+        playerInventory = SaveManager.Singleton.playerInventoryHolder.Inventory;
 
         // Subscribe to the credits changed event
         playerInventory.OnCreditsChanged += UpdateCreditsUI;
-        DebugerONSCrenn.Debuuging.Log("MoneyCount Subs");
+        //Instantiate(cube, transforrm.position, Quaternion.identity);
         // Optional: initialize UI
         UpdateCreditsUI(playerInventory.Credits);
     }
-
+    
     private void OnDestroy()
     {
         if (playerInventory != null)
         {
             playerInventory.OnCreditsChanged -= UpdateCreditsUI;
-            DebugerONSCrenn.Debuuging.Log("MoneyCount unSubs");
+            Instantiate(cube, transforrm.position, Quaternion.identity);
         }
     }
 
@@ -31,7 +33,9 @@ public class MoneyCount : MonoBehaviour
     {
         Debug.LogWarning(credits);
         if (scoreText != null)
+        {
             scoreText.text = credits.ToString();
-        DebugerONSCrenn.Debuuging.Log("MoneyCount: " + credits.ToString());
+        }
+        //Instantiate(cube, transforrm.position, Quaternion.identity);
     }
 }

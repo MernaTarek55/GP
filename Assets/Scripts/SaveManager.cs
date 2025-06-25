@@ -7,7 +7,7 @@ public class SaveManager : MonoBehaviour
     PlayerInventory playerInventory;
     InventorySaveManager saveManager;
     InventorySaveData saveData;
-    [SerializeField] PlayerInventoryHolder playerInventoryHolder;
+    [SerializeField] public PlayerInventoryHolder playerInventoryHolder;
 
     private void Awake()
     {

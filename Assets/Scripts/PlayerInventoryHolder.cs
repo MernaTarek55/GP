@@ -32,13 +32,4 @@ public class PlayerInventoryHolder : MonoBehaviour
         //Inventory.PrintWeaponUpgrades();
     }
 
-    //for testing purposes
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Debug.Log("Z pressed, adding 100 credits");
-            Inventory.Credits += 100;
-        }
-    }
 }
