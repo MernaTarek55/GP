@@ -1,22 +1,19 @@
+
 using UnityEngine;
 
-public class Player_MoveState : Player_GroundedState
+public class Player_MoveState : EntityState
 {
-    private float timeToRun = 0.5f;
+    private float timeToRun = .5f;
     private bool forceRun = false;
 
     public Player_MoveState(StateMachine stateMachine, string stateName, Player player)
-        : base(stateMachine, stateName, player) { }
+        : base(stateMachine, stateName, player)
+    {
+    }
 
     public override void Update()
     {
         base.Update();
-
-        if (player.healthComponent.IsDead())
-        {
-            stateMachine.ChangeState(player.playerDeath);
-            return;
-        }
 
         if (player.MoveInput.sqrMagnitude < 0.01f)
         {
@@ -25,17 +22,38 @@ public class Player_MoveState : Player_GroundedState
             return;
         }
 
+        if (player.JumpPressed)
+        {
+            player.WasRunningBeforeJump = player.WalkTimer >= timeToRun;
+            stateMachine.ChangeState(new Player_JumpState(stateMachine, "Jump", player));
+            return;
+        }
+
+        if (player.healthComponent.IsDead())
+        {
+            stateMachine.ChangeState(player.playerDeath);
+            return;
+        }
+
+        //if (player.DeadEyePressed)
+        //{
+        //    stateMachine.ChangeState(new Player_DeadEyeStateTest1(stateMachine, "DeadEye", player));
+        //    return;
+        //}
+
         if (!forceRun)
         {
-            player.WalkTimer += Time.deltaTime;
+            if (player.MoveInput.sqrMagnitude > 0.01f)
+                player.WalkTimer += Time.deltaTime;
+            else
+                player.WalkTimer = 0f;
         }
 
         bool isRunning = forceRun || player.WalkTimer >= timeToRun;
         float currentMaxSpeed = isRunning ? player.runSpeed : player.walkSpeed;
 
         Vector3 camRight = player.mainCamera.transform.right;
-        camRight.y = 0f;
-        camRight.z = 0f;
+        camRight.y = 0;
         camRight.Normalize();
 
         Vector3 moveDirection = camRight * player.MoveInput.x;
@@ -43,16 +61,17 @@ public class Player_MoveState : Player_GroundedState
         float curvedSpeed = currentMaxSpeed * player.movementCurve.Evaluate(inputMagnitude);
         Vector3 targetVelocity = moveDirection.normalized * curvedSpeed;
 
+        // EaseInOut curve value based on input magnitude (0 to 1)
+        float easeValue = player.movementCurve.Evaluate(inputMagnitude); // e.g. EaseInOut(0,0)-(1,1)
+
+        // Smooth using Lerp
         player.currentVelocity = Vector3.Lerp(
             player.currentVelocity,
             targetVelocity,
-            player.movementCurve.Evaluate(inputMagnitude) * Time.deltaTime * player.acceleration
+            easeValue * Time.deltaTime * player.acceleration
         );
 
-        Vector3 nextPosition = player.rb.position + player.currentVelocity * Time.deltaTime;
-        nextPosition.z = 0f; // Enforce flat movement
-        player.rb.MovePosition(nextPosition);
-        //player.rb.MovePosition(player.rb.position + player.currentVelocity * Time.deltaTime);
+        player.rb.MovePosition(player.rb.position + player.currentVelocity * Time.deltaTime);
 
         if (!player.IsShooting && player.currentVelocity.sqrMagnitude > 0.01f)
         {
