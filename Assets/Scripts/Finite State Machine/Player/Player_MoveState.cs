@@ -54,7 +54,9 @@ public class Player_MoveState : Player_GroundedState
         player.rb.MovePosition(nextPosition);
         //player.rb.MovePosition(player.rb.position + player.currentVelocity * Time.deltaTime);
 
-        if (!player.IsShooting && Mathf.Abs(player.currentVelocity.x) > 0.01f)
+        const float flipThreshold = 0.05f;
+
+        if (!player.IsShooting && Mathf.Abs(player.currentVelocity.x) > flipThreshold)
         {
             float desiredY = player.currentVelocity.x > 0 ? 90f : 270f;
             Quaternion desiredRotation = Quaternion.Euler(0f, desiredY, 0f);
