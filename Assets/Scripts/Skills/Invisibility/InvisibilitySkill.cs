@@ -40,7 +40,7 @@ public class InvisibilitySkill : MonoBehaviour
 
     private void Start()
     {
-        var holder = GameObject.FindWithTag("Player").GetComponent<PlayerInventoryHolder>();
+        var holder = SaveManager.Singleton.GetComponent<PlayerInventoryHolder>();
         if (holder == null)
         {
             Debug.LogError("PlayerInventoryHolder not found on player!");

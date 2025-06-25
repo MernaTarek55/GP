@@ -670,7 +670,7 @@ PrefabInstance:
     - target: {fileID: 2850853912307881974, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 4545173096628437473, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
@@ -2100,7 +2100,7 @@ PrefabInstance:
     - target: {fileID: 1170603994130906859, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2278,7 +2278,7 @@ PrefabInstance:
     - target: {fileID: 917512761478267793, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 1455663099184684301, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 297.47845
@@ -2715,6 +2715,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bab28a783a812d944b3ff37d5a40955f, type: 3}
+--- !u!1 &328994070 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6882749458820746665, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 1026932525}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &337598231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3981,51 +3986,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6751080692361201172, guid: bab28a783a812d944b3ff37d5a40955f, type: 3}
   m_PrefabInstance: {fileID: 431449837}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &443993829
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 443993830}
-  - component: {fileID: 443993831}
-  m_Layer: 0
-  m_Name: tester
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &443993830
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 443993829}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 71.12404, y: 401.95013, z: -26.840837}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1836767362}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &443993831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 443993829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e1a19cac148e3c4aaa4324c50d725c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerInventoryHolder: {fileID: 0}
 --- !u!1 &446211836
 GameObject:
   m_ObjectHideFlags: 0
@@ -4594,11 +4554,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1930848772}
+  - {fileID: 1901594534}
+  - {fileID: 328994070}
   inventoryHolder: {fileID: 0}
-  deadeyeButton: {fileID: 0}
+  deadeyeButton: {fileID: 889854452}
+  SwitchBTN: {fileID: 989232412}
 --- !u!4 &490640931 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4124319655532660892, guid: 29e270d70bb3a74449eb8c173802c233, type: 3}
@@ -4729,7 +4690,7 @@ PrefabInstance:
     - target: {fileID: 1170603994130906859, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4873,7 +4834,7 @@ PrefabInstance:
     - target: {fileID: 2850853912307881974, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 4545173096628437473, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
@@ -5768,7 +5729,7 @@ PrefabInstance:
     - target: {fileID: -1124280754691726229, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_Name
       value: Lava Robot (3)
@@ -5788,7 +5749,7 @@ PrefabInstance:
     - target: {fileID: 1212700470898299797, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: B
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539105}
     - target: {fileID: 5100788957102132467, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -5920,7 +5881,7 @@ PrefabInstance:
     - target: {fileID: 1170603994130906859, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7049,11 +7010,11 @@ PrefabInstance:
     - target: {fileID: 1873765933731141599, guid: ee3c65bc0878a0943935a535d556f853, type: 3}
       propertyPath: B
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539105}
     - target: {fileID: 4519827398086070265, guid: ee3c65bc0878a0943935a535d556f853, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 8837739688673318488, guid: ee3c65bc0878a0943935a535d556f853, type: 3}
       propertyPath: m_Name
       value: Random Lava Robot
@@ -7103,6 +7064,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2062119515}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &735539104 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7252776371748360924, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 1026932525}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &735539105 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8065059637270415462, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 1026932525}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &735720051 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5100462511605706399, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
@@ -7167,7 +7138,7 @@ PrefabInstance:
     - target: {fileID: 1170603994130906859, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8167,7 +8138,7 @@ PrefabInstance:
     - target: {fileID: 1170603994130906859, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8848,7 +8819,7 @@ PrefabInstance:
     - target: {fileID: 917512761478267793, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 1455663099184684301, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.534038
@@ -8910,6 +8881,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1430720315}
   m_SourcePrefab: {fileID: 100100000, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
+--- !u!114 &889854452 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4466593539436332948, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 1026932525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &893988581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9583,12 +9565,17 @@ PrefabInstance:
     - target: {fileID: 1170603994130906859, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
+--- !u!1 &989232412 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6032638776265725325, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 1026932525}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &990245103
 GameObject:
   m_ObjectHideFlags: 0
@@ -9795,7 +9782,7 @@ PrefabInstance:
     - target: {fileID: 917512761478267793, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 1455663099184684301, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 294.99994
@@ -10098,6 +10085,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'NestedPlayer '
       objectReference: {fileID: 0}
+    - target: {fileID: 4691776738279339158, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: weaponSwitch
+      value: 
+      objectReference: {fileID: 484243983}
     - target: {fileID: 4691776738279339158, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: groundLayer.m_Bits
       value: 0
@@ -10860,7 +10851,7 @@ PrefabInstance:
     - target: {fileID: 1170603994130906859, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 3349783304545851014, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
       propertyPath: m_Radius
       value: 0.537148
@@ -11114,7 +11105,7 @@ PrefabInstance:
     - target: {fileID: 917512761478267793, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 1455663099184684301, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 159.08047
@@ -11440,7 +11431,7 @@ PrefabInstance:
     - target: {fileID: 1170603994130906859, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13176,7 +13167,7 @@ PrefabInstance:
     - target: {fileID: 2850853912307881974, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 4545173096628437473, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
@@ -13455,7 +13446,7 @@ PrefabInstance:
     - target: {fileID: 917512761478267793, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 1455663099184684301, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 204.37866
@@ -15025,7 +15016,7 @@ PrefabInstance:
     - target: {fileID: 917512761478267793, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 1455663099184684301, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 49.444622
@@ -15739,7 +15730,6 @@ MonoBehaviour:
   - {fileID: 1892702971}
   sceneLoader: {fileID: 0}
   gameSceneName: Real Level 2
-  endGamePanel: {fileID: 0}
 --- !u!1001 &1604268695
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16318,7 +16308,7 @@ PrefabInstance:
     - target: {fileID: 917512761478267793, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 1455663099184684301, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 249.7018
@@ -16670,7 +16660,7 @@ PrefabInstance:
     - target: {fileID: 2850853912307881974, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 4545173096628437473, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
@@ -18763,7 +18753,6 @@ Transform:
   - {fileID: 781025577}
   - {fileID: 210570389}
   - {fileID: 622199152}
-  - {fileID: 443993830}
   - {fileID: 1764320106}
   - {fileID: 946264227}
   - {fileID: 2104704040}
@@ -19181,7 +19170,7 @@ PrefabInstance:
     - target: {fileID: 2850853912307881974, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 4545173096628437473, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
@@ -19922,7 +19911,7 @@ PrefabInstance:
     - target: {fileID: 1057959752610491650, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 1057959752610491650, guid: f708c7a381cad4142a8d17ec2bcf0901, type: 3}
       propertyPath: NavTargets.Array.size
       value: 3
@@ -23035,6 +23024,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9917c1fc3098e0541be08b583cdd585c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1901594534 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4643854285104273824, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 1026932525}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1905285650
 GameObject:
   m_ObjectHideFlags: 0
@@ -23387,6 +23381,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bab28a783a812d944b3ff37d5a40955f, type: 3}
+--- !u!1 &1930848772 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8993457632145518254, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 1026932525}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1934443621
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24443,7 +24442,7 @@ PrefabInstance:
     - target: {fileID: 2850853912307881974, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 4545173096628437473, guid: 03e7e62eb34966843b8662186c2b71df, type: 3}
       propertyPath: playerGO
       value: 
@@ -24884,11 +24883,11 @@ PrefabInstance:
     - target: {fileID: 1873765933731141599, guid: ee3c65bc0878a0943935a535d556f853, type: 3}
       propertyPath: B
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539105}
     - target: {fileID: 4519827398086070265, guid: ee3c65bc0878a0943935a535d556f853, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 8837739688673318488, guid: ee3c65bc0878a0943935a535d556f853, type: 3}
       propertyPath: m_Name
       value: Random Lava Robot (1)
@@ -25497,7 +25496,7 @@ PrefabInstance:
     - target: {fileID: -1124280754691726229, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 850917478301423260, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_Name
       value: Lava Robot (2)
@@ -25517,7 +25516,7 @@ PrefabInstance:
     - target: {fileID: 1212700470898299797, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: B
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539105}
     - target: {fileID: 5100788957102132467, guid: 918b22ccec73e9d47965b8131ed5a590, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -26306,7 +26305,7 @@ PrefabInstance:
     - target: {fileID: 1170603994130906859, guid: 08348cb7e9b9c584599d33b42c11d183, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26621,7 +26620,7 @@ PrefabInstance:
     - target: {fileID: 1600146945060095502, guid: fc5f117c48e507c4e97479461357541a, type: 3}
       propertyPath: playerGO
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539104}
     - target: {fileID: 1600146945060095502, guid: fc5f117c48e507c4e97479461357541a, type: 3}
       propertyPath: enemyData
       value: 
@@ -26669,7 +26668,7 @@ PrefabInstance:
     - target: {fileID: 3642723843119881768, guid: fc5f117c48e507c4e97479461357541a, type: 3}
       propertyPath: B
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 735539105}
     - target: {fileID: 5920139306705018799, guid: fc5f117c48e507c4e97479461357541a, type: 3}
       propertyPath: m_Name
       value: Lava Robot
