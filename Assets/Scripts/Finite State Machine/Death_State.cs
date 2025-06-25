@@ -57,7 +57,9 @@ public class Death_State : EntityState
 
         if (entityGO.CompareTag("Player"))
         {
-           // player.GetComponent<PlayerRespawn>().Respawn();
+            //----------------------THIS PART-----------------------
+           player.GetComponent<PlayerRespawn>().activateRespawn();
+           
         }
         else
         {
