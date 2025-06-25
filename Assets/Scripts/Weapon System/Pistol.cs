@@ -46,7 +46,7 @@ public class Pistol : Weapon
     protected override void Awake()
     {
         base.Awake();
-        player = GetComponentInParent<Player>();
+        
 
         if (weaponData == null)
         {
@@ -161,7 +161,8 @@ public class Pistol : Weapon
     }
     public override void ShootFromAnimation()
     {
-        if (currentAmmo <= 0 || isReloading) return;
+        base.ShootFromAnimation();
+        //if (currentAmmo <= 0 || isReloading) return;
 
         StartCoroutine(WaitAndShootWhenIKReady(targetForAnimations));
     }
@@ -172,7 +173,7 @@ public class Pistol : Weapon
         //    ikHandler.TriggerShootIK();
         //}
         targetForAnimations = targetPoint;
-        player.gameObject.GetComponent<Animator>().SetTrigger("Shoot");
+        animator.SetTrigger("Shoot");
         
         //StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         deadEyeBool = false;
@@ -197,7 +198,10 @@ public class Pistol : Weapon
         //if (audioSource && shootSound)
         //    audioSource.PlayOneShot(shootSound);
     }
-
+    public void waitAndShoot()
+    {
+        StartCoroutine(WaitAndShootWhenIKReady(targetForAnimations));
+    }
     private IEnumerator WaitAndShootWhenIKReady(Vector3 targetPoint)
     {
 

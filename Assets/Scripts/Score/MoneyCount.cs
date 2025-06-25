@@ -5,8 +5,6 @@ public class MoneyCount : MonoBehaviour
 {
     public TMP_Text scoreText;
     private PlayerInventory playerInventory;
-    public GameObject cube;
-    public Transform transforrm;
 
     private void Start()
     {
@@ -25,7 +23,6 @@ public class MoneyCount : MonoBehaviour
         if (playerInventory != null)
         {
             playerInventory.OnCreditsChanged -= UpdateCreditsUI;
-            Instantiate(cube, transforrm.position, Quaternion.identity);
         }
     }
 

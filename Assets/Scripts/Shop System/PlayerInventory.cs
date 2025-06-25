@@ -17,7 +17,6 @@ public class PlayerInventory
             if (inventorySaveData.credits != value)
             {
                 inventorySaveData.credits = value;
-                DebugerONSCrenn.Debuuging.Log("MoneyCount changed");
                 OnCreditsChanged?.Invoke(inventorySaveData.credits);
             }
         }

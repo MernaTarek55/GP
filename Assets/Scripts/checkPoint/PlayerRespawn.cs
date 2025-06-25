@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.WSA;
 
 public class PlayerRespawn : MonoBehaviour
 {

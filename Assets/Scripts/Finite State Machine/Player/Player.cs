@@ -144,7 +144,7 @@ public class Player : MonoBehaviour
     {
         IsShooting = isShooting;
     }
-    public void FireWeaponFromAnimation()
+    public void FireWeaponEvent()
     {
         weaponSwitch?.FireBulletFromEvent();
     }
