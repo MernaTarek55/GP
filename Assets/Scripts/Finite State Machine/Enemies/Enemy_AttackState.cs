@@ -26,7 +26,6 @@ public class Enemy_AttackState : EntityState
 
     private ParticleSystem enemyPS;  // particle system for enemy ball explosion
 
-    private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
 
     private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
 
@@ -323,9 +322,7 @@ public class Enemy_AttackState : EntityState
 
         {
 
-            if (entityGO.TryGetComponent(out MeshRenderer mr)) enemyMR = mr;
-
-            else Debug.Log("Mesh Renderer not found");
+          
 
             if (entityGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
 
@@ -367,13 +364,13 @@ public class Enemy_AttackState : EntityState
 
     {
 
-        enemy.particleEffect.Play();
+        //enemy.particleEffect.Play();
 
 
 
-        enemyMR.enabled = false;
+        //enemyMR.enabled = false;
 
-        sphereCollider.enabled = false;
+        //sphereCollider.enabled = false;
 
         enemy.Die();
 
