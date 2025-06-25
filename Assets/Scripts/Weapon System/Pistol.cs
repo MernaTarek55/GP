@@ -43,6 +43,15 @@ public class Pistol : Weapon
     //Dictionary
     private readonly Dictionary<int, bool> touchStartedOverUI = new();
 
+    private Animator anim;
+
+
+    public void SetShootingAnimation(bool isShooting)
+    {
+        Debug.Log($"nano: ana el mfros a8yar el animtion l : {isShooting}");
+        anim.SetBool("shoot", isShooting);
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -57,6 +66,9 @@ public class Pistol : Weapon
         //Debug.Log($"Weapon Type: {WeaponType}");
 
         littleTimer = littleTimerMax;
+
+        anim = GetComponent<Animator>();
+
     }
 
     private void Update()
@@ -101,15 +113,19 @@ public class Pistol : Weapon
             {
                 if (touchStartedOverUI.TryGetValue(fingerId, out bool startedOverUI) && !startedOverUI && deadEye.canShoot == true)
                 {
-                    player?.SetShooting(true); // ✅ START shooting flag
                     ShootAtTouch(touch.position);
                 }
             }
             else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
             {
                 touchStartedOverUI.Remove(fingerId);
-                player?.SetShooting(false); // ✅ END shooting flag
             }
+
+            if (Input.touchCount == 0)
+            {
+                //SetShootingAnimation(false); // ensures animator turns off shoot bool when fingers lifted
+            }
+
         }
 
         if (littleTimer > 0)
@@ -162,19 +178,22 @@ public class Pistol : Weapon
     public override void ShootFromAnimation()
     {
         if (currentAmmo <= 0 || isReloading) return;
-
+        
         StartCoroutine(WaitAndShootWhenIKReady(targetForAnimations));
     }
     public override void Shoot(Vector3 targetPoint) // add parameter the target you want to shoot
     {
+
+
         //if (ikHandler != null)
         //{
         //    ikHandler.TriggerShootIK();
         //}
         targetForAnimations = targetPoint;
-        player.gameObject.GetComponent<Animator>().SetTrigger("Shoot");
+
+        SetShootingAnimation(true);
         
-        //StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
+        StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         deadEyeBool = false;
         //player.gameObject.GetComponent<Animator>().ResetTrigger("Shoot");
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
@@ -200,6 +219,7 @@ public class Pistol : Weapon
 
     private IEnumerator WaitAndShootWhenIKReady(Vector3 targetPoint)
     {
+
 
         // Wait until IK weight is close to 1
         //while (ikHandler.rig.weight < 0.8f)
@@ -266,11 +286,12 @@ public class Pistol : Weapon
             if (bulletScript != null)
             {
                 //to change to the data in inventory 
-                bulletScript.SetDamage(5/*weaponData.damage*/);
+                bulletScript.SetDamage(weaponData.damage);
 
             }
         }
-        
+
+
         // bulletScript.SetDamage(weaponData.damage);
 
         if (muzzleFlash != null)
@@ -316,69 +337,6 @@ public class Pistol : Weapon
 
         yield return null;
     }
-
-    //private IEnumerator nady3laetfo(List<Transform> targets)
-    //{
-    //    yield return new WaitForSeconds(weaponData.fireRate);
-
-    //    Debug.Log($"fire rate = {weaponData.fireRate}");
-
-    //    if (targets.Count > 0)
-    //    {
-    //        etfo(targets);
-    //    }
-    //}
-
-    //private void etfo(List<Transform> targets)
-    //{
-    //    shootDirection = (targets[targets.Count - 1].position - firePoint.position).normalized;
-    //    firePoint.rotation = Quaternion.LookRotation(shootDirection);
-
-
-    //    GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
-
-    //    Debug.Log($"bullet is {(bullet == null ? "NULL" : "OK")}.");
-
-    //    bullet.transform.position = firePoint.position;
-    //    bullet.transform.rotation = Quaternion.LookRotation(shootDirection); // make sure it's updated
-    //    bullet.SetActive(true);
-
-    //    Rigidbody rb = bullet.GetComponent<Rigidbody>();
-
-    //    // reset liner and angular velocity to make the bullet hit right
-    //    rb.linearVelocity = Vector3.zero;
-    //    rb.angularVelocity = Vector3.zero;
-
-    //    rb.AddForce(bullet.transform.forward * weaponData.bulletForce, ForceMode.Impulse);
-
-    //    Bullet bulletScript = bullet.GetComponent<Bullet>();
-    //    if (bulletScript != null)
-    //    {
-    //        //to change to the data in inventory 
-    //        bulletScript.SetDamage(-1/*weaponData.damage*/);
-    //        // bulletScript.SetDamage(weaponData.damage);
-    //    }
-
-    //    if (muzzleFlash != null)
-    //    {
-    //        muzzleFlash.Play();
-    //    }
-
-    //    if (audioSource && shootSound)
-    //    {
-    //        audioSource.PlayOneShot(shootSound);
-    //    }
-
-    //    targets.Remove(targets[targets.Count - 1]);
-
-    //    if (targets.Count > 0)
-    //    {
-    //        Debug.Log("double etfo");
-    //        StartCoroutine(nady3laetfo(targets));
-    //    }
-
-    //    Debug.Log($"targets count {targets.Count}");
-    //}
 
 
     public override void Reload()
@@ -426,7 +384,7 @@ public class Pistol : Weapon
 
             //while (ikHandler.rig.weight < 0.8f && timer < maxWaitTime)
             //{
-            //    timer += Time.unscaledDeltaTime;
+            //    timer += Time.unscaledDeltaTixme;
             //    yield return null;
             //}
 
