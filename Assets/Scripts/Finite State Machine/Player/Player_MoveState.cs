@@ -81,18 +81,11 @@ public class Player_MoveState : Player_GroundedState
         }
 
 
-        if (!player.hasJumped)
+        if (!player.hasJumped && player.IsGrounded)
         {
             float speedRatio = player.currentVelocity.magnitude / player.runSpeed;
-            float signedSpeed = Mathf.Sign(player.MoveInput.x) * speedRatio * 2f;
-            player.animator.SetFloat("Speed", signedSpeed);
-        }
-
-        if (player.IsGrounded)
-        {
-            float speedRatio = player.currentVelocity.magnitude / player.runSpeed;
-            float signedSpeed = Mathf.Sign(player.MoveInput.x) * speedRatio * 2f;
-            player.animator.SetFloat("Speed", signedSpeed);
+            float unsignedSpeed = speedRatio * 2f;
+            player.animator.SetFloat("Speed", unsignedSpeed);
         }
     }
 
