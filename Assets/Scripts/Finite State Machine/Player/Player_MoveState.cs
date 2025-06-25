@@ -54,20 +54,13 @@ public class Player_MoveState : Player_GroundedState
         player.rb.MovePosition(nextPosition);
         //player.rb.MovePosition(player.rb.position + player.currentVelocity * Time.deltaTime);
 
-        if (!player.IsShooting && Mathf.Abs(player.currentVelocity.x) > 0.01f)
+        if (!player.IsShooting && player.currentVelocity.sqrMagnitude > 0.01f)
         {
-            float desiredY = player.currentVelocity.x > 0 ? 90f : 270f;
-            Quaternion desiredRotation = Quaternion.Euler(0f, desiredY, 0f);
-
-            if (!player.rotating || Quaternion.Angle(player.targetRot, desiredRotation) > 1f)
-            {
-                player.startRot = player.transform.rotation;
-                player.targetRot = desiredRotation;
-                player.rotateTimer = 0f;
-                player.rotating = true;
-            }
+            Quaternion targetRotation = Quaternion.LookRotation(player.currentVelocity);
+            player.rb.MoveRotation(Quaternion.Slerp(player.rb.rotation, targetRotation, player.RotateSpeed * Time.deltaTime));
         }
 
+<<<<<<< HEAD
         // Apply rotation smoothly
         if (player.rotating)
         {
@@ -82,6 +75,9 @@ public class Player_MoveState : Player_GroundedState
 
 
         if (!player.hasJumped && player.IsGrounded)
+=======
+        if (!player.hasJumped)
+>>>>>>> parent of 8c2be46 (Player Refixed)
         {
             float speedRatio = player.currentVelocity.magnitude / player.runSpeed;
             float unsignedSpeed = speedRatio * 2f;
