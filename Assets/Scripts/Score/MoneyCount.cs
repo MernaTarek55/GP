@@ -13,7 +13,7 @@ public class MoneyCount : MonoBehaviour
 
         // Subscribe to the credits changed event
         playerInventory.OnCreditsChanged += UpdateCreditsUI;
-
+        DebugerONSCrenn.Debuuging.Log("MoneyCount Subs");
         // Optional: initialize UI
         UpdateCreditsUI(playerInventory.Credits);
     }
@@ -21,7 +21,10 @@ public class MoneyCount : MonoBehaviour
     private void OnDestroy()
     {
         if (playerInventory != null)
+        {
             playerInventory.OnCreditsChanged -= UpdateCreditsUI;
+            DebugerONSCrenn.Debuuging.Log("MoneyCount unSubs");
+        }
     }
 
     private void UpdateCreditsUI(int credits)
