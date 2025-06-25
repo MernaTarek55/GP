@@ -29,5 +29,6 @@ public class MoneyCount : MonoBehaviour
         Debug.LogWarning(credits);
         if (scoreText != null)
             scoreText.text = credits.ToString();
+        DebugerONSCrenn.Debuuging.Log("MoneyCount: " + credits.ToString());
     }
 }
