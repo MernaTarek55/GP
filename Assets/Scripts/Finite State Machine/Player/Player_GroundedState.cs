@@ -10,7 +10,7 @@ public abstract class Player_GroundedState : EntityState
     {
         if (player.JumpPressed && player.IsGrounded && !player.hasJumped)
         {
-            player.rb.AddForce(Vector3.up * 6f, ForceMode.Impulse);
+            player.rb.AddForce(Vector3.up * player.jumpForce, ForceMode.Impulse);
             //player.animator.SetBool("isJumping", true);
             player.animator.SetTrigger("Jump");
             //player.animator.CrossFade("Jump", 0.1f);
