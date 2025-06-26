@@ -191,4 +191,13 @@ public class Player : MonoBehaviour
     {
         healthComponent.RenewHealth();
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("FallOff"))
+        {
+            stateMachine.ChangeState(playerDeath);
+        }
+    }
+
 }
