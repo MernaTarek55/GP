@@ -45,6 +45,7 @@ public class MemoryManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(5f);
         Time.timeScale = 1;
-        sceneLoader.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SaveManager.Singleton.LastPlayedLevel = SceneManager.GetActiveScene().buildIndex + 1;
+        sceneLoader.LoadScene(SaveManager.Singleton.LastPlayedLevel);
     }
 }
