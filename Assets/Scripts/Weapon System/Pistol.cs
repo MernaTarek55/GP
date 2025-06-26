@@ -173,7 +173,7 @@ public class Pistol : Weapon
         //    ikHandler.TriggerShootIK();
         //}
         targetForAnimations = targetPoint;
-        animator.SetTrigger("Shoot");
+        animator.SetBool("shoot" , true);
         
         //StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         deadEyeBool = false;
@@ -286,6 +286,7 @@ public class Pistol : Weapon
         {
             audioSource.PlayOneShot(shootSound);
         }
+        animator.SetBool("shoot", false);
         //rig.weight = 0;
     }
 

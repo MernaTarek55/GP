@@ -214,7 +214,9 @@ public class DeadeyeSkill : MonoBehaviour
             if (markedTargets[i] == null) continue;
 
             yield return StartCoroutine(weapon.ShootForDeadEye(markedTargets[i].position));
+            yield return new WaitForSeconds(1f); 
             targetsImages[i].gameObject.SetActive(false);
+            Debug.Log("ana hena");
         }
 
         doneWithLastTargets = true;
