@@ -12,18 +12,30 @@ public class WeaponSwitch : MonoBehaviour
     [SerializeField] private GameObject SwitchBTN;
     private List<WeaponType> ownedWeapons;
     private int currentWeaponIndex = 0; 
+    bool activated = false;
     private void Start()
     {
-        if (inventoryHolder == null)
-        {
-            inventoryHolder = FindObjectOfType<PlayerInventoryHolder>();
-        }
 
-  
+
+        inventoryHolder = SaveManager.Singleton.playerInventoryHolder;
 
         ownedWeapons = inventoryHolder.Inventory.inventorySaveData.ownedWeapons;
+        foreach (var owned in ownedWeapons)
+        {
+            Debug.Log($"WhyyyyyyOwned weapon: {owned}");    
+        }
         FilterOwnedWeapons();
-        ActivateWeapon(currentWeaponIndex);
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            if (activated) break;
+            ActivateWeaponInStart(i);
+           
+        }
+        //ActivateWeapon(currentWeaponIndex);
+        if (ownedWeapons.Count >= 2)
+        {
+            SwitchBTN.SetActive(true);
+        }
     }
 
 
@@ -69,11 +81,43 @@ public class WeaponSwitch : MonoBehaviour
             if (weapons[i] != null)
             {
                 bool shouldActivate = i == index && IsWeaponOwned(i);
-                weapons[i].SetActive(shouldActivate);
-
+                
+                 
+                    weapons[i].SetActive(shouldActivate);
                 if (shouldActivate)
                 {
                     var weapon = weapons[i].GetComponent<Weapon>();
+                    //weapon.ApplyUpgrades(inventoryHolder.Inventory);
+                }
+            }
+        }
+
+        if (GetCurrentWeapon().WeaponType == WeaponType.GrenadeLauncher || ownedWeapons.Count == 0)
+        {
+            deadeyeButton.interactable = false;
+        }
+        else
+        {
+            deadeyeButton.interactable = true;   
+        }
+    }
+    private void ActivateWeaponInStart(int index)
+    {
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            if (weapons[i] != null)
+            {
+                bool shouldActivate = i == index && IsWeaponOwned(i);
+                
+                 
+                if (shouldActivate)
+                {
+                    var weapon = weapons[i].GetComponent<Weapon>();
+                    Debug.Log("Whyyyyyy" + shouldActivate);
+                    weapons[i].SetActive(shouldActivate);
+                    currentWeaponIndex = i;
+                    activated = true;
+                    return;
                     //weapon.ApplyUpgrades(inventoryHolder.Inventory);
                 }
             }

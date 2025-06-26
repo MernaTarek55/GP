@@ -3,28 +3,28 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    //[SerializeField] private TextMeshProUGUI creditsText;
+    [SerializeField] private TextMeshProUGUI creditsText;
 
-    //private void Awake()
-    //{
+    private void Awake()
+    {
 
-    //}
-    //private void Start()
-    //{
-    //    ShopManager.Singelton.playerInventory.OnCreditsChanged += UpdateCreditsUI;
-    //    UpdateCreditsUI(ShopManager.Singelton.playerInventory.Credits);
-    //}
+    }
+    private void Start()
+    {
+        ShopManager.Singelton.playerInventory.OnCreditsChanged += UpdateCreditsUI;
+        UpdateCreditsUI(ShopManager.Singelton.playerInventory.Credits);
+    }
 
-    //private void UpdateCreditsUI(int credits)
-    //{
-    //    creditsText.text = $"Credits: {credits}";
-    //}
+    private void UpdateCreditsUI(int credits)
+    {
+        creditsText.text = $"Credits: {credits}";
+    }
 
-    //private void OnDestroy()
-    //{
-    //    if (ShopManager.Singelton.playerInventory != null)
-    //    {
-    //        ShopManager.Singelton.playerInventory.OnCreditsChanged -= UpdateCreditsUI;
-    //    }
-    //}
+    private void OnDestroy()
+    {
+        if (ShopManager.Singelton.playerInventory != null)
+        {
+            ShopManager.Singelton.playerInventory.OnCreditsChanged -= UpdateCreditsUI;
+        }
+    }
 }
