@@ -4987,13 +4987,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1455663099184684301}
   - component: {fileID: 917512761478267793}
-  - component: {fileID: 9155248827598899459}
   - component: {fileID: 2496899464065648863}
   - component: {fileID: 779869401585565078}
   - component: {fileID: 8283792056322448781}
+  - component: {fileID: 5161546319182863931}
   m_Layer: 25
   m_Name: beyblade
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5044,27 +5044,6 @@ MonoBehaviour:
   dropForce:
   - {x: 0.01, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
---- !u!135 &9155248827598899459
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6211728603963152652}
-  m_Material: {fileID: 13400000, guid: 308d013678b07924f9ca07b64344c403, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 2098184
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0.42, z: 0}
 --- !u!54 &2496899464065648863
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5126,6 +5105,27 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!135 &5161546319182863931
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6211728603963152652}
+  m_Material: {fileID: 13400000, guid: 308d013678b07924f9ca07b64344c403, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0.57, z: 0}
 --- !u!1 &6720672610018288846
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,10 +20,10 @@ public class Enemy_PatrolState : EntityState
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
-         this.ParentGo = enemyGO.transform.parent.gameObject;
+         //this.ParentGo = enemyGO.transform.parent.gameObject;
         TryGetComponents(enemyGO);
         TryGetComponents(playerGO);
-        TryGetComponents(ParentGo);
+        //TryGetComponents(ParentGo);
 
     }
 

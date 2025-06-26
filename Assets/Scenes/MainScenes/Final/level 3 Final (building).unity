@@ -1244,26 +1244,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: beyblade
       objectReference: {fileID: 0}
-    - target: {fileID: 6211728603963152652, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6211728603963152652, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
-      propertyPath: m_TagString
-      value: Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 8283792056322448781, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 9155248827598899459, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6211728603963152652, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 431611412}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
 --- !u!4 &119784652 stripped
 Transform:
@@ -3928,32 +3912,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427525234}
   m_Mesh: {fileID: 6672540390151343682, guid: 8b8a86445d1e3f248a26b67164a74d78, type: 3}
---- !u!1 &431611405 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6211728603963152652, guid: 63a1568e07bfd4f4c81e944ba2b7bc3b, type: 3}
-  m_PrefabInstance: {fileID: 119784651}
-  m_PrefabAsset: {fileID: 0}
---- !u!135 &431611412
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 431611405}
-  m_Material: {fileID: 13400000, guid: 308d013678b07924f9ca07b64344c403, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0.57, z: 0}
 --- !u!1 &439784295
 GameObject:
   m_ObjectHideFlags: 0
@@ -9960,7 +9918,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.1
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 5f6b681ea849a934fb4aceace2637cfb, type: 2}
   m_BuildHeightMesh: 0
