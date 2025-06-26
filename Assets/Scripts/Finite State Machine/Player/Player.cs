@@ -167,8 +167,6 @@ public class Player : MonoBehaviour
         StartCoroutine(PlayerDissolve());
 
         }
-        Debug.Log("aNAAAAAAAAAAAAAAAAAA hENSSSSSSSSSSSSSSSSS");
-        Debug.Log("aNAAAAAAAAAAAAAAAAAA hENSSSSSSSSSSSSSSSSS2");
     }
 
 

@@ -558,6 +558,7 @@ public class Enemy_AttackState : EntityState
 
 
         GameObject laser = PoolManager.Instance.GetPrefabByTag(PoolType.Laser);
+        laser.GetComponent<Laser>().SetLaserDamage(enemyData.damage);
 
         if (laser == null)
 
