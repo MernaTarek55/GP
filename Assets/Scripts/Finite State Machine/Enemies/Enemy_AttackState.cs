@@ -529,9 +529,6 @@ public class Enemy_AttackState : EntityState
             return;
 
 
-
-
-
         // Check if facing player (relax angle check slightly)
 
         Vector3 directionToPlayer = (playerGO.transform.position - enemyGO.transform.position).normalized;
@@ -546,7 +543,7 @@ public class Enemy_AttackState : EntityState
 
 
 
-        // Get bullet from pool
+        // Get laser from pool
 
         if (PoolManager.Instance == null)
 
@@ -560,9 +557,9 @@ public class Enemy_AttackState : EntityState
 
 
 
-        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
+        GameObject laser = PoolManager.Instance.GetPrefabByTag(PoolType.Laser);
 
-        if (bullet == null)
+        if (laser == null)
 
         {
 
@@ -574,19 +571,17 @@ public class Enemy_AttackState : EntityState
 
 
 
-        // Set bullet position and rotation
+        // Set laser position and rotation
 
-        bullet.transform.position = firePoint.transform.position;
+        laser.transform.position = firePoint.transform.position;
 
-        bullet.transform.rotation = firePoint.transform.rotation;
-
-        bullet.SetActive(true);
+        laser.SetActive(true);
 
 
 
         // Add movement towards player
 
-        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+        Rigidbody bulletRb = laser.GetComponent<Rigidbody>();
 
         if (bulletRb != null)
 
@@ -598,7 +593,7 @@ public class Enemy_AttackState : EntityState
 
                 playerGO.transform.position.x,
 
-                bullet.transform.position.y,  // Keep bullet's current height
+                laser.transform.position.y,  // Keep laser's current height
 
                 playerGO.transform.position.z
 
@@ -606,19 +601,19 @@ public class Enemy_AttackState : EntityState
 
 
 
-            Vector3 shootDirection = (targetPosition - bullet.transform.position).normalized;
+            Vector3 shootDirection = (targetPosition - laser.transform.position).normalized;
 
             bulletRb.linearVelocity = shootDirection * enemyData.movementSpeed;
 
 
 
-            // Optional: Make bullet rotate to face movement direction
+            // Optional: Make laser rotate to face movement direction
 
             if (shootDirection != Vector3.zero)
 
             {
 
-                bullet.transform.rotation = Quaternion.LookRotation(shootDirection);
+                laser.transform.rotation = Quaternion.LookRotation(shootDirection);
 
             }
 
@@ -637,8 +632,6 @@ public class Enemy_AttackState : EntityState
         _lastShootTime = Time.time;
 
     }
-
-    private GameObject currentLaser;
 
     private void Shoot()
 
