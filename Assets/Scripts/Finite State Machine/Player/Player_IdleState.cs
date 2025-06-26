@@ -7,6 +7,8 @@ public class Player_IdleState : Player_GroundedState
     public override void Enter()
     {
         base.Enter();
+        float newX = player.rb.linearVelocity.x * 0;
+        player.SetVelocity(newX, player.rb.linearVelocity.y);
         player.WalkTimer = 0f;
         player.animator.SetFloat("Speed", 0f); // Always reset to 0 when entering Idle
     }

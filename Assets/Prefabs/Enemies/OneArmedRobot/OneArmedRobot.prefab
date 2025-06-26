@@ -118,7 +118,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!136 &8160947140645742903
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -162,6 +162,11 @@ MonoBehaviour:
   - {fileID: 0}
   firePos: {fileID: 2291859958117269031}
   particleEffect: {fileID: 0}
+  dissolveMaterial: {fileID: 0}
+  dissolveSpeed: 0.5
+  renderer: {fileID: 0}
+  rendererList: []
+  skinRenderer: {fileID: 0}
   drop: {fileID: 9141543585709512625, guid: b42a520455148cb459067e6ae0108bab, type: 3}
   dropChance: 1
   minDrops: 1

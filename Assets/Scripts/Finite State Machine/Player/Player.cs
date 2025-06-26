@@ -123,6 +123,10 @@ public class Player : MonoBehaviour
         animator.SetBool("IsGrounded", IsGrounded);
         stateMachine.UpdateActiveState();
     }
+    public void SetVelocity(float xVelocity, float yVelocity)
+    {
+        rb.linearVelocity = new Vector2(xVelocity, yVelocity);
+    }
 
     public void ActivateInvisibility()
     {

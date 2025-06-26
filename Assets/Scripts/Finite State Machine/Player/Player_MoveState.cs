@@ -49,10 +49,18 @@ public class Player_MoveState : Player_GroundedState
             player.movementCurve.Evaluate(inputMagnitude) * Time.deltaTime * player.acceleration
         );
 
-        Vector3 nextPosition = player.rb.position + player.currentVelocity * Time.deltaTime;
-        nextPosition.z = 0f; // Enforce flat movement
-        player.rb.MovePosition(nextPosition);
-        //player.rb.MovePosition(player.rb.position + player.currentVelocity * Time.deltaTime);
+        if (player.MoveInput.sqrMagnitude > 0.01f)
+        {
+            // Move normally
+            float targetXVelocity = player.MoveInput.x * player.maxSpeed;
+            float newX = Mathf.MoveTowards(
+                player.rb.linearVelocity.x,
+                targetXVelocity,
+                player.acceleration * Time.deltaTime
+            );
+            player.SetVelocity(newX, player.rb.linearVelocity.y);
+        }
+
 
         if (!player.IsShooting && Mathf.Abs(player.currentVelocity.x) > 0.01f)
         {
