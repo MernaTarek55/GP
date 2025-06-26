@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
     public Vector3 currentVelocity = Vector3.zero;
     [SerializeField] private SkinnedMeshRenderer renderer;
     [SerializeField] private Material dissolveMaterial;
+    [SerializeField] private Material NormalMaterial;
     [SerializeField] private float dissolveSpeed = 0.5f;
 
     [Header("Smooth Rotation")]
@@ -153,13 +154,21 @@ public class Player : MonoBehaviour
         weaponSwitch?.FireBulletFromEvent();
     }
 
-    public void ChangeMaterial()
+    public void ChangeMaterial(bool isRespawn)
     {
         if (renderer == null) return;
-
+        if (isRespawn)
+        {
+        renderer.material = NormalMaterial;
+        }
+        else
+        {
+        NormalMaterial = renderer.material;
         renderer.material = dissolveMaterial;
-        Debug.Log("aNAAAAAAAAAAAAAAAAAA hENSSSSSSSSSSSSSSSSS");
         StartCoroutine(PlayerDissolve());
+
+        }
+        Debug.Log("aNAAAAAAAAAAAAAAAAAA hENSSSSSSSSSSSSSSSSS");
         Debug.Log("aNAAAAAAAAAAAAAAAAAA hENSSSSSSSSSSSSSSSSS2");
     }
 

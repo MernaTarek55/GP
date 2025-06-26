@@ -31,6 +31,7 @@ public class PlayerRespawn : MonoBehaviour
         transform.position = checkpointPosition;
         player.healthComponent.RenewHealth();
         player.stateMachine.ChangeState(player.playerIdle);
+        player.ChangeMaterial(true);
     }
 
     public void activateRespawn()

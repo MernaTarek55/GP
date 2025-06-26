@@ -49,7 +49,7 @@ public class Death_State : EntityState
         SpawnDrops();
         enemy?.ChangeEnemyMaterial(); // to make the enemy dissolve after death
         enemy?.PlayDeathEffect(); // if you want both effects uncomment
-        player?.ChangeMaterial(); // to make the enemy dissolve after death
+        player?.ChangeMaterial(false); // to make the enemy dissolve after death
        // player?.PlayDeathEffect(); // if you want both effects uncomment
 
         //this line
