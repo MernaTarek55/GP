@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -27,6 +28,10 @@ public class SaveManager : MonoBehaviour
     {
         playerInventory = playerInventoryHolder.Inventory;
         saveData = playerInventory.inventorySaveData;
+        
+    }
+    public void MakeGameReady()
+    {
         if (!GameStartType.IsNewGame)
         {
             saveManager = new InventorySaveManager(saveData.ownedWeapons, saveData.weaponUpgrades, saveData.bulletsCount, saveData.playerStats, saveData.credits);
@@ -46,13 +51,17 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("why");
+            saveData = new InventorySaveData();
+            playerInventory.inventorySaveData = saveData;
             saveManager = new InventorySaveManager(
-                saveData.ownedWeapons,
-                saveData.weaponUpgrades,
-                saveData.bulletsCount,
-                saveData.playerStats,
-                saveData.credits
-            );
+                    saveData.ownedWeapons,
+                    saveData.weaponUpgrades,
+                    saveData.bulletsCount,
+                    saveData.playerStats,
+                    saveData.credits
+                );
+            
         }
     }
 

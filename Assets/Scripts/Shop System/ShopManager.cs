@@ -22,31 +22,11 @@ public class ShopManager : MonoBehaviour
 
         //TODO: remove this 
         //GameObject player = GameObject.FindWithTag("Player");
-        //playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
+        playerInventory = SaveManager.Singleton.playerInventoryHolder.Inventory;
     }
     private void Start()
     {
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player == null)
-        {
-            Debug.LogError("Player not found in scene!");
-            return;
-        }
-
-        var holder = SaveManager.Singleton.GetComponent<PlayerInventoryHolder>();
-        if (holder == null)
-        {
-            Debug.LogError("PlayerInventoryHolder not found!");
-            return;
-        }
-
-        if (holder.Inventory == null)
-        {
-            Debug.LogError("PlayerInventory is null!");
-            return;
-        }
-
-        playerInventory = holder.Inventory;
+        
         
         if(!GameStartType.IsNewGame)
         {

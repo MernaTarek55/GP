@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
     public void PlayNewGame()
     {
         GameStartType.IsNewGame = true;
+        SaveManager.Singleton.MakeGameReady();
         sceneLoader.LoadScene(gameSceneName);
     }
 
@@ -24,6 +25,7 @@ public class MenuManager : MonoBehaviour
 
         //added to test shop saving bug
         SaveManager.Singleton.LoadGame();
+        SaveManager.Singleton.MakeGameReady();
     }
 
     public void QuitGame()
