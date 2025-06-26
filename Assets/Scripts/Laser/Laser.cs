@@ -65,8 +65,11 @@ public class Laser : MonoBehaviour
         else
         {
             // Lerp the actual beam direction
+            //enemyGO.transform.LookAt(playerGO.transform);
+
             currentLaserDirection = Vector3.Lerp(currentLaserDirection, targetDirection, trackingSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
+            this.transform.parent.rotation = Quaternion.Lerp(this.transform.parent.rotation, targetRotation, trackingSpeed * Time.deltaTime);
         }
     }
 
