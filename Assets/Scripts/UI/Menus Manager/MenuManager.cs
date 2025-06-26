@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public static class GameStartType
 {
     public static bool IsNewGame = true;
@@ -8,20 +9,24 @@ public class MenuManager : MonoBehaviour
 {
     [SerializeField] private SettingsMenu settingsMenu;
     [SerializeField] private GameObject menuPanel;
-    [SerializeField] private SceneLoader sceneLoader; 
-    [SerializeField] private string gameSceneName = "Sprint4";
+    [SerializeField] private SceneLoader sceneLoader;
+    private int lastLvlIndex;
 
+    private void Start()
+    {
+        lastLvlIndex = SaveManager.Singleton.LastPlayedLevel;
+    }
     public void PlayNewGame()
     {
         GameStartType.IsNewGame = true;
         SaveManager.Singleton.MakeGameReady();
-        sceneLoader.LoadScene(gameSceneName);
+        sceneLoader.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 
     public void ContinueGame()
     {
         GameStartType.IsNewGame = false;
-        sceneLoader.LoadScene(gameSceneName);
+        sceneLoader.LoadScene(lastLvlIndex);
 
         //added to test shop saving bug
         SaveManager.Singleton.LoadGame();

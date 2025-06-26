@@ -6,6 +6,7 @@ public class InventorySaveData
 {
     public int credits;
     public float currentHealth = 100;
+    public int lastPlayedLevelIndex; // Added field
     public List<WeaponType> ownedWeapons = new List<WeaponType>();
     public Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades = new Dictionary<WeaponType, WeaponUpgradeState>();
     public Dictionary<WeaponType, float> bulletsCount = new Dictionary<WeaponType, float>();
