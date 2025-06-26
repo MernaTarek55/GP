@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    //this
     public InputActionAsset InputActions;
     public Camera mainCamera;
     public Image deadEyeCooldownImage;
