@@ -257,6 +257,7 @@ public class Pistol : Weapon
             bullet.transform.position = firePoint.position;
             bullet.transform.rotation = Quaternion.LookRotation(shootDirection); // make sure it's updated
             bullet.SetActive(true);
+            AudioManager.Instance.PlaySound(SoundType.Gun);
 
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
 

@@ -191,6 +191,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.Animations.Rigging;
 
 public class GrenadeLauncher : Weapon
 {
@@ -205,7 +206,7 @@ public class GrenadeLauncher : Weapon
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private AudioSource audioSource;
 
-    [SerializeField] private IKHandler ikHandler;
+
     [SerializeField] private Transform playerBody;
 
     [Header("UI")]
@@ -230,11 +231,16 @@ public class GrenadeLauncher : Weapon
     private Vector3 shootDirection;
     private PlayerInventoryHolder playerInventoryHolder;
     WeaponUpgradeState upgradeState ;
+    [Header("Rig")]
+    [SerializeField] private Transform Spher;
+    [SerializeField] private Rig rig;
+    [SerializeField] private float littleTimer = 0.0f;
+    [SerializeField] private float littleTimerMax = 1.0f;
     protected override void Awake()
     {
         base.Awake();
         player = GetComponentInParent<Player>();
-        playerInventoryHolder = player.GetComponentInParent<PlayerInventoryHolder>();
+        playerInventoryHolder = SaveManager.Singleton.playerInventoryHolder;
 
         
         if (weaponData == null)
@@ -242,7 +248,7 @@ public class GrenadeLauncher : Weapon
             Debug.LogError("WeaponData not assigned in Inspector.");
             return;
         }
-        
+        littleTimer = littleTimerMax;
         currentAmmo = weaponData.maxAmmo;
         Debug.Log($"Weapon Type: {WeaponType}");
     }
@@ -298,6 +304,14 @@ public class GrenadeLauncher : Weapon
                 player?.SetShooting(false); // ✅ END shooting flag
             }
         }
+        if (littleTimer > 0)
+        {
+            littleTimer -= Time.deltaTime;
+        }
+        else
+        {
+            rig.weight = 0;
+        }
     }
 
     private void ShowTrajectory(Vector2 screenPosition)
@@ -352,20 +366,17 @@ public class GrenadeLauncher : Weapon
             return;
 
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            targetPoint = hit.point;
-        }
-        else
-        {
-            targetPoint = ray.origin + ray.direction * 100f;
-        }
+      
 
-        Vector3 lookDirection = (targetPoint - playerBody.position);
-        lookDirection.y = 0f;
+       
+        targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
+        Spher.position = targetPoint;
+        rig.weight = 1;
+        littleTimer = littleTimerMax;
+        Vector3 lookDirection = targetPoint - playerBody.position;
+        lookDirection.y = 0f; // Keep only horizontal rotation
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
         playerBody.rotation = targetRotation;
-
         Shoot(targetPoint);
     }
 
@@ -380,20 +391,23 @@ public class GrenadeLauncher : Weapon
                 audioSource.PlayOneShot(reloadSound);
         }
     }
-
+    Vector3 targetForAnimations;
     public override void Shoot(Vector3 targetPoint)
     {
-        if (ikHandler != null)
-        {
-            ikHandler.TriggerShootIK();
-            StartCoroutine(WaitAndShootWhenIKReady());
-        }
+        targetForAnimations = targetPoint;
+        animator.SetBool("shoot", true);
+        
     }
+    public override void ShootFromAnimation()
+    {
+        base.ShootFromAnimation();
+        //if (currentAmmo <= 0 || isReloading) return;
 
+        StartCoroutine(WaitAndShootWhenIKReady());
+    }
     private IEnumerator WaitAndShootWhenIKReady()
     {
-        while (ikHandler.rig.weight < 0.8f)
-            yield return null;
+       
 
         if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
             yield break;
@@ -430,6 +444,7 @@ public class GrenadeLauncher : Weapon
             Debug.LogWarning(weaponData.damage * upgradeState.GetLevel(UpgradableStatType.Damage));
             bulletScript.SetDamage(weaponData.damage*upgradeState.GetLevel(UpgradableStatType.Damage));
         }
+        animator.SetBool("shoot", false);
     }
 
     private bool IsTouchOverUI(Vector2 screenPosition)
