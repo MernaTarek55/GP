@@ -66,6 +66,7 @@ public class Presentation : MonoBehaviour
 
     public void StartLerp(Transform destination)
     {
+        camera.rotation = destination.rotation;
         StartCoroutine(LerpToPosition(destination.position, duration));
     }
 
