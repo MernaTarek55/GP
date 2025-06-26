@@ -72,6 +72,7 @@ public class PressureSwitch : MonoBehaviour
         {
             case ButtonBehaviourTarget.Door:
                 currentDoor?.AddPressureSwitch(this);
+                AudioManager.Instance.PlaySound(SoundType.Door);
                 break;
             case ButtonBehaviourTarget.MovingPlatform:
                 if (movingPlatformScript != null)
