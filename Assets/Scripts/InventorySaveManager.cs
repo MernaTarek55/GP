@@ -15,19 +15,23 @@ public class InventorySaveManager
     private readonly Dictionary<PlayerSkillsStats, float> playerStats;
 
     private int credits;
+    private int lastPlayedLevelIndex;
 
     public InventorySaveManager(
         List<WeaponType> ownedWeapons,
         Dictionary<WeaponType, WeaponUpgradeState> weaponUpgrades,
         Dictionary<WeaponType, float> bulletsCount,
         Dictionary<PlayerSkillsStats, float> playerStats,
-        int credits)
+        int credits,
+        int lastPlayedLevelIndex
+    )
     {
         this.ownedWeapons = ownedWeapons;
         this.weaponUpgrades = weaponUpgrades;
         this.bulletsCount = bulletsCount;
         this.playerStats = playerStats;
         this.credits = credits;
+        this.lastPlayedLevelIndex = lastPlayedLevelIndex;
     }
 
     public void Save()
@@ -35,6 +39,7 @@ public class InventorySaveManager
         InventorySaveData saveData = new InventorySaveData
         {
             credits = credits,
+            lastPlayedLevelIndex = lastPlayedLevelIndex,
             ownedWeapons = ownedWeapons.ToList(),
             weaponUpgrades = new Dictionary<WeaponType, WeaponUpgradeState>(weaponUpgrades),
             bulletsCount = new Dictionary<WeaponType, float>(bulletsCount),

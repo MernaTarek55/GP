@@ -6,6 +6,6 @@ public class SceneResetter : MonoBehaviour
     public void ResetScene()
     {
         Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name);
+        SceneManager.LoadScene(currentScene.buildIndex);
     }
 }

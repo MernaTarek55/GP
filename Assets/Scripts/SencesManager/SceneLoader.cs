@@ -12,16 +12,16 @@ public class SceneLoader : MonoBehaviour
 
     [SerializeField] private float rotationSpeed = 200f; 
 
-    public void LoadScene(string sceneName)
+    public void LoadScene(int sceneIndx)
     {
-        StartCoroutine(LoadAsync(sceneName));
+        StartCoroutine(LoadAsync(sceneIndx));
     }
 
-    private IEnumerator LoadAsync(string sceneName)
+    private IEnumerator LoadAsync(int sceneIndx)
     {
         loadingScreen.SetActive(true);
 
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndx);
         operation.allowSceneActivation = false;
 
         while (!operation.isDone)
