@@ -43,6 +43,19 @@ public class Pistol : Weapon
     //Dictionary
     private readonly Dictionary<int, bool> touchStartedOverUI = new();
 
+
+    [SerializeField] private Animator anim;
+
+    public void SetShootAnimation(bool isShooting)
+    {
+        anim.SetBool("shoot", isShooting);
+    }
+
+    private void Start()
+    {
+        SetShootAnimation(true);
+    }
+
     protected override void Awake()
     {
         base.Awake();
