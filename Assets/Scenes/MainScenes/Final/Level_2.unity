@@ -16148,6 +16148,22 @@ PrefabInstance:
       propertyPath: 'targetsImages.Array.data[9]'
       value: 
       objectReference: {fileID: 154856481}
+    - target: {fileID: 3738652167031935434, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 808296054}
+    - target: {fileID: 3738652167031935434, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UseDeadeye
+      objectReference: {fileID: 0}
+    - target: {fileID: 4466593539436332948, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 808296054}
+    - target: {fileID: 4466593539436332948, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UseDeadeye
+      objectReference: {fileID: 0}
     - target: {fileID: 4691776738279339158, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
       propertyPath: DeadEyeBtn
       value: 
@@ -16288,6 +16304,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8065059637270415462, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
   m_PrefabInstance: {fileID: 808296033}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &808296054 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2680112332125674435, guid: 5c5123ef39fcb274ca9304768652842c, type: 3}
+  m_PrefabInstance: {fileID: 808296033}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808296034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7050a6a9a959d084bab973782e1f1a61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &812136408
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69727,7 +69754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1658865074961376153, guid: 9cd19053e9314db4cae9d3c970ca1882, type: 3}
       propertyPath: gameSceneName
-      value: Level 3
+      value: Level_3
       objectReference: {fileID: 0}
     - target: {fileID: 1658865074961376153, guid: 9cd19053e9314db4cae9d3c970ca1882, type: 3}
       propertyPath: memoriesArray.Array.size
