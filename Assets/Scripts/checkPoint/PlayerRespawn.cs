@@ -32,6 +32,7 @@ public class PlayerRespawn : MonoBehaviour
         player.healthComponent.RenewHealth();
         player.stateMachine.ChangeState(player.playerIdle);
         player.animator.SetTrigger("BackToIdle");
+
         player.ChangeMaterial(true);
     }
 

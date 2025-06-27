@@ -54,7 +54,7 @@ public class MemoryManager : MonoBehaviour
         Debug.Log("Total Scenes: " + SceneManager.sceneCountInBuildSettings);
 
         // If it's the last scene, loop back to the first one
-        if (nextIndex >= (SceneManager.sceneCountInBuildSettings-1))
+        if (nextIndex >= (SceneManager.sceneCountInBuildSettings))
         {
             Debug.Log("Reached the last scene, looping back to the first scene.");
             nextIndex = 0;
