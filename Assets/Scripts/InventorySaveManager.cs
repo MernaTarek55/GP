@@ -38,8 +38,8 @@ public class InventorySaveManager
     {
         InventorySaveData saveData = new InventorySaveData
         {
-            credits = credits,
-            lastPlayedLevelIndex = lastPlayedLevelIndex,
+            credits = this.credits,
+            lastPlayedLevelIndex = this.lastPlayedLevelIndex,
             ownedWeapons = ownedWeapons.ToList(),
             weaponUpgrades = new Dictionary<WeaponType, WeaponUpgradeState>(weaponUpgrades),
             bulletsCount = new Dictionary<WeaponType, float>(bulletsCount),
