@@ -8,7 +8,8 @@ public class SaveManager : MonoBehaviour
     InventorySaveManager saveManager;
     InventorySaveData saveData;
     [SerializeField] public PlayerInventoryHolder playerInventoryHolder;
-    public int LastPlayedLevel = 0;
+
+    private int lastPlayedLevel = 1;
 
     private void Awake()
     {
@@ -89,5 +90,11 @@ public class SaveManager : MonoBehaviour
     public void LoadGame()
     {
         saveData = saveManager.Load();
+    }
+
+    public int LastPlayedLevel
+    {
+        get { return lastPlayedLevel; }
+        set { lastPlayedLevel = value; }
     }
 }

@@ -20,7 +20,8 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator LoadAsync(int sceneIndx)
     {
         loadingScreen.SetActive(true);
-
+        if(sceneIndx != 0)
+        SaveManager.Singleton.LastPlayedLevel = sceneIndx;
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndx);
         operation.allowSceneActivation = false;
 
