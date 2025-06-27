@@ -20,7 +20,7 @@ public class PlayerSkillItem : ShopItem
             var skillComponent = player.GetComponent<InvisibilitySkill>();
             if (skillComponent != null)
             {
-                skillComponent.UpdateStatsFromInventory();
+                //skillComponent.UpdateStatsFromInventory();
             }
         }
     }

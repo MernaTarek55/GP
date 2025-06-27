@@ -9,8 +9,6 @@ public class InvisibilitySkill : MonoBehaviour
     public MeshRenderer[] Weaponrenderers;
     private Material[] materials;
 
-    private readonly float duration;
-    private float cooldownTime;
     public float invisibilityDuration = 30f;
     public float cooldownDuration = 10f;
 
@@ -40,7 +38,7 @@ public class InvisibilitySkill : MonoBehaviour
 
     private void Start()
     {
-        var holder = SaveManager.Singleton.GetComponent<PlayerInventoryHolder>();
+        var holder = SaveManager.Singleton.playerInventoryHolder;
         if (holder == null)
         {
             Debug.LogError("PlayerInventoryHolder not found on player!");
@@ -75,6 +73,7 @@ public class InvisibilitySkill : MonoBehaviour
 
         // Start updating the image fill during the skill duration
         yield return StartCoroutine(UpdateInvisibilityFill());
+        yield return new WaitForSeconds(6);
 
         yield return Fade(1f, 0f);
 
