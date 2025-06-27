@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class MemoryPick : PickupBase
 {
@@ -26,6 +27,7 @@ public class MemoryPick : PickupBase
             if (MemoryManager.Instance.PickingUpMemory(gameObject))
             {
                 ShowComic();
+                gameObject.GetComponentInChildren<ParticleSystem>().Stop();
                 gameObject.GetComponent<Rigidbody>().useGravity = false; // Disable gravity for the memory object
                 gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
                 gameObject.GetComponent<Collider>().isTrigger = true; // Disable collider to prevent further interactions
