@@ -40,7 +40,7 @@ public class DeadeyeSkill : MonoBehaviour
         playerInventory = player.GetComponent<PlayerInventoryHolder>()?.Inventory;
 
         cooldownTime = 1f;
-        duration = 3f;
+        duration = 20f;
         lastUsedTime = Time.time - cooldownTime;
 
         // initializers 
@@ -133,7 +133,7 @@ public class DeadeyeSkill : MonoBehaviour
         }
     }
 
-    private void AddTapPosition(Vector2 screenPosition)
+    public void AddTapPosition(Vector2 screenPosition)
     {
         if (markedTargets.Count >= targetsImages.Length)
             return;
