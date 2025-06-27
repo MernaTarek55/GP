@@ -107,7 +107,7 @@ public class PlayerInventory
             return value;
         }
         Debug.LogWarning($"Player stat {stat} not found, returning 0.");
-        return 30f;
+        return 10f;
     }
     public void SetPlayerStat(PlayerSkillsStats stat, float value)
     {
