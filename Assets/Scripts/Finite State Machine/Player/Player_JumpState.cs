@@ -17,8 +17,8 @@ public class Player_JumpState : EntityState
             player.rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
             player.hasJumped = true;
         }
-
         player.animator.SetBool("IsJumping", true); // Use if needed to control transitions
+        player.dust.Play();
     }
 
     public override void Update()

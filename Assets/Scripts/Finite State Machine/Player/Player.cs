@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public Quaternion startRot;
     [HideInInspector] public Quaternion targetRot;
     [HideInInspector] public bool rotating = false;
-
+    public ParticleSystem dust;
     private void Awake()
     {
         animator = GetComponent<Animator>();
