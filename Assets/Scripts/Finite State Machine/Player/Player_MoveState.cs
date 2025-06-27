@@ -84,7 +84,7 @@ public class Player_MoveState : Player_GroundedState
             float t = Mathf.Clamp01(player.rotateTimer / player.rotateDuration);
             float curvedT = player.rotationCurve.Evaluate(t);
             player.transform.rotation = Quaternion.Slerp(player.startRot, player.targetRot, curvedT);
-
+            if(player.IsGrounded) player.dust.Play();
             if (t >= 1f)
                 player.rotating = false;
         }
