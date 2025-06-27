@@ -20,25 +20,35 @@ public class Laser : MonoBehaviour
     private Vector3 targetPosition;
     private bool hasTarget = false;
 
-    private bool hasDoneDamage; // Nano: bool to check if the same laser causes damage twice
+    private bool hasDoneDamage;
     private bool activated = false;
     private LineRenderer lineRenderer;
-    private const float farDistance = 1000f;
+
+    // 🔧 Increased distance to make beam longer
+    private const float farDistance = 10000f;
+
     private List<Vector3> bouncePositions;
     private LaserSensor prevStruckSensor = null;
     private IInput input;
     private float currentLifetime;
 
-    private float laserDamage = 20; // Nano: to set the damage of the laser
+    private float laserDamage = 20;
     private Vector3 currentLaserDirection;
 
+    public Transform target;
+
+    private void Start()
+    {
+        if (target != null)
+            SetTargetPosition(target.position);
+    }
 
     void Awake()
     {
         InitializeLineRenderer();
         InitializeInputSystem();
-        activated = inputGO == null; // Activate if no input is assigned
 
+        activated = inputGO == null || (input != null && input.IsTriggered);
         hasDoneDamage = false;
 
         if (IsNotTurret)
@@ -47,36 +57,18 @@ public class Laser : MonoBehaviour
         }
 
         currentLaserDirection = transform.forward;
-
-    }
-
-    private void UpdateLaserDirection()
-    {
-        if (!trackPlayer || !hasTarget) return;
-
-        Vector3 targetDirection = (targetPosition - transform.position).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-
-        if (IsNotTurret)
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
-
-        }
-        else
-        {
-            // Lerp the actual beam direction
-            currentLaserDirection = Vector3.Lerp(currentLaserDirection, targetDirection, trackingSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
-        }
     }
 
     private void InitializeLineRenderer()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.enabled = IsNotTurret;
+        lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
-        //lineRenderer.SetPosition(0, new Vector3(0, 0, 0));
-        //lineRenderer.SetPosition(1, new Vector3(0, 0, 0.1f));
+
+        // 🔧 Make laser thicker
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+
         if (laserRendererSettings == null)
         {
             Debug.LogError("LaserRendererSettings is not assigned!", this);
@@ -107,11 +99,10 @@ public class Laser : MonoBehaviour
         {
             currentLifetime = lifetime;
             activated = true;
-            ClearLaser(); // Reset laser state when re-enabled
+            ClearLaser();
         }
     }
 
-    //void FixedUpdate()
     void Update()
     {
         if (IsNotTurret)
@@ -124,13 +115,14 @@ public class Laser : MonoBehaviour
             ClearLaser();
             return;
         }
+
         UpdateLaserDirection();
         UpdateLaserBeam();
     }
 
     private void UpdateLifetime()
     {
-        currentLifetime -= Time.fixedDeltaTime;
+        currentLifetime -= Time.deltaTime;
         if (currentLifetime <= 0f)
         {
             ReturnToPool();
@@ -149,7 +141,6 @@ public class Laser : MonoBehaviour
         }
     }
 
-    // Updated methods for Vector3 targeting
     public void SetTargetPosition(Vector3 position)
     {
         targetPosition = position;
@@ -157,7 +148,6 @@ public class Laser : MonoBehaviour
         trackPlayer = true;
     }
 
-    // Legacy method for Transform - converts to Vector3
     public void SetTarget(Transform target)
     {
         if (target != null)
@@ -174,6 +164,24 @@ public class Laser : MonoBehaviour
     {
         hasTarget = false;
         trackPlayer = false;
+    }
+
+    private void UpdateLaserDirection()
+    {
+        if (!trackPlayer || !hasTarget) return;
+
+        Vector3 targetDirection = (this.transform.forward - transform.position).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+
+        if (IsNotTurret)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
+        }
+        else
+        {
+            currentLaserDirection = Vector3.Lerp(currentLaserDirection, targetDirection, trackingSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
+        }
     }
 
     private void ClearLaser()
@@ -196,19 +204,16 @@ public class Laser : MonoBehaviour
     {
         if (lineRenderer == null) return;
 
+        // 🔄 Use parent's forward direction
+        Vector3 shootDir = transform.forward;
+
+
         bouncePositions = new List<Vector3>
         {
-            transform.position + transform.forward * 0.2501f
+            transform.position + shootDir * 0.2501f
         };
 
-        if (IsNotTurret)
-        {
-            CastBeam(bouncePositions[0], transform.forward);
-        }
-        else
-        {
-            CastBeam(bouncePositions[0], currentLaserDirection);
-        }
+        CastBeam(bouncePositions[0], shootDir);
 
         if (bouncePositions.Count > 0)
         {
@@ -219,7 +224,7 @@ public class Laser : MonoBehaviour
 
     public void CastBeam(Vector3 origin, Vector3 direction)
     {
-        if (bouncePositions == null || bouncePositions.Count > maxBounces)
+        if (bouncePositions.Count - 1 >= maxBounces)
         {
             return;
         }
@@ -258,30 +263,20 @@ public class Laser : MonoBehaviour
             var currentSensor = hitInfo.collider.GetComponent<LaserSensor>();
             UpdateSensorState(currentSensor);
 
-            // For bullet-like behavior, check if we hit something that should stop the laser
             IDamageable damagable = hitInfo.collider.GetComponent<IDamageable>();
+            bool isHittingSelf = hitInfo.collider.gameObject.tag == gameObject.tag;
 
-            if (damagable != null)
+            if (!IsNotTurret && !isHittingSelf)
             {
-                bool isHittingSelf = hitInfo.collider.gameObject.tag == gameObject.tag;
-
-                if (!IsNotTurret && !isHittingSelf)
-                {
-                    // It's NOT a turret laser, damage any target except itself
-                    damagable.TakeDamage(laserDamage);
-                    currentLifetime = 0;
-
-                }
-                else if (IsNotTurret && !hasDoneDamage && !isHittingSelf)
-                {
-                    // It's a turret laser, damage any target except itself (and only once)
-                    damagable.TakeDamage(laserDamage);
-                    currentLifetime = 0;
-
-                    hasDoneDamage = true;
-                }
+                damagable?.TakeDamage(laserDamage);
+                currentLifetime = 0;
             }
-
+            else if (IsNotTurret && !hasDoneDamage && !isHittingSelf)
+            {
+                damagable?.TakeDamage(laserDamage);
+                currentLifetime = 0;
+                hasDoneDamage = true;
+            }
         }
     }
 
@@ -333,19 +328,15 @@ public class Laser : MonoBehaviour
         }
     }
 
-    // Call this when spawning the laser to initialize it
     public void InitializeLaser(Vector3 position, Quaternion rotation, bool isFromPool = true)
     {
         transform.position = position;
         transform.rotation = rotation;
         gameObject.SetActive(true);
         currentLifetime = lifetime;
-
-        // Reset any previous state
         ClearLaser();
     }
 
-    // Nano: call this function to set damage
     public void SetLaserDamage(float damage)
     {
         laserDamage = damage;
