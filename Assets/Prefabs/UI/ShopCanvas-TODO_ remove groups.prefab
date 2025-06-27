@@ -165,9 +165,9 @@ RectTransform:
   - {fileID: 1317082221767161796}
   m_Father: {fileID: 3849186510829799764}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1734.4962, y: 0}
   m_SizeDelta: {x: 480, y: 175}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &5690373569775222956
@@ -962,7 +962,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8633823072297586970}
   - component: {fileID: 6027773436498446889}
-  - component: {fileID: 9128341137731451240}
   m_Layer: 0
   m_Name: TabPanel_Skills
   m_TagString: Untagged
@@ -1005,30 +1004,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &9128341137731451240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4661736819948286686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 300, y: 300}
-  m_Spacing: {x: 500, y: 280}
-  m_Constraint: 1
-  m_ConstraintCount: 2
 --- !u!1 &5333160148156379136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,9 +1411,9 @@ RectTransform:
   - {fileID: 3578172910136511282}
   m_Father: {fileID: 3849186510829799764}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 418.1654, y: 0}
   m_SizeDelta: {x: 480, y: 175}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6543521271968759830
@@ -1824,7 +1799,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3849186510829799764}
-  - component: {fileID: 4259938875023847254}
   m_Layer: 0
   m_Name: TabButtonsPanel
   m_TagString: Untagged
@@ -1853,32 +1827,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 2632.6616, y: 175}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &4259938875023847254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8684040442735017063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!1001 &2931728009205749279
 PrefabInstance:
   m_ObjectHideFlags: 0
