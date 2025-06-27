@@ -21,10 +21,7 @@ public abstract class Weapon : MonoBehaviour
     public abstract void Reload();
 
 
-    public virtual void ShootFromAnimation()
-    {
-        Debug.Log($"{WeaponType} shoot triggered from animation.");
-    }
+
     public float GetFireRate()
     {
         return weaponData.fireRate;
