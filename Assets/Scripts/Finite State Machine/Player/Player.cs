@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    //this
     public InputActionAsset InputActions;
     public Camera mainCamera;
     public Image deadEyeCooldownImage;
@@ -188,4 +189,13 @@ public class Player : MonoBehaviour
     {
         healthComponent.RenewHealth();
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("FallOff"))
+        {
+            stateMachine.ChangeState(playerDeath);
+        }
+    }
+
 }
