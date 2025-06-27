@@ -36,6 +36,19 @@ public class AudioManager : MonoBehaviour
 
     }
 
+    public void PlaySoundLoop(SoundType soundType)
+    {
+        AudioClip clip = soundLibrary.GetRandomClip(soundType);
+        if (clip != null)
+        {
+            soundEffectSource.clip = clip;
+            soundEffectSource.loop = true;
+            soundEffectSource.volume = soundEffectVolume;
+            soundEffectSource.Play();
+        }
+
+    }
+
 
     public void PlayMusic(SoundType soundType)
     {
@@ -53,6 +66,11 @@ public class AudioManager : MonoBehaviour
     public void StopMusic()
     {
         musicSource.Stop();
+    }
+
+    public void StopSFX()
+    {
+        soundEffectSource.Stop();
     }
 
     public void SetMusicVolume(float volume)

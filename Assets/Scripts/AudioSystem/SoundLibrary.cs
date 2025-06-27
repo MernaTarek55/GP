@@ -4,7 +4,8 @@ public enum SoundType
     BG,
     Laser,
     Gun,
-    Door
+    Door,
+    Pickup
 }
 [CreateAssetMenu(fileName = "SoundLibrary", menuName = "SoundLibrary")]
 
@@ -15,7 +16,9 @@ public class SoundLibrary : ScriptableObject
     public class Sound
     {
         public SoundType soundType;
+
         public AudioClip[] clips;
+
     }
 
     public Sound[] sounds;
@@ -31,4 +34,5 @@ public class SoundLibrary : ScriptableObject
         }
         return null;
     }
+
 }

@@ -10,7 +10,7 @@ public class PressureSwitch : MonoBehaviour
 
     public enum ButtonBehaviourTarget
     {
-        Door ,
+        Door,
         MovingPlatform
     }
 
@@ -26,8 +26,8 @@ public class PressureSwitch : MonoBehaviour
 
     [Header("Optional Moving Platform Button Activate")]
     //[SerializeField] private GameObject movingPlatform;
-    [SerializeField]private OptimizedMovingPlatform movingPlatformScript;
-    
+    [SerializeField] private OptimizedMovingPlatform movingPlatformScript;
+
     private void OnTriggerEnter(Collider other)
     {
         animator.SetBool("Down", true);
@@ -72,7 +72,7 @@ public class PressureSwitch : MonoBehaviour
         {
             case ButtonBehaviourTarget.Door:
                 currentDoor?.AddPressureSwitch(this);
-                AudioManager.Instance.PlaySound(SoundType.Door);
+                //AudioManager.Instance.PlaySound(SoundType.Door);
                 break;
             case ButtonBehaviourTarget.MovingPlatform:
                 if (movingPlatformScript != null)
@@ -87,11 +87,12 @@ public class PressureSwitch : MonoBehaviour
         {
             case ButtonBehaviourTarget.Door:
                 currentDoor?.RemovePressureSwitch(this);
+                //AudioManager.Instance.StopSFX();
                 break;
-            //case ButtonBehaviourTarget.MovingPlatform:
-            //    if (movingPlatformScript != null)
-            //        movingPlatformScript.enabled = false;
-            //    break;
+                //case ButtonBehaviourTarget.MovingPlatform:
+                //    if (movingPlatformScript != null)
+                //        movingPlatformScript.enabled = false;
+                //    break;
         }
     }
 }

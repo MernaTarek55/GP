@@ -31,6 +31,7 @@ public class MemoryPick : PickupBase
                 gameObject.GetComponent<Rigidbody>().useGravity = false; // Disable gravity for the memory object
                 gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
                 gameObject.GetComponent<Collider>().isTrigger = true; // Disable collider to prevent further interactions
+                AudioManager.Instance.PlaySound(SoundType.Pickup);
             }
         }
     }
