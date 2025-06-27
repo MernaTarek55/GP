@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class PlayerRespawn : MonoBehaviour
 {
@@ -25,17 +24,10 @@ public class PlayerRespawn : MonoBehaviour
         Debug.Log("Checkpoint updated to: " + checkpointPosition);
     }
 
-    IEnumerator Respawn()
+    public void Respawn()
     {
-        yield return new WaitForSeconds(2.0f);
         transform.position = checkpointPosition;
         player.healthComponent.RenewHealth();
         player.stateMachine.ChangeState(player.playerIdle);
-        player.ChangeMaterial(true);
-    }
-
-    public void activateRespawn()
-    {
-        StartCoroutine(Respawn());
     }
 }

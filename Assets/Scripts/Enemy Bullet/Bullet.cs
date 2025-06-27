@@ -4,7 +4,7 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 20f;
     public float lifeTime =10f;
-    float damage = 100;
+    float damage = 10;
     private void OnEnable()
     {
         Invoke(nameof(Disable), lifeTime);

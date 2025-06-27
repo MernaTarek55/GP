@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -21,11 +20,7 @@ public class Pistol : Weapon
     [SerializeField] private AudioClip shootSound;
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private AudioSource audioSource;
-    [Header("Rig")]
-    [SerializeField] private Transform Spher;
-    [SerializeField] private Rig rig;
-    [SerializeField] private float littleTimer = 0.0f;
-    [SerializeField] private float littleTimerMax = 1.0f;
+
 
     private float reloadTimer;
     private float fireCooldown;
@@ -46,7 +41,7 @@ public class Pistol : Weapon
     protected override void Awake()
     {
         base.Awake();
-        
+        player = GetComponentInParent<Player>();
 
         if (weaponData == null)
         {
@@ -55,8 +50,6 @@ public class Pistol : Weapon
         }
         currentAmmo = weaponData.maxAmmo;
         //Debug.Log($"Weapon Type: {WeaponType}");
-
-        littleTimer = littleTimerMax;
     }
 
     private void Update()
@@ -111,14 +104,6 @@ public class Pistol : Weapon
                 player?.SetShooting(false); // ✅ END shooting flag
             }
         }
-
-        if (littleTimer > 0)
-        {
-            littleTimer -= Time.deltaTime;
-        } else
-        {
-            rig.weight = 0;
-        }
     }
 
     private void ShootAtTouch(Vector2 screenPosition)
@@ -127,21 +112,16 @@ public class Pistol : Weapon
         {
             return;
         }
-       
+
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
         Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit) ? hit.point : ray.origin + (ray.direction * 100f);
-        Spher.position = targetPoint;
-        rig.weight = 1;
-        littleTimer = littleTimerMax;
         Vector3 lookDirection = targetPoint - playerBody.position;
         lookDirection.y = 0f; // Keep only horizontal rotation
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
         playerBody.rotation = targetRotation;
         Shoot(targetPoint);
-       // rig.weight = 0;
     }
-    Vector3 targetForAnimations;
     private bool IsTouchOverUI(Vector2 screenPosition)
     {
         PointerEventData eventData = new PointerEventData(eventSystem);
@@ -159,23 +139,14 @@ public class Pistol : Weapon
 
         return false;
     }
-    public override void ShootFromAnimation()
-    {
-        base.ShootFromAnimation();
-        //if (currentAmmo <= 0 || isReloading) return;
-
-        StartCoroutine(WaitAndShootWhenIKReady(targetForAnimations));
-    }
     public override void Shoot(Vector3 targetPoint) // add parameter the target you want to shoot
     {
         //if (ikHandler != null)
         //{
         //    ikHandler.TriggerShootIK();
         //}
-        targetForAnimations = targetPoint;
-        animator.SetBool("shoot" , true);
-        
-        //StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
+        player.gameObject.GetComponent<Animator>().SetTrigger("Shoot");
+        StartCoroutine(WaitAndShootWhenIKReady(targetPoint));
         deadEyeBool = false;
         //player.gameObject.GetComponent<Animator>().ResetTrigger("Shoot");
         //if (isReloading || currentAmmo <= 0 || fireCooldown > 0f)
@@ -198,10 +169,7 @@ public class Pistol : Weapon
         //if (audioSource && shootSound)
         //    audioSource.PlayOneShot(shootSound);
     }
-    public void waitAndShoot()
-    {
-        StartCoroutine(WaitAndShootWhenIKReady(targetForAnimations));
-    }
+
     private IEnumerator WaitAndShootWhenIKReady(Vector3 targetPoint)
     {
 
@@ -257,7 +225,6 @@ public class Pistol : Weapon
             bullet.transform.position = firePoint.position;
             bullet.transform.rotation = Quaternion.LookRotation(shootDirection); // make sure it's updated
             bullet.SetActive(true);
-            AudioManager.Instance.PlaySound(SoundType.Gun);
 
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
@@ -287,8 +254,7 @@ public class Pistol : Weapon
         {
             audioSource.PlayOneShot(shootSound);
         }
-        animator.SetBool("shoot", false);
-        //rig.weight = 0;
+
     }
 
 
@@ -445,5 +411,4 @@ public class Pistol : Weapon
 
         }
     }
-    
 }

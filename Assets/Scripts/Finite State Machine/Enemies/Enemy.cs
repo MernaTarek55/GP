@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
@@ -15,15 +14,6 @@ public class Enemy : MonoBehaviour
     [Header("Enemy Components")]
     [SerializeField] private GameObject firePos;
     public ParticleSystem particleEffect;
-    public Material dissolveMaterial;
-    [SerializeField] private float dissolveSpeed = 0.5f;
-    [SerializeField] private MeshRenderer renderer;
-    [SerializeField] private MeshRenderer[] rendererList;
-    [SerializeField] private SkinnedMeshRenderer skinRenderer;
-    ParticleSystem particleSystemComponent;
-
-
-
 
     #region Enemy Drops
     [Header("Drops")]
@@ -45,6 +35,7 @@ public class Enemy : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         healthComponent = GetComponent<HealthComponent>();
+
         enemyStateMachine = new StateMachine();
         enemyIdleState = new Enemy_IdleState(enemyStateMachine, "Enemy Idle", enemyData, gameObject, playerGO);
         enemyAttackState = new Enemy_AttackState(enemyStateMachine, "Enemy Attack", enemyData, gameObject, playerGO);
@@ -79,7 +70,6 @@ public class Enemy : MonoBehaviour
 
         enemyStateMachine.currentState.Update();
         enemyStateMachine.currentState.CheckStateTransitions(distance);
-
     }
 
     private void HandleDeath()
@@ -129,45 +119,5 @@ public class Enemy : MonoBehaviour
         dropForce = this.dropForce;
 
         Debug.LogError(drop + " " + dropChance + " " + minDrops + " " + maxDrops + " " + dropForce);
-    }
-
-    public void PlayDeathEffect()
-    {
-       
-            if (particleEffect != null)
-            {
-
-                Instantiate(particleEffect, this.transform.position, Quaternion.identity);
-            }
-    }
-
-    public void ChangeEnemyMaterial()
-    {
-        if (skinRenderer != null)
-            skinRenderer.material = dissolveMaterial;
-        else if (renderer != null)
-            renderer.material = dissolveMaterial;
-        else if (rendererList.Length > 0)
-        {
-            foreach (MeshRenderer render in rendererList)
-            {
-                render.material = dissolveMaterial;
-            }
-        }
-        StartCoroutine(EnemyDissolve());
-    }
-
-    public IEnumerator EnemyDissolve()
-    {
-        float dissolve = 0f;
-        dissolveMaterial.SetFloat("_Dissolve", dissolve);
-
-        while (dissolve < 100f)
-        {
-            dissolve += Time.deltaTime * dissolveSpeed;
-            dissolveMaterial.SetFloat("_Dissolve", dissolve);
-            yield return null; // wait for the next frame
-        }
-        dissolveMaterial.SetFloat("_Dissolve", 0f);
     }
 }

@@ -22,7 +22,7 @@ public class Laser : MonoBehaviour
 
     private bool hasDoneDamage; // Nano: bool to check if the same laser causes damage twice
     private bool activated = false;
-    [SerializeField] private LineRenderer lineRenderer;
+    private LineRenderer lineRenderer;
     private const float farDistance = 1000f;
     private List<Vector3> bouncePositions;
     private LaserSensor prevStruckSensor = null;
@@ -45,7 +45,7 @@ public class Laser : MonoBehaviour
         {
             currentLifetime = lifetime;
         }
-        //lineRenderer.GetComponent<LineRenderer>();
+
         currentLaserDirection = transform.forward;
 
     }
@@ -65,17 +65,14 @@ public class Laser : MonoBehaviour
         else
         {
             // Lerp the actual beam direction
-            //enemyGO.transform.LookAt(playerGO.transform);
-
             currentLaserDirection = Vector3.Lerp(currentLaserDirection, targetDirection, trackingSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, trackingSpeed * Time.deltaTime);
-            this.transform.parent.rotation = Quaternion.Lerp(this.transform.parent.rotation, targetRotation, trackingSpeed * Time.deltaTime);
         }
     }
 
     private void InitializeLineRenderer()
     {
-        //lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.enabled = IsNotTurret;
         lineRenderer.positionCount = 2;
         //lineRenderer.SetPosition(0, new Vector3(0, 0, 0));
@@ -272,7 +269,6 @@ public class Laser : MonoBehaviour
                 {
                     // It's NOT a turret laser, damage any target except itself
                     damagable.TakeDamage(laserDamage);
-                    Debug.Log("Lase");
                     currentLifetime = 0;
 
                 }

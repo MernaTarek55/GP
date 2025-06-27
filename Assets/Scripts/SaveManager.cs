@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -7,8 +7,7 @@ public class SaveManager : MonoBehaviour
     PlayerInventory playerInventory;
     InventorySaveManager saveManager;
     InventorySaveData saveData;
-    [SerializeField] public PlayerInventoryHolder playerInventoryHolder;
-    public int LastPlayedLevel = 0;
+    [SerializeField] PlayerInventoryHolder playerInventoryHolder;
 
     private void Awake()
     {
@@ -28,42 +27,32 @@ public class SaveManager : MonoBehaviour
     {
         playerInventory = playerInventoryHolder.Inventory;
         saveData = playerInventory.inventorySaveData;
-        
-    }
-    public void MakeGameReady()
-    {
         if (!GameStartType.IsNewGame)
         {
-            saveManager = new InventorySaveManager(
-                saveData.ownedWeapons,
-                saveData.weaponUpgrades,
-                saveData.bulletsCount,
-                saveData.playerStats,
-                saveData.credits,
-                saveData.lastPlayedLevelIndex
-            );
+            saveManager = new InventorySaveManager(saveData.ownedWeapons, saveData.weaponUpgrades, saveData.bulletsCount, saveData.playerStats, saveData.credits);
+
             LoadGame();
-            if (saveData != null)
+            if (saveData == null)
+                Debug.Log("No save data found, initializing new inventory.");
+            else
             {
                 playerInventory.Credits = saveData.credits;
-                LastPlayedLevel = saveData.lastPlayedLevelIndex;
+                //saveData.ownedWeapons.Clear();
+                //foreach (var w in data.ownedWeapons) saveData.ownedWeapons.Add(w);
+                //foreach (var kv in data.weaponUpgrades) saveData.weaponUpgrades[kv.Key] = kv.Value;
+                //foreach (var kv in data.bulletsCount) saveData.bulletsCount[kv.Key] = kv.Value;
+                //foreach (var kv in data.playerStats) saveData.playerStats[kv.Key] = kv.Value;
             }
         }
         else
         {
-            Debug.Log("why");
-            saveData = new InventorySaveData();
-            saveData.lastPlayedLevelIndex = LastPlayedLevel;
-            playerInventory.inventorySaveData = saveData;
             saveManager = new InventorySaveManager(
                 saveData.ownedWeapons,
                 saveData.weaponUpgrades,
                 saveData.bulletsCount,
                 saveData.playerStats,
-                saveData.credits,
-                saveData.lastPlayedLevelIndex
+                saveData.credits
             );
-            
         }
     }
 
@@ -75,15 +64,7 @@ public class SaveManager : MonoBehaviour
     }
     public void SaveGame()
     {
-        saveData.lastPlayedLevelIndex = LastPlayedLevel;
-        saveManager = new InventorySaveManager(
-            saveData.ownedWeapons,
-            saveData.weaponUpgrades,
-            saveData.bulletsCount,
-            saveData.playerStats,
-            saveData.credits,
-            saveData.lastPlayedLevelIndex
-        );
+        saveManager = new InventorySaveManager(saveData.ownedWeapons, saveData.weaponUpgrades, saveData.bulletsCount, saveData.playerStats, saveData.credits);
         saveManager.Save();
     }
     public void LoadGame()

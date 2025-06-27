@@ -1,50 +1,62 @@
+
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MemoryManager : MonoBehaviour
 {
     public static MemoryManager Instance;
     [SerializeField] private GameObject[] memoriesArray;
-    private int currentIndex = 0;
+    private int Currentindex = 0;
     private bool hasStartedLoading = false;
     [SerializeField] private SceneLoader sceneLoader;
-
+    [SerializeField] private string gameSceneName = "Real Level 2";
+    [SerializeField] private GameObject endGamePanel;
     private void Awake()
     {
         Instance = this;
     }
 
-    public bool PickingUpMemory(GameObject memoryObject)
+    public bool PickingUpMemory(GameObject memoryObjects)
     {
-        if (currentIndex >= memoriesArray.Length)
+        if (Currentindex >= memoriesArray.Length)
         {
             return false;
         }
 
-        GameObject expectedMemory = memoriesArray[currentIndex];
+        GameObject expectedMemory = memoriesArray[Currentindex];
 
-        if (memoryObject.transform == expectedMemory.transform ||
-            memoryObject.transform.IsChildOf(expectedMemory.transform))
+        if (memoryObjects.transform == expectedMemory.transform ||
+            memoryObjects.transform.IsChildOf(expectedMemory.transform))
         {
-            Debug.Log($"Correct memory picked. Index is now: {currentIndex}");
-            currentIndex++;
+            Debug.Log("Correct memory picked. Index is now: {currentMemoryIndex}");
+            Currentindex++;
 
-            if (currentIndex == memoriesArray.Length)
+            if (Currentindex == memoriesArray.Length)
             {
                 Debug.Log("All memories are picked");
-                StartCoroutine(WaitAndLoadNextScene());
+                AllMemoriesPicked();
             }
 
             return true;
         }
+
         return false;
     }
 
-    IEnumerator WaitAndLoadNextScene()
+    private void AllMemoriesPicked()
     {
-        yield return new WaitForSecondsRealtime(5f);
-        Time.timeScale = 1;
-        sceneLoader.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Debug.Log("All memories are picked");
+        endGamePanel.SetActive(true);
+        hasStartedLoading = true;
+        StartCoroutine(WaitAndLoadScene());
+        Time.timeScale = 0; 
     }
+
+    IEnumerator WaitAndLoadScene()
+    {
+        yield return new WaitForSecondsRealtime(15f); 
+        Time.timeScale = 1; 
+        sceneLoader.LoadScene(gameSceneName);
+    }
+
 }

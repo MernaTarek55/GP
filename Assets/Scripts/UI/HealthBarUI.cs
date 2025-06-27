@@ -4,21 +4,22 @@ using UnityEngine.UI;
 
 public class HealthBarUI : MonoBehaviour
 {
+    [SerializeField] private PlayerInventoryHolder playerInventoryHolder;
     [SerializeField] private Image fillImage;
     [SerializeField] private TextMeshProUGUI healthText;
-    PlayerInventory inventory;
+
 
     
 
     private void Start()
     {
-        inventory = SaveManager.Singleton.playerInventoryHolder.Inventory;
-        inventory.OnHealthChanged += UpdateHealthUI;
+        if (playerInventoryHolder == null) playerInventoryHolder = FindAnyObjectByType<PlayerInventoryHolder>();
+        playerInventoryHolder.Inventory.OnHealthChanged += UpdateHealthUI;
     }
 
     private void OnDisable()
     {
-        inventory.OnHealthChanged -= UpdateHealthUI;
+        playerInventoryHolder.Inventory.OnHealthChanged -= UpdateHealthUI;
     }
 
     private void UpdateHealthUI(float normalizedHealth)

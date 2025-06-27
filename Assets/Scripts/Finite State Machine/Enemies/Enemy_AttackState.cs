@@ -26,6 +26,7 @@ public class Enemy_AttackState : EntityState
 
     private ParticleSystem enemyPS;  // particle system for enemy ball explosion
 
+    private MeshRenderer enemyMR;  // to disable enemy ball renderer when it explodes
 
     private NavMeshAgent enemyAgent; // to let enemy patrol and chase player
 
@@ -181,7 +182,7 @@ public class Enemy_AttackState : EntityState
             animator.SetBool("IsIdle", true);
 
 
-            enemyGO.transform.LookAt(playerGO.transform);
+
             ShootLava();
 
         }
@@ -322,7 +323,9 @@ public class Enemy_AttackState : EntityState
 
         {
 
-          
+            if (entityGO.TryGetComponent(out MeshRenderer mr)) enemyMR = mr;
+
+            else Debug.Log("Mesh Renderer not found");
 
             if (entityGO.TryGetComponent(out Enemy enemy)) this.enemy = enemy;
 
@@ -356,7 +359,63 @@ public class Enemy_AttackState : EntityState
 
 
 
+    //protected override void UpdateTurret()
 
+    //{
+
+    //    Debug.Log("Turret Attack");
+
+    //    if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+
+    //    {
+
+    //        Debug.Log("Player is invisible");
+
+    //        stateMachine.ChangeState(new Enemy_IdleState(stateMachine, "Idle", enemyData, entityGO));
+
+    //        return;
+
+    //    }
+
+
+
+    //    RotateTowardPlayer();
+
+    //    Shoot();
+
+    //}
+
+
+
+    //protected override void UpdateBallDroid()
+
+    //{
+
+    //    Debug.Log("BallDroid Attack");
+
+    //    Debug.Log(playerGO.GetComponent<InvisibilitySkill>().isInvisible);
+
+    //    if (playerGO.GetComponent<InvisibilitySkill>().isInvisible)
+
+    //    {
+
+    //        Debug.Log("Player is invisible, ball droid does nothing.");
+
+    //        return;
+
+    //    }
+
+    //    if (!hasExploded)
+
+    //    {
+
+    //        ExplodingBall();
+
+    //    }
+
+
+
+    //}
 
 
 
@@ -364,13 +423,13 @@ public class Enemy_AttackState : EntityState
 
     {
 
-        //enemy.particleEffect.Play();
+        enemy.particleEffect.Play();
 
 
 
-        //enemyMR.enabled = false;
+        enemyMR.enabled = false;
 
-        //sphereCollider.enabled = false;
+        sphereCollider.enabled = false;
 
         enemy.Die();
 
@@ -529,6 +588,9 @@ public class Enemy_AttackState : EntityState
             return;
 
 
+
+
+
         // Check if facing player (relax angle check slightly)
 
         Vector3 directionToPlayer = (playerGO.transform.position - enemyGO.transform.position).normalized;
@@ -543,7 +605,7 @@ public class Enemy_AttackState : EntityState
 
 
 
-        // Get laser from pool
+        // Get bullet from pool
 
         if (PoolManager.Instance == null)
 
@@ -557,10 +619,9 @@ public class Enemy_AttackState : EntityState
 
 
 
-        GameObject laser = PoolManager.Instance.GetPrefabByTag(PoolType.Laser);
-        laser.GetComponent<Laser>().SetLaserDamage(enemyData.damage);
+        GameObject bullet = PoolManager.Instance.GetPrefabByTag(PoolType.Bullet);
 
-        if (laser == null)
+        if (bullet == null)
 
         {
 
@@ -572,17 +633,19 @@ public class Enemy_AttackState : EntityState
 
 
 
-        // Set laser position and rotation
+        // Set bullet position and rotation
 
-        laser.transform.position = firePoint.transform.position;
+        bullet.transform.position = firePoint.transform.position;
 
-        laser.SetActive(true);
+        bullet.transform.rotation = firePoint.transform.rotation;
+
+        bullet.SetActive(true);
 
 
 
         // Add movement towards player
 
-        Rigidbody bulletRb = laser.GetComponent<Rigidbody>();
+        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
 
         if (bulletRb != null)
 
@@ -594,7 +657,7 @@ public class Enemy_AttackState : EntityState
 
                 playerGO.transform.position.x,
 
-                laser.transform.position.y,  // Keep laser's current height
+                bullet.transform.position.y,  // Keep bullet's current height
 
                 playerGO.transform.position.z
 
@@ -602,19 +665,19 @@ public class Enemy_AttackState : EntityState
 
 
 
-            Vector3 shootDirection = (targetPosition - laser.transform.position).normalized;
+            Vector3 shootDirection = (targetPosition - bullet.transform.position).normalized;
 
             bulletRb.linearVelocity = shootDirection * enemyData.movementSpeed;
 
 
 
-            // Optional: Make laser rotate to face movement direction
+            // Optional: Make bullet rotate to face movement direction
 
             if (shootDirection != Vector3.zero)
 
             {
 
-                laser.transform.rotation = Quaternion.LookRotation(shootDirection);
+                bullet.transform.rotation = Quaternion.LookRotation(shootDirection);
 
             }
 
@@ -633,6 +696,8 @@ public class Enemy_AttackState : EntityState
         _lastShootTime = Time.time;
 
     }
+
+    private GameObject currentLaser;
 
     private void Shoot()
 

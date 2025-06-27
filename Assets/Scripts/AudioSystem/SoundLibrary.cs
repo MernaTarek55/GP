@@ -2,9 +2,7 @@ using UnityEngine;
 public enum SoundType
 {
     BG,
-    Laser,
-    Gun,
-    Door
+    Laser
 }
 [CreateAssetMenu(fileName = "SoundLibrary", menuName = "SoundLibrary")]
 

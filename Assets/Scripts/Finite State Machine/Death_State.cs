@@ -45,21 +45,10 @@ public class Death_State : EntityState
         {
             animator.SetTrigger(animationTrigger);
         }
-
         SpawnDrops();
-        enemy?.ChangeEnemyMaterial(); // to make the enemy dissolve after death
-        enemy?.PlayDeathEffect(); // if you want both effects uncomment
-        player?.ChangeMaterial(false); // to make the enemy dissolve after death
-       // player?.PlayDeathEffect(); // if you want both effects uncomment
-
-        //this line
-
-
         if (entityGO.CompareTag("Player"))
         {
-            //----------------------THIS PART-----------------------
-           player.GetComponent<PlayerRespawn>().activateRespawn();
-           
+            player.GetComponent<PlayerRespawn>().Respawn();
         }
         else
         {
@@ -96,7 +85,7 @@ public class Death_State : EntityState
 
     public void SpawnDrops()
     {
-
+       
 
         if (entityGO.CompareTag("Player"))
         {
@@ -104,9 +93,9 @@ public class Death_State : EntityState
             return;
         }
         if (enemy.drop == null)
-            return;
+             return; 
 
-
+        
         if (Random.value > enemy.dropChance)
             return;
 
@@ -139,6 +128,7 @@ public class Death_State : EntityState
         else Debug.LogWarning("healthComponent not found");
 
         animator = entityGO.GetComponentInChildren<Animator>();
+
 
     }
 }

@@ -10,8 +10,6 @@ public class Enemy_PatrolState : EntityState
     private int counter = 0;
     private InvisibilitySkill invisibilitySkill;
 
-    private GameObject ParentGo;
-
     //private int counter = 0;
 
 
@@ -20,11 +18,9 @@ public class Enemy_PatrolState : EntityState
         : base(stateMachine, stateName, enemyData, enemyGO)
     {
         this.playerGO = playerGO;
-         //this.ParentGo = enemyGO.transform.parent.gameObject;
+
         TryGetComponents(enemyGO);
         TryGetComponents(playerGO);
-        //TryGetComponents(ParentGo);
-
     }
 
     public override void Enter()

@@ -1,12 +1,11 @@
+
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    //this
     public InputActionAsset InputActions;
     public Camera mainCamera;
     public Image deadEyeCooldownImage;
@@ -60,25 +59,12 @@ public class Player : MonoBehaviour
     public AnimationCurve movementCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     public float walkSpeed = 2f;
     public float runSpeed = 5f;
-    [SerializeField] private WeaponSwitch weaponSwitch;
+
 
     public Transform playerHead;
 
     [HideInInspector]
     public Vector3 currentVelocity = Vector3.zero;
-    [SerializeField] private SkinnedMeshRenderer renderer;
-    [SerializeField] private Material dissolveMaterial;
-    [SerializeField] private Material NormalMaterial;
-    [SerializeField] private float dissolveSpeed = 0.5f;
-
-    [Header("Smooth Rotation")]
-    public AnimationCurve rotationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-    public float rotateDuration = 0.3f;
-
-    [HideInInspector] public float rotateTimer = 0f;
-    [HideInInspector] public Quaternion startRot;
-    [HideInInspector] public Quaternion targetRot;
-    [HideInInspector] public bool rotating = false;
 
     private void Awake()
     {
@@ -113,20 +99,8 @@ public class Player : MonoBehaviour
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
-        if (jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped)
-        {
-            JumpPressed = true;
-        }
-        else
-        {
-            JumpPressed = false;
-        }
-        animator.SetBool("IsGrounded", IsGrounded);
+        JumpPressed = jumpAction.WasPressedThisFrame() && IsGrounded && !hasJumped;
         stateMachine.UpdateActiveState();
-    }
-    public void SetVelocity(float xVelocity, float yVelocity)
-    {
-        rb.linearVelocity = new Vector2(xVelocity, yVelocity);
     }
 
     public void ActivateInvisibility()
@@ -149,53 +123,9 @@ public class Player : MonoBehaviour
     {
         IsShooting = isShooting;
     }
-    public void FireWeaponEvent()
-    {
-        weaponSwitch?.FireBulletFromEvent();
-    }
 
-    public void ChangeMaterial(bool isRespawn)
-    {
-        if (renderer == null) return;
-        if (isRespawn)
-        {
-        renderer.material = NormalMaterial;
-        }
-        else
-        {
-        NormalMaterial = renderer.material;
-        renderer.material = dissolveMaterial;
-        StartCoroutine(PlayerDissolve());
-
-        }
-    }
-
-
-
-    public IEnumerator PlayerDissolve()
-    {
-        float dissolve = 0f;
-        dissolveMaterial.SetFloat("_Dissolve", dissolve);
-
-        while (dissolve < 100f)
-        {
-            dissolve += Time.deltaTime * dissolveSpeed;
-            dissolveMaterial.SetFloat("_Dissolve", dissolve);
-            yield return null; // wait for the next frame
-        }
-        dissolveMaterial.SetFloat("_Dissolve", 0f);
-    }
     public void ResetHealth()
     {
         healthComponent.RenewHealth();
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("FallOff"))
-        {
-            stateMachine.ChangeState(playerDeath);
-        }
-    }
-
 }
