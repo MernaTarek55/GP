@@ -5,8 +5,8 @@ public class SaveManager : MonoBehaviour
 {
     public static SaveManager Singleton;
     PlayerInventory playerInventory;
-    InventorySaveManager saveManager;
     InventorySaveData saveData;
+    InventorySaveManager saveManager;
     [SerializeField] public PlayerInventoryHolder playerInventoryHolder;
 
     private int lastPlayedLevel = 1;
