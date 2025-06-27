@@ -58,7 +58,8 @@ public class Death_State : EntityState
         if (entityGO.CompareTag("Player"))
         {
             //----------------------THIS PART-----------------------
-           player.GetComponent<PlayerRespawn>().activateRespawn();
+            player.GetComponent<InvisibilitySkill>()?.ResetInvisibilityOnDeath();
+            player.GetComponent<PlayerRespawn>().activateRespawn();
            
         }
         else

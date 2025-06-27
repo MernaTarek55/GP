@@ -114,6 +114,21 @@ public class InvisibilitySkill : MonoBehaviour
             yield return null;
         }
     }
+    public void ResetInvisibilityOnDeath()
+    {
+        StopAllCoroutines();
+        isInvisible = false;
+        isOnCooldown = false;
+
+        // Start smooth fade back to visible
+        StartCoroutine(Fade(1f, 0f));
+
+        if (InvisibleButton != null)
+            InvisibleButton.interactable = true;
+
+        if (invisibilityImage != null)
+            invisibilityImage.fillAmount = 1f;
+    }
 
     private IEnumerator Cooldown()
     {
