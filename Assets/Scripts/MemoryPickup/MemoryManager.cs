@@ -45,6 +45,22 @@ public class MemoryManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(5f);
         Time.timeScale = 1;
-        sceneLoader.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
+        int activeSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextIndex = activeSceneIndex + 1;
+
+        Debug.Log("Current Scene Index: " + activeSceneIndex);
+        Debug.Log("Next Scene Index: " + nextIndex);
+        Debug.Log("Total Scenes: " + SceneManager.sceneCountInBuildSettings);
+
+        // If it's the last scene, loop back to the first one
+        if (nextIndex >= SceneManager.sceneCountInBuildSettings)
+        {
+            nextIndex = 0;
+        }
+
+        sceneLoader.LoadScene(nextIndex);
     }
+
+
 }

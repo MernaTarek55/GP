@@ -163,7 +163,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-        NormalMaterial = renderer.material;
+            NormalMaterial = renderer.material;
         renderer.material = dissolveMaterial;
         StartCoroutine(PlayerDissolve());
 
@@ -175,16 +175,17 @@ public class Player : MonoBehaviour
     public IEnumerator PlayerDissolve()
     {
         float dissolve = 0f;
-        dissolveMaterial.SetFloat("_Dissolve", dissolve);
+        dissolveMaterial.SetFloat("_Dissolve", 0f); // Ensure reset before starting
 
-        while (dissolve < 100f)
+        while (dissolve < 1f)
         {
             dissolve += Time.deltaTime * dissolveSpeed;
-            dissolveMaterial.SetFloat("_Dissolve", dissolve);
-            yield return null; // wait for the next frame
+            dissolveMaterial.SetFloat("_Dissolve", Mathf.Clamp01(dissolve));
+            yield return null;
         }
-        dissolveMaterial.SetFloat("_Dissolve", 0f);
+
     }
+
     public void ResetHealth()
     {
         healthComponent.RenewHealth();
